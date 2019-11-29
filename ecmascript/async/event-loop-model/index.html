@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html >
+<head><meta name="generator" content="Hexo 3.9.0">
+	<meta charset="utf-8">
+	<!-- ### DNS Prefetch ### -->
+	<meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+	<!-- ### Preload ### -->
+	
+
+	<!-- ### Meta & Title & Info ### -->
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>使用 Event Loop Model 執行 Asynchronous Function | 點燈坊</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color>
+
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="由於 ECMAScript 是 Single Thread 語言，對於繁重的運算動作，就無法使用 Multi Thread 解決，因此 Asynchronous 在 ECMAScript 格外重要。Browser 使用獨特的 Event Loop Model 實現 Asynchronous，要能徹底了解其背後運作原理，才能掌握 ECMAScript 的 Asynchronous Function。">
+<!-- Keywords -->
+<meta name="keywords" content=", ECMAScript">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+	<!-- ### Import File ### -->
+	
+	<!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+	
+	<!-- ### Site Verification ### -->
+	
+
+	<!-- ### RSS ### -->
+	
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+	<!-- ### WebApp ### -->
+	<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="點燈坊">
+<meta name="msapplication-starturl" content="https://lambda4.fun">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="點燈坊">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+	<!-- ### The Open Graph & Twitter Card Protocol ### -->
+	<meta property="og:title" content="使用 Event Loop Model 執行 Asynchronous Function | 點燈坊">
+<meta property="og:site_name" content="點燈坊">
+
+<meta property="og:url" content="https://lambda4.fun/ecmascript/async/event-loop-model/">
+<meta property="og:image" content="https://lambda4.fun/apple-touch-icon.png">
+<meta property="og:description" content="由於 ECMAScript 是 Single Thread 語言，對於繁重的運算動作，就無法使用 Multi Thread 解決，因此 Asynchronous 在 ECMAScript 格外重要。Browser 使用獨特的 Event Loop Model 實現 Asynchronous，要能徹底了解其背後運作原理，才能掌握 ECMAScript 的 Asynchronous Function。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-26T07:56:53.000Z">
+<meta property="article:modified_time" content="2019-08-26T07:56:53.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", ECMAScript">
+
+
+	<!-- ### Analytics ### -->
+	
+
+
+
+
+
+	<!-- ### Canonical link ### -->
+	<link rel="canonical" href="https://lambda4.fun/ecmascript/async/event-loop-model/">
+	<!-- ### Structured Data ### -->
+	
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://lambda4.fun/ecmascript/async/event-loop-model/",
+    "@type": "BlogPosting",
+    "logo": "https://lambda4.fun/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://lambda4.fun/ecmascript/async/event-loop-model/"
+    },
+    "headline": "使用 Event Loop Model 執行 Asynchronous Function | 點燈坊",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://lambda4.fun/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2019-08-26T07:56:53.000Z",
+    "dateModified": "2019-08-26T08:07:34.000Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://lambda4.fun/img/default_avatar.png"
+        },
+        "description": "學而時習之，不亦悅乎"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "點燈坊",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://lambda4.fun/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://lambda4.fun/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", ECMAScript",
+    "description": "由於 ECMAScript 是 Single Thread 語言，對於繁重的運算動作，就無法使用 Multi Thread 解決，因此 Asynchronous 在 ECMAScript 格外重要。Browser 使用獨特的 Event Loop Model 實現 Asynchronous，要能徹底了解其背後運作原理，才能掌握 ECMAScript 的 Asynchronous Function。"
+}
+</script>
+
+	<!-- ### Custom Head ### -->
+	
+</head>
+<body>
+	
+	
+	<!-- ### Main content ### -->
+	<header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      點燈坊
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    學而時習之，不亦悅乎
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">Home</a>
+      <a href="/tutorial/" class="navbar-link">Tutorial</a>
+      <a href="/archives/" class="navbar-link hide-sm">Archives</a>
+      <a href="/tags/" class="navbar-link">Tags</a>
+      <a href="/search" class="navbar-link">Search</a>
+      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+	
+<!-- ## Post ## -->
+<div class="post-container">
+	<div id="post-card" class="card">
+		<div class="card-item-container">
+			<div class="card-inner-cell">
+				<div class="card-header">
+					
+<h1 class="card-title h3 mb-2">使用 Event Loop Model 執行 Asynchronous Function</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2019-08-26</span>
+</div>
+				</div>
+				<div class="card-body">
+					<article id="post-content">
+						<p>由於 ECMAScript 是 Single Thread 語言，對於繁重的運算動作，就無法使用 Multi Thread 解決，因此 Asynchronous 在 ECMAScript 格外重要。Browser 使用獨特的 Event Loop Model 實現 Asynchronous，要能徹底了解其背後運作原理，才能掌握 ECMAScript 的 Asynchronous Function。</p>
+<a id="more"></a>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>ECMAScript 5</p>
+<h2 id="Single-Thread"><a href="#Single-Thread" class="headerlink" title="Single Thread"></a>Single Thread</h2><ul>
+<li>One call stack</li>
+<li>One thing at a time</li>
+</ul>
+<p>ECMAScript 最大的特色就是 runtime 為 single thread，也就是只有一個  call stack，因此一個時間只能做一件事情。</p>
+<p>也由於只有一個 thread，只要遇到 <code>大量運算</code>，ECMAScript 就會停住等待，無法令開 thread 處理，因此使用者體驗就會不好。</p>
+<p>因此 browser 做了擴充，有些東西並不是由 runtime 實作，而是由 browser 提供：</p>
+<ul>
+<li>DOM</li>
+<li>AJAX (XMLHttpRequest)</li>
+<li>setTimout()</li>
+</ul>
+<p>這三類由 browser 所提供的 API，屬於 asynchronous 部分。</p>
+<h2 id="Event-Loop-Model"><a href="#Event-Loop-Model" class="headerlink" title="Event Loop Model"></a>Event Loop Model</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Hello '</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Sam'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'World '</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// Hello World Sam</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>當 <code>setTimeout()</code> 為 <code>0</code> 秒時，會先執行 <code>console.log(&#39;Sam&#39;)</code> 還是 <code>console.log(&#39;World &#39;)</code> ?</p>
+<blockquote>
+<p>既然 dealy <code>0</code> 秒，且寫在前面，應該先執行吧 ?</p>
+</blockquote>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">concole<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Hello '</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+$<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'url'</span><span class="token punctuation">,</span> data <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// { name: 'Sam' }</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">' World'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// Hello World { name: 'Sam' }</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>當使用 AJAX 時，也會發現 <code>console.log(&#39; World&#39;)</code> 會先執行。</p>
+<p><img src="/images/ecmascript/async/event-loop-model/loop000.svg" alt="eventloop000"></p>
+<p>會先執行 stack 內的 function，直到 stack 都執行完，才會執行 event loop，將 callback queue 內的 function 執行完。</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Hello '</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/ecmascript/async/event-loop-model/loop001.svg" alt="loop001"></p>
+<ul>
+<li><code>console.log(&#39;Hello &#39;)</code> 進 stack</li>
+</ul>
+<p><img src="/images/ecmascript/async/event-loop-model/loop002.svg" alt="loop002"></p>
+<ul>
+<li>清空 stack，在 console 顯示 <code>Hello</code></li>
+</ul>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Sam'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/ecmascript/async/event-loop-model/loop003.svg" alt="loop003"></p>
+<ul>
+<li><code>setTimeout()</code> 進 stack</li>
+</ul>
+<p><img src="/images/ecmascript/async/event-loop-model/loop004.svg" alt="loop004"></p>
+<ul>
+<li>清空 stack，執行 browser thread 的 <code>timer(0)</code> </li>
+</ul>
+<p><img src="/images/ecmascript/async/event-loop-model/loop005.svg" alt="loop005"></p>
+<ul>
+<li><code>timer(0)</code> 時間一到，將 <code>callback</code> 塞進 callback queue</li>
+</ul>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'World '</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><img src="/images/ecmascript/async/event-loop-model/loop006.svg" alt="loop006"></p>
+<ul>
+<li><code>console.log(&#39;World &#39;)</code> 進 stack</li>
+</ul>
+<p><img src="/images/ecmascript/async/event-loop-model/loop007.svg" alt="loop007"></p>
+<ul>
+<li>清空 stack，在 console 顯示 <code>Hello World</code></li>
+</ul>
+<p><img src="/images/ecmascript/async/event-loop-model/loop008.svg" alt="loop008"></p>
+<ul>
+<li>所有 synchronous function 都已經執行完，開始執行 event loop</li>
+</ul>
+<p><img src="/images/ecmascript/async/event-loop-model/loop009.svg" alt="loop009"></p>
+<ul>
+<li>清空 callback queue，在 console 顯示 <code>Hello World Sam</code></li>
+</ul>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>Asynchronous function 會將 callback 先塞進 callback queue，不會立即執行</li>
+<li>等所有 synchronous function 都執行完，才開始執行 event loop 清空 callback queue 執行 asynchronous function</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Philp Robers : <a href="https://youtu.be/8aGhZQkoFbQ" target="_blank" rel="noopener">What the heck is the event loop anyway ?</a></p>
+
+					</article>
+					<p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/ECMAScript/'>#&nbsp;ECMAScript</a>
+    
+  </span>
+  
+</p>
+				</div>
+				<div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/ecmascript/async/overview/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">從 Callback、Promise 到 Async Await</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/vue/axios/dependent-api/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">如何呼叫有相依性的 API ?</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<!-- ### Footer ### -->
+	<footer class="text-center">
+  <!-- footer copyright -->
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://lambda4.fun">點燈坊</a>
+  </p>
+</footer>
+	
+	<!-- ### Import File ### -->
+	<!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+</body>
+</html>

@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html >
+<head><meta name="generator" content="Hexo 3.9.0">
+	<meta charset="utf-8">
+	<!-- ### DNS Prefetch ### -->
+	<meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+	<!-- ### Preload ### -->
+	
+
+	<!-- ### Meta & Title & Info ### -->
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>使用 uncurryN() 使 Higher Order Function 也 Point-free | 點燈坊</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color>
+
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="將傳入 Data 的 Function 加以 Point-free，這在 Ramda 很常見；但若 Data 傳入的目的是產生另外一個 Function，這類 Higher Order Function 可使用 ncurryN() 使其 Point-free。">
+<!-- Keywords -->
+<meta name="keywords" content=", Ramda">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+	<!-- ### Import File ### -->
+	
+	<!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+	
+	<!-- ### Site Verification ### -->
+	
+
+	<!-- ### RSS ### -->
+	
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+	<!-- ### WebApp ### -->
+	<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="點燈坊">
+<meta name="msapplication-starturl" content="https://lambda4.fun">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="點燈坊">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+	<!-- ### The Open Graph & Twitter Card Protocol ### -->
+	<meta property="og:title" content="使用 uncurryN() 使 Higher Order Function 也 Point-free | 點燈坊">
+<meta property="og:site_name" content="點燈坊">
+
+<meta property="og:url" content="https://lambda4.fun/ramda/function/uncurryn/">
+<meta property="og:image" content="https://lambda4.fun/apple-touch-icon.png">
+<meta property="og:description" content="將傳入 Data 的 Function 加以 Point-free，這在 Ramda 很常見；但若 Data 傳入的目的是產生另外一個 Function，這類 Higher Order Function 可使用 ncurryN() 使其 Point-free。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-10-01T17:01:16.000Z">
+<meta property="article:modified_time" content="2019-10-01T17:01:16.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", Ramda">
+
+
+	<!-- ### Analytics ### -->
+	
+
+
+
+
+
+	<!-- ### Canonical link ### -->
+	<link rel="canonical" href="https://lambda4.fun/ramda/function/uncurryn/">
+	<!-- ### Structured Data ### -->
+	
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://lambda4.fun/ramda/function/uncurryn/",
+    "@type": "BlogPosting",
+    "logo": "https://lambda4.fun/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://lambda4.fun/ramda/function/uncurryn/"
+    },
+    "headline": "使用 uncurryN() 使 Higher Order Function 也 Point-free | 點燈坊",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://lambda4.fun/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2019-10-01T17:01:16.000Z",
+    "dateModified": "2019-10-02T01:04:34.647Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://lambda4.fun/img/default_avatar.png"
+        },
+        "description": "學而時習之，不亦悅乎"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "點燈坊",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://lambda4.fun/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://lambda4.fun/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", Ramda",
+    "description": "將傳入 Data 的 Function 加以 Point-free，這在 Ramda 很常見；但若 Data 傳入的目的是產生另外一個 Function，這類 Higher Order Function 可使用 ncurryN() 使其 Point-free。"
+}
+</script>
+
+	<!-- ### Custom Head ### -->
+	
+</head>
+<body>
+	
+	
+	<!-- ### Main content ### -->
+	<header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      點燈坊
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    學而時習之，不亦悅乎
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">Home</a>
+      <a href="/tutorial/" class="navbar-link">Tutorial</a>
+      <a href="/archives/" class="navbar-link hide-sm">Archives</a>
+      <a href="/tags/" class="navbar-link">Tags</a>
+      <a href="/search" class="navbar-link">Search</a>
+      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+	
+<!-- ## Post ## -->
+<div class="post-container">
+	<div id="post-card" class="card">
+		<div class="card-item-container">
+			<div class="card-inner-cell">
+				<div class="card-header">
+					
+<h1 class="card-title h3 mb-2">使用 uncurryN() 使 Higher Order Function 也 Point-free</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2019-10-02</span>
+</div>
+				</div>
+				<div class="card-body">
+					<article id="post-content">
+						<p>將傳入 Data 的 Function 加以 Point-free，這在 Ramda 很常見；但若 Data 傳入的目的是產生另外一個 Function，這類 Higher Order Function 可使用 <code>ncurryN()</code> 使其 Point-free。</p>
+<a id="more"></a>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.14.6<br>VS Code 1.38.1<br>Quokka 1.0.253<br>Ramda 0.26.1</p>
+<h2 id="Higher-Order-Function"><a href="#Higher-Order-Function" class="headerlink" title="Higher Order Function"></a>Higher Order Function</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span> isShipable<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> genShipFare <span class="token operator">=</span> shipFare <span class="token operator">=</span><span class="token operator">></span> obj <span class="token operator">=</span><span class="token operator">></span> obj<span class="token punctuation">.</span>isShipable <span class="token operator">?</span> shipFare <span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">;</span>
+
+<span class="token function">genShipFare</span><span class="token punctuation">(</span><span class="token number">80</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>一個非常典型的 higher order function，以 <code>shipFare</code> 為 argument，傳回另外一個以 <code>obj</code> 為 argument 的的 function。</p>
+<p><img src="/images/ramda/function/uncurryn/uncurryn000.png" alt="uncurryn000"></p>
+<h2 id="ifElse"><a href="#ifElse" class="headerlink" title="ifElse()"></a>ifElse()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ifElse<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span> isShipable<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> genShipFare <span class="token operator">=</span> shipFare <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ifElse</span><span class="token punctuation">(</span>
+  <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'isShipable'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">always</span><span class="token punctuation">(</span>shipFare<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">always</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">genShipFare</span><span class="token punctuation">(</span><span class="token number">80</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>關於將 data 加以 point-free，Ramda 非常在行，改用 <code>ifElse()</code> 之後，<code>obj</code> 就被 point-free 掉了。</p>
+<p><code>obj</code> 不用於產生 function，被 point-free 掉合情合理，<code>shipFare</code> 是用來產生 function 的重要 argument，也有可能被 point-free 掉嗎 ?</p>
+<p><img src="/images/ramda/function/uncurryn/uncurryn001.png" alt="uncurryn001"></p>
+<h2 id="pipe"><a href="#pipe" class="headerlink" title="pipe()"></a>pipe()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ifElse<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> always<span class="token punctuation">,</span> pipe<span class="token punctuation">,</span> __ <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span> isShipable<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> genShipFare <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  always<span class="token punctuation">,</span>
+  <span class="token function">ifElse</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'isShipable'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> __<span class="token punctuation">,</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">genShipFare</span><span class="token punctuation">(</span><span class="token number">80</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>pipe()</code> 是實務上最常用的 point-free 手段，若原 function 的最後一個 argument 要 pointfree，直接 <code>pipe()</code> 就可以；但若是其他 argument，會搭配 <code>__()</code> 與 <code>always()</code>，其中 <code>always()</code> 可確保 arity 為 <code>1</code>。</p>
+<p><img src="/images/ramda/function/uncurryn/uncurryn002.png" alt="uncurryn002"></p>
+<h2 id="uncurryN"><a href="#uncurryN" class="headerlink" title="uncurryN()"></a>uncurryN()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ifElse<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> always<span class="token punctuation">,</span> uncurryN<span class="token punctuation">,</span> useWith<span class="token punctuation">,</span> __<span class="token punctuation">,</span> identity <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span> isShipable<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> ifElse4 <span class="token operator">=</span> <span class="token function">uncurryN</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> ifElse<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> genShipFare <span class="token operator">=</span> <span class="token function">useWith</span><span class="token punctuation">(</span>
+  <span class="token function">ifElse4</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'isShipable'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> __<span class="token punctuation">,</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>
+    always<span class="token punctuation">,</span>
+    identity
+  <span class="token punctuation">]</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">genShipFare</span><span class="token punctuation">(</span><span class="token number">80</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其實回想一下 <code>genShipFare()</code>，<code>ifElse()</code> 才是 main function，其他 function 只是為了 <code>ifElse()</code> 跑龍套用。</p>
+<p>當要 point-free 時，首先會想到 <code>useWith()</code>，然後 main function 使用 <code>ifElse()</code>。</p>
+<p>第 5 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> ifElse4 <span class="token operator">=</span> <span class="token function">uncurryN</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> ifElse<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>但問題來了，<code>ifElse()</code> 的 arity 為 <code>3</code>，且回傳是 function，根本不含 data 部分，因此先使用 <code>uncurryN(4)</code> 將原 <code>ifElse()</code> 變成 4 個 argument 的 <code>ifElse4()</code>，為能接 data 鋪路。</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">ifElse4</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'isShipable'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> __<span class="token punctuation">,</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>
+  always<span class="token punctuation">,</span>
+  identity
+<span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>ifElse4()</code> 的第一個與第三個 argument 毫無懸念，但第二個 <code>shipFare</code> 以 <code>__</code> 取代，最後一個 argument 是 data，所以是 <code>identity()</code>。</p>
+<blockquote>
+<p>整體思維就是使用 <code>uncurryN()</code> 暴力將 <code>ifElse()</code>增加一個 argument，使之能搭配 <code>useWith()</code> 成為 point-free</p>
+</blockquote>
+<p><img src="/images/ramda/function/uncurryn/uncurryn003.png" alt="uncurryn003"></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>要使 higher order function 也 point-free 有幾個 pattern：<code>pipe()</code>、<code>uncurryN()</code></li>
+<li><code>pipe()</code>：若 argument 為了決定 higher order function，通常不可能是最後一個，因此會使用 <code>__</code> 墊出要 point-free 的參數，再使用 <code>always()</code> 決定參數的 arity</li>
+<li><code>uncurryN()</code>：動態將 main function 增加一個 argument 傳 data，再使用 <code>useWith()</code>，<code>identity()</code> 則為 data 部分</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#ifElse" target="_blank" rel="noopener">ifElse()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#prop" target="_blank" rel="noopener">prop()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#always" target="_blank" rel="noopener">always()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#uncurryN" target="_blank" rel="noopener">uncurryN()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#useWith" target="_blank" rel="noopener">useWith()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#always" target="_blank" rel="noopener">always()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#__" target="_blank" rel="noopener">__()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#identity" target="_blank" rel="noopener">identity()</a></p>
+
+					</article>
+					<p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/Ramda/'>#&nbsp;Ramda</a>
+    
+  </span>
+  
+</p>
+				</div>
+				<div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/react/hooks/effect-cleanup/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 Effect Hook 清理 Side Effect</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/react/hooks/effect-hook/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 Effect Hook 處理 Side Effect</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<!-- ### Footer ### -->
+	<footer class="text-center">
+  <!-- footer copyright -->
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://lambda4.fun">點燈坊</a>
+  </p>
+</footer>
+	
+	<!-- ### Import File ### -->
+	<!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+</body>
+</html>

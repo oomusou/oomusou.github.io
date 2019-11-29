@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html >
+<head><meta name="generator" content="Hexo 3.9.0">
+	<meta charset="utf-8">
+	<!-- ### DNS Prefetch ### -->
+	<meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+	<!-- ### Preload ### -->
+	
+
+	<!-- ### Meta & Title & Info ### -->
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>使用 Docker 建立 GraphQL API | 點燈坊</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color>
+
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="GraphQL 本質只能算是 Node 的 Middleware，因此也能如 Node + Express 般包進 Docker，本文將介紹使用 Babel 後 GraphQL 如何打包成 Docker Image。">
+<!-- Keywords -->
+<meta name="keywords" content=", Docker, GraphQL, Apollo Server">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+	<!-- ### Import File ### -->
+	
+	<!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+	
+	<!-- ### Site Verification ### -->
+	
+
+	<!-- ### RSS ### -->
+	
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+	<!-- ### WebApp ### -->
+	<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="點燈坊">
+<meta name="msapplication-starturl" content="https://lambda4.fun">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="點燈坊">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+	<!-- ### The Open Graph & Twitter Card Protocol ### -->
+	<meta property="og:title" content="使用 Docker 建立 GraphQL API | 點燈坊">
+<meta property="og:site_name" content="點燈坊">
+
+<meta property="og:url" content="https://lambda4.fun/docker/graphql/">
+<meta property="og:image" content="https://lambda4.fun/apple-touch-icon.png">
+<meta property="og:description" content="GraphQL 本質只能算是 Node 的 Middleware，因此也能如 Node + Express 般包進 Docker，本文將介紹使用 Babel 後 GraphQL 如何打包成 Docker Image。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-11-13T15:44:43.000Z">
+<meta property="article:modified_time" content="2019-11-13T15:44:43.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", Docker, GraphQL, Apollo Server">
+
+
+	<!-- ### Analytics ### -->
+	
+
+
+
+
+
+	<!-- ### Canonical link ### -->
+	<link rel="canonical" href="https://lambda4.fun/docker/graphql/">
+	<!-- ### Structured Data ### -->
+	
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://lambda4.fun/docker/graphql/",
+    "@type": "BlogPosting",
+    "logo": "https://lambda4.fun/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://lambda4.fun/docker/graphql/"
+    },
+    "headline": "使用 Docker 建立 GraphQL API | 點燈坊",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://lambda4.fun/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2019-11-13T15:44:43.000Z",
+    "dateModified": "2019-11-13T23:47:50.278Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://lambda4.fun/img/default_avatar.png"
+        },
+        "description": "學而時習之，不亦悅乎"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "點燈坊",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://lambda4.fun/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://lambda4.fun/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", Docker, GraphQL, Apollo Server",
+    "description": "GraphQL 本質只能算是 Node 的 Middleware，因此也能如 Node + Express 般包進 Docker，本文將介紹使用 Babel 後 GraphQL 如何打包成 Docker Image。"
+}
+</script>
+
+	<!-- ### Custom Head ### -->
+	
+</head>
+<body>
+	
+	
+	<!-- ### Main content ### -->
+	<header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      點燈坊
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    學而時習之，不亦悅乎
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">Home</a>
+      <a href="/tutorial/" class="navbar-link">Tutorial</a>
+      <a href="/archives/" class="navbar-link hide-sm">Archives</a>
+      <a href="/tags/" class="navbar-link">Tags</a>
+      <a href="/search" class="navbar-link">Search</a>
+      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+	
+<!-- ## Post ## -->
+<div class="post-container">
+	<div id="post-card" class="card">
+		<div class="card-item-container">
+			<div class="card-inner-cell">
+				<div class="card-header">
+					
+<h1 class="card-title h3 mb-2">使用 Docker 建立 GraphQL API</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2019-11-13</span>
+</div>
+				</div>
+				<div class="card-body">
+					<article id="post-content">
+						<p>GraphQL 本質只能算是 Node 的 Middleware，因此也能如 Node + Express 般包進 Docker，本文將介紹使用 Babel 後 GraphQL 如何打包成 Docker Image。</p>
+<a id="more"></a>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.15.1<br>Docker Desktop 2.1.0.4 (39773)<br>WebStorm 2019.2.4<br>Node 10.16.3<br>Yarn 1.19.1<br>Apollo Server 2.9.6Babel CLI 7.6.4<br>Babel Core 7.6.4<br>Babel Node 7.6.3<br>Babel Preset-env 7.6.3<br>Nodemon 1.19.4<br>Rimraf 3.0.0</p>
+<h2 id="GraphQL-Project"><a href="#GraphQL-Project" class="headerlink" title="GraphQL Project"></a>GraphQL Project</h2><p>在根目錄下新增以下檔案：</p>
+<ul>
+<li>dockerfile</li>
+<li>src/index.js</li>
+<li>.babelrc</li>
+<li>nodemon.json</li>
+<li>package.json</li>
+<li>.env</li>
+<li>docker-compose.yml</li>
+</ul>
+<p><img src="/images/docker/graphql/gql000.png" alt="gql000"></p>
+<h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><p><strong>src/index.js</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'apollo-server'</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FRP'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span><span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">let</span> typeDefs <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`
+  type Query {
+    books(category: BookCategory!): [Book]
+  }
+
+  type Book {
+    title: String
+    category: BookCategory
+  }
+
+  enum BookCategory {
+    FP
+    FRP
+    JS
+  }
+`</span></span>
+
+<span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>category <span class="token operator">===</span> category<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> resolvers <span class="token operator">=</span> <span class="token punctuation">{</span>
+  Query<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    books
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> apolloServer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+apolloServer
+  <span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">{</span> url <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`GraphQL Server ready at </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> url <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 project 根目錄下新增 <code>src</code> 目錄放 GraphQL，有別於 Babel 編譯後在 <code>dist</code> 目錄所產生的 <code>js</code>。</p>
+<p><code>index.js</code> 為 GraphQL 主程式。</p>
+<p>第 1 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'apollo-server'</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>從 <code>apollo-server</code> import 進 <code>ApolloServer</code> 與 <code>gql</code>。</p>
+<p>第 3 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FRP'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span><span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>原始資料為 array of object，包含 <code>title</code> 與 <code>category</code> 兩個 property。</p>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> typeDefs <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`
+  type Query {
+    books(category: BookCategory!): [Book]
+  }
+
+  type Book {
+    title: String
+    category: BookCategory
+  }
+
+  enum BookCategory {
+    FP
+    FRP
+    JS
+  }
+`</span></span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 <code>typeDefs</code> 內宣告 <code>books</code> query、<code>Book</code> type 與 <code>BookCategory</code> enum。</p>
+<p>28 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> resolvers <span class="token operator">=</span> <span class="token punctuation">{</span>
+  Query<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    books
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 <code>resolvers</code> 內宣告 <code>books</code> query。</p>
+<p>26 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>category <span class="token operator">===</span> category<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>定義 <code>books</code> query 實現方式。</p>
+<p>34 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> apolloServer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>建立 <code>ApolloServer</code>，將 <code>typeDefs</code> 與 <code>resolvers</code> 組合成 object 傳進其 constructor。</p>
+<p>36 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">apolloServer
+  <span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">{</span> url <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`GraphQL Server ready at </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> url <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>以 <code>apolloServer.listen()</code> 啟動 Apollo Server，其回傳為 promise，將其 <code>url</code> destructure 之後以 <code>console.log()</code> 顯示。</p>
+<blockquote>
+<p>Apollo Server 預設啟動在 <code>4000</code> port</p>
+</blockquote>
+<h2 id="Babel-Configuration"><a href="#Babel-Configuration" class="headerlink" title="Babel Configuration"></a>Babel Configuration</h2><p><strong>.babelrc</strong></p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"presets"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"@babel/preset-env"</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 project 根目錄下建立 <code>.babelrc</code> 設定 Babel，<code>@babel/preset-env</code> 為預設 Babel 組態。</p>
+<h2 id="Nodemon-Configuration"><a href="#Nodemon-Configuration" class="headerlink" title="Nodemon Configuration"></a>Nodemon Configuration</h2><p><strong>nodemon.json</strong></p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"exec"</span><span class="token operator">:</span> <span class="token string">"NODE_ENV=development yarn dev"</span><span class="token punctuation">,</span>
+  <span class="token property">"watch"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"src/*"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"ext"</span><span class="token operator">:</span> <span class="token string">"js, json"</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><strong>exec</strong>：當有變動時，將執行 <code>yarn dev</code></li>
+<li><strong>watch</strong>：Nodemon 將持續觀察的目錄</li>
+<li><strong>ext</strong>：Nodemon 將持續觀察的 extension</li>
+</ul>
+<blockquote>
+<p><code>watch</code> 與 <code>ext</code> 可視實際需求加以修改</p>
+</blockquote>
+<h2 id="Yarn-Configuration"><a href="#Yarn-Configuration" class="headerlink" title="Yarn Configuration"></a>Yarn Configuration</h2><p><strong>package.json</strong></p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"apollo-gql"</span><span class="token punctuation">,</span>
+  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"0.1.0"</span><span class="token punctuation">,</span>
+  <span class="token property">"main"</span><span class="token operator">:</span> <span class="token string">"index.js"</span><span class="token punctuation">,</span>
+  <span class="token property">"license"</span><span class="token operator">:</span> <span class="token string">"MIT"</span><span class="token punctuation">,</span>
+  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"serve"</span><span class="token operator">:</span> <span class="token string">"nodemon"</span><span class="token punctuation">,</span>
+    <span class="token property">"start"</span><span class="token operator">:</span> <span class="token string">"node ./dist/index.js"</span><span class="token punctuation">,</span>
+    <span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"babel-node ./src/index.js"</span><span class="token punctuation">,</span>
+    <span class="token property">"prod"</span><span class="token operator">:</span> <span class="token string">"NODE_ENV=production yarn clean &amp;&amp; yarn build &amp;&amp; yarn start"</span><span class="token punctuation">,</span>
+    <span class="token property">"clean"</span><span class="token operator">:</span> <span class="token string">"rimraf dist"</span><span class="token punctuation">,</span>
+    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"babel ./src --out-dir dist"</span><span class="token punctuation">,</span>
+    <span class="token property">"docker:build"</span><span class="token operator">:</span> <span class="token string">"NODE_ENV=production yarn clean &amp;&amp; yarn build &amp;&amp; docker build -t apollo-docker:$npm_package_version ."</span><span class="token punctuation">,</span>
+    <span class="token property">"docker:up"</span><span class="token operator">:</span> <span class="token string">"docker-compose up -d"</span><span class="token punctuation">,</span>
+    <span class="token property">"docker:down"</span><span class="token operator">:</span> <span class="token string">"docker-compose down"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"apollo-server"</span><span class="token operator">:</span> <span class="token string">"^2.9.7"</span><span class="token punctuation">,</span>
+    <span class="token property">"graphql"</span><span class="token operator">:</span> <span class="token string">"^14.5.8"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"@babel/cli"</span><span class="token operator">:</span> <span class="token string">"^7.6.4"</span><span class="token punctuation">,</span>
+    <span class="token property">"@babel/core"</span><span class="token operator">:</span> <span class="token string">"^7.6.4"</span><span class="token punctuation">,</span>
+    <span class="token property">"@babel/node"</span><span class="token operator">:</span> <span class="token string">"^7.6.3"</span><span class="token punctuation">,</span>
+    <span class="token property">"@babel/preset-env"</span><span class="token operator">:</span> <span class="token string">"^7.6.3"</span><span class="token punctuation">,</span>
+    <span class="token property">"nodemon"</span><span class="token operator">:</span> <span class="token string">"^1.19.4"</span><span class="token punctuation">,</span>
+    <span class="token property">"rimraf"</span><span class="token operator">:</span> <span class="token string">"^3.0.0"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>17 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+  <span class="token property">"apollo-server"</span><span class="token operator">:</span> <span class="token string">"^2.9.7"</span><span class="token punctuation">,</span>
+  <span class="token property">"graphql"</span><span class="token operator">:</span> <span class="token string">"^14.5.8"</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+  <span class="token property">"@babel/cli"</span><span class="token operator">:</span> <span class="token string">"^7.6.4"</span><span class="token punctuation">,</span>
+  <span class="token property">"@babel/core"</span><span class="token operator">:</span> <span class="token string">"^7.6.4"</span><span class="token punctuation">,</span>
+  <span class="token property">"@babel/node"</span><span class="token operator">:</span> <span class="token string">"^7.6.3"</span><span class="token punctuation">,</span>
+  <span class="token property">"@babel/preset-env"</span><span class="token operator">:</span> <span class="token string">"^7.6.3"</span><span class="token punctuation">,</span>
+  <span class="token property">"nodemon"</span><span class="token operator">:</span> <span class="token string">"^1.19.4"</span><span class="token punctuation">,</span>
+  <span class="token property">"rimraf"</span><span class="token operator">:</span> <span class="token string">"^3.0.0"</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>GraphQL 專案會用到的 package，包含 Apollo Server、GraphQL 與 Babel。</p>
+<p>第 7 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"serve"</span><span class="token operator">:</span> <span class="token string">"nodemon"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>yarn serve</code> 啟動 Nodemon，由 Nodemon 執行 <code>yarn dev</code>。</p>
+<blockquote>
+<p><code>yarn dev</code> 與 <code>yarn serve</code> 差異在 js 變動後是否重啟 Apollo Server，實務上開發時建議使用 <code>yarn serve</code>，<code>yarn dev</code> 留給 Nodemon 使用</p>
+</blockquote>
+<p>第 8 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"start"</span><span class="token operator">:</span> <span class="token string">"node ./dist/index.js"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>yarn start</code> 使用 <code>node</code> 執行 Babel 轉譯後的 js 並啟動 Apollo Server。</p>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"babel-node ./src/index.js"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>yarn dev</code> 使用 <code>babel-node</code> 將 ES6+ 轉譯成 Node 能執行的 js 在記憶體內，並啟動 Apollo Server。</p>
+<p>10 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"prod"</span><span class="token operator">:</span> <span class="token string">"NODE_ENV=production yarn clean &amp;&amp; yarn build &amp;&amp; yarn start"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>yarn prod</code> 設定 <code>NODE_ENV</code> 為 <code>production</code>，且依序先執行：</p>
+<ul>
+<li><code>yarn clean</code> 刪除 <code>dist</code> 目錄</li>
+<li><code>yarn build</code> 使用 Babel 編譯成 Node 能執行的 js 在 <code>dist</code> 目錄下</li>
+<li><code>yarn start</code> 使用 Node 執行 Babel 編譯後的 js 並啟動 Apollo Server </li>
+</ul>
+<blockquote>
+<p>若想在本機測試 Babel 編譯後結果是否正常，則要執行 <code>yarn prod</code> 而非 <code>yarn serve</code></p>
+</blockquote>
+<p>11 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"clean"</span><span class="token operator">:</span> <span class="token string">"rimraf dist"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>yarn clean</code> 刪除 <code>dist</code> 目錄。</p>
+<p>12 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"babel ./src --out-dir dist"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>yarn build</code> 使用 Babel 將 <code>src</code> 目錄下的 ES6+ 轉譯成 Node 能執行的 js 到 <code>dist</code> 目錄下。</p>
+<blockquote>
+<p>將來要包進 Docker 的 js 也是 <code>dist</code> 目錄，而非 <code>src</code> 目錄</p>
+</blockquote>
+<p>13 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"docker:build"</span><span class="token operator">:</span> <span class="token string">"NODE_ENV=production yarn clean &amp;&amp; yarn build &amp;&amp; docker build -t apollo-docker:$npm_package_version ."</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>yarn docker:build</code> 與 <code>yarn prod</code> 類似，差異只在最後 <code>docker:build</code> 包成 image 而非啟動 Apollo Server。</p>
+<blockquote>
+<p><code>$npm_package_version</code> 回隨著 <code>package.json</code> 的 <code>version</code> 而變，因此改版只要改 <code>version</code> 即可</p>
+</blockquote>
+<p>14 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"docker:up"</span><span class="token operator">:</span> <span class="token string">"docker-compose up -d"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>docker-compose</code> 啟動 Apollo Server。</p>
+<blockquote>
+<p>稍後即將建立 <code>docker-compose.yml</code></p>
+</blockquote>
+<p>15 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"docker:down"</span><span class="token operator">:</span> <span class="token string">"docker-compose down"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>docker-compose</code> 結束 Apollo Server。</p>
+<h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><pre class="line-numbers highlight language-dockfile"><code class="language-dockfile">FROM node:lts-alpine
+WORKDIR /usr/app
+COPY package.json .
+RUN yarn install --production
+COPY dist/* ./
+CMD [ "node", "index.js" ]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 project 根目錄下建立 <code>dockerfile</code>，由於我們要另外安裝 Apollo Server 、 GraphQL因此要另外寫 <code>dockerfile</code> 安裝 package，不可直接使用 <code>docker-compose.yml</code>。</p>
+<p>第 1 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">FROM node:lts-alpine
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用最新 LTS 版的 <code>node:lts-alpine</code> 為基底建立 image。</p>
+<blockquote>
+<p>建議使用 <code>alpine</code> 為 production image，size 會小很多</p>
+</blockquote>
+<p>第 2 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">WORKDIR /usr/app
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將 working directory 切換到 <code>/usr/app</code>，相當於：</p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">mkdir /usr/app
+cd /usr/app
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>稍後 <code>COPY</code>、<code>RUN</code> 與 <code>CMD</code> 都會在此目錄下。</p>
+<p>第 3 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">COPY package.json .
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將根目錄的 <code>package.json</code> 複製到 Docker 內的 <code>/usr/app</code>，因為要使用 <code>yarn install</code> 安裝 Apollo Server 與 GraphQL。</p>
+<p>第 4 行</p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">RUN yarn install --production
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>執行 <code>yarn install</code> 安裝 <code>dependencies</code> 下的 package。</p>
+<p>第 5 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">COPY dist/* ./
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將 Babel 編譯過的 js 複製進 Docker 內的 <code>/usr/app</code> 。</p>
+<p>第 6 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">CMD [ "node", "index.js" ]
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>執行 Docker 內的 <code>/usr/app/index.js</code> 啟動 GraphQL。</p>
+<h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><p><strong>docker-compose.yml</strong></p>
+<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3"</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token key atrule">graphql</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> apollo<span class="token punctuation">-</span>docker<span class="token punctuation">:</span>$<span class="token punctuation">{</span>GQL_TAG<span class="token punctuation">}</span>
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> MyGraphQL
+    <span class="token key atrule">restart</span><span class="token punctuation">:</span> always
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>GQL_PORT<span class="token punctuation">}</span><span class="token punctuation">:</span><span class="token number">4000</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>dockerfile</code> 只能建立 Docker image，要啟動 Apollo Server 則要靠 <code>docker-compose.yml</code>。</p>
+<p>第 4 行</p>
+<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">image</span><span class="token punctuation">:</span> apollo<span class="token punctuation">-</span>docker<span class="token punctuation">:</span>$<span class="token punctuation">{</span>GQL_TAG<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>在 <code>image</code> 定義 <code>graphql</code> service 要使用的 Docker image 與 tag 版本，其中 <code>GQL_TAG</code> 稍後可由 <code>.env</code> 設定。</p>
+<p>第 5 行</p>
+<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">container_name</span><span class="token punctuation">:</span> MyGraphQL
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>在 <code>container_name</code> 定義 container 名稱。</p>
+<p>第 6 行</p>
+<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">restart</span><span class="token punctuation">:</span> always
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>當 container crash 時，會自動重啟。</p>
+<p>第 7 行</p>
+<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">ports</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> $<span class="token punctuation">{</span>GQL_PORT<span class="token punctuation">}</span><span class="token punctuation">:</span><span class="token number">4000</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>MyGraphQL</code> container 內部使用 <code>4000</code> port，可透過 <code>GQL_PORT</code> 定義在 host os 所使用的 port 避免與其他 service 衝突。</p>
+<p><strong>.env</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">GQL_TAG<span class="token operator">=</span><span class="token number">0.1</span><span class="token punctuation">.</span><span class="token number">0</span>
+GQL_PORT<span class="token operator">=</span><span class="token number">4000</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>定義 <code>GQL_TAG</code> 與 <code>GQL_PORT</code>。</p>
+<blockquote>
+<p>對於經常變動部分，應該放在 <code>.env</code>，避免 user 直接修改 <code>docker-compose.yml</code></p>
+</blockquote>
+<h2 id="Build-Image"><a href="#Build-Image" class="headerlink" title="Build Image"></a>Build Image</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn docker:build
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>yarn docker:build</code> 產生 Docker image。</p>
+<p><img src="/images/docker/graphql/gql001.png" alt="gql001"></p>
+<h2 id="Start-Container"><a href="#Start-Container" class="headerlink" title="Start Container"></a>Start Container</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn docker:up
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>yarn docker:up</code> 啟動 Apollo Server。</p>
+<p><img src="/images/docker/graphql/gql002.png" alt="gql002"></p>
+<h2 id="GraphQL-Playground"><a href="#GraphQL-Playground" class="headerlink" title="GraphQL Playground"></a>GraphQL Playground</h2><pre class="line-numbers highlight language-graphql"><code class="language-graphql"><span class="token keyword">query</span> <span class="token punctuation">{</span>
+  books<span class="token punctuation">(</span><span class="token attr-name">category</span><span class="token punctuation">:</span> FP<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    title
+    category
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用 <code>books</code> query 查詢資料，<code>category</code> argument 傳入 <code>FP</code>，並回傳 <code>title</code> 與 <code>category</code> 兩個 property。</p>
+<p><img src="/images/docker/graphql/gql003.png" alt="gql003"></p>
+<h2 id="Stop-Container"><a href="#Stop-Container" class="headerlink" title="Stop Container"></a>Stop Container</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn docker:down
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>yarn docker:down</code> 結束 Apollo Server。</p>
+<p><img src="/images/docker/graphql/gql004.png" alt="gql004"></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>僅管使用 Babel 寫 GraphQL，只要將 Babel 編譯過的 js 包進 Docker 即可</li>
+</ul>
+<h2 id="Sample-Code"><a href="#Sample-Code" class="headerlink" title="Sample Code"></a>Sample Code</h2><p>完整範例可在我的 <a href="https://github.com/oomusou/apollo-docker" target="_blank" rel="noopener">GitHub</a> 上找到</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://morioh.com/@5d88304de9b20f231d926838/posts" target="_blank" rel="noopener">Kian Wallace</a>, <a href="https://morioh.com/p/076014378fbd" target="_blank" rel="noopener">Building Microservices and a GraphQL API with Docker</a></p>
+
+					</article>
+					<p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/Docker/'>#&nbsp;Docker</a>
+    
+    <a class="post-tags-list-item" href='/tags/GraphQL/'>#&nbsp;GraphQL</a>
+    
+    <a class="post-tags-list-item" href='/tags/Apollo-Server/'>#&nbsp;Apollo Server</a>
+    
+  </span>
+  
+</p>
+				</div>
+				<div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/graphql/general/babel-node/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 Babel 打造 Apollo Server 開發環境</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/graphql/apollo-server-express/overview/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">如何使用 Apollo Server Express ?</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<!-- ### Footer ### -->
+	<footer class="text-center">
+  <!-- footer copyright -->
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://lambda4.fun">點燈坊</a>
+  </p>
+</footer>
+	
+	<!-- ### Import File ### -->
+	<!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+</body>
+</html>
