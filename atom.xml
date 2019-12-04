@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lambda4.fun/"/>
-  <updated>2019-12-02T23:57:22.257Z</updated>
+  <updated>2019-12-04T12:57:03.259Z</updated>
   <id>https://lambda4.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何使 count() 搭配自訂欄位 ?</title>
+    <link href="https://lambda4.fun/knex/count-raw/"/>
+    <id>https://lambda4.fun/knex/count-raw/</id>
+    <published>2019-12-04T12:53:39.000Z</published>
+    <updated>2019-12-04T12:57:03.259Z</updated>
+    
+    <content type="html"><![CDATA[<p>Knex 風格雖然很接近 SQL，但有些寫法還是很特別，必要時還要搭配 Raw SQL。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.1<br>WebStorm 2019.3<br>Docker Desktop 2.1.0.5 (40693)<br>MySQL 8.0.18<br>Knex 0.20.2</p><h2 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h2><pre class="line-numbers highlight language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token string">'My Bookshelf'</span> <span class="token keyword">as</span> title<span class="token punctuation">,</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token punctuation">)</span> <span class="token keyword">as</span> count<span class="token keyword">from</span> books<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>有時我們在使用 <code>count(*)</code> 計算時，還想自己用 string 自訂 field。</p><p><img src="/images/knex/count-raw/raw000.png" alt="raw000"></p><h2 id="Knex"><a href="#Knex" class="headerlink" title="Knex"></a>Knex</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>  <span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span>knex<span class="token punctuation">.</span><span class="token function">raw</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`'My Bookshelf' as title`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token punctuation">.</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count<span class="token punctuation">:</span> <span class="token string">'*'</span><span class="token punctuation">}</span><span class="token punctuation">)</span>  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>Knex 有提供 <code>count()</code> 不意外，但 Knex 並沒有提供內建方法實現 <code>&#39;My Bookshelf&#39; as title</code>，必須使用 <code>knex.raw()</code> 搭配 raw SQL。</p><p><img src="/images/knex/count-raw/raw001.png" alt="raw001"></p><p>但 Knex 會 complain <code>Knex.raw is deprecated</code>，但結果依然正確。</p><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>  <span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span>mySQL<span class="token punctuation">.</span><span class="token function">raw</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`'My Bookshelf' as title`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token punctuation">.</span><span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count<span class="token punctuation">:</span> <span class="token string">'*'</span><span class="token punctuation">}</span><span class="token punctuation">)</span>  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>比較正確方式是改用 Knex instance 的 <code>raw()</code>。</p><p><img src="/images/knex/count-raw/raw002.png" alt="raw002"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Knex 並沒有提供所有 SQL 功能，有些必須使用 raw SQL</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Knex 風格雖然很接近 SQL，但有些寫法還是很特別，必要時還要搭配 Raw SQL。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Knex" scheme="https://lambda4.fun/tags/Knex/"/>
+    
+  </entry>
   
   <entry>
     <title>使用 adjust() 改變 Array 中指定 index 值</title>
@@ -392,26 +412,6 @@
     <summary type="html">
     
       &lt;p&gt;從 API 回傳的資料常是 Array，因此將 Array 展開成 HTML 也是必須的，Svelte 提供了 &lt;code&gt;each&lt;/code&gt; 處理 Array。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Svelte" scheme="https://lambda4.fun/tags/Svelte/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Svelte 之 Two Way Binding</title>
-    <link href="https://lambda4.fun/svelte/component/two-way-binding/"/>
-    <id>https://lambda4.fun/svelte/component/two-way-binding/</id>
-    <published>2019-11-24T00:18:39.000Z</published>
-    <updated>2019-11-24T08:22:31.670Z</updated>
-    
-    <content type="html"><![CDATA[<p>Two Way Binding 也算現代前端代表性功能，Svelte 寫法與 Vue 相當類似。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.1<br>WebStorm 2019.2.4<br>Svelte 3.0.0</p><h2 id="Two-Way-Binding"><a href="#Two-Way-Binding" class="headerlink" title="Two Way Binding"></a>Two Way Binding</h2><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript"><span class="token keyword">let</span> name <span class="token operator">=</span> <span class="token string">''</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name"><span class="token namespace">bind:</span>value</span><span class="token attr-value"><span class="token punctuation">=</span>{</span> <span class="token attr-name">name</span> <span class="token attr-name">}</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>Hello { name }<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Svelte 也支援 two way binding，只要在 HTML attribute 前加上 <code>bind:</code>，然後再使用 <code>{ }</code> 綁定到 variable 即可。</p><p><img src="/images/svelte/component/two-way-binding/two-way000.png" alt="two-way000"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Svelte 的 two-way bind 與 Vue 的 <code>v-model</code> 類似，但已經比 React 寫法精簡許多</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://svelte.dev" target="_blank" rel="noopener">Svelte</a>, <a href="https://svelte.dev/examples#text-inputs" target="_blank" rel="noopener">Text inputs</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Two Way Binding 也算現代前端代表性功能，Svelte 寫法與 Vue 相當類似。&lt;/p&gt;
     
     </summary>
     
