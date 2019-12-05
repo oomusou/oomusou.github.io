@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lambda4.fun/"/>
-  <updated>2019-12-04T12:57:03.259Z</updated>
+  <updated>2019-12-05T00:53:06.131Z</updated>
   <id>https://lambda4.fun/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用 Babel 支援 Pipeline Operator</title>
+    <link href="https://lambda4.fun/babel/pipeline/"/>
+    <id>https://lambda4.fun/babel/pipeline/</id>
+    <published>2019-12-05T00:47:49.000Z</published>
+    <updated>2019-12-05T00:53:06.131Z</updated>
+    
+    <content type="html"><![CDATA[<p>Pipeline Operator 是 ECMAScript 最受期待新功能，它將完全改變 ECMAScript 寫法，唯目前只是 Stage 1，只要在 Babel 另外安裝 Plugin，就可提早享受類似 F# 的 <code>|&gt;</code>。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.1<br>WebStorm 2019.3<br>Node 13.2.0<br>Babel 7.6.4</p><h2 id="Plugin-Installation"><a href="#Plugin-Installation" class="headerlink" title="Plugin Installation"></a>Plugin Installation</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">yarn add @babel/core @babel/cli @babel/preset-env @babel/node --dev<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>安裝 Babel 所需 package。</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add @babel/plugin-proposal-pipeline-operator --dev<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>安裝 <code>@babel/plugin-proposal-pipeline-operator</code>，由於是 Babel 使用，安裝成 <code>devDependencies</code> 即可。</p><p><img src="/images/babel/pipeline/pipe000.png" alt="pipe000"></p><p><strong>package.json</strong></p><p><img src="/images/babel/pipeline/pipe001.png" alt="pipe001"></p><h2 id="Babel-Configuration"><a href="#Babel-Configuration" class="headerlink" title="Babel Configuration"></a>Babel Configuration</h2><p><strong>.babelrc</strong></p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>  <span class="token property">"presets"</span><span class="token operator">:</span> <span class="token punctuation">[</span>    <span class="token string">"@babel/preset-env"</span>  <span class="token punctuation">]</span><span class="token punctuation">,</span>  <span class="token property">"plugins"</span><span class="token operator">:</span> <span class="token punctuation">[</span>    <span class="token punctuation">[</span>      <span class="token string">"@babel/plugin-proposal-pipeline-operator"</span><span class="token punctuation">,</span>      <span class="token punctuation">{</span>        <span class="token property">"proposal"</span><span class="token operator">:</span> <span class="token string">"minimal"</span>      <span class="token punctuation">}</span>    <span class="token punctuation">]</span>  <span class="token punctuation">]</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>在 project 根目錄新增 <code>.babelrc</code> 設定 plugin。</p><p>目前 pipeline operator 有三種 proposal，可設定成 <code>minimal</code>、<code>start</code> 或 <code>fsharp</code>。</p><p><img src="/images/babel/pipeline/pipe002.png" alt="pipe002"></p><h2 id="Pipeline-Operator"><a href="#Pipeline-Operator" class="headerlink" title="Pipeline Operator"></a>Pipeline Operator</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> double <span class="token operator">=</span> n <span class="token operator">=</span><span class="token operator">></span> n <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span><span class="token keyword">let</span> inc <span class="token operator">=</span> n <span class="token operator">=</span><span class="token operator">></span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">inc</span><span class="token punctuation">(</span><span class="token function">double</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token number">5</span> <span class="token operator">|</span><span class="token operator">></span> double <span class="token operator">|</span><span class="token operator">></span> inc <span class="token operator">|</span><span class="token operator">></span> console<span class="token punctuation">.</span>log<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>傳統 <code>f(g(x))</code>，可以改用 <code>g |&gt; f</code> 寫法，可讀性更高，更能體現 pipeline 精神。</p><p><img src="/images/babel/pipeline/pipe003.png" alt="pipe003"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li><code>|&gt;</code> 為 F# 所創，能省略中繼變數，其由左向右比 <code>f(g(x))</code> 的由右向左可讀性更高</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://babeljs.io" target="_blank" rel="noopener">Babel</a>, <a href="https://babeljs.io/docs/en/babel-plugin-proposal-pipeline-operator" target="_blank" rel="noopener">@babel/plugin-proposal-pipeline-operator</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Pipeline_operator" target="_blank" rel="noopener">Pipeline operator</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Pipeline Operator 是 ECMAScript 最受期待新功能，它將完全改變 ECMAScript 寫法，唯目前只是 Stage 1，只要在 Babel 另外安裝 Plugin，就可提早享受類似 F# 的 &lt;code&gt;|&amp;gt;&lt;/code&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Babel" scheme="https://lambda4.fun/tags/Babel/"/>
+    
+      <category term="ECMAScript" scheme="https://lambda4.fun/tags/ECMAScript/"/>
+    
+  </entry>
   
   <entry>
     <title>如何使 count() 搭配自訂欄位 ?</title>
@@ -397,26 +419,6 @@
     
     
       <category term="ECMAScript" scheme="https://lambda4.fun/tags/ECMAScript/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Svelte 之 Each 處理 Array</title>
-    <link href="https://lambda4.fun/svelte/logic/each/"/>
-    <id>https://lambda4.fun/svelte/logic/each/</id>
-    <published>2019-11-24T01:01:00.000Z</published>
-    <updated>2019-11-25T06:43:47.980Z</updated>
-    
-    <content type="html"><![CDATA[<p>從 API 回傳的資料常是 Array，因此將 Array 展開成 HTML 也是必須的，Svelte 提供了 <code>each</code> 處理 Array。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.1<br>WebStorm 2019.2.4<br>Svelte 3.0.0</p><h2 id="Each"><a href="#Each" class="headerlink" title="Each"></a>Each</h2><p><img src="/images/svelte/logic/each/each001.png" alt="each001"></p><p>Svelte 並沒有如 Angular / Vue 有 directive，由於 Svelte 是 compiler，因此提供了類似 C 語言的 conditional compilation 寫在 <code>{ }</code> 內。</p><p>Svelte 提供了 <code>each</code> 專門處理 array，可直接搭配 ES6+ 的 destructuring 將 object 展開。</p><p><img src="/images/svelte/logic/each/each000.png" alt="each000"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Conditional compilation 的 <code>each</code> 雖然看起來風格比較老套，但可讀性尚可，且還可使用 ES6+ 的 destructuring，也不必如 Vue 須提供 <code>:key</code></li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://svelte.dev" target="_blank" rel="noopener">Svelte</a>, <a href="https://svelte.dev/examples#each-blocks" target="_blank" rel="noopener">Each blocks</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;從 API 回傳的資料常是 Array，因此將 Array 展開成 HTML 也是必須的，Svelte 提供了 &lt;code&gt;each&lt;/code&gt; 處理 Array。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Svelte" scheme="https://lambda4.fun/tags/Svelte/"/>
     
   </entry>
   
