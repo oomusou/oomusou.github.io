@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lambda4.fun/"/>
-  <updated>2019-12-05T11:41:51.082Z</updated>
+  <updated>2019-12-05T23:57:10.115Z</updated>
   <id>https://lambda4.fun/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用 Babel 支援 Optional Chaining Operator</title>
+    <link href="https://lambda4.fun/babel/optional-chaining/"/>
+    <id>https://lambda4.fun/babel/optional-chaining/</id>
+    <published>2019-12-05T23:51:11.000Z</published>
+    <updated>2019-12-05T23:57:10.115Z</updated>
+    
+    <content type="html"><![CDATA[<p>因 Nested Property 不存在而造成 Runtime Exception 是 ECMAScript 常見錯誤，過去會使用 <code>||</code> 判斷，<code>?.</code> 則提供更精簡寫法，且語意更佳。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.1<br>WebStorm 2019.3<br>Node 13.2.0<br>Babel 7.6.4<br>ECMAScript 2020</p><h2 id="Plugin-Installation"><a href="#Plugin-Installation" class="headerlink" title="Plugin Installation"></a>Plugin Installation</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add @babel/core @babel/cli @babel/preset-env @babel/node --dev<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>安裝 Babel 所需 package。</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add @babel/plugin-proposal-optional-chaining --dev<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>裝 <code>@babel/plugin-proposal-optional-chaining</code>，由於是 Babel 使用，安裝成 <code>devDependencies</code> 即可。</p><p><img src="/images/babel/optional-chaining/optional000.png" alt="optional000"></p><p><strong>package.json</strong></p><p><img src="/images/babel/optional-chaining/optional001.png" alt="optional001"></p><h2 id="Babel-Configuration"><a href="#Babel-Configuration" class="headerlink" title="Babel Configuration"></a>Babel Configuration</h2><p><strong>.babelrc</strong></p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>  <span class="token property">"plugins"</span><span class="token operator">:</span> <span class="token punctuation">[</span>    <span class="token string">"@babel/plugin-proposal-optional-chaining"</span>  <span class="token punctuation">]</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>在 project 根目錄新增 <code>.babelrc</code> 設定 plugin。</p><p><img src="/images/babel/optional-chaining/optional002.png" alt="optional002"></p><h2 id="Optional-Chaining-Operator"><a href="#Optional-Chaining-Operator" class="headerlink" title="Optional Chaining Operator"></a>Optional Chaining Operator</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> book <span class="token operator">=</span> <span class="token punctuation">{</span>  title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span>  price<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>  author<span class="token punctuation">:</span> <span class="token punctuation">{</span>    name<span class="token punctuation">:</span> <span class="token string">'Luis Atencio'</span>  <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token keyword">let</span> name1 <span class="token operator">=</span> book<span class="token punctuation">.</span>author <span class="token operator">&amp;&amp;</span> book<span class="token punctuation">.</span>author<span class="token punctuation">.</span>nameconsole<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>name1<span class="token punctuation">)</span><span class="token keyword">let</span> name2 <span class="token operator">=</span> book<span class="token punctuation">.</span>author<span class="token operator">?</span><span class="token punctuation">.</span>nameconsole<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>name2<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>第 9 行</p><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> name1 <span class="token operator">=</span> book<span class="token punctuation">.</span>author <span class="token operator">&amp;&amp;</span> book<span class="token punctuation">.</span>author<span class="token punctuation">.</span>nameconsole<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>name1<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>過去在存取 nested property 時，為了避免 runtime exception，會使用 <code>&amp;&amp;</code> 先確保 object 是否存在，若不存在則回傳 <code>undefined</code>，若存在才存取 property。</p><p>12 行</p><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> name2 <span class="token operator">=</span> book<span class="token punctuation">.</span>author<span class="token operator">?</span><span class="token punctuation">.</span>nameconsole<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>name2<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>ES2020 則可使用 <code>?.</code> 判斷左側 object 是否存在，若不存在則回傳 <code>undefined</code>，若存在則繼續 <code>?.</code> 右側存取 property，寫法更精簡且語意更佳。</p><p><img src="/images/babel/optional-chaining/optional003.png" alt="optional003"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li><code>?.</code> 目前為 ECMAScript 2020 標準，可先透過 Babel 輔助率先使用</li></ul><h2 id="Sample-Code"><a href="#Sample-Code" class="headerlink" title="Sample Code"></a>Sample Code</h2><p>完整範例可在我的 <a href="https://github.com/oomusou/babel-optional-chaining" target="_blank" rel="noopener">GitHub</a> 上找到</p><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://babeljs.io" target="_blank" rel="noopener">Babel</a>, <a href="https://babeljs.io/docs/en/babel-plugin-proposal-optional-chaining" target="_blank" rel="noopener">@babel/plugin-proposal-optional-chain</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Optional_chaining" target="_blank" rel="noopener">Optional chaining</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;因 Nested Property 不存在而造成 Runtime Exception 是 ECMAScript 常見錯誤，過去會使用 &lt;code&gt;||&lt;/code&gt; 判斷，&lt;code&gt;?.&lt;/code&gt; 則提供更精簡寫法，且語意更佳。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Babel" scheme="https://lambda4.fun/tags/Babel/"/>
+    
+      <category term="ECMAScript" scheme="https://lambda4.fun/tags/ECMAScript/"/>
+    
+  </entry>
   
   <entry>
     <title>使用 Babel 支援 Nullish Coalescing Operator</title>
@@ -401,26 +423,6 @@
     
     
       <category term="ECMAScript" scheme="https://lambda4.fun/tags/ECMAScript/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Svelte 之使用其他 Component</title>
-    <link href="https://lambda4.fun/svelte/component/nested-component/"/>
-    <id>https://lambda4.fun/svelte/component/nested-component/</id>
-    <published>2019-11-24T21:40:05.000Z</published>
-    <updated>2019-11-25T05:42:34.203Z</updated>
-    
-    <content type="html"><![CDATA[<p>Svelte 要使用其他 Component 很簡單，只要使用 ECMAScript 2015 的 <code>import</code> 進來就可使用。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.1<br>WebStorm 2019.2.4<br>Svelte 3.0.0</p><h2 id="Nested-Component"><a href="#Nested-Component" class="headerlink" title="Nested Component"></a>Nested Component</h2><p><strong>src/Nested.svelte</strong></p><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>Hello World<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>只要 extension 是 <code>.svelte</code> 就是 component。</p><blockquote><p>Svelte 的 component 習慣以 PascalCase 命名。</p></blockquote><h2 id="Root-Component"><a href="#Root-Component" class="headerlink" title="Root Component"></a>Root Component</h2><p><strong>src/App.svelte</strong></p><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript"><span class="token keyword">import</span> Nested <span class="token keyword">from</span> <span class="token string">'./Nested.svelte'</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Nested</span><span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>使用 ES6 的 <code>import</code> 匯入其他 component，且必須使用 default import 自己命名，習慣會與 component 檔名一樣，但若要自行另外命名也是可行。</p><p>HTML 的 component 名稱可使用 <code>&lt;/&gt;</code> 自行結尾，不像 Vue 必須使用 <code>&lt;Nested&gt;&lt;/Nested&gt;</code> 寫法。</p><p><img src="/images/svelte/component/nested-component/nested000.png" alt="nested000"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Svelte 要使用其他 component，只需 import 進來即可，不必如 Vue 一樣必須在 Vue instance 的 <code>components</code> property 下宣告 component</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://svelte.dev" target="_blank" rel="noopener">Svelte</a>, <a href="https://svelte.dev/examples#nested-components" target="_blank" rel="noopener">Nested components</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Svelte 要使用其他 Component 很簡單，只要使用 ECMAScript 2015 的 &lt;code&gt;import&lt;/code&gt; 進來就可使用。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Svelte" scheme="https://lambda4.fun/tags/Svelte/"/>
     
   </entry>
   
