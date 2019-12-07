@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lambda4.fun/"/>
-  <updated>2019-12-07T02:46:36.309Z</updated>
+  <updated>2019-12-07T07:29:57.024Z</updated>
   <id>https://lambda4.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何讀取 Package.json 的 Property ?</title>
+    <link href="https://lambda4.fun/npm/read-property/"/>
+    <id>https://lambda4.fun/npm/read-property/</id>
+    <published>2019-12-07T07:27:50.000Z</published>
+    <updated>2019-12-07T07:29:57.024Z</updated>
+    
+    <content type="html"><![CDATA[<p>NPM Script 是很好用的工具，可自行將需要自動化部分整理成 NPM Script，由於 <code>package.json</code> 本身就是 JSON 格式，因此 NPM Script 也可以讀取到其 Property 加以應用。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.1<br>WebStorm 2019.3</p><h2 id="Package-json"><a href="#Package-json" class="headerlink" title="Package.json"></a>Package.json</h2><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"apollo-mysql"</span><span class="token punctuation">,</span>  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"1.0.0"</span><span class="token punctuation">,</span>  <span class="token property">"main"</span><span class="token operator">:</span> <span class="token string">"src/index.js"</span><span class="token punctuation">,</span>  <span class="token property">"license"</span><span class="token operator">:</span> <span class="token string">"MIT"</span><span class="token punctuation">,</span>  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>    <span class="token property">"serve"</span><span class="token operator">:</span> <span class="token string">"nodemon"</span><span class="token punctuation">,</span>    <span class="token property">"start"</span><span class="token operator">:</span> <span class="token string">"node ./dist/index.js"</span><span class="token punctuation">,</span>    <span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"babel-node ./src/index.js"</span><span class="token punctuation">,</span>    <span class="token property">"prod"</span><span class="token operator">:</span> <span class="token string">"yarn clean &amp;&amp; cross-env NODE_ENV=production yarn build &amp;&amp; yarn start"</span><span class="token punctuation">,</span>    <span class="token property">"clean"</span><span class="token operator">:</span> <span class="token string">"rimraf dist"</span><span class="token punctuation">,</span>    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"babel ./src --out-dir dist"</span><span class="token punctuation">,</span>    <span class="token property">"docker:build"</span><span class="token operator">:</span> <span class="token string">"yarn clean &amp;&amp; cross-env NODE_ENV=production yarn build &amp;&amp; docker build -t $npm_package_name:$npm_package_version ."</span><span class="token punctuation">,</span>    <span class="token property">"docker:up"</span><span class="token operator">:</span> <span class="token string">"docker-compose up -d"</span><span class="token punctuation">,</span>    <span class="token property">"docker:down"</span><span class="token operator">:</span> <span class="token string">"docker-compose down"</span><span class="token punctuation">,</span>    <span class="token property">"mysql:up"</span><span class="token operator">:</span> <span class="token string">"cd mysql &amp;&amp; docker-compose up -d"</span><span class="token punctuation">,</span>    <span class="token property">"mysql:down"</span><span class="token operator">:</span> <span class="token string">"cd mysql &amp;&amp; docker-compose down"</span>  <span class="token punctuation">}</span><span class="token punctuation">,</span>  <span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>    <span class="token property">"apollo-server"</span><span class="token operator">:</span> <span class="token string">"^2.9.7"</span><span class="token punctuation">,</span>    <span class="token property">"graphql"</span><span class="token operator">:</span> <span class="token string">"^14.5.8"</span><span class="token punctuation">,</span>    <span class="token property">"knex"</span><span class="token operator">:</span> <span class="token string">"^0.20.3"</span><span class="token punctuation">,</span>    <span class="token property">"mysql"</span><span class="token operator">:</span> <span class="token string">"^2.17.1"</span>  <span class="token punctuation">}</span><span class="token punctuation">,</span>  <span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>    <span class="token property">"@babel/cli"</span><span class="token operator">:</span> <span class="token string">"^7.6.4"</span><span class="token punctuation">,</span>    <span class="token property">"@babel/core"</span><span class="token operator">:</span> <span class="token string">"^7.6.4"</span><span class="token punctuation">,</span>    <span class="token property">"@babel/node"</span><span class="token operator">:</span> <span class="token string">"^7.6.3"</span><span class="token punctuation">,</span>    <span class="token property">"@babel/preset-env"</span><span class="token operator">:</span> <span class="token string">"^7.6.3"</span><span class="token punctuation">,</span>    <span class="token property">"cross-env"</span><span class="token operator">:</span> <span class="token string">"^6.0.3"</span><span class="token punctuation">,</span>    <span class="token property">"nodemon"</span><span class="token operator">:</span> <span class="token string">"^1.19.4"</span><span class="token punctuation">,</span>    <span class="token property">"rimraf"</span><span class="token operator">:</span> <span class="token string">"^3.0.0"</span>  <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>這是一個典型重度使用 NPM Script 的例子，可命令 Babel 轉譯、建置 Docker image 與啟動 MySQL … 等。</p><p>13 行</p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"docker:build"</span><span class="token operator">:</span> <span class="token string">"yarn clean &amp;&amp; cross-env NODE_ENV=production yarn build &amp;&amp; docker build -t $npm_package_name:$npm_package_version ."</span><span class="token punctuation">,</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>部署 Docker image 時版本非常重要，因此我們希望每次 build 時能自動讀取 <code>package.json</code> 的 <code>name</code> 與 <code>version</code>，此時我們可使用 <code>$npm_package_</code> 接 property 名稱讀取。</p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>由於很多資訊已經在 <code>package.json</code> 內，實務上原本需要 Bash script 自動化的工作，其實都可改透過 NPM script 加以整合</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;NPM Script 是很好用的工具，可自行將需要自動化部分整理成 NPM Script，由於 &lt;code&gt;package.json&lt;/code&gt; 本身就是 JSON 格式，因此 NPM Script 也可以讀取到其 Property 加以應用。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="NPM" scheme="https://lambda4.fun/tags/NPM/"/>
+    
+  </entry>
   
   <entry>
     <title>如何將兩個 Result Set 合併 ?</title>
@@ -401,26 +421,6 @@
     
     
       <category term="Svelte" scheme="https://lambda4.fun/tags/Svelte/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用 cross-env 解決跨平台設置 NODE_ENV 問題</title>
-    <link href="https://lambda4.fun/node/cross-env/"/>
-    <id>https://lambda4.fun/node/cross-env/</id>
-    <published>2019-11-26T01:45:26.000Z</published>
-    <updated>2019-11-26T09:47:34.134Z</updated>
-    
-    <content type="html"><![CDATA[<p>在 Yarn script 中，有時會使用 <code>NODE_ENV</code> 設定環境變數，但會發會在 macOS 可執行，在 Windows 卻無法執行，可安裝 <code>cross-env</code> 解決。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.1<br>WebStorm 2019.3<br>Node 13.2.0</p><h2 id="Yarn-Script"><a href="#Yarn-Script" class="headerlink" title="Yarn Script"></a>Yarn Script</h2><p><img src="/images/node/cross-env/env000.png" alt="env000"></p><p>使用 NODE_ENV 設定環境變數，在 Windows 卻無法執行，但 macOS 正常。</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add cross-env --dev<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>解決方法是安裝 <code>cross-env</code> 在 <code>devDependencies</code>。</p><p><img src="/images/node/cross-env/env001.png" alt="env001"></p><p>在 <code>NODE_ENV</code> 之前加上 <code>cross-env</code>，如此無論在 macOS 或 Windows 皆可執行。</p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li><code>cross-env</code> 是安裝在 <code>devDenpencies</code>，因此不用擔心 Docker image 會變大</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://segmentfault.com/u/pines_cheng" target="_blank" rel="noopener">Pines_Cheng</a>, <a href="https://segmentfault.com/a/1190000005811347" target="_blank" rel="noopener">使用 cross-env 解決跨平台設置 NODE_ENV 的問題</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;在 Yarn script 中，有時會使用 &lt;code&gt;NODE_ENV&lt;/code&gt; 設定環境變數，但會發會在 macOS 可執行，在 Windows 卻無法執行，可安裝 &lt;code&gt;cross-env&lt;/code&gt; 解決。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Node" scheme="https://lambda4.fun/tags/Node/"/>
     
   </entry>
   
