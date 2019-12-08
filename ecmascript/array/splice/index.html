@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>splice | 點燈坊</title>
+<title>深入探討 Array.prototype.splice() | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -51,10 +51,9 @@
 
 <meta name="format-detection" content="telephone=no">
 <!-- Description -->
-<meta name="description" content="
-">
+<meta name="description" content="Array.prototype.splice() 是功能很強的 Method，可處理 Insert、Update 與 Remove，唯它是少數幾個會修改原本 Array 的 Method，須小心使用。">
 <!-- Keywords -->
-<meta name="keywords" content=", Ramda">
+<meta name="keywords" content=", ECMAScript">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
 <meta http-equiv="Cache-Control" content="no-transform">
 <meta http-equiv="Cache-Control" content="no-siteapp">
@@ -166,20 +165,19 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="splice | 點燈坊">
+	<meta property="og:title" content="深入探討 Array.prototype.splice() | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
 <meta property="og:url" content="https://lambda4.fun/ecmascript/array/splice/">
 <meta property="og:image" content="https://lambda4.fun/apple-touch-icon.png">
-<meta property="og:description" content="
-">
+<meta property="og:description" content="Array.prototype.splice() 是功能很強的 Method，可處理 Insert、Update 與 Remove，唯它是少數幾個會修改原本 Array 的 Method，須小心使用。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2019-12-08T14:22:02.000Z">
 <meta property="article:modified_time" content="2019-12-08T14:22:02.000Z">
 <meta property="article:author" content="Sam Xiao">
-<meta property="og:article:tag" content=", Ramda">
+<meta property="og:article:tag" content=", ECMAScript">
 
 
 	<!-- ### Analytics ### -->
@@ -204,7 +202,7 @@ a:hover {
         "@type": "WebPage",
         "@id": "https://lambda4.fun/ecmascript/array/splice/"
     },
-    "headline": "splice | 點燈坊",
+    "headline": "深入探討 Array.prototype.splice() | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
@@ -212,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-12-08T14:22:02.000Z",
-    "dateModified": "2019-12-08T14:22:02.128Z",
+    "dateModified": "2019-12-08T14:35:18.913Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -237,9 +235,8 @@ a:hover {
         "query-input": "required name=search_term_string"
     },
     
-    "keywords": ", Ramda",
-    "description": "
-"
+    "keywords": ", ECMAScript",
+    "description": "Array.prototype.splice() 是功能很強的 Method，可處理 Insert、Update 與 Remove，唯它是少數幾個會修改原本 Array 的 Method，須小心使用。"
 }
 </script>
 
@@ -431,7 +428,7 @@ a:hover {
 			<div class="card-inner-cell">
 				<div class="card-header">
 					
-<h1 class="card-title h3 mb-2">splice</h1>
+<h1 class="card-title h3 mb-2">深入探討 Array.prototype.splice()</h1>
 
 
 <div class="post-header-info">
@@ -442,7 +439,130 @@ a:hover {
 				</div>
 				<div class="card-body">
 					<article id="post-content">
-						<a id="more"></a>
+						<p><code>Array.prototype.splice()</code> 是功能很強的 Method，可處理 Insert、Update 與 Remove，唯它是少數幾個會修改原本 Array 的 Method，須小心使用。</p>
+<a id="more"></a>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.1<br>VS Code 1.40.2<br>Quokka 1.0.262<br>Ramda 0.26.1<br>ECMAScript 5</p>
+<h2 id="insert"><a href="#insert" class="headerlink" title="insert()"></a>insert()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+data<span class="token punctuation">.</span><span class="token function">splice</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
+
+data <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>欲從指定 index 之前新增單一值至 array，<code>splice()</code> 會直接修改 array，而非回傳新的 array。</p>
+<p><img src="/images/ecmascript/array/splice/splice000.png" alt="splice000"></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> insert <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span>
+
+<span class="token function">insert</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+
+data <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>比較好的方式是改用 Ramda 的 <code>insert()</code>，它不會修改原本 array。</p>
+<p><img src="/images/ecmascript/array/splice/splice001.png" alt="splice001"></p>
+<h2 id="insertAll"><a href="#insertAll" class="headerlink" title="insertAll()"></a>insertAll()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span>
+
+data<span class="token punctuation">.</span><span class="token function">splice</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+
+data <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>欲從指定 index 之前新增多值至 array，<code>splice()</code> 會直接修改 array，而非回傳新 array。</p>
+<p><img src="/images/ecmascript/array/splice/splice002.png" alt="splice002"></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> insertAll <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span>
+
+<span class="token function">insertAll</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>比較好的方式是改用 Ramda 的 <code>insertAll()</code>，它不會修改原本 array，而是回傳新 array。</p>
+<p><img src="/images/ecmascript/array/splice/splice003.png" alt="splice003"></p>
+<h2 id="update"><a href="#update" class="headerlink" title="update()"></a>update()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+
+data<span class="token punctuation">.</span><span class="token function">splice</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">)</span>
+
+data <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>欲從指定 index 修改 array 單一值，<code>splice()</code> 會直接修改 array，而非回傳新 array。</p>
+<p><img src="/images/ecmascript/array/splice/splice004.png" alt="splice004"></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> update <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+
+<span class="token function">update</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+
+data <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>比較好的方式是改用 Ramda 的 <code>update()</code>，它不會修改原本 array，而是回傳新 array。</p>
+<p><img src="/images/ecmascript/array/splice/splice005.png" alt="splice005"></p>
+<h2 id="updateAll"><a href="#updateAll" class="headerlink" title="updateAll()"></a>updateAll()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span>
+
+data<span class="token punctuation">.</span><span class="token function">splice</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span>
+
+data <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>欲從指定 index 修改多值至 array，<code>splice()</code> 會直接修改 array，而非回傳新 array。</p>
+<p><img src="/images/ecmascript/array/splice/splice006.png" alt="splice006"></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> remove<span class="token punctuation">,</span> insertAll<span class="token punctuation">,</span> compose <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span>
+
+<span class="token keyword">let</span> updateAll <span class="token operator">=</span> idx <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token function">compose</span><span class="token punctuation">(</span>
+  <span class="token function">insertAll</span><span class="token punctuation">(</span>idx<span class="token punctuation">)</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">remove</span><span class="token punctuation">(</span>idx<span class="token punctuation">)</span><span class="token punctuation">(</span>arr<span class="token punctuation">.</span>length<span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+
+<span class="token function">updateAll</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+
+data <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Ramda 並沒有提供 <code>updateAll()</code>，但我們可組合 <code>remove()</code> 與 <code>insertAll()</code>：</p>
+<ul>
+<li>先使用 <code>remove()</code> 從指定 index 移除等數量 element</li>
+<li>再使用 <code>insertAll()</code> 從指定 index 新增 array</li>
+</ul>
+<p><code>updateAll()</code> 不會修改原本 array，而是回傳新 array。</p>
+<p><img src="/images/ecmascript/array/splice/splice007.png" alt="splice007"></p>
+<h2 id="remove"><a href="#remove" class="headerlink" title="remove()"></a>remove()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+data<span class="token punctuation">.</span><span class="token function">splice</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+
+data <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>欲從 array 刪除指定 index 的 element，<code>splice()</code> 會直接修改 array，而非回傳新的 array。</p>
+<p><img src="/images/ecmascript/array/splice/splice008.png" alt="splice008"></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> remove <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token function">remove</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+
+data <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>比較好的方式是改用 Ramda 的 <code>remove()</code>，它不會修改原本 array，而是回傳新 array。</p>
+<p><img src="/images/ecmascript/array/splice/splice009.png" alt="splice009"></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+data<span class="token punctuation">.</span><span class="token function">splice</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+data <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>欲從 array 刪除指定 index 後所有 element，<code>splice()</code> 會直接修改 array，而非回傳新的 array。</p>
+<p><img src="/images/ecmascript/array/splice/splice010.png" alt="splice010"></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> remove <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+<span class="token function">remove</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">Infinity</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+
+data <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>比較好的方式是改用 Ramda 的 <code>remove()</code>，它不會修改原本 array，而是回傳新 array。</p>
+<p>但 <code>remove()</code> 須明確提供第二個 argument，因此傳入 <code>Infinity</code> 。</p>
+<p><img src="/images/ecmascript/array/splice/splice011.png" alt="splice011"></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li><code>splice()</code> 雖然功能強大，但 side effect 亦強大，實務上建議改用 Ramda 所提供 pure function</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice" target="_blank" rel="noopener">Array.prototype.splice()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#insert" target="_blank" rel="noopener">insert()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#insertAll" target="_blank" rel="noopener">insertAll()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#update" target="_blank" rel="noopener">update()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#remove" target="_blank" rel="noopener">remove()</a></p>
 
 					</article>
 					<p class="post-footer-info mb-0 pt-2">
@@ -451,7 +571,7 @@ a:hover {
   <span class="post-tags-list mt-2">
     
     
-    <a class="post-tags-list-item" href='/tags/Ramda/'>#&nbsp;Ramda</a>
+    <a class="post-tags-list-item" href='/tags/ECMAScript/'>#&nbsp;ECMAScript</a>
     
   </span>
   
