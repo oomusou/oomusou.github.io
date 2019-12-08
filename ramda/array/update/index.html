@@ -51,7 +51,7 @@
 
 <meta name="format-detection" content="telephone=no">
 <!-- Description -->
-<meta name="description" content="Ramda 提供了 update()，可直接以新的 Object 取代原有 Array 內的 Object，唯必須在第一個參數提供欲更新的 Index，因此必須先使用 findIndex() 先找到 Index。">
+<meta name="description" content="若要改變 Array 中指定 Index 值，Ramda 提供了 update()，可自行傳入 Index 與 Value 改變之。">
 <!-- Keywords -->
 <meta name="keywords" content=", Ramda">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
@@ -170,12 +170,12 @@ a:hover {
 
 <meta property="og:url" content="https://lambda4.fun/ramda/array/update/">
 <meta property="og:image" content="https://lambda4.fun/apple-touch-icon.png">
-<meta property="og:description" content="Ramda 提供了 update()，可直接以新的 Object 取代原有 Array 內的 Object，唯必須在第一個參數提供欲更新的 Index，因此必須先使用 findIndex() 先找到 Index。">
+<meta property="og:description" content="若要改變 Array 中指定 Index 值，Ramda 提供了 update()，可自行傳入 Index 與 Value 改變之。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-09-27T22:06:40.000Z">
-<meta property="article:modified_time" content="2019-09-27T22:06:40.000Z">
+<meta property="article:published_time" content="2019-12-08T01:05:37.000Z">
+<meta property="article:modified_time" content="2019-12-08T01:05:37.000Z">
 <meta property="article:author" content="Sam Xiao">
 <meta property="og:article:tag" content=", Ramda">
 
@@ -209,8 +209,8 @@ a:hover {
         "url": "https://lambda4.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2019-09-27T22:06:40.000Z",
-    "dateModified": "2019-12-03T01:05:39.870Z",
+    "datePublished": "2019-12-08T01:05:37.000Z",
+    "dateModified": "2019-12-08T01:07:23.428Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -236,7 +236,7 @@ a:hover {
     },
     
     "keywords": ", Ramda",
-    "description": "Ramda 提供了 update()，可直接以新的 Object 取代原有 Array 內的 Object，唯必須在第一個參數提供欲更新的 Index，因此必須先使用 findIndex() 先找到 Index。"
+    "description": "若要改變 Array 中指定 Index 值，Ramda 提供了 update()，可自行傳入 Index 與 Value 改變之。"
 }
 </script>
 
@@ -434,182 +434,84 @@ a:hover {
 <div class="post-header-info">
 	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
 		alt="Sam Xiao's Avatar">
-	<span>2019-09-28</span>
+	<span>2019-12-08</span>
 </div>
 				</div>
 				<div class="card-body">
 					<article id="post-content">
-						<p>Ramda 提供了 <code>update()</code>，可直接以新的 Object 取代原有 Array 內的 Object，唯必須在第一個參數提供欲更新的 Index，因此必須先使用 <code>findIndex()</code> 先找到 Index。</p>
+						<p>若要改變 Array 中指定 Index 值，Ramda 提供了 <code>update()</code>，可自行傳入 Index 與 Value 改變之。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.14.6<br>VS Code 1.38.1<br>Quokka 1.0.253<br>Ramda 0.26.1</p>
-<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> findIndex<span class="token punctuation">,</span> update <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.15.1<br>VS Code 1.40.2<br>Quokka 1.0.262<br>Ramda 0.26.1</p>
+<h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> item <span class="token operator">=</span> <span class="token punctuation">{</span> 
-  id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> 
-  title<span class="token punctuation">:</span> <span class="token string">'JavaScript for Kids'</span><span class="token punctuation">,</span> 
-  year<span class="token punctuation">:</span> <span class="token number">2019</span> 
+<span class="token keyword">let</span> update <span class="token operator">=</span> idx <span class="token operator">=</span><span class="token operator">></span> val <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  arr<span class="token punctuation">[</span>idx<span class="token punctuation">]</span> <span class="token operator">=</span> val
+  <span class="token keyword">return</span> arr
 <span class="token punctuation">}</span>
 
-<span class="token keyword">let</span> fn <span class="token operator">=</span> obj <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token function">update</span><span class="token punctuation">(</span>
-  <span class="token function">findIndex</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>id <span class="token operator">===</span> obj<span class="token punctuation">.</span>id<span class="token punctuation">,</span> arr<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  obj<span class="token punctuation">,</span>
-  arr
-<span class="token punctuation">)</span>
-
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">fn</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>data</code> 為原始資料，<code>item</code> 則為修改過後的資料，欲將整個 <code>item</code> 取代原本 <code>id</code> 為 <code>1</code> 的 object。</p>
-<p>定義出 <code>fn()</code>，傳入欲取代的 <code>item</code> 與原始資料 <code>data</code> 即可，底層使用的是 Ramda 的 <code>update()</code>。</p>
-<blockquote>
-<p><strong>update()</strong><br><code>Number → a → [a] → [a]</code><br>將 object 取代 array 內指定 index 的 object</p>
-</blockquote>
-<p><code>Number</code>：array 的 index</p>
-<p><code>a</code>：欲取代的 object 或任意型別的值</p>
-<p><code>[a]</code>：data 為 array</p>
-<p><code>[a]</code>：取代後新的 array</p>
-<p>第一個參數 <code>Number</code> 是關鍵，必須提供 array 的 index，但 index 如何來呢 ? 可靠 Ramda 的 <code>findIndex()</code> 求得。</p>
-<blockquote>
-<p><strong>findIndex()</strong><br><code>(a → Boolean) → [a] → Number</code><br>由 predicate 求得符合條件的 array index</p>
-</blockquote>
-<p><code>(a -&gt; Boolean)</code>：判斷條件 predicate，<code>true</code> 則傳回 <code>index</code></p>
-<p><code>[a]</code>：data 為 array</p>
-<p><code>Number</code>：傳回 array 的 index</p>
-<p>16 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">findIndex</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>id <span class="token operator">===</span> obj<span class="token punctuation">.</span>id<span class="token punctuation">,</span> arr<span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>Predicate 為 array 的 <code>x.id</code> 必須與 <code>item.id</code> 相等。</p>
+<span class="token function">update</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+data <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>update()</code> 最直覺會使用 <code>[]</code> 直接改變 array，但別忘了 function 對於 array 與 object 是 pass by reference，因此直接修改 argument 相當於也修改了原始 data，有嚴重 side effect。</p>
 <p><img src="/images/ramda/array/update/update000.png" alt="update000"></p>
-<h2 id="propEq"><a href="#propEq" class="headerlink" title="propEq()"></a>propEq()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> findIndex<span class="token punctuation">,</span> update<span class="token punctuation">,</span> propEq<span class="token punctuation">,</span> prop <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
+<span class="token keyword">let</span> update <span class="token operator">=</span> idx <span class="token operator">=</span><span class="token operator">></span> val <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> item <span class="token operator">=</span> <span class="token punctuation">{</span> 
-  id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> 
-  title<span class="token punctuation">:</span> <span class="token string">'JavaScript for Kids'</span><span class="token punctuation">,</span> 
-  year<span class="token punctuation">:</span> <span class="token number">2019</span> 
+  <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> arr<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">===</span> idx<span class="token punctuation">)</span> result<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> val
+    <span class="token keyword">else</span> result<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">=</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">return</span> result
 <span class="token punctuation">}</span>
 
-<span class="token keyword">let</span> fn <span class="token operator">=</span> obj <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token function">update</span><span class="token punctuation">(</span>
-  <span class="token function">findIndex</span><span class="token punctuation">(</span><span class="token function">propEq</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span> obj<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> arr<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  obj<span class="token punctuation">,</span>
-  arr
-<span class="token punctuation">)</span>
-
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">fn</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>原本 16 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">findIndex</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>id <span class="token operator">===</span> obj<span class="token punctuation">.</span>id<span class="token punctuation">,</span> arr<span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><code>findIndex()</code> 的 predicate 並非 point-free，可以改用 Ramda 的 <code>propEq()</code> 與 <code>prop()</code> 加以重構。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">findIndex</span><span class="token punctuation">(</span><span class="token function">propEq</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span> item<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> arr<span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<blockquote>
-<p><strong>propEq()</strong><br><code>String → a → Object → Boolean</code><br>比對 object 的 property 與 value 是否相等</p>
-</blockquote>
-<p><code>String</code>：object 的 property</p>
-<p><code>a</code>：要找的資料</p>
-<p><code>Object</code>：data 為 object</p>
-<p><code>Boolean</code>：若找到傳回 <code>true</code>，找不到傳回 <code>false</code></p>
-<blockquote>
-<p>由於 <code>propEq()</code> 的 currying 特性，只提供前兩個參數，剛好回傳 <code>Object -&gt; Boolean</code> function，這正是 <code>findIndex()</code> 所要的 predicate function</p>
-</blockquote>
-<p>至於 <code>propEq()</code> 的第二個參數 <code>a</code>，就是 <code>item.id</code>，可使用 Ramda 的 <code>prop()</code>。</p>
-<blockquote>
-<p><strong>prop()</strong><br><code>s -&gt; {s: a} -&gt; a | undefined</code><br>傳入 key 與 object，傳回 value</p>
-</blockquote>
+<span class="token function">update</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+data <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>比較好的做法是另外建立回傳的 <code>result</code> array，乖乖使用 <code>for</code> loop 判斷 index 並改變其 value，如此就不會有 side effect。</p>
 <p><img src="/images/ramda/array/update/update001.png" alt="update001"></p>
-<h2 id="compose"><a href="#compose" class="headerlink" title="compose()"></a>compose()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> findIndex<span class="token punctuation">,</span> update<span class="token punctuation">,</span> propEq<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> compose <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Array-prototype-reduce"><a href="#Array-prototype-reduce" class="headerlink" title="Array.prototype.reduce()"></a>Array.prototype.reduce()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
+<span class="token keyword">let</span> update <span class="token operator">=</span> idx <span class="token operator">=</span><span class="token operator">></span> val <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+  i <span class="token operator">===</span> idx <span class="token operator">?</span> <span class="token punctuation">[</span><span class="token operator">...</span>a<span class="token punctuation">,</span> val<span class="token punctuation">]</span> <span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token operator">...</span>a<span class="token punctuation">,</span> x<span class="token punctuation">]</span>
+<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> item <span class="token operator">=</span> <span class="token punctuation">{</span> 
-  id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> 
-  title<span class="token punctuation">:</span> <span class="token string">'JavaScript for Kids'</span><span class="token punctuation">,</span> 
-  year<span class="token punctuation">:</span> <span class="token number">2019</span> 
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> eqProps <span class="token operator">=</span> key <span class="token operator">=</span><span class="token operator">></span> <span class="token function">compose</span><span class="token punctuation">(</span>
-  <span class="token function">propEq</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">prop</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> fn <span class="token operator">=</span> obj <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token function">update</span><span class="token punctuation">(</span>
-  <span class="token function">findIndex</span><span class="token punctuation">(</span><span class="token function">eqProps</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">,</span> arr<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  obj<span class="token punctuation">,</span>
-  arr
-<span class="token punctuation">)</span>
-
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">fn</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>原本 16 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">findIndex</span><span class="token punctuation">(</span><span class="token function">propEq</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span> obj<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span> arr<span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><code>findIndex()</code> 的 predicate，是先執行 <code>prop()</code> ，再將結果傳給 <code>propEq()</code> 執行，其實就是 <code>prop()</code> 與 <code>propEq()</code> 兩個 function 的組合。</p>
-<blockquote>
-<p><strong>compose()</strong><br><code>((y → z), (x → y), …, (o → p), ((a, b, …, n) → o)) → ((a, b, …, n) → z)</code><br>將 function 由右至左組合成新的 function</p>
-</blockquote>
-<p>15 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> eqProps <span class="token operator">=</span> key <span class="token operator">=</span><span class="token operator">></span> <span class="token function">compose</span><span class="token punctuation">(</span>
-  <span class="token function">propEq</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">prop</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>因此可將 <code>prop()</code> 與 <code>propEq()</code> 組合成新的 <code>eqProps()</code>。</p>
-<p>20 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fn <span class="token operator">=</span> obj <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token function">update</span><span class="token punctuation">(</span>
-  <span class="token function">findIndex</span><span class="token punctuation">(</span><span class="token function">eqProps</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">,</span> arr<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  obj<span class="token punctuation">,</span>
-  arr
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>findIndex()</code> 則改用新的 <code>eqProps()</code>，語意更為清楚。</p>
+<span class="token function">update</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+data <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>回傳是單一 array 且可用 <code>for</code> loop 實現，就可改用 <code>reduce()</code> 改寫，且也沒有 side effect。</p>
+<p>別忘了 <code>reduce()</code> 的第三個 parameter 為 index，因此可用來判斷指定 index。</p>
 <p><img src="/images/ramda/array/update/update002.png" alt="update002"></p>
-<h2 id="eqProps"><a href="#eqProps" class="headerlink" title="eqProps()"></a>eqProps()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> findIndex<span class="token punctuation">,</span> update<span class="token punctuation">,</span> eqProps <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Array-prototype-splice"><a href="#Array-prototype-splice" class="headerlink" title="Array.prototype.splice()"></a>Array.prototype.splice()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> item <span class="token operator">=</span> <span class="token punctuation">{</span> 
-  id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> 
-  title<span class="token punctuation">:</span> <span class="token string">'JavaScript for Kids'</span><span class="token punctuation">,</span> 
-  year<span class="token punctuation">:</span> <span class="token number">2019</span> 
+<span class="token keyword">let</span> update <span class="token operator">=</span> idx <span class="token operator">=</span><span class="token operator">></span> val <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  arr<span class="token punctuation">.</span><span class="token function">splice</span><span class="token punctuation">(</span>idx<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> val<span class="token punctuation">)</span>
+  <span class="token keyword">return</span> arr
 <span class="token punctuation">}</span>
 
-<span class="token keyword">let</span> fn <span class="token operator">=</span> obj <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token function">update</span><span class="token punctuation">(</span>
-  <span class="token function">findIndex</span><span class="token punctuation">(</span><span class="token function">eqProps</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">,</span> arr<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  obj<span class="token punctuation">,</span>
-  arr
-<span class="token punctuation">)</span>
-
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">fn</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>事實上 Ramda 已經內建 <code>eqProps()</code>，可直接使用。</p>
-<blockquote>
-<p><strong>eqProps()</strong><br><code>k → {k: v} → {k: v} → Boolean</code><br>根據指定的 property 比較兩個 object 是否相等</p>
-</blockquote>
+<span class="token function">update</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+data <span class="token comment" spellcheck="true">//</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>Array.prototype.splice()</code> 是很強的 method，可用來對 array 處理 insert、update 與 delete，因此 <code>update()</code> 也可改用 <code>splice()</code> 實踐，唯 <code>splice()</code> 有很大 side effect，須小心使用。</p>
 <p><img src="/images/ramda/array/update/update003.png" alt="update003"></p>
+<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> update <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+
+<span class="token function">update</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+data <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Ramda 提供了 <code>update()</code>，可直接使用，且沒有 side effect。</p>
+<blockquote>
+<p><strong>update()</strong><br><code>Number → a → [a] → [a]</code><br>使用 value 改變 array 中指定 index 值</p>
+</blockquote>
+<p><img src="/images/ramda/array/update/update004.png" alt="update004"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li><code>finIndex()</code> 的 predicate function 可搭配 <code>propEq()</code> 產生</li>
-<li><code>prop()</code> 與 <code>propEq()</code> 所組合的 function，可再使用 <code>eqProps()</code> 取代</li>
+<li><code>Array.prototype.splice()</code> 雖然好用，但要小心其 side effect</li>
+<li><code>adjust()</code> 與 <code>update()</code> 很類似，唯 <code>adjust()</code> 傳入 function，而 <code>update()</code> 傳入 value</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#update" target="_blank" rel="noopener">update()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#findIndex" target="_blank" rel="noopener">findIndex()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#propEq" target="_blank" rel="noopener">propEq()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#prop" target="_blank" rel="noopener">prop()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#compose" target="_blank" rel="noopener">compose()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#eqProps" target="_blank" rel="noopener">eqProps()</a></p>
 
 					</article>
 					<p class="post-footer-info mb-0 pt-2">
@@ -628,19 +530,12 @@ console<span class="token punctuation">.</span><span class="token function">dir<
 	<ul class="pagination">
 		<!-- Prev Nav -->
 		
-		<li class="page-item page-prev">
-			<a href="/ramda/object/where/">
-				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 where() 產生 Object 的 &amp;&amp; Predicate</div>
-			</a>
-		</li>
-		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/ramda/array/unnest/">
+			<a href="/knex/hof/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 unnest() 攤平一層 Array</div>
+				<div class="page-item-subtitle">使用 Higher Order Function 組合 Knex Query</div>
 			</a>
 		</li>
 		
