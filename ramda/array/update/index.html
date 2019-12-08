@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-12-08T01:05:37.000Z",
-    "dateModified": "2019-12-08T02:23:44.156Z",
+    "dateModified": "2019-12-08T23:56:54.273Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -445,14 +445,16 @@ a:hover {
 <h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
 <span class="token keyword">let</span> update <span class="token operator">=</span> idx <span class="token operator">=</span><span class="token operator">></span> val <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  arr<span class="token punctuation">[</span>idx<span class="token punctuation">]</span> <span class="token operator">=</span> val
-  <span class="token keyword">return</span> arr
+  <span class="token keyword">let</span> result <span class="token operator">=</span> arr<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  result<span class="token punctuation">[</span>idx<span class="token punctuation">]</span> <span class="token operator">=</span> val
+  <span class="token keyword">return</span> result
 <span class="token punctuation">}</span>
 
 <span class="token function">update</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 data <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>update()</code> 最直覺會使用 <code>[]</code> 直接改變 array，但別忘了 function 對於 array 與 object 是 pass by reference，因此直接修改 argument 相當於也修改了原始 data，有嚴重 side effect。</p>
+<p>因此比較好的作法是使用 <code>slice()</code> 將傳進 array 再 clone 一份 <code>result</code> 出來，再針對  <code>result</code> 做 <code>[]</code> 處理。</p>
 <p><img src="/images/ramda/array/update/update000.png" alt="update000"></p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
@@ -487,14 +489,16 @@ data <span class="token comment" spellcheck="true">// ?</span>
 <h2 id="Array-prototype-splice"><a href="#Array-prototype-splice" class="headerlink" title="Array.prototype.splice()"></a>Array.prototype.splice()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
 <span class="token keyword">let</span> update <span class="token operator">=</span> idx <span class="token operator">=</span><span class="token operator">></span> val <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  arr<span class="token punctuation">.</span><span class="token function">splice</span><span class="token punctuation">(</span>idx<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> val<span class="token punctuation">)</span>
-  <span class="token keyword">return</span> arr
+  <span class="token keyword">let</span> result <span class="token operator">=</span> arr<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  result<span class="token punctuation">.</span><span class="token function">splice</span><span class="token punctuation">(</span>idx<span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> val<span class="token punctuation">)</span>
+  <span class="token keyword">return</span> result
 <span class="token punctuation">}</span>
 
 <span class="token function">update</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 data <span class="token comment" spellcheck="true">//</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>Array.prototype.splice()</code> 是很強的 method，可用來對 array 處理 insert、update 與 delete，因此 <code>update()</code> 也可改用 <code>splice()</code> 實踐，唯 <code>splice()</code> 有很大 side effect，須小心使用。</p>
+<p>因此比較好的作法是使用 <code>slice()</code> 將傳進 array 再 clone 一份 <code>result</code> 出來，再針對  <code>result</code> 做 <code>splice()</code> 處理。</p>
 <p><img src="/images/ramda/array/update/update003.png" alt="update003"></p>
 <h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> update <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
@@ -513,10 +517,10 @@ data <span class="token comment" spellcheck="true">// ?</span>
 <p><code>[a]</code>：回傳改變過 array</p>
 <p><img src="/images/ramda/array/update/update004.png" alt="update004"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li><code>Array.prototype.splice()</code> 雖然好用，但要小心其 side effect</li>
+<li><code>Array.prototype.splice()</code> 雖然好用，但要小心其 side effect，必須先用 <code>slice()</code> clone 一份出來再使用</li>
 <li><code>adjust()</code> 與 <code>update()</code> 很類似，唯 <code>adjust()</code> 傳入 function，而 <code>update()</code> 傳入 value</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce" target="_blank" rel="noopener">Array.prototype.reduce()</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice" target="_blank" rel="noopener">Array.prototype.splice()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#update" target="_blank" rel="noopener">update()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce" target="_blank" rel="noopener">Array.prototype.reduce()</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/splice" target="_blank" rel="noopener">Array.prototype.splice()</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/slice" target="_blank" rel="noopener">Array.prototype.slice()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#update" target="_blank" rel="noopener">update()</a></p>
 
 					</article>
 					<p class="post-footer-info mb-0 pt-2">
