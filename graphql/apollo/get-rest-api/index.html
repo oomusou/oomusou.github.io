@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-10-18T18:57:18.000Z",
-    "dateModified": "2019-10-29T11:44:44.024Z",
+    "dateModified": "2019-12-11T23:51:34.216Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -441,23 +441,15 @@ a:hover {
 					<article id="post-content">
 						<p>實務上仍有不少 API 以 REST 形式提供，此時我們可在 Apollo Server 使用 REST API，再提供 Graph API 給 Apollo Client。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15<br>WebStorm 2019.2.3<br>Node 10.16.3<br>Yarn 1.19.0<br>Vue CLI 3.12.0<br>Vue 2.6.10<br>Vue-apollo 3.0.0-beta.11<br>Apollo-server 2.9.6</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15<br>WebStorm 2019.2.3<br>Node 10.16.3<br>Apollo-server 2.9.6</p>
 <h2 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h2><p><img src="/images/graphql/apollo-server/get-rest-api/rest000.svg" alt="rest000"></p>
 <p>Vue Apollo 將透過 Apollo Server 存取 REST Server。</p>
-<h2 id="Browser"><a href="#Browser" class="headerlink" title="Browser"></a>Browser</h2><p><img src="/images/graphql/apollo-server/get-rest-api/rest001.png" alt="rest001"></p>
-<p>Vue 使用 GraphQL 對 Apollo Server 要資料，Apollo Server 再向 REST server 要資料回傳 <code>Hello World</code> 顯示。</p>
-<h2 id="Vue-CLI"><a href="#Vue-CLI" class="headerlink" title="Vue CLI"></a>Vue CLI</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ vue create vue-gql-api
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>使用 Vue CLI 建立 <code>vue-gql-api</code> project。</p>
-<h2 id="Vue-Apollo"><a href="#Vue-Apollo" class="headerlink" title="Vue Apollo"></a>Vue Apollo</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ vue add apollo
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>安裝 <code>apollo</code> plugin。</p>
 <h2 id="REST-Server"><a href="#REST-Server" class="headerlink" title="REST Server"></a>REST Server</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ mkdir rest-server
 $ cd rest-server
 $ yarn init --yes
 $ yarn add express
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Node + Express 提供 REST API。</p>
+<p>使用 Node + Express 提供 REST API。</p>
 <ul>
 <li>在 Vue project 下建立 <code>rest-server</code> 目錄</li>
 <li>使用 <code>yarn init --yes</code> 在 <code>rest-server</code> 目錄下建立 <code>package.json</code></li>
@@ -502,7 +494,7 @@ $ cd apollo-server
 $ yarn init --yes
 $ yarn add apollo-server graphql apollo-datasource-rest
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Apollo server 提供 GraphQL API 供 Vue Apollo 使用。</p>
+<p>使用 Apollo server 提供 GraphQL API 供 Vue Apollo 使用。</p>
 <ul>
 <li>在 Vue project 下建立 <code>apollo-server</code> 目錄</li>
 <li>使用 <code>yarn init --yes</code> 在 <code>apollo-server</code> 目錄下建立 <code>package.json</code></li>
@@ -635,107 +627,12 @@ $ node apollo-server/index.js
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>直接以 Node 執行 REST Server 與 Apollo Server。</p>
 <p><img src="/images/graphql/apollo-server/get-rest-api/rest005.png" alt="rest005"></p>
-<pre class="line-numbers highlight language-shell"><code class="language-shell">http://localhost:4000
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><img src="/images/graphql/apollo-server/get-rest-api/rest006.png" alt="rest006"></p>
 <pre class="line-numbers highlight language-graphql"><code class="language-graphql"><span class="token keyword">query</span> <span class="token punctuation">{</span>
   helloWorld
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><img src="/images/graphql/apollo-server/get-rest-api/rest006.png" alt="rest006"></p>
 <p>這是最簡單的 GraphQL，以 <code>query</code> 開頭，<code>{}</code> 內為要執行的 query 名稱，右側顯示回傳的 JSON object。</p>
-<h2 id="Vue-Apollo-1"><a href="#Vue-Apollo-1" class="headerlink" title="Vue Apollo"></a>Vue Apollo</h2><p><strong>.env</strong></p>
-<pre class="line-numbers highlight language-json"><code class="language-json">VUE_APP_GRAPHQL_HTTP=http<span class="token operator">:</span>//localhost<span class="token operator">:</span><span class="token number">4000</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>在 project 根目錄建立 <code>.env</code>，設定 Apollo server 位置。</p>
-<p><img src="/images/graphql/apollo-server/get-rest-api/rest008.png" alt="rest008"></p>
-<p><strong>src/App.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>{{ helloWorld }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
-
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> gql <span class="token keyword">from</span> <span class="token string">'graphql-tag'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> helloWorld <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`
-  query {
-    helloWorld
-  }
-`</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
-  name<span class="token punctuation">:</span> <span class="token string">'app'</span><span class="token punctuation">,</span>
-  apollo<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    helloWorld
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>第 8 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> gql <span class="token keyword">from</span> <span class="token string">'graphql-tag'</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>從 <code>Graphql-tag</code> import 進 <code>gql</code>。</p>
-<p>16 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
-  name<span class="token punctuation">:</span> <span class="token string">'app'</span><span class="token punctuation">,</span>
-  apollo<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    helloWorld
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>在 Vue instance 下宣告 <code>apollo</code> property，在其內宣告 <code>helloWorld</code> query。</p>
-<p>12 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> helloWorld <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`
-  query {
-    helloWorld
-  }
-`</span></span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>定義 <code>helloWorld</code> data 所使用的 GraphQL query，與之前在 GraphQL Playground 的 GraphQL 完全一樣。</p>
-<p>第 1 行</p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>{{ helloWorld }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>HTML template 內可直接顯示在 <code>apollo</code> 定義的 <code>helloWorld</code> data。</p>
-<h2 id="Yarn-Script"><a href="#Yarn-Script" class="headerlink" title="Yarn Script"></a>Yarn Script</h2><p><strong>package.json</strong></p>
-<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
-  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"vue-gql"</span><span class="token punctuation">,</span>
-  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"0.1.0"</span><span class="token punctuation">,</span>
-  <span class="token property">"private"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token property">"serve"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service serve"</span><span class="token punctuation">,</span>
-    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service build"</span><span class="token punctuation">,</span>
-    <span class="token property">"lint"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service lint"</span><span class="token punctuation">,</span>
-    <span class="token property">"rest"</span><span class="token operator">:</span> <span class="token string">"nodemon ./rest-server/index.js"</span><span class="token punctuation">,</span>
-    <span class="token property">"start"</span><span class="token operator">:</span> <span class="token string">"nodemon ./apollo-server/index.js"</span><span class="token punctuation">,</span>
-    <span class="token property">"all"</span><span class="token operator">:</span> <span class="token string">"yarn rest &amp; yarn start &amp; yarn serve"</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>在 project 根目錄下的 <code>package.json</code> 增加啟動 REST Server 與 Apollo Server 的 Yarn script。</p>
-<p>第 9 行</p>
-<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"rest"</span><span class="token operator">:</span> <span class="token string">"nodemon ./rest-server/index.js"</span><span class="token punctuation">,</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>增加 <code>rest</code>，可輸入 <code>yarn rest</code> 可使用 <code>nodemon</code> 啟動 REST Server。</p>
-<blockquote>
-<p>當 code 有任何修改，nodemon 會自動重新啟動 node 執行</p>
-</blockquote>
-<p>10 行</p>
-<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"start"</span><span class="token operator">:</span> <span class="token string">"nodemon ./apollo-server/index.js"</span><span class="token punctuation">,</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>增加 <code>start</code>，可輸入 <code>yarn start</code> 啟動 Apollo Server。</p>
-<p>11 行</p>
-<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"all"</span><span class="token operator">:</span> <span class="token string">"yarn rest &amp; yarn start &amp; yarn serve"</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>增加 <code>all</code>，可輸入 <code>yarn all</code> 一次啟動 3 個 server。</p>
-<h2 id="Start-All-Server"><a href="#Start-All-Server" class="headerlink" title="Start All Server"></a>Start All Server</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn all
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>使用 Yarn 一次啟動 3 個 server。</p>
-<p><img src="/images/graphql/apollo-server/get-rest-api/rest007.png" alt="rest007"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>若要在 Apollo Server 存取其他 REST Server 的 API，除了必須定義 schema 與 resolver 外，還要實作 data source</li>
 <li>Apollo Server 要你繼承 <code>RESTDataSource</code> class 後，然後在 constructor 修改其  <code>baseURL</code> property，此屬於 OOP 與 side effect 設計，雖然不甚喜歡，但 Apollo 官方範例就是要你這樣寫，也只能暫時接受</li>
