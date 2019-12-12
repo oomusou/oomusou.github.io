@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-10-18T20:19:54.000Z",
-    "dateModified": "2019-12-12T01:07:41.260Z",
+    "dateModified": "2019-12-12T01:19:04.986Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -441,26 +441,22 @@ a:hover {
 					<article id="post-content">
 						<p>ECMAScript 沒有 <code>enum</code>，而 Strongly Typed 的 GraphQL 則支援 <code>enum</code>，讓我們在 GraphQL Playground 可直接選擇 Enumeration 值使用，且還可檢查 Query 的 Argument 值是否正確。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15<br>WebStorm 2019.2.3<br>Node 10.16.3<br>Yarn 1.19.0<br>Vue CLI 3.12.0<br>Vue 2.6.10<br>Vue-apollo 3.0.0-beta.11<br>Apollo-server 2.9.6</p>
-<h2 id="Browser"><a href="#Browser" class="headerlink" title="Browser"></a>Browser</h2><p><img src="/images/graphql/apollo/enum/enum001.png" alt="enum001"></p>
-<p>Vue 使用 GraphQL 對 Apollo Server 要資料並顯示。</p>
 <h2 id="Apollo-Server"><a href="#Apollo-Server" class="headerlink" title="Apollo Server"></a>Apollo Server</h2><p><strong>index.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'apollo-server'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'apollo-server'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FRP'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span><span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
 
 <span class="token keyword">let</span> typeDefs <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`
   type Query {
-    booksByCategory(category: BookCategory): [Book]
+    books(category: BookCategory!): [Book]
   }
 
   type Book {
     title: String
-    price: Int
     category: BookCategory
   }
 
@@ -469,34 +465,38 @@ a:hover {
     FRP
     JS
   }
-`</span></span><span class="token punctuation">;</span>
+`</span></span>
+
+<span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>category <span class="token operator">===</span> category<span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> resolvers <span class="token operator">=</span> <span class="token punctuation">{</span>
   Query<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    booksByCategory<span class="token punctuation">:</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>category <span class="token operator">===</span> category<span class="token punctuation">)</span>
+    books
   <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-<span class="token keyword">let</span> server <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> apolloServer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-server<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>
-  <span class="token punctuation">(</span><span class="token punctuation">{</span> url <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`GraphQL Server ready at </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> url <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+apolloServer
+  <span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">{</span> url <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`GraphQL Server ready at </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> url <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 3 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FRP'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span><span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>除了 <code>title</code> 與 <code>price</code> 外，還多了 <code>category</code>。</p>
-<p>21 行</p>
+<p>除了 <code>title</code> 外，還多了 <code>category</code>。</p>
+<p>19 行</p>
 <pre class="line-numbers highlight language-graphql"><code class="language-graphql">enum BookCategory <span class="token punctuation">{</span>
   FP
   FRP
   JS
-<span class="token punctuation">}</span>
+ <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>定義 <code>BookCategory</code> enum，其內包含 <code>FP</code>、<code>FRP</code> 與 <code>JS</code> 三種值。</p>
 <blockquote>
@@ -505,21 +505,28 @@ server<span class="token punctuation">.</span><span class="token function">liste
 <p>14 行</p>
 <pre class="line-numbers highlight language-graphql"><code class="language-graphql">type Book <span class="token punctuation">{</span>
   <span class="token attr-name">title</span><span class="token punctuation">:</span> String
-  <span class="token attr-name">price</span><span class="token punctuation">:</span> Int
   <span class="token attr-name">category</span><span class="token punctuation">:</span> BookCategory
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>定義 <code>Book</code> type，<code>category</code> 的 type 為 <code>BookCategory</code> enum。</p>
-<p>11 行</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>定義 <code>Book</code> type，<code>category</code> 為 <code>BookCategory</code> enum。</p>
+<p>10 行</p>
 <pre class="line-numbers highlight language-graphql"><code class="language-graphql">type Query <span class="token punctuation">{</span>
-  booksByCategory<span class="token punctuation">(</span><span class="token attr-name">category</span><span class="token punctuation">:</span> BookCategory<span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>Book<span class="token punctuation">]</span>
+  books<span class="token punctuation">(</span><span class="token attr-name">category</span><span class="token punctuation">:</span> BookCategory<span class="token operator">!</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>Book<span class="token punctuation">]</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>定義 <code>bookByCategory</code> query， 其 <code>category</code> argument 為 <code>BookCategory</code> enum。</p>
-<p>30 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">booksByCategory<span class="token punctuation">:</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>category <span class="token operator">===</span> category<span class="token punctuation">)</span>
+<p>定義 <code>books</code> query， 其 <code>category</code> argument 為 <code>BookCategory</code> enum。</p>
+<p>28 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> resolvers <span class="token operator">=</span> <span class="token punctuation">{</span>
+  Query<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    books
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 <code>resolvers</code> 內定義 <code>books</code> query。</p>
+<p>26 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>category <span class="token operator">===</span> category<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>在 resolver 定義 <code>booksByCategory</code> query 實作。</p>
+<p>實作 <code>books</code> resolver。</p>
 <h2 id="GraphQL-Playground"><a href="#GraphQL-Playground" class="headerlink" title="GraphQL Playground"></a>GraphQL Playground</h2><pre class="line-numbers highlight language-graphql"><code class="language-graphql"><span class="token keyword">query</span> <span class="token punctuation">{</span>
   booksByCategory<span class="token punctuation">(</span><span class="token attr-name">category</span><span class="token punctuation">:</span> FP<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     title
@@ -529,121 +536,9 @@ server<span class="token punctuation">.</span><span class="token function">liste
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用 <code>booksByCategory</code> query，可在 GraphQL Playgroud 以 <code>⌃ ␣</code> 選擇 <code>FP</code> 傳入，只回傳 <code>title</code> 與 <code>category</code> 兩個 field 即可。</p>
 <p><img src="/images/graphql/apollo/enum/enum000.png" alt="enum000"></p>
-<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><p><strong>index.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'apollo-server'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">let</span> <span class="token punctuation">{</span> filter<span class="token punctuation">,</span> useWith<span class="token punctuation">,</span> flip <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'ramda'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token keyword">let</span> <span class="token punctuation">{</span> always<span class="token punctuation">,</span> eqProps <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'ramda'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> typeDefs <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`
-  type Query {
-    booksByCategory(category: BookCategory): [Book]
-  }
-
-  type Book {
-    title: String
-    price: Int
-    category: BookCategory
-  }
-
-  enum BookCategory {
-    FP
-    FRP
-    JS
-  }
-`</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> booksByCategory <span class="token operator">=</span> <span class="token function">useWith</span><span class="token punctuation">(</span>
-  <span class="token function">flip</span><span class="token punctuation">(</span>filter<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token function">always</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">eqProps</span><span class="token punctuation">(</span><span class="token string">'category'</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> resolvers <span class="token operator">=</span> <span class="token punctuation">{</span>
-  Query<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    booksByCategory
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> server <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-server<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>
-  <span class="token punctuation">(</span><span class="token punctuation">{</span> url <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`GraphQL Server ready at </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> url <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>29 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> booksByCategory <span class="token operator">=</span> <span class="token function">useWith</span><span class="token punctuation">(</span>
-  <span class="token function">flip</span><span class="token punctuation">(</span>filter<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token function">always</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">eqProps</span><span class="token punctuation">(</span><span class="token string">'category'</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p><code>booksByCategory</code> query 亦可使用 Ramda 組合而成。</p>
-<p>若不考慮 <code>booksByCategory()</code> 奇怪的 signature，可簡單使用以下方式使其 point-free。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">compose</span><span class="token punctuation">(</span>filter<span class="token punctuation">,</span> <span class="token function">eqProps</span><span class="token punctuation">(</span><span class="token string">'category'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>由於 <code>bookByCategory()</code> 真正 signature 為 <code>(_, { category })</code>，因此將 <code>find()</code> 的 signature 使用 <code>flip()</code> 反轉，再透過 <code>useWith()</code> 使其成為第二個 argument。</p>
-<p>因為 <code>find()</code> 第一個 argument 反而成為 data，為了配合 <code>useWith()</code>，使用 <code>always()</code> 使 <code>data</code> 成為 function。</p>
-<h2 id="Vue-Apollo"><a href="#Vue-Apollo" class="headerlink" title="Vue Apollo"></a>Vue Apollo</h2><p><strong>App.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(item, index) in books<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>index<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-        {{ item.title }}：{{ item.category }}
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
-
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> gql <span class="token keyword">from</span> <span class="token string">'graphql-tag'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> books <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`{
-  books: booksByCategory(category: FP) {
-    title
-    category
-  }
-}
-`</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
-  name<span class="token punctuation">:</span> <span class="token string">'app'</span><span class="token punctuation">,</span>
-  apollo<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    books
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>24 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">apollo<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-  books
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>在 <code>apollo</code> property 下宣告 <code>books</code> data。</p>
-<p>14 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`{
-  books: booksByCategory(category: FP) {
-    title
-    category
-  }
-}
-`</span></span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>定義 <code>books</code> data 所使用的 GraphQL，因為 data 名稱與 query 名稱不同，所以要特別在 GraphQL 指定 <code>books</code> query 為  <code>bookByCategory()</code> query 的 alias。</p>
-<p>第 3 行</p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(item, index) in books<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>index<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-    {{ item.title }}：{{ item.category }}
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>由於 <code>booksByCategory</code> query 回傳為 array，因此一樣使用 <code>v-for</code> 顯示所有資料。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li><code>enum</code> 算我很喜歡的概念，可惜 ECMAScript 沒有，竟然在 GraphQL 得到救贖</li>
 <li>GraphQL Playground 完美支援 <code>enum</code>，只要使用 <code>⌃ ␣</code> 就可選擇 enumeration 值</li>
-<li>GraphQL 依然可繼續使用 Ramda 組合 function</li>
-<li>若 GraphQL 回傳為 array，依然使用 <code>v-for</code> 加以顯示</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://egghead.io/instructors/eve-porcello" target="_blank" rel="noopener">Eve Porcello</a>, <a href="https://egghead.io/lessons/graphql-query-an-enumeration-type-with-graphql" target="_blank" rel="noopener">Query an Enumeration Type with GraphQL</a><br><a href="https://www.apollographql.com/docs/" target="_blank" rel="noopener">Apollo Docs</a>, <a href="https://www.apollographql.com/docs/graphql-tools/scalars/" target="_blank" rel="noopener">Custom scalars and enums</a></p>
 
