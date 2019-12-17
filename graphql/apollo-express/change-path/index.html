@@ -53,7 +53,7 @@
 <!-- Description -->
 <meta name="description" content="Apollo Server 預設 Path 為 / 以下任何目錄，而 Apollo Server Express 預設 Path 為 /graphql，若想讓 GraphQL API 為自訂 Path 如 /api 該如何設定呢 ?">
 <!-- Keywords -->
-<meta name="keywords" content=", GraphQL, Apollo Server Express">
+<meta name="keywords" content=", GraphQL, Apollo Express">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
 <meta http-equiv="Cache-Control" content="no-transform">
 <meta http-equiv="Cache-Control" content="no-siteapp">
@@ -177,7 +177,7 @@ a:hover {
 <meta property="article:published_time" content="2019-11-08T01:56:48.000Z">
 <meta property="article:modified_time" content="2019-11-08T01:56:48.000Z">
 <meta property="article:author" content="Sam Xiao">
-<meta property="og:article:tag" content=", GraphQL, Apollo Server Express">
+<meta property="og:article:tag" content=", GraphQL, Apollo Express">
 
 
 	<!-- ### Analytics ### -->
@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-11-08T01:56:48.000Z",
-    "dateModified": "2019-12-14T06:47:41.432Z",
+    "dateModified": "2019-12-17T14:41:44.067Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -235,7 +235,7 @@ a:hover {
         "query-input": "required name=search_term_string"
     },
     
-    "keywords": ", GraphQL, Apollo Server Express",
+    "keywords": ", GraphQL, Apollo Express",
     "description": "Apollo Server 預設 Path 為 / 以下任何目錄，而 Apollo Server Express 預設 Path 為 /graphql，若想讓 GraphQL API 為自訂 Path 如 /api 該如何設定呢 ?"
 }
 </script>
@@ -441,29 +441,15 @@ a:hover {
 					<article id="post-content">
 						<p>Apollo Server 預設 Path 為 <code>/</code> 以下任何目錄，而 Apollo Server Express 預設 Path 為 <code>/graphql</code>，若想讓 GraphQL API 為自訂 Path 如 <code>/api</code> 該如何設定呢 ?</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15<br>WebStorm 2019.2.4<br>Node 10.16.3<br>Apollo Server Express 2.9.7<br>Yarn 1.19.1<br>Babel CLI 7.6.4<br>Babel Core 7.6.4<br>Babel Node 7.6.3<br>Babel Preset-env 7.6.3<br>Nodemon 1.19.4<br>Rimraf 3.0.0</p>
-<h2 id="Apollo-Server-Express"><a href="#Apollo-Server-Express" class="headerlink" title="Apollo Server Express"></a>Apollo Server Express</h2><p>Apollo Server 預設 path 為 <code>/</code>，但事實上 <code>/</code> 以下任何目錄皆可，且無法自行設定使用其他目錄。</p>
+<h2 id="Package-Installation"><a href="#Package-Installation" class="headerlink" title="Package Installation"></a>Package Installation</h2><p>Apollo Server 預設 path 為 <code>/</code>，但事實上 <code>/</code> 以下任何目錄皆可，且無法自行設定使用其他目錄。</p>
 <p>若要設定其他目錄，必須使用 Apollo Server Express。</p>
-<pre class="line-numbers highlight language-shell"><code class="language-shell">$ mkdir server
-$ cd server
-$ yarn init --yes
-$ yarn add express apollo-server-express graphql
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>安裝 Express、Apollo Server Express、GraphQL 與 Babel 所需 package。</p>
-<pre class="line-numbers highlight language-shell"><code class="language-shell">$ mkdir server
-$ cd server
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>建立 GraphQL project 目錄。</p>
-<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn init --yes
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>建立 <code>package.json</code>。</p>
 <pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add express apollo-server-express graphql
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>安裝 Express、Apollo Server Express 與 GraphQL。</p>
 <blockquote>
 <p>Apollo Server Express 只是 Express 的 middleware，因此必須安裝 Express</p>
 </blockquote>
-<h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><p><strong>/server/src/index.js</strong></p>
+<h2 id="Apollo-Server-Express"><a href="#Apollo-Server-Express" class="headerlink" title="Apollo Server Express"></a>Apollo Server Express</h2><p><strong>src/index.js</strong></p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'apollo-server-express'</span>
 <span class="token keyword">import</span> express <span class="token keyword">from</span> <span class="token string">'express'</span>
 
@@ -500,23 +486,17 @@ $ cd server
 
 <span class="token keyword">let</span> app <span class="token operator">=</span> <span class="token function">express</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> apollo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> apolloServer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
-apollo<span class="token punctuation">.</span><span class="token function">applyMiddleware</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  app<span class="token punctuation">,</span>
-  path<span class="token punctuation">:</span> <span class="token string">'/api'</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
+apolloServer<span class="token punctuation">.</span><span class="token function">applyMiddleware</span><span class="token punctuation">(</span><span class="token punctuation">{</span> app<span class="token punctuation">,</span> path<span class="token punctuation">:</span> <span class="token string">'/api'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
 app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">{</span> port<span class="token punctuation">:</span> <span class="token number">4000</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`GraphQL Server ready at http://localhost:4000</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> apollo<span class="token punctuation">.</span>graphqlPath <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>39 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">apollo<span class="token punctuation">.</span><span class="token function">applyMiddleware</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  app<span class="token punctuation">,</span>
-  path<span class="token punctuation">:</span> <span class="token string">'/api'</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">apollo<span class="token punctuation">.</span><span class="token function">applyMiddleware</span><span class="token punctuation">(</span><span class="token punctuation">{</span> app<span class="token punctuation">,</span> path<span class="token punctuation">:</span> <span class="token string">'/api'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>在提供 <code>applyMiddleware()</code> 的 object，另外加上 <code>path</code> property 設定自訂 path。</p>
 <h2 id="GraphQL-Playground"><a href="#GraphQL-Playground" class="headerlink" title="GraphQL Playground"></a>GraphQL Playground</h2><p><img src="/images/graphql/apollo-express/change-path/path000.png" alt="path000"></p>
 <p>無法以 <code>/</code> 訪問 GraphQL Playground。</p>
@@ -538,7 +518,7 @@ app<span class="token punctuation">.</span><span class="token function">listen</
     
     <a class="post-tags-list-item" href='/tags/GraphQL/'>#&nbsp;GraphQL</a>
     
-    <a class="post-tags-list-item" href='/tags/Apollo-Server-Express/'>#&nbsp;Apollo Server Express</a>
+    <a class="post-tags-list-item" href='/tags/Apollo-Express/'>#&nbsp;Apollo Express</a>
     
   </span>
   
