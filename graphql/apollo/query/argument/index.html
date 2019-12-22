@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>如何替 Query 加上 Argument ? | 點燈坊</title>
+<title>使用 Apollo GraphQL 建立 Argument | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -165,7 +165,7 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="如何替 Query 加上 Argument ? | 點燈坊">
+	<meta property="og:title" content="使用 Apollo GraphQL 建立 Argument | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
 <meta property="og:url" content="https://lambda4.fun/graphql/apollo/query/argument/">
@@ -202,7 +202,7 @@ a:hover {
         "@type": "WebPage",
         "@id": "https://lambda4.fun/graphql/apollo/query/argument/"
     },
-    "headline": "如何替 Query 加上 Argument ? | 點燈坊",
+    "headline": "使用 Apollo GraphQL 建立 Argument | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-10-19T03:33:06.000Z",
-    "dateModified": "2019-12-17T15:15:25.997Z",
+    "dateModified": "2019-12-21T19:39:51.854Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -428,7 +428,7 @@ a:hover {
 			<div class="card-inner-cell">
 				<div class="card-header">
 					
-<h1 class="card-title h3 mb-2">如何替 Query 加上 Argument ?</h1>
+<h1 class="card-title h3 mb-2">使用 Apollo GraphQL 建立 Argument</h1>
 
 
 <div class="post-header-info">
@@ -441,7 +441,8 @@ a:hover {
 					<article id="post-content">
 						<p>GraphQL 的 Query 除了回傳資料外，也能如 Function 般傳入 Argument。</p>
 <a id="more"></a>
-<h2 id="Apollo-Server"><a href="#Apollo-Server" class="headerlink" title="Apollo Server"></a>Apollo Server</h2><p><strong>src/index.js</strong></p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15<br>WebStorm 2019.2.3<br>Node 10.16.3<br>Apollo GraphQL 2.9.6</p>
+<h2 id="Apollo-GraphQL"><a href="#Apollo-GraphQL" class="headerlink" title="Apollo GraphQL"></a>Apollo GraphQL</h2><p><strong>src/index.js</strong></p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'apollo-server'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
@@ -470,7 +471,7 @@ a:hover {
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-<span class="token keyword">let</span> apolloServer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> apolloServer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
 apolloServer<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">{</span> url <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`GraphQL Server ready at </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> url <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
@@ -501,13 +502,7 @@ apolloServer<span class="token punctuation">.</span><span class="token function"
 <p>21 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> bookById<span class="token punctuation">:</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> id <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>id <span class="token operator">===</span> id<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>Apollo Server 的 resolver 依序有 4 個 argument： <code>parent</code>、<code>args</code>、<code>context</code> 與 <code>info</code>，讀取 argument 只會用到第二個 <code>args</code>，而 <code>parent</code> 目前用不到可用 <code>_</code> 表示， <code>context</code> 與 <code>info</code> 目前可忽略。</p>
-<blockquote>
-<p>這裡寫法與 Express Graphql 不一樣</p>
-</blockquote>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">bookById<span class="token punctuation">:</span> <span class="token punctuation">(</span> <span class="token punctuation">{</span> id <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>id <span class="token operator">===</span> id<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>Express Graphql 會直接以 destructure 取得 <code>id</code>，但 Apollo Server 不能這樣寫。</p>
+<p>Apollo GraphQL 的 resolver 依序有 4 個 argument： <code>parent</code>、<code>args</code>、<code>context</code> 與 <code>info</code>，讀取 argument 只會用到第二個 <code>args</code>，而 <code>parent</code> 目前用不到可用 <code>_</code> 表示， <code>context</code> 與 <code>info</code> 目前可忽略。</p>
 <h2 id="GraphQL-Playground"><a href="#GraphQL-Playground" class="headerlink" title="GraphQL Playground"></a>GraphQL Playground</h2><pre class="line-numbers highlight language-graphql"><code class="language-graphql"><span class="token keyword">query</span> <span class="token punctuation">{</span>
   bookById<span class="token punctuation">(</span><span class="token attr-name">id</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
     id
@@ -519,8 +514,7 @@ apolloServer<span class="token punctuation">.</span><span class="token function"
 <p><img src="/images/graphql/apollo/query/argument/argument000.png" alt="argument000"></p>
 <p>GraphQL 傳入 <code>id: 1</code> 查詢，且僅要求傳回 <code>id</code> 與 <code>title</code> 而已，並沒有回傳 <code>price</code>。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>可發現 GraphQL 的 schema 雖然有 type，但實際上只是 ECMAScript 替 object 取名稱而已，並不算難接受概念</li>
-<li>在替 query 加上 argument 部分， Apollo Server 與 Express Graphql 在 resolver 寫法不太一樣，雖然兩者都使用 GraphQL，但實作上已有差異</li>
+<li>可在 resolver 的第二個 argument 直接解構取得 query 的 argument</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.apollographql.com/docs/" target="_blank" rel="noopener">Apollo Docs</a>, <a href="https://www.apollographql.com/docs/apollo-server/data/data/" target="_blank" rel="noopener">Fetching data with resolvers</a></p>
 
@@ -555,7 +549,7 @@ apolloServer<span class="token punctuation">.</span><span class="token function"
 		<li class="page-item page-next">
 			<a href="/graphql/apollo/query/nested/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">GraphQL 使用 Nested Query</div>
+				<div class="page-item-subtitle">使用 Apollo GraphQL 建立 Nested Query</div>
 			</a>
 		</li>
 		

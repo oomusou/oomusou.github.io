@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-10-23T19:40:46.000Z",
-    "dateModified": "2019-12-17T14:16:45.034Z",
+    "dateModified": "2019-12-20T14:13:32.281Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -441,7 +441,7 @@ a:hover {
 					<article id="post-content">
 						<p>GraphQL 為 Facebook 所發表 API 查詢語言，在 2018 年成立 GraphQL Foundation 後，各語言的後端與前端都有 GraphQL 實作，本文將對 GraphQL 做簡單介紹，並以 Apollo 平台建立基本 GraphQL 開發環境。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15<br>WebStorm 2019.2.3<br>Node 10.16.3<br>Yarn 1.19.1<br>Vue CLI 4.0.5<br>Vue 2.6.10<br>Vue-apollo 3.0.0-beta.11<br>Apollo-server 2.9.6</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15<br>WebStorm 2019.2.3<br>Node 10.16.3<br>Apollo GraphQL 2.9.6<br>Vue CLI 4.0.5<br>Vue 2.6.10<br>Vue Apollo 3.0.0-beta.11</p>
 <h2 id="History-of-GraphQL"><a href="#History-of-GraphQL" class="headerlink" title="History of GraphQL"></a>History of GraphQL</h2><p>2012 年時，Facebook 開始提供 native app 版本，當時只是將 browser 版本包成 native app 而已，但執行效能很差，Facebook 發現主要原因是 REST API 傳輸很沒效率導致，因此開始著手以 mobile client 角度設計 GraphQL API 取代 REST API。</p>
 <p>GraphQL 初步構想是既然能以 SQL 對 relational database 查詢，而不用在乎實際 database 實作，能否也設計一個新的 query language 對 internet 查詢，而不用在乎 backend 實作，至少目前 REST API 不是語言。</p>
 <p>2015 年 Facebook 對外發表以 Node + JavaScript 實作的第一個 GraphQL Server，在 client 則有 relay，主要都是 React ecosystem 在使用。</p>
@@ -538,9 +538,9 @@ a:hover {
 <p>再次證明 GraphQL 是基於 REST API 與 HTTP 的產物</p>
 </blockquote>
 <p><img src="/images/graphql/general/overview/overview007.png" alt="intro007"></p>
-<h2 id="Fullstack-GraphQL"><a href="#Fullstack-GraphQL" class="headerlink" title="Fullstack GraphQL"></a>Fullstack GraphQL</h2><p>接下來將以 Vue Apollo + Apollo Server + GraphQL Playground 建立 GraphQL 開發環境。</p>
+<h2 id="Fullstack-GraphQL"><a href="#Fullstack-GraphQL" class="headerlink" title="Fullstack GraphQL"></a>Fullstack GraphQL</h2><p>接下來將以 Vue Apollo + Apollo GraphQL + GraphQL Playground 建立 GraphQL 開發環境。</p>
 <h3 id="Browser"><a href="#Browser" class="headerlink" title="Browser"></a>Browser</h3><p><img src="/images/graphql/general/overview/overview018.png" alt="overview018"></p>
-<p>Vue 使用 GraphQL 對 Apollo Server 要資料並顯示。</p>
+<p>Vue 使用 GraphQL 對 Apollo GraphQL 要資料並顯示。</p>
 <h3 id="Vue-CLI"><a href="#Vue-CLI" class="headerlink" title="Vue CLI"></a>Vue CLI</h3><pre class="line-numbers highlight language-shell"><code class="language-shell">$ vue create vue-grapql
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>使用 Vue CLI 建立 <code>vue-gql</code> project。</p>
@@ -555,26 +555,26 @@ a:hover {
 <p>是否設定 Apollo Engine ? 直接按 <code>↩</code> 選擇 <code>N</code> 不設定。</p>
 <p><img src="/images/graphql/general/overview/overview011.png" alt="overview011"></p>
 <p><code>apollo</code> plugin 除了安裝 Vue Apollo 外，還幫我們設定了以上檔案。</p>
-<h3 id="Apollo-Server"><a href="#Apollo-Server" class="headerlink" title="Apollo Server"></a>Apollo Server</h3><pre class="line-numbers highlight language-shell"><code class="language-shell">$ mkdir server
+<h3 id="Apollo-GraphQL"><a href="#Apollo-GraphQL" class="headerlink" title="Apollo GraphQL"></a>Apollo GraphQL</h3><pre class="line-numbers highlight language-shell"><code class="language-shell">$ mkdir server
 $ cd server
 $ yarn init --yes
 $ yarn add apollo-server graphql
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Apollo Server 提供 GraphQL API 供 Vue Apollo 使用。</p>
+<p>以 Apollo GraphQL 提供 GraphQL API 供 Vue Apollo 使用。</p>
 <ul>
 <li>在 Vue project 下建立 <code>server</code> 目錄</li>
 <li>使用 <code>yarn init --yes</code> 在 <code>server</code> 目錄下建立 <code>package.json</code></li>
 <li>使用 Yarn 安裝 <code>apollo-server</code> 與 <code>graphql</code></li>
 </ul>
 <p><img src="/images/graphql/general/overview/overview012.png" alt="overview012"></p>
-<p><strong>index.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'apollo-server'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<p><strong>server/index.js</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'apollo-server'</span><span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FRP'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span><span class="token punctuation">}</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">]</span>
 
 <span class="token keyword">let</span> typeDefs <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`
   type Query {
@@ -615,23 +615,25 @@ $ yarn add apollo-server graphql
     """
     JS
   }
-`</span></span><span class="token punctuation">;</span>
+`</span></span>
+
+<span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>category <span class="token operator">===</span> category<span class="token punctuation">)</span> 
 
 <span class="token keyword">let</span> resolvers <span class="token operator">=</span> <span class="token punctuation">{</span>
   Query<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    books<span class="token punctuation">:</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>category <span class="token operator">===</span> category<span class="token punctuation">)</span>
+    books
   <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-<span class="token keyword">let</span> server <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> apolloServer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
-server<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>
-  <span class="token punctuation">(</span><span class="token punctuation">{</span> url <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`GraphQL Server ready at </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> url <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+apolloServer<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">{</span> url <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`GraphQL Server ready at </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> url <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在 <code>server</code> 目錄下建立 <code>index.js</code>。</p>
 <p>第 1 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'apollo-server'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'apollo-server'</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>從 <code>apollo-server</code> require 進 <code>ApolloServer</code> 與 <code>gql</code>。</p>
 <p>第 3 行</p>
@@ -639,7 +641,7 @@ server<span class="token punctuation">.</span><span class="token function">liste
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FRP'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span><span class="token punctuation">}</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">]</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>原始資料為 array of object，包含 <code>title</code> 與 <code>category</code> 兩個 property。</p>
 <p>第 9 行</p>
@@ -658,7 +660,7 @@ server<span class="token punctuation">.</span><span class="token function">liste
     FRP
     JS
   }
-`</span></span><span class="token punctuation">;</span>
+`</span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>GraphQL 在 server 端第一步是建立 schema，使用的是 GraphQL SDL (GraphQL Schema Definition Language)，類似 relational database 使用 SQL 的 DDL (Data Definition Language) 定義 schema。</p>
 <p>以 <code>gql</code> 開頭，後面加上 ES6 的 template string 定義 schema。</p>
@@ -676,7 +678,7 @@ server<span class="token punctuation">.</span><span class="token function">liste
   books<span class="token punctuation">(</span><span class="token attr-name">category</span><span class="token punctuation">:</span> BookCategory<span class="token operator">!</span><span class="token punctuation">)</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>Book<span class="token punctuation">]</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>以 <code>type Query</code> 開頭定義 query，目前我們只有一個 <code>allBooks</code>。</p>
+<p>以 <code>type Query</code> 開頭定義 query，目前我們只有一個 <code>books</code>。</p>
 <ul>
 <li>其 argument 為 <code>category</code>，型別為 <code>BookCategory!</code>，<code>!</code> 表示不能為 null，一定得提供，否則 GraphQL 會幫你擋下來</li>
 <li>回傳為 <code>Book</code> 型別的 array</li>
@@ -700,43 +702,39 @@ server<span class="token punctuation">.</span><span class="token function">liste
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>定義 <code>BookCategory</code> enum，包含 <code>FP</code>、<code>FRP</code> 與 <code>JS</code> 三個 enumeration。</p>
-<p>51 行</p>
+<p>52 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> resolvers <span class="token operator">=</span> <span class="token punctuation">{</span>
   Query<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    books<span class="token punctuation">:</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>category <span class="token operator">===</span> category<span class="token punctuation">)</span>
+    books
   <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>GraphQL 在 server 端第二步是建立 resolver，有別於 <code>typeDefs</code> 為 string，<code>resolvers</code> 為 object。</p>
 <p>Schema 只定義了 query 與 mutation 的 signature，其實際內容要在 resolver 實作。</p>
-<p>定義 <code>Query</code> property，再以 object 定義 <code>allBooks()</code> 實作。</p>
-<p>Resolver 依序有 4 個 argument： <code>parent</code>、<code>args</code>、<code>context</code> 與 <code>info</code>，讀取 argument 只會用到第二個 <code>args</code>，而 <code>parent</code> 目前用不到可用 <code>_</code> 表示， <code>context</code> 與 <code>info</code> 目前可忽略。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">books<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>category <span class="token operator">===</span> category<span class="token punctuation">)</span>
+<p>定義 <code>Query</code> property，再以 object 定義 <code>books()</code> resolver。</p>
+<p>50 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>category <span class="token operator">===</span> category<span class="token punctuation">)</span> 
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>Facebook 的 Express GraphQL 會直接以 destructure 取得 <code>category</code>，但 Apollo Server 不能這樣寫。</p>
-<blockquote>
-<p>Facebook 的 Express GraphQL 與 Apollo Server 雖然都基於 GraphQL，但因為各自實作，所以用法有些不太一樣</p>
-</blockquote>
-<p>57 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> server <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<p>Resolver 依序有 4 個 argument： <code>parent</code>、<code>args</code>、<code>context</code> 與 <code>info</code>，讀取 argument 只會用到第二個 <code>args</code>，而 <code>parent</code> 目前用不到可用 <code>_</code> 表示， <code>context</code> 與 <code>info</code> 目前可忽略。<br>57 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> apolloServer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>建立 <code>ApolloServer</code> object，將 <code>typeDefs</code> 與 <code>resolvers</code> 組合成 object 傳進其 constructor。</p>
-<p>59 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">server<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>
-  <span class="token punctuation">(</span><span class="token punctuation">{</span> url <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`GraphQL Server ready at </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> url <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<p>60 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">apolloServer<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">{</span> url <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`GraphQL Server ready at </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> url <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>以 <code>server.listen()</code> 啟動 Apollo Server，其回傳為 promise，將其 <code>url</code> destructure 之後以 <code>console.log()</code> 顯示。</p>
+<p>以 <code>server.listen()</code> 啟動 Apollo GraphQL，其回傳為 promise，將其 <code>url</code> destructure 之後以 <code>console.log()</code> 顯示。</p>
 <blockquote>
 <p>Apollo server 預設啟動在 <code>4000</code> port</p>
 </blockquote>
 <h3 id="GraphQL-Playground"><a href="#GraphQL-Playground" class="headerlink" title="GraphQL Playground"></a>GraphQL Playground</h3><pre class="line-numbers highlight language-shell"><code class="language-shell">$ node server/index.js
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>直接以 Node 執行 Apollo Server。</p>
+<p>直接以 Node 執行 Apollo GraphQL。</p>
 <p><img src="/images/graphql/general/overview/overview013.png" alt="overview013"></p>
 <pre class="line-numbers highlight language-shell"><code class="language-shell">http://localhost:4000
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>Apollo Server 已經內建 GraphQL Playground 供我們測試 GraphQL 與查詢文件。</p>
+<p>Apollo Server 已經內建 GraphQL Playground 供我們測試 GraphQL API 與查詢文件。</p>
 <pre class="line-numbers highlight language-graphql"><code class="language-graphql"><span class="token keyword">query</span> <span class="token punctuation">{</span>
   books<span class="token punctuation">(</span><span class="token attr-name">category</span><span class="token punctuation">:</span> FP<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     title
@@ -784,7 +782,8 @@ server<span class="token punctuation">.</span><span class="token function">liste
     books(category: FP) {
       title
     }
-  }`</span></span><span class="token punctuation">;</span>
+  }
+`</span></span><span class="token punctuation">;</span>
 
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
   name<span class="token punctuation">:</span> <span class="token string">'app'</span><span class="token punctuation">,</span>
@@ -793,7 +792,7 @@ server<span class="token punctuation">.</span><span class="token function">liste
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>12 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> gql <span class="token keyword">from</span> <span class="token string">'graphql-tag'</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -813,8 +812,9 @@ server<span class="token punctuation">.</span><span class="token function">liste
     books(category: FP) {
       title
     }
-  }`</span></span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+  }
+`</span></span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>定義 <code>books</code> query 所使用的 GraphQL，將 GraphQL Playground 的 GraphQL 複製貼上即可。</p>
 <p>第 1 行</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
@@ -838,11 +838,11 @@ server<span class="token punctuation">.</span><span class="token function">liste
     <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service build"</span><span class="token punctuation">,</span>
     <span class="token property">"lint"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service lint"</span><span class="token punctuation">,</span>
     <span class="token property">"start"</span><span class="token operator">:</span> <span class="token string">"nodemon ./server/index.js"</span><span class="token punctuation">,</span>
-    <span class="token property">"all"</span><span class="token operator">:</span><span class="token string">"yarn start &amp; yarn serve"</span>
+    <span class="token property">"all"</span><span class="token operator">:</span> <span class="token string">"yarn start &amp; yarn serve"</span>
   <span class="token punctuation">}</span><span class="token punctuation">,</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>在 project 根目錄下的 <code>package.json</code> 增加啟動 Apollo Server 的 Yarn script。</p>
+<p>在 project 根目錄下的 <code>package.json</code> 增加啟動 Apollo GraphQL 的 Yarn script。</p>
 <p>第 9 行</p>
 <pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"start"</span><span class="token operator">:</span> <span class="token string">"nodemon ./server/index.js"</span><span class="token punctuation">,</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>

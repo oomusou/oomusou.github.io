@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-11-13T06:36:53.000Z",
-    "dateModified": "2019-12-17T14:20:25.794Z",
+    "dateModified": "2019-12-21T15:22:41.791Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -455,10 +455,10 @@ a:hover {
 <li>WebSocket 須另外設定</li>
 <li>適合進階使用</li>
 </ul>
-<p>可發現大部分場景 Apollo Server 就很夠用，若需使用 middleware 預期他進階功能，則要使用 Apollo Server Express，但必須自行整合 WebSocket。</p>
+<p>可發現大部分場景 Apollo Server 就很夠用，若需使用 middleware 預期他進階功能，則要使用 Apollo Server Express。</p>
 <h2 id="Package-Installation"><a href="#Package-Installation" class="headerlink" title="Package Installation"></a>Package Installation</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add express apollo-server-express graphql
 $ yarn add @babel/core @babel/cli @babel/preset-env @babel/node --dev
-$ yarn add nodemon rimraf --dev
+$ yarn add nodemon rimraf cross-env --dev
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>安裝 Express、Apollo Server Express、GraphQL 與 Babel 所需 package。</p>
 <pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add express apollo-server-express graphql
@@ -471,13 +471,11 @@ $ yarn add nodemon rimraf --dev
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>安裝 Babel 相關 package，由於只是轉譯用，安裝成 <code>devDependency</code> 即可。</p>
 <p>其中 <code>@babel/node</code> 負責將 ES6+ 轉譯成 Node 能執行的 js。</p>
-<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add nodemon rimraf --dev
+<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add nodemon rimraf cross-env --dev
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>安裝 <code>nodemon</code> 可監控檔案修改重新 Babel 轉譯與重啟 Node。</p>
 <p>安裝 <code>rimraf</code>，稍後 <code>yarn clean</code> 時刪除 <code>dist</code> 目錄。</p>
-<blockquote>
-<p>當然可以直接 <code>rm -rf</code>，但 <code>rimraf</code> 可跨平台使用</p>
-</blockquote>
+<p>安裝 cross-env 可跨平台設定 <code>NODE_ENV</code> 環境變數。</p>
 <p><strong>server/package.json</strong></p>
 <p><img src="/images/graphql/apollo-express/overview/path005.png" alt="path005"></p>
 <h3 id="Babel-Configuration"><a href="#Babel-Configuration" class="headerlink" title="Babel Configuration"></a>Babel Configuration</h3><p><strong>server/.babelrc</strong></p>
@@ -503,7 +501,7 @@ $ yarn add nodemon rimraf --dev
 <blockquote>
 <p><code>watch</code> 與 <code>ext</code> 可視實際需求加以修改</p>
 </blockquote>
-<h3 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h3><p><strong>server/src/index.js</strong></p>
+<h3 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h3><p><strong>src/index.js</strong></p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'apollo-server-express'</span>
 <span class="token keyword">import</span> express <span class="token keyword">from</span> <span class="token string">'express'</span>
 
@@ -633,10 +631,10 @@ app<span class="token punctuation">.</span><span class="token function">listen</
   <span class="token property">"serve"</span><span class="token operator">:</span> <span class="token string">"nodemon"</span><span class="token punctuation">,</span>
   <span class="token property">"start"</span><span class="token operator">:</span> <span class="token string">"node ./dist/index.js"</span><span class="token punctuation">,</span>
   <span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"babel-node ./src/index.js"</span><span class="token punctuation">,</span>
-  <span class="token property">"prod"</span><span class="token operator">:</span> <span class="token string">"NODE_ENV=production yarn clean &amp;&amp; yarn build &amp;&amp; yarn start"</span><span class="token punctuation">,</span>
+  <span class="token property">"prod"</span><span class="token operator">:</span> <span class="token string">"yarn clean &amp;&amp; cross_env NODE_ENV=production yarn build &amp;&amp; yarn start"</span><span class="token punctuation">,</span>
   <span class="token property">"clean"</span><span class="token operator">:</span> <span class="token string">"rimraf dist"</span><span class="token punctuation">,</span>
   <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"babel ./src --out-dir dist"</span><span class="token punctuation">,</span>
-  <span class="token property">"docker:build"</span><span class="token operator">:</span> <span class="token string">"NODE_ENV=production yarn clean &amp;&amp; yarn build &amp;&amp; docker build -t gql-server:$npm_package_version ."</span>
+  <span class="token property">"docker:build"</span><span class="token operator">:</span> <span class="token string">"yarn clean &amp;&amp; cross_env NODE_ENV=production yarn build &amp;&amp; docker build -t $npm_package_name:$npm_package_version ."</span>
 <span class="token punctuation">}</span><span class="token punctuation">,</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>設定 Apollo Server Express 的 Yarn script。</p>
@@ -649,7 +647,7 @@ app<span class="token punctuation">.</span><span class="token function">listen</
 <pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"babel-node ./src/index.js"</span><span class="token punctuation">,</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><code>yarn dev</code> 使用 <code>babel-node</code> 將 ES6+ 轉譯成 Node 能執行的 js 在記憶體內，並啟動 Express 與 Apollo Server Express。</p>
-<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"prod"</span><span class="token operator">:</span> <span class="token string">"NODE_ENV=production yarn clean &amp;&amp; yarn build &amp;&amp; yarn start"</span><span class="token punctuation">,</span>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"prod"</span><span class="token operator">:</span> <span class="token string">"yarn clean &amp;&amp; cross_env NODE_ENV=production yarn build &amp;&amp; yarn start"</span><span class="token punctuation">,</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><code>yarn prod</code> 設定 <code>NODE_ENV</code> 為 <code>production</code>，且依序執行：</p>
 <ul>
@@ -666,7 +664,7 @@ app<span class="token punctuation">.</span><span class="token function">listen</
 <blockquote>
 <p>將來要包進 Docker 的 js 也是 <code>dist</code> 目錄，而非 <code>src</code> 目錄</p>
 </blockquote>
-<pre class="line-numbers highlight language-shell"><code class="language-shell">"docker:build": "NODE_ENV=production yarn clean && yarn build && docker build -t gql-server:$npm_package_version ."
+<pre class="line-numbers highlight language-shell"><code class="language-shell">  "docker:build": "yarn clean && cross_env NODE_ENV=production yarn build && docker build -t $npm_package_name:$npm_package_version ."
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><code>yarn docker:build</code> 與 <code>yarn prod</code> 類似，差異只在最後 <code>docker:build</code> 包成 image 而非啟動 Apollo Server Express。</p>
 <p><img src="/images/graphql/apollo-express/overview/path009.png" alt="path009"></p>

@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-12-17T13:30:17.000Z",
-    "dateModified": "2019-12-17T13:39:42.469Z",
+    "dateModified": "2019-12-22T01:06:32.051Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -442,7 +442,7 @@ a:hover {
 						<p>Smart Query 與 Smart Subscription 雖然方便，但必須在 <code>apollo</code> 先宣告 Query 也順便定義其 GraphQL，且在 Component 載入時自動執行；若想在某個 Event 下執行 GraphQL，則要改用 Dynamic Query 與 Dynamic Subscription 動態載入 GraphQL。</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.2<br>WebStorm 2019.3<br>Node 13.2.0<br>Vue CLI 4.1.1<br>Vue 2.6.10<br>Vue Apollo 3.0.0-beta.11</p>
-<h2 id="Vue-Apollo"><a href="#Vue-Apollo" class="headerlink" title="Vue Apollo"></a>Vue Apollo</h2><p><strong>App.vue</strong></p>
+<h2 id="Vue-Apollo"><a href="#Vue-Apollo" class="headerlink" title="Vue Apollo"></a>Vue Apollo</h2><p><strong>src/App.vue</strong></p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span>
@@ -525,7 +525,7 @@ a:hover {
   <span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token punctuation">{</span> query <span class="token punctuation">}</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>books <span class="token operator">=</span> x<span class="token punctuation">.</span>data<span class="token punctuation">.</span>books<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>以 <code>this.$apollo</code> 讀取 Apollo client，在其 <code>query()</code> 傳入由 <code>query</code> 組成的 object 產生 dynamic query。</p>
+<p>以 <code>this.$apollo</code> 讀取 Apollo Client，在其 <code>query()</code> 傳入由 <code>query</code> 組成的 object 產生 dynamic query。</p>
 <p>由於 <code>query()</code> 回傳為 promise，可自行在 <code>then()</code> 的 callback 中以 side effect 寫入到 <code>books</code>data，也可使用 promise 的 <code>catch()</code> 與 <code>finally()</code> 做進一步處理。</p>
 <p>14 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> query <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`
@@ -545,7 +545,7 @@ a:hover {
   <span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token punctuation">{</span> query<span class="token punctuation">:</span> subscription <span class="token punctuation">}</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token punctuation">{</span> next <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>以 <code>this.$apollo</code> 讀取 Apollo client，在其 <code>subscribe()</code> 傳入由 <code>query</code> 組成的 object 產生 dynamic subscription。</p>
+<p>以 <code>this.$apollo</code> 讀取 Apollo Client，在其 <code>subscribe()</code> 傳入由 <code>query</code> 組成的 object 產生 dynamic subscription。</p>
 <p>因為 <code>query</code> 在 dynamic query 已經使用過，因此改用 <code>subscription</code> 取 alias。</p>
 <p>不過 <code>subscribe()</code> 並不是回傳 promise，若要回應 subscription 回傳的資料，必須再呼叫一次  <code>subscribe()</code>，並傳入 <code>next()</code> 為 property 的 function 回應 subscription。</p>
 <p>可直接在 <code>next()</code> 的 argument 解構 subscription 回傳的資料，然後直接修改 <code>books</code> data。</p>
@@ -561,7 +561,8 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>定義 dynamic subscription 所使用的 GraphQL subscription。</p>
 <h2 id="Async-Await"><a href="#Async-Await" class="headerlink" title="Async Await"></a>Async Await</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> mounted <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>books <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$apollo<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token punctuation">{</span> query <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>data<span class="token punctuation">.</span>books
+  <span class="token keyword">let</span> <span class="token punctuation">{</span> data<span class="token punctuation">:</span> <span class="token punctuation">{</span> books <span class="token punctuation">}</span><span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$apollo<span class="token punctuation">.</span><span class="token function">query</span><span class="token punctuation">(</span><span class="token punctuation">{</span> query <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>books <span class="token operator">=</span> books
 
   <span class="token keyword">let</span> next <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> data<span class="token punctuation">:</span> <span class="token punctuation">{</span> bookAdded <span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>books <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token operator">...</span><span class="token keyword">this</span><span class="token punctuation">.</span>books<span class="token punctuation">,</span> bookAdded<span class="token punctuation">]</span>
 
@@ -569,7 +570,7 @@ a:hover {
     <span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token punctuation">{</span> query<span class="token punctuation">:</span> subscription <span class="token punctuation">}</span><span class="token punctuation">)</span>
     <span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token punctuation">{</span> next <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於 <code>this.$apollo.query()</code> 回傳 promise，因此也可以使用 async await 修改 <code>books</code> data。</p>
 <h2 id="Browser"><a href="#Browser" class="headerlink" title="Browser"></a>Browser</h2><p><img src="/images/graphql/vue-apollo/subscription/dynamic/dynamic000.png" alt="smart000"></p>
 <p>原本 <code>books</code> data 只有 <code>2</code> 筆資料。</p>
