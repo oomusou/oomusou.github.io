@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-12-25T15:13:19.000Z",
-    "dateModified": "2019-12-25T15:55:06.211Z",
+    "dateModified": "2019-12-26T13:37:11.372Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -525,7 +525,7 @@ book<span class="token punctuation">.</span><span class="token function">showDes
 <p>是否覺得這裡好像哪裡怪怪的 ? 稍後會說明</p>
 </blockquote>
 <p><img src="/images/ecmascript/prototype/class/prototype004.png" alt="prototype004"></p>
-<p><code>prototype</code> 為 function 專屬的 property，但並不代表 function 的 prototype 是 <code>{}</code>。</p>
+<p><code>prototype</code> 為 function 專屬 property，就真的只是 property 而已，並不代表 function 的 prototype 是 <code>{}</code>。</p>
 <p>可發現 <code>Book</code> 的 <code>prototype</code> 與 <code>__proto__</code> 並不相同。</p>
 <p>第 10 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> book <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Book</span><span class="token punctuation">(</span><span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
@@ -571,7 +571,7 @@ book<span class="token punctuation">.</span><span class="token function">showDes
 <p>其實剛剛有發現一個有趣的現象：</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript">book<span class="token punctuation">.</span>__proto__ <span class="token operator">===</span> Book<span class="token punctuation">.</span>prototype <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><code>book.__proto__</code> 與 <code>Book.prototype</code> 指向同一個 object ！！</p>
+<p><code>book.__proto__</code> 與 <code>Book.prototype</code> 竟然指向同一個 object ！！</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> Book <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>title<span class="token punctuation">,</span> price<span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">this</span><span class="token punctuation">.</span>title <span class="token operator">=</span> title
   <span class="token keyword">this</span><span class="token punctuation">.</span>price <span class="token operator">=</span> price
@@ -602,7 +602,7 @@ Object<span class="token punctuation">.</span><span class="token function">setPr
   <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>title <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> / </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> <span class="token keyword">this</span><span class="token punctuation">.</span>price <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>也因此我們直接對 <code>Book.prototype</code> 新增 <code>showDescription()</code>，就相當於對 <code>book.__proto__</code>，也就是 <code>book</code> 的 prototype 新增 <code>showDescription()</code>，因為兩者根本指向相同 object。</p>
+<p>也因此我們直接對 <code>Book.prototype</code> 新增 <code>showDescription()</code>，就相當於對 <code>book.__proto__</code>，也就是對 <code>book</code> 的 prototype 新增 <code>showDescription()</code>，因為兩者根本指向相同 object。</p>
 <h2 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Book</span> <span class="token punctuation">{</span>
   <span class="token function">constructor</span><span class="token punctuation">(</span>title<span class="token punctuation">,</span> price<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">this</span><span class="token punctuation">.</span>title <span class="token operator">=</span> title
@@ -625,7 +625,7 @@ book<span class="token punctuation">.</span><span class="token function">showDes
 <li>隨著時代的進步，ES 寫法不斷精簡，只是黑魔法越來越大，但 ECMAScript 的 prototype-based 本質不變</li>
 <li>ES6 的 class 寫法雖然完全看不到 prototype，但本質仍是將 method 放在 prototype，是道地的 syntatic sugar</li>
 <li>Function 自帶 <code>prototype</code> property 且預設為 <code>{}</code>，並不代表 function 的 prototype 為 <code>{}</code>，而是透過 <code>new</code> 之後，將 funciton 的 <code>prototype</code> property 的記憶體位址複製給 object 的 <code>__proto__</code>，使得 object 的 prototype  也是指向 function 的 <code>prototype</code> property 所指向的 object，因此對 function 的 <code>prototype</code> property 動態新增 method，也相當於對 object 的 prototype 新增 method</li>
-<li>雖然名義上是針對 constructor function 的 <code>prototype</code> 指定 prototype object，但也相當於是對 <code>__proto__</code> 指定 prototype object</li>
+<li>雖然名義上是針對 constructor function 的 <code>prototype</code> 指定 prototype object，但也相當於是對 <code>__proto__</code> 指定</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor" target="_blank" rel="noopener">Object.prototype.constructor</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object_prototypes" target="_blank" rel="noopener">Object prototypes</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create" target="_blank" rel="noopener">Object.create()</a><br><a href="https://twitter.com/jeresig" target="_blank" rel="noopener">John Resig</a>, <a href="https://www.manning.com/books/secrets-of-the-javascript-ninja" target="_blank" rel="noopener">Secret of the JavaScript Ninja, First Edition</a><br>許國政, <a href="https://www.tenlong.com.tw/products/9789864344130" target="_blank" rel="noopener">008 天重新認識 JavaScript</a></p>
 
