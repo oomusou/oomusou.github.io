@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-12-14T06:34:51.000Z",
-    "dateModified": "2019-12-23T12:46:16.208Z",
+    "dateModified": "2019-12-28T08:12:24.277Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -558,11 +558,11 @@ http<span class="token punctuation">.</span><span class="token function">listen<
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span>
 <span class="token punctuation">]</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>原始只有 2 筆資料，將由 mutation 新增第 3 筆資料並通知 subscription。</p>
+<p>原始只有 2 筆資料，將由 mutation 新增第 3 筆並通知 subscription。</p>
 <p>第 10 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> pubsub <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PubSub</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>建立 <code>pubsub</code> object，稍後會以此 publish 訊息。</p>
+<p><code>PubSub</code> 為 factory class，實作了 <code>PubSubEngine</code> interface，稍後會以此 publish 訊息。</p>
 <p>13 行</p>
 <pre class="line-numbers highlight language-graphql"><code class="language-graphql">type Query <span class="token punctuation">{</span>
   <span class="token attr-name">books</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>Book<span class="token punctuation">]</span>
@@ -623,7 +623,7 @@ type Subscription <span class="token punctuation">{</span>
   subscribe<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> pubsub<span class="token punctuation">.</span><span class="token function">asyncIterator</span><span class="token punctuation">(</span><span class="token string">'bookAdded'</span><span class="token punctuation">)</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>實踐 <code>bookAdded</code> subscription，實作 <code>subscribe()</code> 時將 subscription 名稱傳入 <code>pubsub.asyncIterator()</code> 回傳。</p>
+<p>實踐 <code>bookAdded</code> subscription，實作 <code>subscribe()</code> 時將 subscription 名稱傳入 <code>pubsub.asyncIterator()</code> 回傳，它將以 asynchronous 方式 listen 在 mutation 中使用 <code>pubsub.publish()</code> 所發出 event。</p>
 <blockquote>
 <p>Schema 與 resolver 寫法在 Apollo Server 與 Apollo Server Express 的寫法皆相同</p>
 </blockquote>
