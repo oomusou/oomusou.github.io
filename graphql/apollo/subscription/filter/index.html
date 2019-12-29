@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-12-29T02:38:22.000Z",
-    "dateModified": "2019-12-29T02:44:10.148Z",
+    "dateModified": "2019-12-29T03:03:41.915Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -532,32 +532,30 @@ a:hover {
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> pubsub <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PubSub</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><code>PubSub</code> 為 factory class，實作了 <code>PubSubEngine</code> interface，稍後會以 <code>publish()</code> 發布 event。</p>
-<p>10 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> typeDefs <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`
-  type Query {
-    books: [Book]
-  }
+<p>11 行</p>
+<pre class="line-numbers highlight language-graphql"><code class="language-graphql">type Query <span class="token punctuation">{</span>
+  <span class="token attr-name">books</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>Book<span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
 
-  type Mutation {
-    addBook(book: BookInput!): Book
-  } 
+type Mutation <span class="token punctuation">{</span>
+  addBook<span class="token punctuation">(</span><span class="token attr-name">book</span><span class="token punctuation">:</span> BookInput<span class="token operator">!</span><span class="token punctuation">)</span><span class="token punctuation">:</span> Book
+<span class="token punctuation">}</span> 
 
-  type Subscription {
-    newBook(title: String!): Book
-  }
+type Subscription <span class="token punctuation">{</span>
+  newBook<span class="token punctuation">(</span><span class="token attr-name">title</span><span class="token punctuation">:</span> String<span class="token operator">!</span><span class="token punctuation">)</span><span class="token punctuation">:</span> Book
+<span class="token punctuation">}</span>
 
-  type Book {
-    title: String
-    price: Int
-  }
+type Book <span class="token punctuation">{</span>
+  <span class="token attr-name">title</span><span class="token punctuation">:</span> String
+  <span class="token attr-name">price</span><span class="token punctuation">:</span> Int
+<span class="token punctuation">}</span>
 
-  input BookInput {
-    title: String!
-    price: Int!
-  }
-`</span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>在 schema 宣告 <code>books</code> query、<code>addBook</code> mutation 與 <code>bookAdded</code> subscription，值得注意的是 subscription 宣告方式與 query 與 mutation 並無差異，且多了 <code>title</code> argument。</p>
+input BookInput <span class="token punctuation">{</span>
+  <span class="token attr-name">title</span><span class="token punctuation">:</span> String<span class="token operator">!</span>
+  <span class="token attr-name">price</span><span class="token punctuation">:</span> Int<span class="token operator">!</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 schema 宣告 <code>books</code> query、<code>addBook</code> mutation 與 <code>newBook</code> subscription，值得注意的是 subscription 宣告方式與 query 與 mutation 並無差異，且多了 <code>title</code> argument。</p>
 <p>54 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> resolvers <span class="token operator">=</span> <span class="token punctuation">{</span>
   Query<span class="token punctuation">:</span> <span class="token punctuation">{</span>
