@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://lambda4.fun/"/>
-  <updated>2020-01-02T03:05:39.425Z</updated>
+  <updated>2020-01-02T09:55:25.916Z</updated>
   <id>https://lambda4.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Gridsome 之 Smark Link Prefetching</title>
+    <link href="https://lambda4.fun/gridsome/g-link/"/>
+    <id>https://lambda4.fun/gridsome/g-link/</id>
+    <published>2020-01-02T09:53:48.000Z</published>
+    <updated>2020-01-02T09:55:25.916Z</updated>
+    
+    <content type="html"><![CDATA[<p>Gridsome 特別提供 <code>&lt;g-link/&gt;</code> 支援 Smart Link Prefetching 增進效率，讓相關網頁在背後事先下載。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.2<br>WebStorm 2019.3.1<br>Gridsome 0.7.0</p><h2 id="g-link"><a href="#g-link" class="headerlink" title="g-link"></a>g-link</h2><p><strong>src/layouts/Default.vue</strong></p><p><img src="/images/gridsome/g-link/g-link000.png" alt="g-link000"></p><p>在 <code>Default</code> layout 中，我們會看到 <code>&lt;g-link/&gt;</code>，這是 Gridsome 所提供的 global component，其 <code>to</code> attribute 可指定其他 page 的 route，亦可搭配 attribute binding 將 <code>to</code> 綁定到 <code>data</code>。</p><p><code>&lt;g-link/&gt;</code> 與 <code>&lt;a/&gt;</code> 不同的是 <code>&lt;g-link&gt;</code> 支援 smart link prefetching，會事先將 url 內容下載下來，當 user 實際點擊時，由於 HTML / CSS / JavaScript 早已下載，執行速度會非常快。</p><p><img src="/images/gridsome/g-link/g-link001.png" alt="g-link001"></p><p>由於每個 page 最後都是 <code>index.html</code>，因此 Gridsome 綁定 <code>to</code> 的 route 結尾要加上 <code>/</code>。</p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Gridsome 內部 url 可使用 <code>&lt;g-link/&gt;</code> 可獲得 smart link prefetching 增進效率；外部 url 或 anchor 則繼續使用 HTML 的 <code>&lt;a/&gt;</code></li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.udemy.com/user/reed-barger/" target="_blank" rel="noopener">Reed Barger</a>, <a href="https://www.udemy.com/course/blazing-fast-vue-and-graphql-with-gridsome/learn/lecture/14833790#overview" target="_blank" rel="noopener">G-Links, Smart Link Prefetching</a><br><a href="https://gridsome.org" target="_blank" rel="noopener">Gridsome</a>, <a href="https://gridsome.org/docs/linking/" target="_blank" rel="noopener">Linking</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Gridsome 特別提供 &lt;code&gt;&amp;lt;g-link/&amp;gt;&lt;/code&gt; 支援 Smart Link Prefetching 增進效率，讓相關網頁在背後事先下載。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Gridsome" scheme="https://lambda4.fun/tags/Gridsome/"/>
+    
+  </entry>
   
   <entry>
     <title>深入探討 Class Expression</title>
@@ -411,26 +431,6 @@
       <category term="GraphQL" scheme="https://lambda4.fun/tags/GraphQL/"/>
     
       <category term="Vue Apollo" scheme="https://lambda4.fun/tags/Vue-Apollo/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何使用 Curl 測試 GraphQL API ?</title>
-    <link href="https://lambda4.fun/graphql/apollo/curl/"/>
-    <id>https://lambda4.fun/graphql/apollo/curl/</id>
-    <published>2019-12-15T00:25:16.000Z</published>
-    <updated>2019-12-21T20:00:30.556Z</updated>
-    
-    <content type="html"><![CDATA[<p>由於 GraphQL 也是基於 REST API 與 HTTP，因此也可直接使用 Curl 測試 GraphQL API。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.2<br>Node 13.2.0<br>Apollo GraphQL 2.9.6<br>Curl 7.64.1<br>Insomnia 7.0.5</p><h2 id="Query"><a href="#Query" class="headerlink" title="Query"></a>Query</h2><pre class="line-numbers highlight language-graphql"><code class="language-graphql"><span class="token keyword">query</span> <span class="token punctuation">{</span>  books <span class="token punctuation">{</span>    title    price  <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>一個普通的 GraphQL query。</p><p><img src="/images/graphql/apollo/curl/curl001.png" alt="curl001"></p><p>使用 Insomnia 的 <code>Copy as Curl</code> 產生 Curl command。</p><pre class="line-numbers highlight language-shell"><code class="language-shell">curl --request POST \  --url 'http://localhost:4000/?=' \  --header 'content-type: application/json' \  --data '{"query":"query {\n  books {\n    title\n    price\n  }\n}"}'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>在 terminal 貼上即可執行。</p><ul><li><strong>url</strong>：指定 GraphQL API endpoint</li><li><strong>header</strong>：指定 <code>content-type</code> 為 <code>application/json</code></li><li><strong>data</strong>：指定 GraphQL query</li></ul><blockquote><p><code>\n</code> 為換行符號</p></blockquote><p><img src="/images/graphql/apollo/curl/curl002.png" alt="curl002"></p><h2 id="Mutation"><a href="#Mutation" class="headerlink" title="Mutation"></a>Mutation</h2><pre class="line-numbers highlight language-graphql"><code class="language-graphql"><span class="token keyword">mutation</span> <span class="token punctuation">{</span>  addBook<span class="token punctuation">(</span><span class="token attr-name">book</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>    <span class="token attr-name">title</span><span class="token punctuation">:</span> <span class="token string">"Speaking JavaScript"</span>    <span class="token attr-name">price</span><span class="token punctuation">:</span> <span class="token number">300</span>  <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>    title    price  <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>一個普通的 GraphQL mutation。</p><p><img src="/images/graphql/apollo/curl/curl003.png" alt="curl003"></p><p>使用 Insomnia 的 <code>Copy as Curl</code> 產生 Curl command。</p><pre class="line-numbers highlight language-shell"><code class="language-shell">curl --request POST \  --url http://localhost:4000/ \  --header 'content-type: application/json' \  --data '{"query":"mutation {\n  addBook(book: {\n    title: \"Speaking JavaScript\"\n    price: 300\n  }) {\n    title\n    price\n  }\n}"}'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>在 terminal 貼上即可執行。</p><p><img src="/images/graphql/apollo/curl/curl004.png" alt="curl004"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>雖然可用 GraphQL Playgroud 測試 GraphQL API，但也能使用 CLI 的 Curl</li><li>透過 Insomnia 可自動產生 Curl command，不必再自行手刻</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;由於 GraphQL 也是基於 REST API 與 HTTP，因此也可直接使用 Curl 測試 GraphQL API。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="GraphQL" scheme="https://lambda4.fun/tags/GraphQL/"/>
     
   </entry>
   
