@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-07-06T09:53:15.000Z",
-    "dateModified": "2019-07-06T09:54:50.000Z",
+    "dateModified": "2020-01-08T22:43:10.127Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -444,7 +444,6 @@ a:hover {
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.14.5<br>VS Code 1.34.0<br>Quokka 1.0.216<br>Ramda 0.26.1<br>Crocks 0.11.1</p>
 <h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> isEmpty<span class="token punctuation">,</span> complement<span class="token punctuation">,</span> allPass<span class="token punctuation">,</span> is <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
 
-<span class="token comment" spellcheck="true">// isNonEmptyString :: a -> Boolean</span>
 <span class="token keyword">let</span> isNonEmptyString <span class="token operator">=</span> <span class="token function">allPass</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
   <span class="token function">complement</span><span class="token punctuation">(</span>isEmpty<span class="token punctuation">)</span><span class="token punctuation">,</span> 
   <span class="token function">is</span><span class="token punctuation">(</span>String<span class="token punctuation">)</span>
@@ -452,26 +451,25 @@ a:hover {
 
 <span class="token function">isNonEmptyString</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
 <span class="token function">isNonEmptyString</span><span class="token punctuation">(</span><span class="token string">'abc'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若使用 Ramda，要判斷 non empty string，有兩個條件：</p>
 <ol>
 <li>必須是 string：<code>is(String)</code></li>
-<li>必須是 non empty：<code>complement(isEmpty)</code></li>
+<li>必須是 non-empty：<code>complement(isEmpty)</code></li>
 </ol>
 <p>且兩者都必須成立：<code>allPass()</code>。</p>
 <p><img src="/images/crocks/user/isnonemptystring/nonempty000.png" alt="nonempty000"></p>
-<h2 id="Crocks"><a href="#Crocks" class="headerlink" title="Crocks"></a>Crocks</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> isString<span class="token punctuation">,</span> and<span class="token punctuation">,</span> not<span class="token punctuation">,</span> isEmpty <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'crocks'</span><span class="token punctuation">;</span>
+<h2 id="Crocks"><a href="#Crocks" class="headerlink" title="Crocks"></a>Crocks</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> isString<span class="token punctuation">,</span> and<span class="token punctuation">,</span> not<span class="token punctuation">,</span> isEmpty <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'crocks'</span>
 
-<span class="token comment" spellcheck="true">// isNonEmptyString :: a -> Boolean</span>
-<span class="token keyword">let</span> isNonEmptyString <span class="token operator">=</span> <span class="token function">and</span><span class="token punctuation">(</span><span class="token function">not</span><span class="token punctuation">(</span>isEmpty<span class="token punctuation">)</span><span class="token punctuation">,</span> isString<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> isNonEmptyString <span class="token operator">=</span> <span class="token function">and</span><span class="token punctuation">(</span><span class="token function">not</span><span class="token punctuation">(</span>isEmpty<span class="token punctuation">)</span><span class="token punctuation">,</span> isString<span class="token punctuation">)</span>
 
-<span class="token function">isNonEmptyString</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">isNonEmptyString</span><span class="token punctuation">(</span><span class="token string">'abc'</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">isNonEmptyString</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">isNonEmptyString</span><span class="token punctuation">(</span><span class="token string">'abc'</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若使用 Crocks，判斷條件與 Ramda 一樣，不過使用 function 不太一樣：</p>
 <ol>
 <li>必須是 string：Crocks 直接提供 <code>isString()</code>，不需用 <code>is()</code> 與 <code>String()</code> 組合</li>
-<li>必須是 non empty：Crocks 也提供了 <code>isEmpty()</code>，與 Ramda 完全一樣，而 Crocks 的 <code>not()</code> 相當於 Ramda 的 <code>complement()</code>，而 <code>and()</code> 相當於 <code>allPass()</code></li>
+<li>必須是 non-empty：Crocks 也提供了 <code>isEmpty()</code>，與 Ramda 完全一樣，而 Crocks 的 <code>not()</code> 相當於 Ramda 的 <code>complement()</code>，而 <code>and()</code> 相當於 <code>allPass()</code></li>
 </ol>
 <p><img src="/images/crocks/user/isnonemptystring/nonempty001.png" alt="nonempty001"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
