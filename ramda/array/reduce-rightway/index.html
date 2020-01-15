@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-01-15T13:27:57.000Z",
-    "dateModified": "2020-01-15T13:47:25.978Z",
+    "dateModified": "2020-01-15T14:21:52.180Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -483,7 +483,7 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>很多人會直接將 <code>for</code> loop 的邏輯搬進 <code>reduce()</code> 內，結果雖然正確，但這並不是 <code>reduce()</code> 最佳用法。</p>
 <p><img src="/images/ramda/array/reduce-rightway/reduce001.png" alt="reduce001"></p>
-<h2 id="Right-Way"><a href="#Right-Way" class="headerlink" title="Right Way"></a>Right Way</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> filter<span class="token punctuation">,</span> reduce<span class="token punctuation">,</span> compose <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Right-Way"><a href="#Right-Way" class="headerlink" title="Right Way"></a>Right Way</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> filter<span class="token punctuation">,</span> reduce<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
@@ -491,10 +491,10 @@ a:hover {
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
 <span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> fn <span class="token operator">=</span> val <span class="token operator">=</span><span class="token operator">></span> <span class="token function">compose</span><span class="token punctuation">(</span>
-  <span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token keyword">let</span> fn <span class="token operator">=</span> val <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>title<span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>price<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>title<span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
 <span class="token function">fn</span><span class="token punctuation">(</span><span class="token string">'JavaScript'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
@@ -511,7 +511,7 @@ a:hover {
 <p><code>reduce()</code> 正確用法並不是將一個大大 function 放進 <code>reduce()</code>，而是先拆解問題以既有 function 解決，若仍無法處理才會使用 <code>reduce()</code>，最後再組合所有 function，也就是 <code>reduce()</code> 不該搭配一個大大 function</p>
 </blockquote>
 <p><img src="/images/ramda/array/reduce-rightway/reduce002.png" alt="reduce002"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> filter<span class="token punctuation">,</span> compose<span class="token punctuation">,</span> sum <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> filter<span class="token punctuation">,</span> pipe<span class="token punctuation">,</span> sum <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
@@ -519,10 +519,10 @@ a:hover {
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
 <span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> fn <span class="token operator">=</span> val <span class="token operator">=</span><span class="token operator">></span> <span class="token function">compose</span><span class="token punctuation">(</span>
-  sum<span class="token punctuation">,</span>
+<span class="token keyword">let</span> fn <span class="token operator">=</span> val <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>title<span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>price<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>title<span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  sum
 <span class="token punctuation">)</span>
 
 <span class="token function">fn</span><span class="token punctuation">(</span><span class="token string">'JavaScript'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
