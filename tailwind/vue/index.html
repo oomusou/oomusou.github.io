@@ -51,9 +51,9 @@
 
 <meta name="format-detection" content="telephone=no">
 <!-- Description -->
-<meta name="description" content="Tailwind 為 Functional CSS 實踐，搭配 Purgecss 後，可將沒用到的 CSS 拿掉，將 CSS Size 壓到 10 kb 左右，本文探討 Vue CLI + Tailwind CSS 環境設定。">
+<meta name="description" content="Tailwind 基於 Functional CSS，搭配 Purgecss 後，可將沒用到的 CSS 拿掉，本文探討 Vue CLI + Tailwind CSS 環境設定。">
 <!-- Keywords -->
-<meta name="keywords" content=", Tailwind">
+<meta name="keywords" content=", Vue, Tailwind">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
 <meta http-equiv="Cache-Control" content="no-transform">
 <meta http-equiv="Cache-Control" content="no-siteapp">
@@ -170,14 +170,14 @@ a:hover {
 
 <meta property="og:url" content="https://lambda4.fun/tailwind/vue/">
 <meta property="og:image" content="https://lambda4.fun/apple-touch-icon.png">
-<meta property="og:description" content="Tailwind 為 Functional CSS 實踐，搭配 Purgecss 後，可將沒用到的 CSS 拿掉，將 CSS Size 壓到 10 kb 左右，本文探討 Vue CLI + Tailwind CSS 環境設定。">
+<meta property="og:description" content="Tailwind 基於 Functional CSS，搭配 Purgecss 後，可將沒用到的 CSS 拿掉，本文探討 Vue CLI + Tailwind CSS 環境設定。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2020-01-19T04:49:04.000Z">
 <meta property="article:modified_time" content="2020-01-19T04:49:04.000Z">
 <meta property="article:author" content="Sam Xiao">
-<meta property="og:article:tag" content=", Tailwind">
+<meta property="og:article:tag" content=", Vue, Tailwind">
 
 
 	<!-- ### Analytics ### -->
@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-01-19T04:49:04.000Z",
-    "dateModified": "2020-01-21T01:06:22.278Z",
+    "dateModified": "2020-01-21T04:05:21.008Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -235,8 +235,8 @@ a:hover {
         "query-input": "required name=search_term_string"
     },
     
-    "keywords": ", Tailwind",
-    "description": "Tailwind 為 Functional CSS 實踐，搭配 Purgecss 後，可將沒用到的 CSS 拿掉，將 CSS Size 壓到 10 kb 左右，本文探討 Vue CLI + Tailwind CSS 環境設定。"
+    "keywords": ", Vue, Tailwind",
+    "description": "Tailwind 基於 Functional CSS，搭配 Purgecss 後，可將沒用到的 CSS 拿掉，本文探討 Vue CLI + Tailwind CSS 環境設定。"
 }
 </script>
 
@@ -439,7 +439,7 @@ a:hover {
 				</div>
 				<div class="card-body">
 					<article id="post-content">
-						<p>Tailwind 為 Functional CSS 實踐，搭配 Purgecss 後，可將沒用到的 CSS 拿掉，將 CSS Size 壓到 10 kb 左右，本文探討 Vue CLI + Tailwind CSS 環境設定。</p>
+						<p>Tailwind 基於 Functional CSS，搭配 Purgecss 後，可將沒用到的 CSS 拿掉，本文探討 Vue CLI + Tailwind CSS 環境設定。</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.2<br>WebStorm 2019.3.1<br>Node 12.4.0<br>Vue 2.6.10<br>Tailwind CSS 1.1.4</p>
 <h2 id="Create-Vue-Project"><a href="#Create-Vue-Project" class="headerlink" title="Create Vue Project"></a>Create Vue Project</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ vue create vue-tailwind
@@ -454,7 +454,7 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>使用 Yarn 安裝 Purgecss 與 Autoprefixer 在 <code>devDependencies</code>。</p>
 <ul>
-<li><strong>Purgecss</strong>：整個 Tailwind 壓縮後 58.1 kb，PurgeCSS 只取出用到部分大約剩下 10 kb</li>
+<li><strong>Purgecss</strong>：只將 Tailwind 用到部分取出，可大幅降低 CSS 檔案大小</li>
 <li><strong>Autoprefixer</strong>：自動加上各 browser 的 vendor prefix，如 <code>::-webkit-input-</code>、<code>::-moz-</code>、<code>::-mu-input</code> … 等</li>
 </ul>
 <p><img src="/images/tailwind/vue/vue002.png" alt="vue002"></p>
@@ -550,8 +550,11 @@ Vue<span class="token punctuation">.</span>config<span class="token punctuation"
 <p>可發現 Tailwind CSS 已經成功套用。</p>
 <h2 id="Production-Mode"><a href="#Production-Mode" class="headerlink" title="Production Mode"></a>Production Mode</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn build
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>在 <code>dist/css</code> 目錄下，可發現 CSS 只有 2 kb，因為 Purgecss 只取出用到部分。</p>
+<p>使用 production mode 編譯 Gridsome 並啟動 Purgecss。</p>
 <p><img src="/images/tailwind/vue/vue011.png" alt="vue011"></p>
+<p>在 <code>dist/css</code> 目錄下，可發現 CSS 只有 2 kb，因為 Purgecss 只取出用到部分。</p>
+<p><img src="/images/tailwind/vue/vue012.png" alt="vue012"></p>
+<p>若沒使用 Purgecss，則 CSS 高達 696 kb，這正是完整 Tailwind CSS 大小，可見 Tailwind 一定要搭配 Purgecss 才能發揮威力。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Tailwind 基於 Postcss，搭配 Purgecss 後，除了可將 CSS size 大幅降低，也不用擔心沒用到的 CSS 影響 size</li>
 </ul>
@@ -564,6 +567,8 @@ Vue<span class="token punctuation">.</span>config<span class="token punctuation"
   
   <span class="post-tags-list mt-2">
     
+    
+    <a class="post-tags-list-item" href='/tags/Vue/'>#&nbsp;Vue</a>
     
     <a class="post-tags-list-item" href='/tags/Tailwind/'>#&nbsp;Tailwind</a>
     
