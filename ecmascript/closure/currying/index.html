@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-01-24T04:46:25.000Z",
-    "dateModified": "2020-01-24T04:48:55.160Z",
+    "dateModified": "2020-01-24T07:16:12.233Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -540,7 +540,7 @@ a:hover {
 <p><strong>Higher Order Function</strong><br>可以傳入 function 或傳回 function 的 function，通常會將 <code>重複部分</code> 抽成 higher order function，將 <code>不同部分</code> 以 arrow function 傳入，最後回傳新 function</p>
 </blockquote>
 <p>要支援 higher order function 有個前提：語言本身必須支援 first-class function，這在 ECMAScript 很早就支援。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> prices <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">]</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">]</span>
 
 <span class="token keyword">let</span> calculatePrice1 <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
   <span class="token keyword">let</span> sum <span class="token operator">=</span> arr  <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">)</span>
@@ -554,8 +554,8 @@ a:hover {
   <span class="token keyword">return</span> <span class="token function">sum</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span> <span class="token operator">*</span> <span class="token number">0.9</span>
 <span class="token punctuation">}</span><span class="token punctuation">;</span>
 
-<span class="token function">calculatePrice1</span><span class="token punctuation">(</span>prices<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">calculatePrice2</span><span class="token punctuation">(</span>prices<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">calculatePrice1</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">calculatePrice2</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 3 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> calculatePrice1 <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
@@ -579,14 +579,14 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>所以想將這部分抽成 higher order function。</p>
 <p><img src="/images/ecmascript/closure/currying/currying004.png" alt="currying004"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> prices <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
 
 <span class="token keyword">let</span> sum <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> calculate <span class="token operator">=</span> fn <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token function">fn</span><span class="token punctuation">(</span><span class="token function">sum</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-<span class="token function">calculate</span><span class="token punctuation">(</span>sum <span class="token operator">=</span><span class="token operator">></span> sum <span class="token operator">-</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">(</span>prices<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">calculate</span><span class="token punctuation">(</span>sum <span class="token operator">=</span><span class="token operator">></span> sum <span class="token operator">*</span> <span class="token number">0.9</span><span class="token punctuation">)</span><span class="token punctuation">(</span>prices<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">calculate</span><span class="token punctuation">(</span>sum <span class="token operator">=</span><span class="token operator">></span> sum <span class="token operator">-</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">calculate</span><span class="token punctuation">(</span>sum <span class="token operator">=</span><span class="token operator">></span> sum <span class="token operator">*</span> <span class="token number">0.9</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 3 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> sum <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">)</span>
@@ -598,14 +598,14 @@ a:hover {
 <p>將共用部分抽成 <code>calculate()</code> higher order function，argument 除了原本的 <code>arr</code> 外，還多了 <code>fn</code>，其中 <code>fn</code> 正是 <code>不同部分</code>。</p>
 <p>將 <code>sum(arr)</code> 運算結果傳給 <code>fn()</code> 執行。</p>
 <p> 第 7 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">calculate</span><span class="token punctuation">(</span>sum <span class="token operator">=</span><span class="token operator">></span> sum <span class="token operator">-</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">(</span>prices<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">calculate</span><span class="token punctuation">(</span>sum <span class="token operator">=</span><span class="token operator">></span> sum <span class="token operator">*</span> <span class="token number">0.9</span><span class="token punctuation">)</span><span class="token punctuation">(</span>prices<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">calculate</span><span class="token punctuation">(</span>sum <span class="token operator">=</span><span class="token operator">></span> sum <span class="token operator">-</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">calculate</span><span class="token punctuation">(</span>sum <span class="token operator">=</span><span class="token operator">></span> sum <span class="token operator">*</span> <span class="token number">0.9</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>將 <code>不同部分</code> 分別以 <code>sum =&gt; sum -10</code> 與 <code>sum =&gt; sum * 0.9</code> 帶入 <code>calculate()</code> higher order function，正式計算其值。</p>
 <p><img src="/images/ecmascript/closure/currying/currying005.png" alt="currying005"></p>
 <p>若我們不將 <code>calculate()</code> currying 過，則無法傳回 function，只能回傳值，如此就無法將 <code>不同部分</code> 以 arrow function 傳入。</p>
 <h2 id="Function-Composition"><a href="#Function-Composition" class="headerlink" title="Function Composition"></a>Function Composition</h2><p>將小 function 組合成功能強大的新 function。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> prices <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">]</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">]</span>
 
 <span class="token keyword">let</span> discount <span class="token operator">=</span> <span class="token punctuation">(</span>rate<span class="token punctuation">,</span> arr<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">*</span> rate<span class="token punctuation">)</span>
 
@@ -618,7 +618,7 @@ a:hover {
   sum
 <span class="token punctuation">)</span>
 
-<span class="token function">fn</span><span class="token punctuation">(</span>prices<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 3 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> discount <span class="token operator">=</span> <span class="token punctuation">(</span>rate<span class="token punctuation">,</span> arr<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">*</span> rate<span class="token punctuation">)</span>
@@ -646,7 +646,7 @@ a:hover {
 <p>在純 FP 語言如 Haskell、F#、ReasonML 會自動 currying，所以不是問題，但 ECMAScript 必須手動 currying，或者使用 Ramda 的 <code>curry()</code> 將原本 function 加以 currying</p>
 </blockquote>
 <p><img src="/images/ecmascript/closure/currying/currying008.png" alt="currying008"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> prices <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">]</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">10</span><span class="token punctuation">,</span> <span class="token number">20</span><span class="token punctuation">,</span> <span class="token number">30</span><span class="token punctuation">]</span>
 
 <span class="token keyword">let</span> discount <span class="token operator">=</span> rate <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">*</span> rate<span class="token punctuation">)</span>
 
@@ -659,7 +659,7 @@ a:hover {
   sum
 <span class="token punctuation">)</span>
 
-<span class="token function">fn</span><span class="token punctuation">(</span>prices<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 3 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> discount <span class="token operator">=</span> rate <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">*</span> rate<span class="token punctuation">)</span>
