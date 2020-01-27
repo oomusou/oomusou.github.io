@@ -5,9 +5,9 @@
   
   <link href="/atom.xml" rel="self"/>
   
-  <link href="https://lambda4.fun/"/>
-  <updated>2020-01-27T09:12:44.098Z</updated>
-  <id>https://lambda4.fun/</id>
+  <link href="https://blog.lambda4.fun/"/>
+  <updated>2020-01-27T12:00:54.010Z</updated>
+  <id>https://blog.lambda4.fun/</id>
   
   <author>
     <name>Sam Xiao</name>
@@ -17,9 +17,29 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>ECMAScript 之 Equality Operator</title>
+    <link href="https://blog.lambda4.fun/ecmascript/operator/equality/"/>
+    <id>https://blog.lambda4.fun/ecmascript/operator/equality/</id>
+    <published>2020-01-27T11:58:12.000Z</published>
+    <updated>2020-01-27T12:00:54.010Z</updated>
+    
+    <content type="html"><![CDATA[<p>ECMAScript 有別於其他語言，同時提供了 <code>==</code> 與 <code>===</code> 兩套 Equality Operator，很多人只使用 <code>===</code>，事實上只要了解 <code>==</code> 的規則，就能善用 <code>==</code>。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.2<br>VS Code 1.41.1<br>Quokka 1.0.274<br>ECMAScript 2015</p><h2 id><a href="#" class="headerlink" title="=="></a>==</h2><p>當使用 <code>==</code> 比較時，若 <code>==</code> 兩側的型別不同， ECMAScript 會嘗試依照以下規則 <code>自動轉型</code>：</p><ul><li>若其中一值為 boolean，會先將 <code>true</code> 轉成 <code>1</code>，<code>false</code> 轉成 <code>0</code> 後再比較</li><li>若 string 與 number 比較，則 string 會透過 <code>Number()</code> 轉成 number 後再比較</li><li>若 object 與 primitive 比較，則會先使用 <code>valueOf()</code> 取得 object 的 primitive 值之後再比較</li><li><code>null</code> 與 <code>undefined</code> 視為 <code>==</code> 相等</li></ul><blockquote><p>簡言之 <code>==</code> 只能比較 number，各型別都會 <code>自動轉型</code> 成 number 後再進行比較</p></blockquote><h3 id="Boolean-vs-Number"><a href="#Boolean-vs-Number" class="headerlink" title="Boolean vs. Number"></a>Boolean vs. Number</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token number">1</span> <span class="token operator">==</span> <span class="token boolean">true</span> <span class="token comment" spellcheck="true">// ?</span><span class="token number">0</span> <span class="token operator">==</span> <span class="token boolean">true</span> <span class="token comment" spellcheck="true">// ?</span><span class="token number">1</span> <span class="token operator">==</span> <span class="token boolean">false</span> <span class="token comment" spellcheck="true">// ?</span><span class="token number">0</span> <span class="token operator">==</span> <span class="token boolean">false</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><code>true</code> 先自動轉型成 <code>1</code>，<code>false</code> 先自動轉型成 <code>0</code> 之後再進行比較。</p><p><img src="/images/ecmascript/operator/equality/equal000.png" alt="equal000"></p><h3 id="String-vs-Number"><a href="#String-vs-Number" class="headerlink" title="String vs. Number"></a>String vs. Number</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token number">1</span> <span class="token operator">==</span> <span class="token string">'1'</span> <span class="token comment" spellcheck="true">// ?</span><span class="token number">0</span> <span class="token operator">==</span> <span class="token string">'1'</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>String 會先透過 <code>Number()</code> 轉成 number 後，兩個 number 再進行比較。</p><p><img src="/images/ecmascript/operator/equality/equal001.png" alt="equal001"></p><h3 id="String-vs-Boolean"><a href="#String-vs-Boolean" class="headerlink" title="String vs. Boolean"></a>String vs. Boolean</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token string">'1'</span> <span class="token operator">==</span> <span class="token boolean">true</span> <span class="token comment" spellcheck="true">// ?</span><span class="token string">'0'</span> <span class="token operator">==</span> <span class="token boolean">true</span> <span class="token comment" spellcheck="true">// ?</span><span class="token string">'1'</span> <span class="token operator">==</span> <span class="token boolean">false</span> <span class="token comment" spellcheck="true">// ?</span><span class="token string">'0'</span> <span class="token operator">==</span> <span class="token boolean">false</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>由於 <code>==</code> 只能比較 number，因此 string 與 boolean 無法直接比較，string 與 boolean 會先轉成 number 後再進行比較。</p><p><img src="/images/ecmascript/operator/equality/equal002.png" alt="equal002"></p><h3 id="Primitive-vs-Primitive-Wrapper"><a href="#Primitive-vs-Primitive-Wrapper" class="headerlink" title="Primitive vs. Primitive Wrapper"></a>Primitive vs. Primitive Wrapper</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token number">1</span> <span class="token operator">==</span> <span class="token keyword">new</span> <span class="token class-name">Number</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span class="token string">'hello'</span> <span class="token operator">==</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">'hello'</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span class="token boolean">true</span> <span class="token operator">==</span> <span class="token keyword">new</span> <span class="token class-name">Boolean</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p><code>new Number()</code> 為 object，會先透過 <code>valueOf()</code> 取得 primitive 再進行比較。</p><p><img src="/images/ecmascript/operator/equality/equal006.png" alt="equal006"></p><h2 id="-1"><a href="#-1" class="headerlink" title="==="></a>===</h2><p>當使用 <code>===</code> 比較時，則不會做 <code>自動轉型</code>，必須 type 與 value 都相等時才會回傳 <code>true</code>，否則回傳 <code>false</code>。</p><h3 id="Boolean-vs-Number-1"><a href="#Boolean-vs-Number-1" class="headerlink" title="Boolean vs. Number"></a>Boolean vs. Number</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token number">1</span> <span class="token operator">===</span> <span class="token boolean">true</span> <span class="token comment" spellcheck="true">// ?</span><span class="token number">0</span> <span class="token operator">===</span> <span class="token boolean">true</span> <span class="token comment" spellcheck="true">// ?</span><span class="token number">1</span> <span class="token operator">===</span> <span class="token boolean">false</span> <span class="token comment" spellcheck="true">// ?</span><span class="token number">0</span> <span class="token operator">===</span> <span class="token boolean">false</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>由於 <code>===</code> 不會自動轉型，兩者 type 已經不同，一律回傳 <code>false</code>。</p><p><img src="/images/ecmascript/operator/equality/equal003.png" alt="equal003"></p><h3 id="String-vs-Number-1"><a href="#String-vs-Number-1" class="headerlink" title="String vs. Number"></a>String vs. Number</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token number">1</span> <span class="token operator">===</span> <span class="token string">'1'</span> <span class="token comment" spellcheck="true">// ?</span><span class="token number">0</span> <span class="token operator">===</span> <span class="token string">'1'</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>由於 <code>===</code> 不會自動轉型，兩者 type 已經不同，一律回傳 <code>false</code>。</p><p><img src="/images/ecmascript/operator/equality/equal004.png" alt="equal004"></p><h3 id="String-vs-Boolean-1"><a href="#String-vs-Boolean-1" class="headerlink" title="String vs. Boolean"></a>String vs. Boolean</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token string">'1'</span> <span class="token operator">===</span> <span class="token boolean">true</span> <span class="token comment" spellcheck="true">// ?</span><span class="token string">'0'</span> <span class="token operator">===</span> <span class="token boolean">true</span> <span class="token comment" spellcheck="true">// ?</span><span class="token string">'1'</span> <span class="token operator">===</span> <span class="token boolean">false</span> <span class="token comment" spellcheck="true">// ?</span><span class="token string">'0'</span> <span class="token operator">===</span> <span class="token boolean">false</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>由於 <code>===</code> 不會自動轉型，兩者 type 已經不同，一律回傳 <code>false</code>。</p><p><img src="/images/ecmascript/operator/equality/equal005.png" alt="equal005"></p><h4 id="Primitive-vs-Primitive-Wrapper-1"><a href="#Primitive-vs-Primitive-Wrapper-1" class="headerlink" title="Primitive vs. Primitive Wrapper"></a>Primitive vs. Primitive Wrapper</h4><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token number">1</span> <span class="token operator">===</span> <span class="token keyword">new</span> <span class="token class-name">Number</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span class="token string">'hello'</span> <span class="token operator">===</span> <span class="token keyword">new</span> <span class="token class-name">String</span><span class="token punctuation">(</span><span class="token string">'hello'</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span class="token boolean">true</span> <span class="token operator">===</span> <span class="token keyword">new</span> <span class="token class-name">Boolean</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>由於 <code>===</code> 不會自動轉型，primitive 與 object 的 type 已經不同，一律回傳 <code>false</code>。</p><p><img src="/images/ecmascript/operator/equality/equal007.png" alt="equal007"></p><h2 id="Application"><a href="#Application" class="headerlink" title="Application"></a>Application</h2><p>ECMAScript 大都使用 <code>===</code>，但實務上有兩個地方會使用 <code>==</code>。</p><h3 id="Number-string"><a href="#Number-string" class="headerlink" title="Number || string"></a>Number || string</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data0 <span class="token operator">=</span> <span class="token number">123</span><span class="token keyword">let</span> data1 <span class="token operator">=</span> <span class="token string">'123'</span><span class="token keyword">let</span> fn <span class="token operator">=</span> num <span class="token operator">=</span><span class="token operator">></span> num <span class="token operator">==</span> <span class="token number">123</span><span class="token function">fn</span><span class="token punctuation">(</span>data0<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span class="token function">fn</span><span class="token punctuation">(</span>data1<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>若確定 number <code>123</code> 與 string <code>123</code> 都是能接受 argument，可直接使用 <code>==</code> 判斷即可，ECMAScript 會自動將 string 轉型成 number。</p><p><img src="/images/ecmascript/operator/equality/equal008.png" alt="equal008"></p><h3 id="null-undefined"><a href="#null-undefined" class="headerlink" title="null || undefined"></a>null || undefined</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data0 <span class="token operator">=</span> <span class="token keyword">null</span><span class="token keyword">let</span> data1 <span class="token operator">=</span> undefined<span class="token keyword">let</span> fn <span class="token operator">=</span> num <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>num <span class="token operator">==</span> <span class="token keyword">null</span><span class="token punctuation">)</span><span class="token function">fn</span><span class="token punctuation">(</span>data0<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span class="token function">fn</span><span class="token punctuation">(</span>data1<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>若想同時判斷 <code>null</code> 與 <code>undefined</code>，可直接 <code>== null</code> 或 <code>== undefined</code> 即可，因為 ECMAScript 在 spec 強制定義 <code>null == undefined</code> 為 true。</p><p><img src="/images/ecmascript/operator/equality/equal009.png" alt="equal009"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li><code>==</code> 其實很好用，唯必須熟悉 ECMAScript 的 <code>自動轉型</code> 規則，則不必手動轉型讓 code 變髒</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>許國政, <a href="https://www.tenlong.com.tw/products/9789864344130" target="_blank" rel="noopener">008 天重新認識 JavaScript</a><br><a href="https://exploringjs.com" target="_blank" rel="noopener">Dr. Axel Rauschmayer</a>, <a href="http://speakingjs.com" target="_blank" rel="noopener">Speaking JavaScript</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;ECMAScript 有別於其他語言，同時提供了 &lt;code&gt;==&lt;/code&gt; 與 &lt;code&gt;===&lt;/code&gt; 兩套 Equality Operator，很多人只使用 &lt;code&gt;===&lt;/code&gt;，事實上只要了解 &lt;code&gt;==&lt;/code&gt; 的規則，就能善用 &lt;code&gt;==&lt;/code&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="ECMAScript" scheme="https://blog.lambda4.fun/tags/ECMAScript/"/>
+    
+  </entry>
+  
+  <entry>
     <title>使用 split() 將 String 轉成 Array</title>
-    <link href="https://lambda4.fun/ecmascript/string/split/"/>
-    <id>https://lambda4.fun/ecmascript/string/split/</id>
+    <link href="https://blog.lambda4.fun/ecmascript/string/split/"/>
+    <id>https://blog.lambda4.fun/ecmascript/string/split/</id>
     <published>2020-01-27T09:11:12.000Z</published>
     <updated>2020-01-27T09:12:44.098Z</updated>
     
@@ -32,14 +52,14 @@
     </summary>
     
     
-      <category term="ECMAScript" scheme="https://lambda4.fun/tags/ECMAScript/"/>
+      <category term="ECMAScript" scheme="https://blog.lambda4.fun/tags/ECMAScript/"/>
     
   </entry>
   
   <entry>
     <title>使用 split() 將 String 轉成 Array</title>
-    <link href="https://lambda4.fun/ramda/string/split/"/>
-    <id>https://lambda4.fun/ramda/string/split/</id>
+    <link href="https://blog.lambda4.fun/ramda/string/split/"/>
+    <id>https://blog.lambda4.fun/ramda/string/split/</id>
     <published>2020-01-27T05:07:40.000Z</published>
     <updated>2020-01-27T05:12:06.173Z</updated>
     
@@ -52,14 +72,14 @@
     </summary>
     
     
-      <category term="Ramda" scheme="https://lambda4.fun/tags/Ramda/"/>
+      <category term="Ramda" scheme="https://blog.lambda4.fun/tags/Ramda/"/>
     
   </entry>
   
   <entry>
     <title>使用 invoker() 將原生 Method 轉成 Function</title>
-    <link href="https://lambda4.fun/ramda/function/invoker/"/>
-    <id>https://lambda4.fun/ramda/function/invoker/</id>
+    <link href="https://blog.lambda4.fun/ramda/function/invoker/"/>
+    <id>https://blog.lambda4.fun/ramda/function/invoker/</id>
     <published>2020-01-27T03:32:05.000Z</published>
     <updated>2020-01-27T03:34:01.363Z</updated>
     
@@ -72,14 +92,14 @@
     </summary>
     
     
-      <category term="Ramda" scheme="https://lambda4.fun/tags/Ramda/"/>
+      <category term="Ramda" scheme="https://blog.lambda4.fun/tags/Ramda/"/>
     
   </entry>
   
   <entry>
     <title>使用 join() 將 Array 轉成 String</title>
-    <link href="https://lambda4.fun/ecmascript/array/join/"/>
-    <id>https://lambda4.fun/ecmascript/array/join/</id>
+    <link href="https://blog.lambda4.fun/ecmascript/array/join/"/>
+    <id>https://blog.lambda4.fun/ecmascript/array/join/</id>
     <published>2020-01-27T02:44:25.000Z</published>
     <updated>2020-01-27T02:45:51.207Z</updated>
     
@@ -92,14 +112,14 @@
     </summary>
     
     
-      <category term="ECMAScript" scheme="https://lambda4.fun/tags/ECMAScript/"/>
+      <category term="ECMAScript" scheme="https://blog.lambda4.fun/tags/ECMAScript/"/>
     
   </entry>
   
   <entry>
     <title>如何將 Array 轉成 String ?</title>
-    <link href="https://lambda4.fun/ramda/cookbook/array-to-string/"/>
-    <id>https://lambda4.fun/ramda/cookbook/array-to-string/</id>
+    <link href="https://blog.lambda4.fun/ramda/cookbook/array-to-string/"/>
+    <id>https://blog.lambda4.fun/ramda/cookbook/array-to-string/</id>
     <published>2020-01-27T02:19:07.000Z</published>
     <updated>2020-01-27T02:24:17.537Z</updated>
     
@@ -112,14 +132,14 @@
     </summary>
     
     
-      <category term="Ramda" scheme="https://lambda4.fun/tags/Ramda/"/>
+      <category term="Ramda" scheme="https://blog.lambda4.fun/tags/Ramda/"/>
     
   </entry>
   
   <entry>
     <title>使用 join() 將 Array 轉成 String</title>
-    <link href="https://lambda4.fun/ramda/array/join/"/>
-    <id>https://lambda4.fun/ramda/array/join/</id>
+    <link href="https://blog.lambda4.fun/ramda/array/join/"/>
+    <id>https://blog.lambda4.fun/ramda/array/join/</id>
     <published>2020-01-26T01:56:33.000Z</published>
     <updated>2020-01-27T04:46:46.840Z</updated>
     
@@ -132,14 +152,14 @@
     </summary>
     
     
-      <category term="Ramda" scheme="https://lambda4.fun/tags/Ramda/"/>
+      <category term="Ramda" scheme="https://blog.lambda4.fun/tags/Ramda/"/>
     
   </entry>
   
   <entry>
     <title>如何修改 WebStorm 預設 Template ?</title>
-    <link href="https://lambda4.fun/webstorm/general/modify-template/"/>
-    <id>https://lambda4.fun/webstorm/general/modify-template/</id>
+    <link href="https://blog.lambda4.fun/webstorm/general/modify-template/"/>
+    <id>https://blog.lambda4.fun/webstorm/general/modify-template/</id>
     <published>2020-01-25T15:50:18.000Z</published>
     <updated>2020-01-25T15:52:19.238Z</updated>
     
@@ -152,14 +172,14 @@
     </summary>
     
     
-      <category term="WebStorm" scheme="https://lambda4.fun/tags/WebStorm/"/>
+      <category term="WebStorm" scheme="https://blog.lambda4.fun/tags/WebStorm/"/>
     
   </entry>
   
   <entry>
     <title>使用 Gridsome Plugin 安裝 Tailwind CSS</title>
-    <link href="https://lambda4.fun/gridsome/tailwind/"/>
-    <id>https://lambda4.fun/gridsome/tailwind/</id>
+    <link href="https://blog.lambda4.fun/gridsome/tailwind/"/>
+    <id>https://blog.lambda4.fun/gridsome/tailwind/</id>
     <published>2020-01-25T15:33:58.000Z</published>
     <updated>2020-01-25T15:36:32.566Z</updated>
     
@@ -172,16 +192,16 @@
     </summary>
     
     
-      <category term="Gridsome" scheme="https://lambda4.fun/tags/Gridsome/"/>
+      <category term="Gridsome" scheme="https://blog.lambda4.fun/tags/Gridsome/"/>
     
-      <category term="Tailwind" scheme="https://lambda4.fun/tags/Tailwind/"/>
+      <category term="Tailwind" scheme="https://blog.lambda4.fun/tags/Tailwind/"/>
     
   </entry>
   
   <entry>
     <title>如何在 HTML 使用 Tailwind CSS ?</title>
-    <link href="https://lambda4.fun/tailwind/html/"/>
-    <id>https://lambda4.fun/tailwind/html/</id>
+    <link href="https://blog.lambda4.fun/tailwind/html/"/>
+    <id>https://blog.lambda4.fun/tailwind/html/</id>
     <published>2020-01-25T08:47:02.000Z</published>
     <updated>2020-01-25T09:40:46.803Z</updated>
     
@@ -194,14 +214,14 @@
     </summary>
     
     
-      <category term="Tailwind" scheme="https://lambda4.fun/tags/Tailwind/"/>
+      <category term="Tailwind" scheme="https://blog.lambda4.fun/tags/Tailwind/"/>
     
   </entry>
   
   <entry>
     <title>使用 none() 判斷 Array 中資料是否全部不符合條件</title>
-    <link href="https://lambda4.fun/ramda/array/none/"/>
-    <id>https://lambda4.fun/ramda/array/none/</id>
+    <link href="https://blog.lambda4.fun/ramda/array/none/"/>
+    <id>https://blog.lambda4.fun/ramda/array/none/</id>
     <published>2020-01-24T13:30:12.000Z</published>
     <updated>2020-01-24T13:31:53.858Z</updated>
     
@@ -214,14 +234,14 @@
     </summary>
     
     
-      <category term="Ramda" scheme="https://lambda4.fun/tags/Ramda/"/>
+      <category term="Ramda" scheme="https://blog.lambda4.fun/tags/Ramda/"/>
     
   </entry>
   
   <entry>
     <title>使用 any() 判斷 Array 中是否有任意資料符合條件</title>
-    <link href="https://lambda4.fun/ramda/array/any/"/>
-    <id>https://lambda4.fun/ramda/array/any/</id>
+    <link href="https://blog.lambda4.fun/ramda/array/any/"/>
+    <id>https://blog.lambda4.fun/ramda/array/any/</id>
     <published>2020-01-24T13:20:07.000Z</published>
     <updated>2020-01-24T13:21:30.035Z</updated>
     
@@ -234,14 +254,14 @@
     </summary>
     
     
-      <category term="Ramda" scheme="https://lambda4.fun/tags/Ramda/"/>
+      <category term="Ramda" scheme="https://blog.lambda4.fun/tags/Ramda/"/>
     
   </entry>
   
   <entry>
     <title>使用 all() 判斷 Array 中資料是否全部資料符合條件</title>
-    <link href="https://lambda4.fun/ramda/array/all/"/>
-    <id>https://lambda4.fun/ramda/array/all/</id>
+    <link href="https://blog.lambda4.fun/ramda/array/all/"/>
+    <id>https://blog.lambda4.fun/ramda/array/all/</id>
     <published>2020-01-24T13:06:33.000Z</published>
     <updated>2020-01-24T13:11:25.820Z</updated>
     
@@ -254,14 +274,14 @@
     </summary>
     
     
-      <category term="Ramda" scheme="https://lambda4.fun/tags/Ramda/"/>
+      <category term="Ramda" scheme="https://blog.lambda4.fun/tags/Ramda/"/>
     
   </entry>
   
   <entry>
     <title>Extract Higher Order Function</title>
-    <link href="https://lambda4.fun/fp/hof/"/>
-    <id>https://lambda4.fun/fp/hof/</id>
+    <link href="https://blog.lambda4.fun/fp/hof/"/>
+    <id>https://blog.lambda4.fun/fp/hof/</id>
     <published>2020-01-24T12:05:49.000Z</published>
     <updated>2020-01-24T12:29:09.924Z</updated>
     
@@ -274,14 +294,14 @@
     </summary>
     
     
-      <category term="FP" scheme="https://lambda4.fun/tags/FP/"/>
+      <category term="FP" scheme="https://blog.lambda4.fun/tags/FP/"/>
     
   </entry>
   
   <entry>
     <title>使用 filter() 過濾 Array 中符合條件 Element</title>
-    <link href="https://lambda4.fun/ramda/array/filter/"/>
-    <id>https://lambda4.fun/ramda/array/filter/</id>
+    <link href="https://blog.lambda4.fun/ramda/array/filter/"/>
+    <id>https://blog.lambda4.fun/ramda/array/filter/</id>
     <published>2020-01-24T09:16:18.000Z</published>
     <updated>2020-01-24T09:17:48.457Z</updated>
     
@@ -294,14 +314,14 @@
     </summary>
     
     
-      <category term="Ramda" scheme="https://lambda4.fun/tags/Ramda/"/>
+      <category term="Ramda" scheme="https://blog.lambda4.fun/tags/Ramda/"/>
     
   </entry>
   
   <entry>
     <title>深入探討 Currying</title>
-    <link href="https://lambda4.fun/ecmascript/closure/currying/"/>
-    <id>https://lambda4.fun/ecmascript/closure/currying/</id>
+    <link href="https://blog.lambda4.fun/ecmascript/closure/currying/"/>
+    <id>https://blog.lambda4.fun/ecmascript/closure/currying/</id>
     <published>2020-01-24T04:46:25.000Z</published>
     <updated>2020-01-24T07:16:12.233Z</updated>
     
@@ -314,14 +334,14 @@
     </summary>
     
     
-      <category term="ECMAScript" scheme="https://lambda4.fun/tags/ECMAScript/"/>
+      <category term="ECMAScript" scheme="https://blog.lambda4.fun/tags/ECMAScript/"/>
     
   </entry>
   
   <entry>
     <title>學習 Ramda 使用 Currying 設計 API</title>
-    <link href="https://lambda4.fun/fp/currying/"/>
-    <id>https://lambda4.fun/fp/currying/</id>
+    <link href="https://blog.lambda4.fun/fp/currying/"/>
+    <id>https://blog.lambda4.fun/fp/currying/</id>
     <published>2020-01-24T03:00:33.000Z</published>
     <updated>2020-01-24T12:29:08.871Z</updated>
     
@@ -334,16 +354,16 @@
     </summary>
     
     
-      <category term="Ramda" scheme="https://lambda4.fun/tags/Ramda/"/>
+      <category term="Ramda" scheme="https://blog.lambda4.fun/tags/Ramda/"/>
     
-      <category term="FP" scheme="https://lambda4.fun/tags/FP/"/>
+      <category term="FP" scheme="https://blog.lambda4.fun/tags/FP/"/>
     
   </entry>
   
   <entry>
     <title>Gridsome 之 Image Processing</title>
-    <link href="https://lambda4.fun/gridsome/g-image/"/>
-    <id>https://lambda4.fun/gridsome/g-image/</id>
+    <link href="https://blog.lambda4.fun/gridsome/g-image/"/>
+    <id>https://blog.lambda4.fun/gridsome/g-image/</id>
     <published>2020-01-24T01:56:24.000Z</published>
     <updated>2020-01-24T01:58:00.306Z</updated>
     
@@ -356,14 +376,14 @@
     </summary>
     
     
-      <category term="Gridsome" scheme="https://lambda4.fun/tags/Gridsome/"/>
+      <category term="Gridsome" scheme="https://blog.lambda4.fun/tags/Gridsome/"/>
     
   </entry>
   
   <entry>
     <title>如何使用 WebStorm 開發 Tailwind CSS ?</title>
-    <link href="https://lambda4.fun/webstorm/library/tailwind/"/>
-    <id>https://lambda4.fun/webstorm/library/tailwind/</id>
+    <link href="https://blog.lambda4.fun/webstorm/library/tailwind/"/>
+    <id>https://blog.lambda4.fun/webstorm/library/tailwind/</id>
     <published>2020-01-23T09:03:46.000Z</published>
     <updated>2020-01-24T01:06:10.333Z</updated>
     
@@ -376,16 +396,16 @@
     </summary>
     
     
-      <category term="WebStorm" scheme="https://lambda4.fun/tags/WebStorm/"/>
+      <category term="WebStorm" scheme="https://blog.lambda4.fun/tags/WebStorm/"/>
     
-      <category term="Tailwind" scheme="https://lambda4.fun/tags/Tailwind/"/>
+      <category term="Tailwind" scheme="https://blog.lambda4.fun/tags/Tailwind/"/>
     
   </entry>
   
   <entry>
     <title>如何在 WebStorm 存檔時 Reformat Code 與 Optimize Import ?</title>
-    <link href="https://lambda4.fun/webstorm/plugin/save-actions/"/>
-    <id>https://lambda4.fun/webstorm/plugin/save-actions/</id>
+    <link href="https://blog.lambda4.fun/webstorm/plugin/save-actions/"/>
+    <id>https://blog.lambda4.fun/webstorm/plugin/save-actions/</id>
     <published>2020-01-23T03:34:37.000Z</published>
     <updated>2020-01-23T03:39:12.551Z</updated>
     
@@ -398,27 +418,7 @@
     </summary>
     
     
-      <category term="WebStorm" scheme="https://lambda4.fun/tags/WebStorm/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>WebStorm 安裝與設定</title>
-    <link href="https://lambda4.fun/webstorm/general/setup/"/>
-    <id>https://lambda4.fun/webstorm/general/setup/</id>
-    <published>2020-01-23T01:42:05.000Z</published>
-    <updated>2020-01-23T03:49:26.019Z</updated>
-    
-    <content type="html"><![CDATA[<p>WebStorm 基於 ECMAScript 生態設計，預設組態已經很好用，只要少數調整即可。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.2<br>ＷebStorm 2019.3.2</p><h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ brew cask install jetbrains-toolbox<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>使用 Homebrew 安裝 JetBrains Toolbox 。</p><h2 id="Script-Script-Location"><a href="#Script-Script-Location" class="headerlink" title="Script Script Location"></a>Script Script Location</h2><p><img src="/images/webstorm/general/setup/setup010.png" alt="setup009"></p><p><strong><em>Toolbox App Settings</em></strong></p><ul><li>選擇 <code>Generate shell scripts</code></li><li>設定 Shell scripts location 為 <code>/usr/local/bin</code></li></ul><h2 id="Soft-Link-for-CLI"><a href="#Soft-Link-for-CLI" class="headerlink" title="Soft Link for CLI"></a>Soft Link for CLI</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ cd /usr/local/bin$ ln -s webstorm ws<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>將來可使用 <code>ws .</code> 啟動 WebStorm。</p><h2 id="Font-Size"><a href="#Font-Size" class="headerlink" title="Font Size"></a>Font Size</h2><h3 id="IDE"><a href="#IDE" class="headerlink" title="IDE"></a>IDE</h3><p><img src="/images/webstorm/general/setup/setup001.png" alt="fontsize001"></p><p><strong><em>Preferences -&gt; Appearance &amp; Behavior -&gt; Appearance</em></strong></p><p>設定 IDE 的 font size。</p><p>按熱鍵 <code>⌘ ,</code> 進入 preferences，在 <code>Appearance</code> 下將 font size 調整。</p><ul><li><p>Use custom font：<code>Dialog</code></p></li><li><p><code>15</code>  (15”)</p></li><li><p><code>17</code> (13”)</p></li></ul><h3 id="Editor"><a href="#Editor" class="headerlink" title="Editor"></a>Editor</h3><p><img src="/images/webstorm/general/setup/setup002.png" alt="fontsize002"></p><p><strong><em>Preferences -&gt; Editor -&gt; Font</em></strong></p><p>設定 editor 的 font size。</p><ul><li><p><strong>Font</strong>：預設為 <code>Menlo</code>，也是很棒的字型，不過由於 ES6 的 arrow function 興起，建議改用 <code>Fira Code</code> 系列，較能顯示 FP 特色</p></li><li><p><strong>Size</strong>：由於是寫 code 主要用字，建議比 IDE 的 font size 略大</p><ul><li><code>16</code> (15”)</li><li><code>17</code> (13”)</li></ul></li><li><strong>Line spacing</strong>：行距，建議可稍微寬一點，設定為 <code>1.1</code></li><li><strong>Fallback font</strong>：若遇到 <code>Fira Code</code> 無法顯示的字，就改用 <code>Menlo</code> 顯示</li></ul><ol start="5"><li><strong>Enable font ligatures</strong>：要打勾，<code>=&gt;</code> 與 <code>!==</code> 才會以 <code>Fira Code</code> 特殊字型顯示</li></ol><h3 id="Terminal"><a href="#Terminal" class="headerlink" title="Terminal"></a>Terminal</h3><p><img src="/images/webstorm/general/setup/setup003.png" alt="fontsize003"></p><p><strong><em>Preferences -&gt; Editor -&gt; Color Scheme -&gt; Console Font</em></strong></p><p>設定內建 terminal 的 font size。</p><ul><li><p>將 <code>Use console font instead of the default</code> 打勾，也就是不使用 editor 的 <code>Fira Code</code></p></li><li><p>改用一般的 <code>Menlo</code>，font size 設定為 <code>16</code> (13”)， <code>15</code> (15”) 即可</p></li></ul><p><img src="/images/webstorm/general/setup/setup004.png" alt="fontsize004"></p><h2 id="Appearance"><a href="#Appearance" class="headerlink" title="Appearance"></a>Appearance</h2><p><img src="/images/webstorm/general/setup/setup005.png" alt="setup005"></p><p><strong><em>View -&gt; Appearance</em></strong></p><ul><li>Toolbar</li><li>Tool Window Bars</li><li>Status Bar</li><li>Navigation Bar</li><li>Description in Tree Views </li></ul><p>全部不要勾選。</p><h2 id="Breadcrumbs"><a href="#Breadcrumbs" class="headerlink" title="Breadcrumbs"></a>Breadcrumbs</h2><p><img src="/images/webstorm/general/setup/setup007.png" alt="setup007"></p><p><strong><em>View -&gt; Active Editor</em></strong></p><ul><li>不選 <code>Show Breadcrumbs</code></li></ul><h2 id="Editor-Tabs"><a href="#Editor-Tabs" class="headerlink" title="Editor Tabs"></a>Editor Tabs</h2><p><img src="/images/webstorm/general/setup/setup006.png" alt="setup006"></p><p><strong><em>Preferences -&gt; Editor -&gt; General -&gt; Editor Tabs</em></strong></p><ul><li><strong>Tab placement</strong>：<code>None</code></li></ul><h2 id="Plugin"><a href="#Plugin" class="headerlink" title="Plugin"></a>Plugin</h2><h3 id="IdeaVim"><a href="#IdeaVim" class="headerlink" title="IdeaVim"></a>IdeaVim</h3><p><img src="/images/webstorm/general/setup/setup014.png" alt="setup014"></p><p>讓 WebStorm 可使用 VIM 模式。</p><h3 id="Relative-Line-Numbers"><a href="#Relative-Line-Numbers" class="headerlink" title="Relative Line Numbers"></a>Relative Line Numbers</h3><p><img src="/images/webstorm/general/setup/setup013.png" alt="setup013"></p><p>使 editor 顯示相關 line 行數方便 VIM 操作。</p><h3 id="Rainbow-Brackets"><a href="#Rainbow-Brackets" class="headerlink" title="Rainbow Brackets"></a>Rainbow Brackets</h3><p><img src="/images/webstorm/general/setup/setup008.png" alt="setup008"></p><p>使 <code>()</code> 與 <code>{}</code> 有顏色區別方便辨識。</p><h3 id="Save-Actions"><a href="#Save-Actions" class="headerlink" title="Save Actions"></a>Save Actions</h3><p><img src="/images/webstorm/general/setup/setup017.png" alt="setup017"></p><p>存擋時啟動 reformat code 與 optimize import。</p><h3 id="GraphQL"><a href="#GraphQL" class="headerlink" title="GraphQL"></a>GraphQL</h3><p><img src="/images/webstorm/general/setup/setup011.png" alt="setup011"></p><p>支援 GraphQL。</p><h3 id="Tailwind-CSS"><a href="#Tailwind-CSS" class="headerlink" title="Tailwind CSS"></a>Tailwind CSS</h3><p><img src="/images/webstorm/general/setup/setup016.png" alt="setup016"></p><p>支援 Tailwind CSS。</p><h3 id="Database-Tools-and-SQL"><a href="#Database-Tools-and-SQL" class="headerlink" title="Database Tools and SQL"></a>Database Tools and SQL</h3><p><img src="/images/webstorm/general/setup/setup012.png" alt="setup012"></p><p>使 WebStorm 能有 DataGrid 功能。</p><h2 id="Tool-Window"><a href="#Tool-Window" class="headerlink" title="Tool Window"></a>Tool Window</h2><p><img src="/images/webstorm/general/setup/setup009.png" alt="setup009"></p><p><strong><em>View -&gt; Tool Windows</em></strong></p><p>重新設定 shortcut。</p><h2 id="Shortcut"><a href="#Shortcut" class="headerlink" title="Shortcut"></a>Shortcut</h2><ul><li><strong>Navigate &gt; File</strong>：<code>⌘ P</code> (較簡短，且與 VS Code 相同)</li></ul><h2 id="Disable-Parameter-Hint"><a href="#Disable-Parameter-Hint" class="headerlink" title="Disable Parameter Hint"></a>Disable Parameter Hint</h2><p><img src="/images/webstorm/general/setup/setup015.png" alt="setup015"></p><p><strong><em>Preferences -&gt; Editor -&gt; General -&gt; Appearance</em></strong></p><ul><li>不選擇 <code>Show parameter name hints</code></li></ul><blockquote><p>在大部分語言使用 parameter hints 或許可增加可讀性，但 ECMAScript 習慣以 parameter 直接傳遞 object，因此 parameter hist 重要性不若以往，反而讓 code 變得更冗長</p></blockquote><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>WebStorm 沒有辦法吃 macOS 的 system preferences 較為可惜，必須手動一一設定 font size</li><li>將所有的 bar 關起來也不使用 tab，讓顯示區最大化</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;WebStorm 基於 ECMAScript 生態設計，預設組態已經很好用，只要少數調整即可。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="WebStorm" scheme="https://lambda4.fun/tags/WebStorm/"/>
+      <category term="WebStorm" scheme="https://blog.lambda4.fun/tags/WebStorm/"/>
     
   </entry>
   
