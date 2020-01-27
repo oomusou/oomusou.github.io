@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://blog.lambda4.fun/"/>
-  <updated>2020-01-27T14:39:54.430Z</updated>
+  <updated>2020-01-27T15:11:12.932Z</updated>
   <id>https://blog.lambda4.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用 flip() 改變 Signature</title>
+    <link href="https://blog.lambda4.fun/ramda/function/flip/"/>
+    <id>https://blog.lambda4.fun/ramda/function/flip/</id>
+    <published>2020-01-27T15:09:35.000Z</published>
+    <updated>2020-01-27T15:11:12.932Z</updated>
+    
+    <content type="html"><![CDATA[<p>在組合 Function 時，實務上常常遇到期望的 Signature 與 Ramda 所提供的 Function 不一樣，此時可利用 <code>flip()</code> 加以改變。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.2<br>VS Code 1.41.1<br>Quokka 1.0.274<br>Ramda 0.26.1</p><h2 id="Currying"><a href="#Currying" class="headerlink" title="Currying"></a>Currying</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fn <span class="token operator">=</span> discount <span class="token operator">=</span><span class="token operator">></span> price <span class="token operator">=</span><span class="token operator">></span> price <span class="token operator">-</span> discount <span class="token operator">-</span> <span class="token number">10</span><span class="token function">fn</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p><code>fn()</code> 第一個 argument 為 <code>discount</code>，第二個 argument 為 <code>price</code>，除此之外，還在 function body 內多扣了 <code>10</code> 元。</p><p>比較特別的是 <code>price</code> 是放在最後一個 argument。</p><p>這個 function 就功能而言 100% 沒問題，但能否更進一步 point-free 呢 ?</p><p><img src="/images/ramda/function/flip/flip000.png" alt="flip000"></p><h2 id="Functional"><a href="#Functional" class="headerlink" title="Functional"></a>Functional</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> negate<span class="token punctuation">,</span> add<span class="token punctuation">,</span> flip <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token keyword">let</span> fn <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>  negate<span class="token punctuation">,</span>  <span class="token function">flip</span><span class="token punctuation">(</span>add<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  add<span class="token punctuation">)</span><span class="token function">fn</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>由於第一個 argument 是 <code>discount</code> 且為 <code>-</code>，因此先使用了 <code>negate()</code>。</p><p>接下來要處理 <code>-10</code>，由於 <code>add()</code> 的第一個 argument 要傳入 <code>被減數</code>，也就是 <code>negate()</code> 所計算結果，因此不能簡單使用 <code>add(-10)</code>，因為 <code>-10</code> 該是 <code>減數</code>。</p><p>我們發現期望的 <code>add()</code> signature 與現實剛好相反 !!</p><p>因此特別使用 <code>flip(add)</code> 將 <code>add()</code> 的 signature 反轉，再傳入 <code>-10</code>，最後再 <code>add()</code> 迎接 <code>price</code>。</p><blockquote><p><strong>flip()</strong><br><code>((a, b, c, …) → z) → (b → a → c → … → z)</code><br>將 function 的第一個 argument 與第二個 argument 對調，順便 currying</p></blockquote><p><code>((a, b, c, …) → z)</code>：原來 function</p><p><code>(b → a → c → … → z)</code>：回傳 argument 對調過的 curried function</p><p><img src="/images/ramda/function/flip/flip001.png" alt="flip001"></p><h2 id><a href="#" class="headerlink" title="__"></a>__</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> negate<span class="token punctuation">,</span> add<span class="token punctuation">,</span> __ <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token keyword">let</span> fn <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>  negate<span class="token punctuation">,</span>  <span class="token function">add</span><span class="token punctuation">(</span>__<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  add<span class="token punctuation">)</span><span class="token function">fn</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>若你覺得 <code>flip()</code> 可讀性不高，也可改用 <code>__</code>，視覺上提供前一個 function 所傳入的 placeholder。</p><p><img src="/images/ramda/function/flip/flip002.png" alt="flip002"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li><code>flip()</code> 在實務上常常使用，尤其在計算類的 function 上</li><li><code>flip()</code> 與 <code>__()</code> 各有愛好者，可依可讀性自行選擇</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#flip" target="_blank" rel="noopener">flip()</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;在組合 Function 時，實務上常常遇到期望的 Signature 與 Ramda 所提供的 Function 不一樣，此時可利用 &lt;code&gt;flip()&lt;/code&gt; 加以改變。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Ramda" scheme="https://blog.lambda4.fun/tags/Ramda/"/>
+    
+  </entry>
   
   <entry>
     <title>使用 map() 將 Array 重新 mapping 成另一個 Array</title>
@@ -397,26 +417,6 @@
       <category term="Ramda" scheme="https://blog.lambda4.fun/tags/Ramda/"/>
     
       <category term="FP" scheme="https://blog.lambda4.fun/tags/FP/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Gridsome 之 Image Processing</title>
-    <link href="https://blog.lambda4.fun/gridsome/g-image/"/>
-    <id>https://blog.lambda4.fun/gridsome/g-image/</id>
-    <published>2020-01-24T01:56:24.000Z</published>
-    <updated>2020-01-24T01:58:00.306Z</updated>
-    
-    <content type="html"><![CDATA[<p>Gridsome 特別提供 <code>&lt;g-image&gt;</code> 支援 Image Processing 增進效率，實務上建議使用 <code>&lt;g-image&gt;</code> 取代 <code>&lt;img&gt;</code>。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.2<br>WebStorm 2019.3.1<br>Gridsome 0.7.12</p><h2 id="img-vs-g-image"><a href="#img-vs-g-image" class="headerlink" title="img vs. g-image"></a>img vs. g-image</h2><p>HTML 已經自帶 <code>&lt;img&gt;</code>，與 Gridsome 所提供的 <code>&lt;g-image&gt;</code> 有什麼不同呢 ?</p><ul><li><code>&lt;img&gt;</code> 會將圖片完整下載下來；而 <code>&lt;g-image&gt;</code> 會自動根據 device 不同下載不同解析度圖片</li><li><code>&lt;img&gt;</code> 雖然有帶 <code>width</code> 與 <code>height</code> attribute，但卻是將完整圖片下載後才調整，因此浪費下載時間；而 <code>&lt;g-image&gt;</code> 是將圖片先調整過 width 與 height 才下載，size 會變小因此節省下載時間，user 體驗較佳</li><li><code>&lt;img&gt;</code> 會等圖片全部下載成功才顯示；而 <code>&lt;g-image&gt;</code> 會先下載 <code>低解析度</code> 版本圖片，等 <code>高解析度</code> 版本圖片下載成功後再顯示，user 體驗較佳</li><li><code>gridsome-transformer-remark</code> 會自動將 markdown 內的圖片轉成 <code>&lt;g-image&gt;</code></li></ul><h2 id="Crop-Image-by-Default"><a href="#Crop-Image-by-Default" class="headerlink" title="Crop Image by Default"></a>Crop Image by Default</h2><p><strong>pages/Index.vue</strong></p><p><img src="/images/gridsome/g-image/g-image001.png" alt="g-image001"></p><p>在 <code>pages/Index.vue</code> 就有使用 <code>&lt;g-image&gt;</code>。</p><p><img src="/images/gridsome/g-image/g-image000.png" alt="g-image000"></p><p>可發現其原始圖片為 <code>245</code> x <code>245</code>。</p><p><img src="/images/gridsome/g-image/g-image003.png" alt="g-image003"></p><p>明確指定 <code>width</code> 與 <code>height</code>。</p><p><img src="/images/gridsome/g-image/g-image002.png" alt="g-image002"></p><p>會發現實際下載圖片為 <code>200</code> x <code>200</code>，且時 <code>src</code> 也自帶 <code>width</code> 與 <code>height</code>。</p><h2 id="Fit"><a href="#Fit" class="headerlink" title="Fit"></a>Fit</h2><h3 id="Cover"><a href="#Cover" class="headerlink" title="Cover"></a>Cover</h3><p><img src="/images/gridsome/g-image/g-image004.png" alt="g-image004"></p><p><code>fit</code> attribute 預設為 <code>cover</code>，表示會自動 crop 符合 <code>width</code> 與 <code>height</code>。</p><blockquote><p>由於指定 <code>width</code> 與 <code>height</code> 與原始比例相同，因此 <code>fit=&quot;cover&quot;</code> 無感</p></blockquote><p><img src="/images/gridsome/g-image/g-image007.png" alt="g-image007"></p><p>若將 <code>width</code> 加以改變，可明顯看出圖片會以 crop 處理。</p><p><img src="/images/gridsome/g-image/g-image008.png" alt="g-image008"></p><h3 id="Contain"><a href="#Contain" class="headerlink" title="Contain"></a>Contain</h3><p><img src="/images/gridsome/g-image/g-image005.png" alt="g-image005"></p><p>當 <code>fit</code> 設定為 <code>contain</code> 時，則原始圖片會 <code>包含</code> 在指定 <code>width</code> 與 <code>height</code> 內。</p><p><img src="/images/gridsome/g-image/g-image006.png" alt="g-image005"></p><h3 id="Fill"><a href="#Fill" class="headerlink" title="Fill"></a>Fill</h3><p><img src="/images/gridsome/g-image/g-image009.png" alt="g-image009"></p><p>當 <code>fit</code> 設定為 <code>fill</code> 時，則原始圖片會破壞比例延伸滿足 <code>width</code> 與 <code>height</code>。</p><p><img src="/images/gridsome/g-image/g-image010.png" alt="g-image010"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>若 <code>width</code> 與 <code>height</code> 與原比例相同，則 <code>fit=&quot;cover&quot;</code> 可省略</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.udemy.com/user/reed-barger/" target="_blank" rel="noopener">Reed Barger</a>, <a href="https://www.udemy.com/course/blazing-fast-vue-and-graphql-with-gridsome/learn/lecture/14862465#overview" target="_blank" rel="noopener">G-image for Performant Image Loading</a><br><a href="https://gridsome.org" target="_blank" rel="noopener">Gridsome</a>, <a href="https://gridsome.org/docs/images/" target="_blank" rel="noopener">Image processing</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Gridsome 特別提供 &lt;code&gt;&amp;lt;g-image&amp;gt;&lt;/code&gt; 支援 Image Processing 增進效率，實務上建議使用 &lt;code&gt;&amp;lt;g-image&amp;gt;&lt;/code&gt; 取代 &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt;。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Gridsome" scheme="https://blog.lambda4.fun/tags/Gridsome/"/>
     
   </entry>
   
