@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-01-26T01:56:33.000Z",
-    "dateModified": "2020-01-27T02:35:36.186Z",
+    "dateModified": "2020-01-27T04:46:46.840Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -495,14 +495,30 @@ a:hover {
 <li>使用 <code>reduce((a, x) =&gt; a + x, &#39;&#39;)</code> 將 array 轉成 string</li>
 </ul>
 <p><img src="/images/ramda/array/join/join002.png" alt="join002"></p>
-<h2 id="chain"><a href="#chain" class="headerlink" title="chain()"></a>chain()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> reduce<span class="token punctuation">,</span> pipe<span class="token punctuation">,</span> chain<span class="token punctuation">,</span> dropLast<span class="token punctuation">,</span> map<span class="token punctuation">,</span> toString <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="init"><a href="#init" class="headerlink" title="init()"></a>init()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> reduce<span class="token punctuation">,</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> flatten<span class="token punctuation">,</span> init<span class="token punctuation">,</span> toString <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+
+<span class="token keyword">let</span> join <span class="token operator">=</span> separator <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">map</span><span class="token punctuation">(</span>toString<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">[</span>x<span class="token punctuation">,</span> separator<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  flatten<span class="token punctuation">,</span>
+  init<span class="token punctuation">,</span>
+  <span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token function">join</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>dropLast(1)</code> 也可用 <code>init()</code> 加以取代。</p>
+<p><img src="/images/ramda/array/join/join007.png" alt="join007"></p>
+<h2 id="chain"><a href="#chain" class="headerlink" title="chain()"></a>chain()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> reduce<span class="token punctuation">,</span> pipe<span class="token punctuation">,</span> chain<span class="token punctuation">,</span> init<span class="token punctuation">,</span> map<span class="token punctuation">,</span> toString <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
 <span class="token keyword">let</span> join <span class="token operator">=</span> separator <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">map</span><span class="token punctuation">(</span>toString<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">chain</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">[</span>x<span class="token punctuation">,</span> separator<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">dropLast</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  init<span class="token punctuation">,</span>
   <span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
@@ -510,14 +526,14 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>map()</code> 與 <code>flatten()</code> 可由 <code>chain()</code> 取代。</p>
 <p><img src="/images/ramda/array/join/join003.png" alt="join003"></p>
-<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> reduce<span class="token punctuation">,</span> pipe<span class="token punctuation">,</span> chain<span class="token punctuation">,</span> dropLast<span class="token punctuation">,</span> concat<span class="token punctuation">,</span> pair<span class="token punctuation">,</span> __<span class="token punctuation">,</span> map<span class="token punctuation">,</span> toString <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> reduce<span class="token punctuation">,</span> pipe<span class="token punctuation">,</span> chain<span class="token punctuation">,</span> init<span class="token punctuation">,</span> concat<span class="token punctuation">,</span> pair<span class="token punctuation">,</span> __<span class="token punctuation">,</span> map<span class="token punctuation">,</span> toString <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
 <span class="token keyword">let</span> join <span class="token operator">=</span> separator <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">map</span><span class="token punctuation">(</span>toString<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">chain</span><span class="token punctuation">(</span><span class="token function">pair</span><span class="token punctuation">(</span>__<span class="token punctuation">,</span> separator<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">dropLast</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  init<span class="token punctuation">,</span>
   <span class="token function">reduce</span><span class="token punctuation">(</span>concat<span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
