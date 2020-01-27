@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>如何將 Array 轉成 String ? | 點燈坊</title>
+<title>使用 join() 將 Array 轉成 String | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -51,9 +51,9 @@
 
 <meta name="format-detection" content="telephone=no">
 <!-- Description -->
-<meta name="description" content="將 Array 直接轉成 String 為常見需求，本文整理出 5 種常見方式。">
+<meta name="description" content="Array 與 String 都是常用型別，Array.prototype 提供了 join() 能將 Array 轉成 String。">
 <!-- Keywords -->
-<meta name="keywords" content=", Ramda">
+<meta name="keywords" content=", ECMAScript">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
 <meta http-equiv="Cache-Control" content="no-transform">
 <meta http-equiv="Cache-Control" content="no-siteapp">
@@ -165,19 +165,19 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="如何將 Array 轉成 String ? | 點燈坊">
+	<meta property="og:title" content="使用 join() 將 Array 轉成 String | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://lambda4.fun/ramda/cookbook/array-to-string/">
+<meta property="og:url" content="https://lambda4.fun/ecmascript/array/join/">
 <meta property="og:image" content="https://lambda4.fun/apple-touch-icon.png">
-<meta property="og:description" content="將 Array 直接轉成 String 為常見需求，本文整理出 5 種常見方式。">
+<meta property="og:description" content="Array 與 String 都是常用型別，Array.prototype 提供了 join() 能將 Array 轉成 String。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-27T02:19:07.000Z">
-<meta property="article:modified_time" content="2020-01-27T02:19:07.000Z">
+<meta property="article:published_time" content="2020-01-27T02:44:25.000Z">
+<meta property="article:modified_time" content="2020-01-27T02:44:25.000Z">
 <meta property="article:author" content="Sam Xiao">
-<meta property="og:article:tag" content=", Ramda">
+<meta property="og:article:tag" content=", ECMAScript">
 
 
 	<!-- ### Analytics ### -->
@@ -188,29 +188,29 @@ a:hover {
 
 
 	<!-- ### Canonical link ### -->
-	<link rel="canonical" href="https://lambda4.fun/ramda/cookbook/array-to-string/">
+	<link rel="canonical" href="https://lambda4.fun/ecmascript/array/join/">
 	<!-- ### Structured Data ### -->
 	
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://lambda4.fun/ramda/cookbook/array-to-string/",
+    "url": "https://lambda4.fun/ecmascript/array/join/",
     "@type": "BlogPosting",
     "logo": "https://lambda4.fun/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://lambda4.fun/ramda/cookbook/array-to-string/"
+        "@id": "https://lambda4.fun/ecmascript/array/join/"
     },
-    "headline": "如何將 Array 轉成 String ? | 點燈坊",
+    "headline": "使用 join() 將 Array 轉成 String | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
         "url": "https://lambda4.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2020-01-27T02:19:07.000Z",
-    "dateModified": "2020-01-27T02:24:17.537Z",
+    "datePublished": "2020-01-27T02:44:25.000Z",
+    "dateModified": "2020-01-27T02:45:51.207Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -235,8 +235,8 @@ a:hover {
         "query-input": "required name=search_term_string"
     },
     
-    "keywords": ", Ramda",
-    "description": "將 Array 直接轉成 String 為常見需求，本文整理出 5 種常見方式。"
+    "keywords": ", ECMAScript",
+    "description": "Array 與 String 都是常用型別，Array.prototype 提供了 join() 能將 Array 轉成 String。"
 }
 </script>
 
@@ -428,7 +428,7 @@ a:hover {
 			<div class="card-inner-cell">
 				<div class="card-header">
 					
-<h1 class="card-title h3 mb-2">如何將 Array 轉成 String ?</h1>
+<h1 class="card-title h3 mb-2">使用 join() 將 Array 轉成 String</h1>
 
 
 <div class="post-header-info">
@@ -439,67 +439,56 @@ a:hover {
 				</div>
 				<div class="card-body">
 					<article id="post-content">
-						<p>將 Array 直接轉成 String 為常見需求，本文整理出 5 種常見方式。</p>
+						<p>Array 與 String 都是常用型別，<code>Array.prototype</code> 提供了 <code>join()</code> 能將 Array 轉成 String。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.2<br>VS Code 1.41.1<br>Quokka 1.0.274<br>Ramda 0.26.1</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.2<br>VS Code 1.41.1<br>Quokka 1.0.274<br>ECMAScript 2015</p>
 <h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> fn <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+<span class="token keyword">let</span> fn <span class="token operator">=</span> separator <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
   <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token string">''</span>
 
-  <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> x <span class="token keyword">of</span> arr<span class="token punctuation">)</span>
-    result <span class="token operator">+</span><span class="token operator">=</span> x
+  <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> arr<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">===</span> arr<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
+      result <span class="token operator">+</span><span class="token operator">=</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+    <span class="token keyword">else</span>
+      result <span class="token operator">+</span><span class="token operator">=</span> arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span> <span class="token operator">+</span> separator
+  <span class="token punctuation">}</span>
 
   <span class="token keyword">return</span> result
 <span class="token punctuation">}</span>
 
-<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Imperative 會使用 <code>for</code> loop 搭配 <code>+=</code> operator，由於 <code>+=</code> 會直接轉型成 string，因此不用特別處理。</p>
-<p><img src="/images/ramda/cookbook/array-to-string/string002.png" alt="string002"></p>
+<span class="token function">fn</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>join()</code> 除了能將 string 轉成 array 外，還可傳入 separator 將 element 隔離。</p>
+<p>Imparative 會使用 <code>for</code> loop，若不是最後一個 element 則加入 separator。</p>
+<p><img src="/images/ecmascript/array/join/join000.png" alt="join000"></p>
 <h2 id="reduce"><a href="#reduce" class="headerlink" title="reduce()"></a>reduce()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> fn <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span><span class="token operator">=</span> x<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> fn <span class="token operator">=</span> separator <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> 
+  i <span class="token operator">===</span> arr<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span> <span class="token operator">?</span> a <span class="token operator">+</span> x <span class="token punctuation">:</span> a <span class="token operator">+</span> x <span class="token operator">+</span> separator
+<span class="token punctuation">,</span> <span class="token string">''</span><span class="token punctuation">)</span>
 
-<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>亦可將 <code>for</code> loop 使用 <code>reduce()</code> 改寫。</p>
-<p><img src="/images/ramda/cookbook/array-to-string/string003.png" alt="string003"></p>
-<h2 id="Functional"><a href="#Functional" class="headerlink" title="Functional"></a>Functional</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> reduce<span class="token punctuation">,</span> concat<span class="token punctuation">,</span> toString<span class="token punctuation">,</span> map<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> fn <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">map</span><span class="token punctuation">(</span>toString<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">reduce</span><span class="token punctuation">(</span>concat<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>主角是 <code>reduce(concat)</code>，且 <code>reduce()</code> 的初始值為 empty string，但因為 <code>concat()</code> 不會自動轉型，會出現 <code>not a string</code> 錯誤，因次必須先透過 <code>map(toStirng)</code> 將 element 全部轉成 string。</p>
-<p><img src="/images/ramda/cookbook/array-to-string/string000.png" alt="string000"></p>
-<h2 id="join"><a href="#join" class="headerlink" title="join()"></a>join()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> join <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> fn <span class="token operator">=</span> <span class="token function">join</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
-
-<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">fn</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>或者直接使用 Ramda 的 <code>join()</code>，只要 separator 傳 empty string 即可。</p>
-<p><img src="/images/ramda/cookbook/array-to-string/string001.png" alt="string001"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<p>也可將 imperative 使用 <code>reduce()</code> 改寫之。</p>
+<p><img src="/images/ecmascript/array/join/join001.png" alt="join001"></p>
+<h2 id="join"><a href="#join" class="headerlink" title="join()"></a>join()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> fn <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> fn <span class="token operator">=</span> separator <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>separator<span class="token punctuation">)</span>
 
-<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">fn</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>事實上 Ramda 的 <code>join()</code> 乃使用 <code>invoker()</code> 呼叫 <code>Array.prototype.join()</code>，因此也可直接使用 ECMAScript 的 <code>join()</code>。</p>
-<p><img src="/images/ramda/cookbook/array-to-string/string004.png" alt="string004"></p>
+<p>其實 ECMAScript 的 <code>Array.prototype</code> 已經內建 <code>join()</code>，可直接使用。</p>
+<blockquote>
+<p><strong>arr.join([separator])</strong><br>將 array 轉成 string，可另外提供 separator</p>
+</blockquote>
+<p><code>separator</code>：傳入 element 間的 separator，不包含最後一筆，可省略</p>
+<p>回傳值為 string。</p>
+<p><img src="/images/ecmascript/array/join/join002.png" alt="join002"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>實務上推薦直接使用 <code>join()</code>，<code>reduce(concat)</code> 則適合練習 function composition 時使用</li>
+<li>若只想將 array 轉成 string，可省略不傳 separator 即可</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#reduce" target="_blank" rel="noopener">reduce()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#concat" target="_blank" rel="noopener">concat()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#join" target="_blank" rel="noopener">join()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/join" target="_blank" rel="noopener">Array.prototype.join()</a></p>
 
 					</article>
 					<p class="post-footer-info mb-0 pt-2">
@@ -508,7 +497,7 @@ a:hover {
   <span class="post-tags-list mt-2">
     
     
-    <a class="post-tags-list-item" href='/tags/Ramda/'>#&nbsp;Ramda</a>
+    <a class="post-tags-list-item" href='/tags/ECMAScript/'>#&nbsp;ECMAScript</a>
     
   </span>
   
@@ -518,19 +507,12 @@ a:hover {
 	<ul class="pagination">
 		<!-- Prev Nav -->
 		
-		<li class="page-item page-prev">
-			<a href="/ecmascript/array/join/">
-				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 join() 將 Array 轉成 String</div>
-			</a>
-		</li>
-		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/ramda/array/join/">
+			<a href="/ramda/cookbook/array-to-string/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 join() 將 Array 轉成 String</div>
+				<div class="page-item-subtitle">如何將 Array 轉成 String ?</div>
 			</a>
 		</li>
 		
