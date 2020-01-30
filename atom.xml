@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2020-01-30T03:43:18.862Z</updated>
+  <updated>2020-01-30T05:51:08.619Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何將 Method 轉成 Function ?</title>
+    <link href="https://fpjs.fun/ecmascript/function/call-bind/"/>
+    <id>https://fpjs.fun/ecmascript/function/call-bind/</id>
+    <published>2020-01-30T05:48:20.000Z</published>
+    <updated>2020-01-30T05:51:08.619Z</updated>
+    
+    <content type="html"><![CDATA[<p>ECMAScript 所提供的多半以 <code>prototype</code> 的 Method 形式，可藉由本文手法將 Method 轉成 Function 使用。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.2<br>VS Code 1.41.1<br>Quokka 1.0.274<br>Ramda 0.26.1</p><h2 id="call-bind"><a href="#call-bind" class="headerlink" title="call.bind()"></a>call.bind()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> _fill <span class="token operator">=</span> Array<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>fill<span class="token keyword">let</span> fill <span class="token operator">=</span> Function<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>call<span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>_fill<span class="token punctuation">)</span><span class="token function">fill</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p><code>Function.prototype.call()</code> 可將 argument 傳給 function 執行，但此時 <code>this</code> 指向 function 為 <code>undefined</code>，需透過 <code>bind()</code> 將 <code>Array.prototype.slice</code> 傳進產生新 function。</p><p><img src="/images/ecmascript/function/call-bind/bind000.png" alt="bind000"></p><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fill <span class="token operator">=</span> <span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span>call<span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">.</span>fill<span class="token punctuation">)</span><span class="token function">fill</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p><code>Function.prototype</code> 亦可使用 <code>(_ =&gt; {})</code> arrow function 取代，而 <code>Array.prototype</code> 則以 <code>[]</code> 取代。</p><p><img src="/images/ecmascript/function/call-bind/bind001.png" alt="bind001"></p><h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> invoker <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token keyword">let</span> fill <span class="token operator">=</span> <span class="token function">invoker</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'fill'</span><span class="token punctuation">)</span><span class="token function">fill</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Ramda 亦提供 <code>invoker()</code> 將 method 轉成 function，並將 data 改成最後一個 argument。</p><p><img src="/images/ecmascript/function/call-bind/bind002.png" alt="bind002"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li><code>Function.prototype.call.bind()</code> 雖然能將 method 轉成 function，唯 data 都在第一個 argument，不方便 function composition，因此實務上建議使用 <code>invoker()</code></li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/call" target="_blank" rel="noopener">Function.prototype.call()</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function/bind" target="_blank" rel="noopener">Function.prototype.bind()</a><br><a href="https://ramdajs.com/docs/#" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#invoker" target="_blank" rel="noopener">invoker</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;ECMAScript 所提供的多半以 &lt;code&gt;prototype&lt;/code&gt; 的 Method 形式，可藉由本文手法將 Method 轉成 Function 使用。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="ECMAScript" scheme="https://fpjs.fun/tags/ECMAScript/"/>
+    
+  </entry>
   
   <entry>
     <title>slice() 與 substring() 比較</title>
@@ -393,26 +413,6 @@
     
     
       <category term="Ramda" scheme="https://fpjs.fun/tags/Ramda/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何修改 WebStorm 預設 Template ?</title>
-    <link href="https://fpjs.fun/webstorm/general/modify-template/"/>
-    <id>https://fpjs.fun/webstorm/general/modify-template/</id>
-    <published>2020-01-25T15:50:18.000Z</published>
-    <updated>2020-01-25T15:52:19.238Z</updated>
-    
-    <content type="html"><![CDATA[<p>WebStorm 提供不少 Template，若預設所提供內容不敷使用，該如何自行修改呢 ?</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.2<br>WebStorm 2019.3.2</p><h2 id="File-and-Code-Template"><a href="#File-and-Code-Template" class="headerlink" title="File and Code Template"></a>File and Code Template</h2><p><img src="/images/webstorm/general/modify-template/template000.png" alt="template000"></p><p><strong><em>Editor -&gt; File and Code Template -&gt; Files</em></strong></p><p>可在此選擇 template 加以修改。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;WebStorm 提供不少 Template，若預設所提供內容不敷使用，該如何自行修改呢 ?&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="WebStorm" scheme="https://fpjs.fun/tags/WebStorm/"/>
     
   </entry>
   
