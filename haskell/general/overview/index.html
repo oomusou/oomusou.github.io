@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html >
+<head><meta name="generator" content="Hexo 3.9.0">
+	<meta charset="utf-8">
+	<!-- ### DNS Prefetch ### -->
+	<meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+	<!-- ### Preload ### -->
+	
+
+	<!-- ### Meta & Title & Info ### -->
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>為什麼要學習 Haskell ? | 點燈坊</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color>
+
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="目前幾乎主流語言都或多或少提供 FP，但由於各語言有各自包袱，因此都只能提供妥協後的方案，初學者卻很難發現其 FP 精神；也由於 Imperative 與 OOP 寫法仍保留，很容易不知不覺又使用 Imperatve 與 OOP 思考，因此我們需要的是一個 Pure Functional 語言重新格式化腦袋。">
+<!-- Keywords -->
+<meta name="keywords" content=", Haskell">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+	<!-- ### Import File ### -->
+	
+	<!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+	
+	<!-- ### Site Verification ### -->
+	
+
+	<!-- ### RSS ### -->
+	
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+	<!-- ### WebApp ### -->
+	<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="點燈坊">
+<meta name="msapplication-starturl" content="https://fpjs.fun">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="點燈坊">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+	<!-- ### The Open Graph & Twitter Card Protocol ### -->
+	<meta property="og:title" content="為什麼要學習 Haskell ? | 點燈坊">
+<meta property="og:site_name" content="點燈坊">
+
+<meta property="og:url" content="https://fpjs.fun/haskell/general/overview/">
+<meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
+<meta property="og:description" content="目前幾乎主流語言都或多或少提供 FP，但由於各語言有各自包袱，因此都只能提供妥協後的方案，初學者卻很難發現其 FP 精神；也由於 Imperative 與 OOP 寫法仍保留，很容易不知不覺又使用 Imperatve 與 OOP 思考，因此我們需要的是一個 Pure Functional 語言重新格式化腦袋。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-02-05T16:42:12.000Z">
+<meta property="article:modified_time" content="2020-02-05T16:42:12.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", Haskell">
+
+
+	<!-- ### Analytics ### -->
+	
+
+
+
+
+
+	<!-- ### Canonical link ### -->
+	<link rel="canonical" href="https://fpjs.fun/haskell/general/overview/">
+	<!-- ### Structured Data ### -->
+	
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://fpjs.fun/haskell/general/overview/",
+    "@type": "BlogPosting",
+    "logo": "https://fpjs.fun/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://fpjs.fun/haskell/general/overview/"
+    },
+    "headline": "為什麼要學習 Haskell ? | 點燈坊",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://fpjs.fun/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2020-02-05T16:42:12.000Z",
+    "dateModified": "2020-02-05T16:57:01.482Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://fpjs.fun/img/default_avatar.png"
+        },
+        "description": "學而時習之，不亦悅乎"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "點燈坊",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://fpjs.fun/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://fpjs.fun/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", Haskell",
+    "description": "目前幾乎主流語言都或多或少提供 FP，但由於各語言有各自包袱，因此都只能提供妥協後的方案，初學者卻很難發現其 FP 精神；也由於 Imperative 與 OOP 寫法仍保留，很容易不知不覺又使用 Imperatve 與 OOP 思考，因此我們需要的是一個 Pure Functional 語言重新格式化腦袋。"
+}
+</script>
+
+	<!-- ### Custom Head ### -->
+	
+</head>
+<body>
+	
+	
+	<!-- ### Main content ### -->
+	<header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      點燈坊
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    學而時習之，不亦悅乎
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">Home</a>
+      <a href="/tutorial/" class="navbar-link">Tutorial</a>
+      <a href="/archives/" class="navbar-link hide-sm">Archives</a>
+      <a href="/tags/" class="navbar-link">Tags</a>
+      <a href="/search" class="navbar-link">Search</a>
+      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+	
+<!-- ## Post ## -->
+<div class="post-container">
+	<div id="post-card" class="card">
+		<div class="card-item-container">
+			<div class="card-inner-cell">
+				<div class="card-header">
+					
+<h1 class="card-title h3 mb-2">為什麼要學習 Haskell ?</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2020-02-06</span>
+</div>
+				</div>
+				<div class="card-body">
+					<article id="post-content">
+						<p>目前幾乎主流語言都或多或少提供 FP，但由於各語言有各自包袱，因此都只能提供妥協後的方案，初學者卻很難發現其 FP 精神；也由於 Imperative 與 OOP 寫法仍保留，很容易不知不覺又使用 Imperatve 與 OOP 思考，因此我們需要的是一個 Pure Functional 語言重新格式化腦袋。</p>
+<a id="more"></a>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.3<br>Haskell for Mac 1.7.0<br>GHC 8.4.3</p>
+<h2 id="Multi-paradigm-Language"><a href="#Multi-paradigm-Language" class="headerlink" title="Multi-paradigm Language"></a>Multi-paradigm Language</h2><p>現在主流語言幾乎 multi-paradigm，以個人工作上用過的語言為例：C++、PHP、C#、ECMAScript、F# 都或多或少提供 FP 能力：</p>
+<ul>
+<li><strong>C++、C#、PHP</strong>：以 imperative 與 OOP 為基礎擴充語言支援 FP，如 C# 的 FP 就是以 OOP 模擬而成</li>
+<li><strong>ECMAScript</strong>：是個 7 分 FP，2 分 OOP 與 1 分 imperative 的奇特語言，不過大部分人卻只使用其只有 1 分的 imperative，而其 OOP 亦使用 FP 加以模擬，但 ECMAScript 卻是本質上最接近 FP 的主流語言</li>
+<li><strong>F#</strong>：非常接近完整 FP，但亦提供 imperative 與 OOP 支援，只可惜 F# 並非主流語言</li>
+</ul>
+<h2 id="PHP、CSharp"><a href="#PHP、CSharp" class="headerlink" title="PHP、CSharp"></a>PHP、CSharp</h2><p>我個人曾經在 PHP 與 C# 學習 FP，但效果都不好，主要是 PHP 與 C# 本身 imperative 與 OOP 包袱太重，擴充支援的 FP 很不直覺，常會有明明 PHP 與 C# 本身 imperative 與 OOP 已經很好用，為什麼要砸自己的腳學習奇怪 FP 的感覺。</p>
+<h2 id="FSharp"><a href="#FSharp" class="headerlink" title="FSharp"></a>FSharp</h2><p>F# 是我第一個 FP 啟蒙語言，F# 支援 immutable、first-class function、curried function、partial application、higher-order funtion、point-free、pipeline 、function composition、option、pattern matching 等眾多 FP 代表性功能，且 FP 語法非常精簡直覺，可讀性亦高，唯一缺點是 F# 仍支援 imperative 與 OOP，因此不算 pure functional，只能算 functional-first，且 F# 亦不算主流語言，實用性不高。</p>
+<h2 id="ECMAScript"><a href="#ECMAScript" class="headerlink" title="ECMAScript"></a>ECMAScript</h2><p>由於 F# 打通了我 FP 任督二脈，讓我以完全不同角度看待曾經很鄙視的 ECMAScript，其實 ECMAScript 已支援 first-class function、closure、arrow function、IIFE、higher-order function，而 curried function 亦可使用 arrow function 實現，也能透過 Ramda 輔助支援 partial application、point-free、pipeline 與 function composition、lens … 等，已經算是 <code>準 FP 語言</code>，且 ECMAScript 無論前端後端都能使用，實用性超高。</p>
+<p>ECMAScript 雖然是準 FP 語言，但仍有其不足之處，如缺乏 immutable、maybe、algebraic data type 、pattern matching …等，雖然都可透過 library 補全，但畢竟不是原生支援，syntax 沒那麼直覺漂亮，學習起來效果也沒那麼直覺。</p>
+<p>此外一些 algebraic data type (如 functor、monad、monoid … 等) 應用，在 ECMAScript 生態圈也不容易學習，最後還是要求助於 pure functional 語言生態圈。</p>
+<h2 id="Haskell"><a href="#Haskell" class="headerlink" title="Haskell"></a>Haskell</h2><p><img src="/images/haskell/general/overview/overview000.jpg" alt="overview000"></p>
+<p>一直到我遇到 Haskell，一個 pure functional 語言，才發現我之前走了太多彎路了。</p>
+<p>Haskell 是一個完全以 FP 設計的語言，有四個很了不起特色：</p>
+<ul>
+<li>Everything  is immutable</li>
+<li>Everything is expression</li>
+<li>Everything is function</li>
+<li>Pure functional language</li>
+</ul>
+<h2 id="Everything-is-Immutable"><a href="#Everything-is-Immutable" class="headerlink" title="Everything is Immutable"></a>Everything is Immutable</h2><p>由於 immutable 無法修改 variable，我們被逼的將修改 variable 的任務切割成眾多小任務而造就 pure function，在重構階段發現重複而抽出 higher-order function，最後再以 function composition 收工，可發現 immutable 是 pure function、higher-order function 與 function composition 的催化劑，這只有在 pure functional 語言才能體會，在 multi-paradigm 語言因為有太多解法，不見得會走 pure function 這條路。</p>
+<h2 id="Everything-is-Expression"><a href="#Everything-is-Expression" class="headerlink" title="Everything is Expression"></a>Everything is Expression</h2><p>ECMAScript 就是個典型 statement 與 expression 混合語言，statement 適合 imperative，而 expression 適合 functional，也因為 ECMAScript 支援 statement，這開啟了大部分人以 imperative 使用 ECMAScript 之門，這只發揮了其 10% 功力；而 pure functional 語言只有 expression，可讓我們專心以 FP 解決問題。</p>
+<h2 id="Everything-is-Function"><a href="#Everything-is-Function" class="headerlink" title="Everything is Function"></a>Everything is Function</h2><p>多半 multi-paradigm 語言是 class 與 function 並存，ECMAScript 2015 也漸漸補齊 class 該有功能，F# 也是 function 與 type 兼具，而 Haskell 只有 function，可讓我們專心以 FP 解決問題。</p>
+<h2 id="Pure-Functional-Language"><a href="#Pure-Functional-Language" class="headerlink" title="Pure Functional Language"></a>Pure Functional Language</h2><p>也由於 Haskell 是完整 FP 語言，沒有 imperative 與 OOP 包袱，處處以 FP 設計，也不必再像 ECMAScript 求助於大量 library，在 Haskell 原生 syntax 就能感受到 FP 強大威力，非常適合用來學習 FP。</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>Multi-paradigm 語言的優點是廣納百川，讓你在解決問題有多種武器，但缺點是由於解決問題方法太多，並不適合學習特定 paradigm；反之 single-paradigm 語言由於 syntax 明確乾淨沒有包袱，有助於專心學習該 paradigm</li>
+<li>學習程式語言不見的都要以實用角度出發，若一個語言能讓你改變思考方式，是一個新的 paradigm，那就值得學習；反之若 paradigm 相同，只是 syntax 不同而已，就不必浪費時間了</li>
+<li>Haskell 能讓我們大腦練習全新 paradigm，但也不用擔心 Haskell 實用性不高，因為我們可藉由 Haskell 學習純 FP 思考，日後再以 ECMAScript 實現</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.ithome.com.tw/users/林信良" target="_blank" rel="noopener">良葛格</a>, <a href="https://www.ithome.com.tw/voice/92652" target="_blank" rel="noopener">就來談談 Haskell</a></p>
+
+					</article>
+					<p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/Haskell/'>#&nbsp;Haskell</a>
+    
+  </span>
+  
+</p>
+				</div>
+				<div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/ramda/array/sortwith/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 sortWith() 針對多條件排序</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<!-- ### Footer ### -->
+	<footer class="text-center">
+  <!-- footer copyright -->
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://fpjs.fun">點燈坊</a>
+  </p>
+</footer>
+	
+	<!-- ### Import File ### -->
+	<!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+</body>
+</html>
