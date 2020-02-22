@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-02-20T10:51:25.000Z",
-    "dateModified": "2020-02-20T10:53:30.715Z",
+    "dateModified": "2020-02-22T11:34:41.870Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -460,11 +460,24 @@ a:hover {
   <span class="token keyword">return</span> result
 <span class="token punctuation">}</span>
 
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'author'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'author'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Imperative 會使用 <code>for</code> loop，先使用 <code>Object.assign()</code> clone object，在搭配 <code>[]</code> 以指定值對 object 新增 property，最後將 <code>obj</code> push 進 <code>result</code> array 回傳。</p>
+<p>Imperative 會先建立 <code>result</code> empty array，使用 <code>for</code> loop 對 data 一筆一筆處理，然後使用 <code>Object.assign()</code> clone object，在搭配 <code>[]</code> 以指定值對 object 新增 property，最後將 <code>obj</code> push 進 <code>result</code> array 回傳。</p>
 <p><img src="/images/ramda/cookbook/map-assoc/assoc000.png" alt="assoc000"></p>
-<h2 id="ECMAScript"><a href="#ECMAScript" class="headerlink" title="ECMAScript"></a>ECMAScript</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+<h2 id="ECMAScript"><a href="#ECMAScript" class="headerlink" title="ECMAScript"></a>ECMAScript</h2><h3 id="reduce"><a href="#reduce" class="headerlink" title="reduce()"></a>reduce()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> k <span class="token operator">=</span><span class="token operator">></span> v <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token operator">...</span>a<span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token operator">...</span>x<span class="token punctuation">,</span> <span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">:</span> v<span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'author'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>只要能使用 <code>for</code> loop，就能使用 <code>reduce()</code> 改寫。</p>
+<p><img src="/images/ramda/cookbook/map-assoc/assoc007.png" alt="assoc007"></p>
+<h3 id="map"><a href="#map" class="headerlink" title="map()"></a>map()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
@@ -472,7 +485,7 @@ console<span class="token punctuation">.</span><span class="token function">dir<
 
 <span class="token keyword">let</span> f <span class="token operator">=</span> k <span class="token operator">=</span><span class="token operator">></span> v <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span>x<span class="token punctuation">,</span> <span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">:</span> v<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'author'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'author'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>ECMAScript 可使用 <code>map()</code> 與 object spread 新增 property。</p>
 <p><img src="/images/ramda/cookbook/map-assoc/assoc001.png" alt="assoc001"></p>
@@ -486,9 +499,9 @@ console<span class="token punctuation">.</span><span class="token function">dir<
 
 <span class="token keyword">let</span> f <span class="token operator">=</span> k <span class="token operator">=</span><span class="token operator">></span> v <span class="token operator">=</span><span class="token operator">></span> <span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span>x<span class="token punctuation">,</span> <span class="token punctuation">[</span>k<span class="token punctuation">]</span><span class="token punctuation">:</span> v<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'author'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'author'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>可使用 Ramda 的 <code>map()</code> 使 <code>arr</code> point-free。</p>
+<p>可使用 Ramda 的 <code>map()</code> 使 <code>arr</code> argument point-free。</p>
 <p><img src="/images/ramda/cookbook/map-assoc/assoc002.png" alt="assoc002"></p>
 <h2 id="assoc"><a href="#assoc" class="headerlink" title="assoc()"></a>assoc()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> assoc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
@@ -500,7 +513,7 @@ console<span class="token punctuation">.</span><span class="token function">dir<
 
 <span class="token keyword">let</span> f <span class="token operator">=</span> k <span class="token operator">=</span><span class="token operator">></span> v <span class="token operator">=</span><span class="token operator">></span> <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">assoc</span><span class="token punctuation">(</span>k<span class="token punctuation">)</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'author'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'author'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可使用 <code>assoc()</code> 新增 property 產生 <code>map()</code> 的 callback。</p>
 <p><img src="/images/ramda/cookbook/map-assoc/assoc003.png" alt="assoc003"></p>
@@ -517,7 +530,7 @@ console<span class="token punctuation">.</span><span class="token function">dir<
   <span class="token function">assoc</span><span class="token punctuation">(</span>k<span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span>
 
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'author'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'author'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於 <code>assoc()</code> 是 <code>map()</code> 的 callback，因此可用 <code>compose()</code> 將 <code>assoc()</code> 與 <code>map()</code> 組合，最後利用 IIFE 傳入 <code>v</code> 求得結果。</p>
 <p><img src="/images/ramda/cookbook/map-assoc/assoc004.png" alt="assoc004"></p>
@@ -534,7 +547,7 @@ console<span class="token punctuation">.</span><span class="token function">dir<
   <span class="token function">assoc</span><span class="token punctuation">(</span>k<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'author'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'author'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於 <code>v</code> 為最後一個 argument，剛好可 point-free 消除，但可惜還留下 <code>k</code>。</p>
 <p><img src="/images/ramda/cookbook/map-assoc/assoc005.png" alt="assoc005"></p>
@@ -552,7 +565,7 @@ console<span class="token punctuation">.</span><span class="token function">dir<
 <span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'author'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'author'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'John Doe'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也有另外一種 point-free 方法，由於 <code>assoc()</code> 要接受 <code>k</code> 與 <code>v</code> 兩個 argument，可使用 <code>useWith()</code> 與 <code>identity()</code> 墊出兩個 argument，如此則完全 point-free。</p>
 <p><code>useWith()</code> 雖然支援 curried function，但使用 <code>compose()</code> 時會當成 unary function 組合，因此最後結果不是 curried function，需再使用 <code>curry()</code> 使其 currying。</p>
@@ -582,7 +595,7 @@ console<span class="token punctuation">.</span><span class="token function">dir<
 		<li class="page-item page-prev">
 			<a href="/ramda/cookbook/chain-assoc/">
 				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">如何根據 ID 對應 Object 產生新的欄位 ?</div>
+				<div class="page-item-subtitle">如何根據 ID 對應 Object 產生新欄位 ?</div>
 			</a>
 		</li>
 		
