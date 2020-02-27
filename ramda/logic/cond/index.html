@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html >
+<head><meta name="generator" content="Hexo 3.9.0">
+	<meta charset="utf-8">
+	<!-- ### DNS Prefetch ### -->
+	<meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+	<!-- ### Preload ### -->
+	
+
+	<!-- ### Meta & Title & Info ### -->
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>使用 cond() 實現 Switch Case | 點燈坊</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color>
+
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="寫程式免不了要使用判斷邏輯，若要實現 switch 根據不同條件執行不同 function，Ramda 提供了 cond()。">
+<!-- Keywords -->
+<meta name="keywords" content=", Ramda">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+	<!-- ### Import File ### -->
+	
+	<!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+	
+	<!-- ### Site Verification ### -->
+	
+
+	<!-- ### RSS ### -->
+	
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+	<!-- ### WebApp ### -->
+	<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="點燈坊">
+<meta name="msapplication-starturl" content="https://fpjs.fun">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="點燈坊">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+	<!-- ### The Open Graph & Twitter Card Protocol ### -->
+	<meta property="og:title" content="使用 cond() 實現 Switch Case | 點燈坊">
+<meta property="og:site_name" content="點燈坊">
+
+<meta property="og:url" content="https://fpjs.fun/ramda/logic/cond/">
+<meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
+<meta property="og:description" content="寫程式免不了要使用判斷邏輯，若要實現 switch 根據不同條件執行不同 function，Ramda 提供了 cond()。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-02-27T00:00:41.000Z">
+<meta property="article:modified_time" content="2020-02-27T00:00:41.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", Ramda">
+
+
+	<!-- ### Analytics ### -->
+	
+
+
+
+
+
+	<!-- ### Canonical link ### -->
+	<link rel="canonical" href="https://fpjs.fun/ramda/logic/cond/">
+	<!-- ### Structured Data ### -->
+	
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://fpjs.fun/ramda/logic/cond/",
+    "@type": "BlogPosting",
+    "logo": "https://fpjs.fun/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://fpjs.fun/ramda/logic/cond/"
+    },
+    "headline": "使用 cond() 實現 Switch Case | 點燈坊",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://fpjs.fun/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2020-02-27T00:00:41.000Z",
+    "dateModified": "2020-02-27T00:02:30.219Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://fpjs.fun/img/default_avatar.png"
+        },
+        "description": "學而時習之，不亦悅乎"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "點燈坊",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://fpjs.fun/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://fpjs.fun/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", Ramda",
+    "description": "寫程式免不了要使用判斷邏輯，若要實現 switch 根據不同條件執行不同 function，Ramda 提供了 cond()。"
+}
+</script>
+
+	<!-- ### Custom Head ### -->
+	
+</head>
+<body>
+	
+	
+	<!-- ### Main content ### -->
+	<header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      點燈坊
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    學而時習之，不亦悅乎
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">Home</a>
+      <a href="/tutorial/" class="navbar-link">Tutorial</a>
+      <a href="/archives/" class="navbar-link hide-sm">Archives</a>
+      <a href="/tags/" class="navbar-link">Tags</a>
+      <a href="/search" class="navbar-link">Search</a>
+      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+	
+<!-- ## Post ## -->
+<div class="post-container">
+	<div id="post-card" class="card">
+		<div class="card-item-container">
+			<div class="card-inner-cell">
+				<div class="card-header">
+					
+<h1 class="card-title h3 mb-2">使用 cond() 實現 Switch Case</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2020-02-27</span>
+</div>
+				</div>
+				<div class="card-body">
+					<article id="post-content">
+						<p>寫程式免不了要使用判斷邏輯，若要實現 <code>switch</code> 根據不同條件執行不同 function，Ramda 提供了 <code>cond()</code>。</p>
+<a id="more"></a>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.3<br>VS Code 1.42.1<br>Quokka 1.0.277<br>Ramda 0.27.0</p>
+<h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Rx in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FRP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+  <span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> x <span class="token keyword">of</span> arr<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> x_ <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">assign</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span>
+
+    <span class="token keyword">switch</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span>category<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">case</span> <span class="token string">'FP'</span><span class="token punctuation">:</span>
+        x_<span class="token punctuation">.</span>price <span class="token operator">=</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> <span class="token number">0.8</span>
+        <span class="token keyword">break</span>
+      <span class="token keyword">case</span> <span class="token string">'FRP'</span><span class="token punctuation">:</span>
+        x_<span class="token punctuation">.</span>price <span class="token operator">=</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> <span class="token number">0.7</span>
+        <span class="token keyword">break</span>
+      <span class="token keyword">default</span><span class="token punctuation">:</span>
+        x_<span class="token punctuation">.</span>price <span class="token operator">=</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> <span class="token number">0.6</span>
+    <span class="token punctuation">}</span>
+
+    result<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>x_<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">return</span> result
+<span class="token punctuation">}</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 1 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Rx in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FRP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>若 <code>category</code> 為 <code>FP</code>，<code>price</code> 打 8 折</li>
+<li>若 <code>category</code> 為 <code>FRP</code>，<code>price</code> 打 7 折</li>
+<li>其餘則打 6 折</li>
+</ul>
+<p>第 10 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> x <span class="token keyword">of</span> arr<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> x_ <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">assign</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span>
+
+  <span class="token keyword">switch</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span>category<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token string">'FP'</span><span class="token punctuation">:</span>
+      x_<span class="token punctuation">.</span>price <span class="token operator">=</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> <span class="token number">0.8</span>
+      <span class="token keyword">break</span>
+    <span class="token keyword">case</span> <span class="token string">'FRP'</span><span class="token punctuation">:</span>
+      x_<span class="token punctuation">.</span>price <span class="token operator">=</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> <span class="token number">0.7</span>
+      <span class="token keyword">break</span>
+    <span class="token keyword">default</span><span class="token punctuation">:</span>
+      x_<span class="token punctuation">.</span>price <span class="token operator">=</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> <span class="token number">0.6</span>
+  <span class="token punctuation">}</span>
+
+  result<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>x_<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Imperative 會先建立 <code>result</code> empty array，使用 <code>for</code> loop 對 data 一筆一筆處理，然後使用 <code>Object.assign()</code> clone object，並使用 <code>switch case</code> 判斷 <code>category</code>，依據各自 case 計算 <code>price</code>，最後 push 進 <code>result</code> array 回傳。</p>
+<p><img src="/images/ramda/logic/cond/cond000.png" alt="cond000"></p>
+<h2 id="ECMAScript"><a href="#ECMAScript" class="headerlink" title="ECMAScript"></a>ECMAScript</h2><h3 id="reduce"><a href="#reduce" class="headerlink" title="reduce()"></a>reduce()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Rx in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FRP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">switch</span> <span class="token punctuation">(</span>x<span class="token punctuation">.</span>category<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token string">'FP'</span><span class="token punctuation">:</span>
+      <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token operator">...</span>a<span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token operator">...</span>x<span class="token punctuation">,</span> price<span class="token punctuation">:</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> <span class="token number">0.8</span> <span class="token punctuation">}</span><span class="token punctuation">]</span>
+    <span class="token keyword">case</span> <span class="token string">'FRP'</span><span class="token punctuation">:</span>
+      <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token operator">...</span>a<span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token operator">...</span>x<span class="token punctuation">,</span> price<span class="token punctuation">:</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> <span class="token number">0.7</span> <span class="token punctuation">}</span><span class="token punctuation">]</span>
+    <span class="token keyword">default</span><span class="token punctuation">:</span>
+      <span class="token keyword">return</span> <span class="token punctuation">[</span><span class="token operator">...</span>a<span class="token punctuation">,</span> <span class="token punctuation">{</span> <span class="token operator">...</span>x<span class="token punctuation">,</span> price<span class="token punctuation">:</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> <span class="token number">0.6</span> <span class="token punctuation">}</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>只要能使用 <code>for</code> loop，就能使用 <code>reduce()</code> 改寫。</p>
+<p><img src="/images/ramda/logic/cond/cond001.png" alt="cond001"></p>
+<h3 id="map"><a href="#map" class="headerlink" title="map()"></a>map()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Rx in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FRP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">switch</span> <span class="token punctuation">(</span>x<span class="token punctuation">.</span>category<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token string">'FP'</span><span class="token punctuation">:</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token operator">...</span>x<span class="token punctuation">,</span> price<span class="token punctuation">:</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> <span class="token number">0.8</span> <span class="token punctuation">}</span>
+    <span class="token keyword">case</span> <span class="token string">'FRP'</span><span class="token punctuation">:</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span> <span class="token operator">...</span>x<span class="token punctuation">,</span> price<span class="token punctuation">:</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> <span class="token number">0.7</span> <span class="token punctuation">}</span>
+    <span class="token keyword">default</span><span class="token punctuation">:</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span> <span class="token operator">...</span>x<span class="token punctuation">,</span> price<span class="token punctuation">:</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> <span class="token number">0.6</span> <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>ECMAScript 比較好的方法是改用 <code>map()</code>，並在其 callback 中使用 <code>switch case</code> 判斷。</p>
+<p><img src="/images/ramda/logic/cond/cond002.png" alt="cond002"></p>
+<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Rx in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FRP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">switch</span> <span class="token punctuation">(</span>x<span class="token punctuation">.</span>category<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">case</span> <span class="token string">'FP'</span><span class="token punctuation">:</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token operator">...</span>x<span class="token punctuation">,</span> price<span class="token punctuation">:</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> <span class="token number">0.8</span> <span class="token punctuation">}</span>
+    <span class="token keyword">case</span> <span class="token string">'FRP'</span><span class="token punctuation">:</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span> <span class="token operator">...</span>x<span class="token punctuation">,</span> price<span class="token punctuation">:</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> <span class="token number">0.7</span> <span class="token punctuation">}</span>
+    <span class="token keyword">default</span><span class="token punctuation">:</span>
+      <span class="token keyword">return</span> <span class="token punctuation">{</span> <span class="token operator">...</span>x<span class="token punctuation">,</span> price<span class="token punctuation">:</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> <span class="token number">0.6</span> <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>也可使用 Ramda 的 <code>map()</code> 取代，可使 <code>arr</code> argument point-free。</p>
+<p><img src="/images/ramda/logic/cond/cond003.png" alt="cond003"></p>
+<h2 id="cond"><a href="#cond" class="headerlink" title="cond()"></a>cond()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> compose<span class="token punctuation">,</span> multiply<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> propEq <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> T<span class="token punctuation">,</span> cond<span class="token punctuation">,</span> chain<span class="token punctuation">,</span> assoc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Rx in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FRP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span><span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">let</span> applyDiscount <span class="token operator">=</span> discount <span class="token operator">=</span><span class="token operator">></span> <span class="token function">compose</span><span class="token punctuation">(</span><span class="token function">multiply</span><span class="token punctuation">(</span>discount<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">cond</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+  <span class="token punctuation">[</span><span class="token function">propEq</span><span class="token punctuation">(</span><span class="token string">'category'</span><span class="token punctuation">,</span> <span class="token string">'FP'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">chain</span><span class="token punctuation">(</span><span class="token function">assoc</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">applyDiscount</span><span class="token punctuation">(</span><span class="token number">0.8</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">[</span><span class="token function">propEq</span><span class="token punctuation">(</span><span class="token string">'category'</span><span class="token punctuation">,</span> <span class="token string">'FRP'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">chain</span><span class="token punctuation">(</span><span class="token function">assoc</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">applyDiscount</span><span class="token punctuation">(</span><span class="token number">0.7</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">[</span>T<span class="token punctuation">,</span> <span class="token function">chain</span><span class="token punctuation">(</span><span class="token function">assoc</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">applyDiscount</span><span class="token punctuation">(</span><span class="token number">0.6</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Ramda 正規方式是使用 <code>cond()</code> 取代 <code>switch case</code>。</p>
+<p>當 <code>propEq()</code> 為 <code>true</code> 時，使用 <code>chain()</code> 與 <code>assoc()</code> 組合改變 <code>price</code> 值。</p>
+<blockquote>
+<p><strong>cond()</strong><br><code>[[(*… → Boolean),(*… → *)]] → (*… → *)</code><br>根據條件回傳不同 function，相當於 <code>switch case</code></p>
+</blockquote>
+<p><code>[[(*… → Boolean),(*… → *)]]</code>：array of array，每個小 array 包含 predicate 與要執行 function</p>
+<p><code>(*… → *)</code>：回傳所選擇 function</p>
+<p>另外 <code>T()</code> 相當於 <code>() =&gt; true</code>，由於 always true，相當於 <code>switch case</code> 的 <code>default</code>。</p>
+<p><img src="/images/ramda/logic/cond/cond004.png" alt="cond004"></p>
+<h2 id="Lens"><a href="#Lens" class="headerlink" title="Lens"></a>Lens</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> cond<span class="token punctuation">,</span> propEq<span class="token punctuation">,</span> identity<span class="token punctuation">,</span> lensProp<span class="token punctuation">,</span> over<span class="token punctuation">,</span> multiply<span class="token punctuation">,</span> T <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Rx in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FRP'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span><span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">let</span> priceLens <span class="token operator">=</span> <span class="token function">lensProp</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">cond</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+  <span class="token punctuation">[</span><span class="token function">propEq</span><span class="token punctuation">(</span><span class="token string">'category'</span><span class="token punctuation">,</span> <span class="token string">'FP'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">over</span><span class="token punctuation">(</span>priceLens<span class="token punctuation">,</span> <span class="token function">multiply</span><span class="token punctuation">(</span><span class="token number">0.8</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">[</span><span class="token function">propEq</span><span class="token punctuation">(</span><span class="token string">'category'</span><span class="token punctuation">,</span> <span class="token string">'FRP'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">over</span><span class="token punctuation">(</span>priceLens<span class="token punctuation">,</span> <span class="token function">multiply</span><span class="token punctuation">(</span><span class="token number">0.7</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">[</span>T<span class="token punctuation">,</span> <span class="token function">over</span><span class="token punctuation">(</span>priceLens<span class="token punctuation">,</span> <span class="token function">multiply</span><span class="token punctuation">(</span><span class="token number">0.6</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>若要修改 object，透過 lens 是不錯方式。</p>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> priceLens <span class="token operator">=</span> <span class="token function">lensProp</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>先使用 <code>lensProp()</code> 為 <code>price</code> property 建立 lens。</p>
+<p>12 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token punctuation">[</span><span class="token function">propEq</span><span class="token punctuation">(</span><span class="token string">'category'</span><span class="token punctuation">,</span> <span class="token string">'FP'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">over</span><span class="token punctuation">(</span>priceLens<span class="token punctuation">,</span> <span class="token function">multiply</span><span class="token punctuation">(</span><span class="token number">0.8</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>直接透過 <code>over</code> 修改 <code>price</code> property，不必搭配 <code>assoc()</code>、<code>chain()</code> 與 <code>prop()</code>。</p>
+<p><img src="/images/ramda/logic/cond/cond005.png" alt="cond005"></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li><code>ifElse()</code>、<code>when()</code> 與 <code>unless()</code> 都只適合單一條件，若要多條件就要靠 <code>cond()</code></li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#cond" target="_blank" rel="noopener">cond()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#map" target="_blank" rel="noopener">map()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#lensProp" target="_blank" rel="noopener">lensProp()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#chain" target="_blank" rel="noopener">chain()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#assoc" target="_blank" rel="noopener">assoc()</a></p>
+
+					</article>
+					<p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/Ramda/'>#&nbsp;Ramda</a>
+    
+  </span>
+  
+</p>
+				</div>
+				<div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/vue/component/extract-computed/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">將 Computed 重複部分也抽成 Computed</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<!-- ### Footer ### -->
+	<footer class="text-center">
+  <!-- footer copyright -->
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://fpjs.fun">點燈坊</a>
+  </p>
+</footer>
+	
+	<!-- ### Import File ### -->
+	<!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+</body>
+</html>
