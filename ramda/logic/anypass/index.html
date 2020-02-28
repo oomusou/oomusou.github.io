@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-02-27T13:02:39.000Z",
-    "dateModified": "2020-02-28T11:51:49.983Z",
+    "dateModified": "2020-02-28T13:39:31.107Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -442,7 +442,6 @@ a:hover {
 						<p>Ramda 有 <code>any()</code> 並不令人訝異，ECMAScript 也有 <code>some()</code>，但 Ramda 又另外提供了 <code>anyPass()</code>，這與 <code>any()</code> 有什麼不同呢 ?</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.14.5<br>VS Code 1.33.0<br>Quokka 1.0.205<br>Ramda 0.26.1</p>
-<h2 id="Version-1"><a href="#Version-1" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.14.5<br>VS Code 1.33.0<br>Quokka 1.0.205<br>Ramda 0.26.1</p>
 <h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> x <span class="token operator">=</span> undefined
 <span class="token keyword">let</span> y <span class="token operator">=</span> <span class="token keyword">null</span>
 <span class="token keyword">let</span> z <span class="token operator">=</span> <span class="token string">''</span>
@@ -532,7 +531,23 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Imperative 會先建立 <code>result</code> empty array，使用 <code>for</code> loop 對 data 一筆一筆處理，然後使用 <code>if</code> 判斷 <code>price</code> 是否為 <code>100</code> 或 <code>200</code>，最後 push 進 <code>result</code> array 回傳。</p>
 <p><img src="/images/ramda/logic/anypass/anypass005.png" alt="anypass005"></p>
-<h2 id="ECMAScript"><a href="#ECMAScript" class="headerlink" title="ECMAScript"></a>ECMAScript</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+<h2 id="ECMAScript"><a href="#ECMAScript" class="headerlink" title="ECMAScript"></a>ECMAScript</h2><h3 id="reduce"><a href="#reduce" class="headerlink" title="reduce()"></a>reduce()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>
+  <span class="token punctuation">(</span>x<span class="token punctuation">.</span>price <span class="token operator">===</span> <span class="token number">100</span> <span class="token operator">||</span> x<span class="token punctuation">.</span>price <span class="token operator">===</span> <span class="token number">200</span><span class="token punctuation">)</span> <span class="token operator">?</span> 
+  <span class="token punctuation">[</span><span class="token operator">...</span>a<span class="token punctuation">,</span> x<span class="token punctuation">]</span> <span class="token punctuation">:</span> 
+  a
+<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>只要能使用 <code>for</code> loop，就能使用 <code>reduce()</code> 改寫。</p>
+<p><img src="/images/ramda/logic/anypass/anypass007.png" alt="anypass007"></p>
+<h3 id="filter"><a href="#filter" class="headerlink" title="filter()"></a>filter()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
