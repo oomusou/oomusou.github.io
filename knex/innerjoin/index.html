@@ -174,8 +174,8 @@ a:hover {
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-13T10:48:27.000Z">
-<meta property="article:modified_time" content="2020-01-13T10:48:27.000Z">
+<meta property="article:published_time" content="2020-03-05T23:42:21.000Z">
+<meta property="article:modified_time" content="2020-03-05T23:42:21.000Z">
 <meta property="article:author" content="Sam Xiao">
 <meta property="og:article:tag" content=", Knex">
 
@@ -209,8 +209,8 @@ a:hover {
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2020-01-13T10:48:27.000Z",
-    "dateModified": "2020-01-13T10:50:13.728Z",
+    "datePublished": "2020-03-05T23:42:21.000Z",
+    "dateModified": "2020-03-05T23:45:35.013Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -434,7 +434,7 @@ a:hover {
 <div class="post-header-info">
 	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
 		alt="Sam Xiao's Avatar">
-	<span>2020-01-13</span>
+	<span>2020-03-06</span>
 </div>
 				</div>
 				<div class="card-body">
@@ -442,33 +442,74 @@ a:hover {
 						<p>Inner Join 為 SQL 代表性功能，Knex 當然也支援，且提供多種寫法。</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.2<br>WebStorm 2019.3.1<br>Docker Desktop 2.1.0.5 (40693)<br>MySQL 8.0.18<br>Knex 0.20.2</p>
-<h2 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h2><pre class="line-numbers highlight language-sql"><code class="language-sql"><span class="token keyword">select</span> books<span class="token punctuation">.</span>title<span class="token punctuation">,</span> books<span class="token punctuation">.</span>price
+<h2 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h2><pre class="line-numbers highlight language-sql"><code class="language-sql"><span class="token keyword">select</span> books<span class="token punctuation">.</span>title<span class="token punctuation">,</span> books<span class="token punctuation">.</span>price<span class="token punctuation">,</span> categories<span class="token punctuation">.</span>name
 <span class="token keyword">from</span> books
 <span class="token keyword">join</span> categories <span class="token keyword">on</span> books<span class="token punctuation">.</span>categoryId <span class="token operator">=</span> categories<span class="token punctuation">.</span>categoryId
 <span class="token keyword">where</span> categories<span class="token punctuation">.</span>name <span class="token operator">=</span> <span class="token string">'JS'</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Inner join 是 SQL 最基本的功能。</p>
 <p><img src="/images/knex/innerjoin/join000.png" alt="join000"></p>
-<h2 id="Knex"><a href="#Knex" class="headerlink" title="Knex"></a>Knex</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'books.title'</span><span class="token punctuation">,</span> <span class="token string">'books.price'</span><span class="token punctuation">)</span>
+<h2 id="Knex"><a href="#Knex" class="headerlink" title="Knex"></a>Knex</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> knex <span class="token keyword">from</span> <span class="token string">'knex'</span>
+
+<span class="token keyword">let</span> mySQL <span class="token operator">=</span> <span class="token function">knex</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  client<span class="token punctuation">:</span> <span class="token string">'mysql'</span><span class="token punctuation">,</span>
+  connection<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    host <span class="token punctuation">:</span> <span class="token string">'localhost'</span><span class="token punctuation">,</span>
+    port<span class="token punctuation">:</span> <span class="token number">3306</span><span class="token punctuation">,</span>
+    user <span class="token punctuation">:</span> <span class="token string">'root'</span><span class="token punctuation">,</span>
+    password <span class="token punctuation">:</span> <span class="token string">'demo'</span><span class="token punctuation">,</span>
+    database <span class="token punctuation">:</span> <span class="token string">'Bookshelf'</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'books.title'</span><span class="token punctuation">,</span> <span class="token string">'books.price'</span><span class="token punctuation">,</span> <span class="token string">'categories.name'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">innerJoin</span><span class="token punctuation">(</span><span class="token string">'categories'</span><span class="token punctuation">,</span> <span class="token string">'books.categoryId'</span><span class="token punctuation">,</span> <span class="token string">'categories.categoryId'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'categories.name'</span><span class="token punctuation">,</span> <span class="token string">'JS'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>14 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'books.title'</span><span class="token punctuation">,</span> <span class="token string">'books.price'</span><span class="token punctuation">,</span> <span class="token string">'categories.name'</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">innerJoin</span><span class="token punctuation">(</span><span class="token string">'categories'</span><span class="token punctuation">,</span> <span class="token string">'books.categoryId'</span><span class="token punctuation">,</span> <span class="token string">'categories.categoryId'</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'categories.name'</span><span class="token punctuation">,</span> <span class="token string">'JS'</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若 inner join 的條件只有一個 field，直接在 <code>innerJoin()</code> 的第二個 argument 與第三個 argument 指定 field 即可。</p>
-<p><img src="/images/knex/innerjoin/join001.png" alt="join001"></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> knex <span class="token keyword">from</span> <span class="token string">'knex'</span>
+
+<span class="token keyword">let</span> mySQL <span class="token operator">=</span> <span class="token function">knex</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  client<span class="token punctuation">:</span> <span class="token string">'mysql'</span><span class="token punctuation">,</span>
+  connection<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    host <span class="token punctuation">:</span> <span class="token string">'localhost'</span><span class="token punctuation">,</span>
+    port<span class="token punctuation">:</span> <span class="token number">3306</span><span class="token punctuation">,</span>
+    user <span class="token punctuation">:</span> <span class="token string">'root'</span><span class="token punctuation">,</span>
+    password <span class="token punctuation">:</span> <span class="token string">'demo'</span><span class="token punctuation">,</span>
+    database <span class="token punctuation">:</span> <span class="token string">'Bookshelf'</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'books.title'</span><span class="token punctuation">,</span> <span class="token string">'books.price'</span><span class="token punctuation">,</span> <span class="token string">'categories.name'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">innerJoin</span><span class="token punctuation">(</span><span class="token string">'categories'</span><span class="token punctuation">,</span> x <span class="token operator">=</span><span class="token operator">></span>
+    x<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'books.categoryId'</span><span class="token punctuation">,</span> <span class="token string">'categories.categoryId'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'categories.name'</span><span class="token punctuation">,</span> <span class="token string">'JS'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>14 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'books.title'</span><span class="token punctuation">,</span> <span class="token string">'books.price'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">innerJoin</span><span class="token punctuation">(</span><span class="token string">'categories'</span><span class="token punctuation">,</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'books.categoryId'</span><span class="token punctuation">,</span> <span class="token string">'categories.categoryId'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'books.title'</span><span class="token punctuation">,</span> <span class="token string">'books.price'</span><span class="token punctuation">,</span> <span class="token string">'categories.name'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">innerJoin</span><span class="token punctuation">(</span><span class="token string">'categories'</span><span class="token punctuation">,</span> x <span class="token operator">=</span><span class="token operator">></span>
+    x<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'books.categoryId'</span><span class="token punctuation">,</span> <span class="token string">'categories.categoryId'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'categories.name'</span><span class="token punctuation">,</span> <span class="token string">'JS'</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>innerJoin()</code> 的第二個 argument 也能傳入 function，使用 <code>this.on()</code> 綁定 field。</p>
-<p><img src="/images/knex/innerjoin/join002.png" alt="join002"></p>
+<p><code>innerJoin()</code> 的第二個 argument 也能傳入 callback，使用 <code>x.on()</code> 綁定 field。</p>
+<p><img src="/images/knex/innerjoin/join001.png" alt="join002"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>若 inner join 需由兩個 field 綁定，則一定要傳入 function，由多個 <code>on()</code> 綁定 field</li>
+<li>若 inner join 需由兩個 field 綁定，則一定要傳入 callback，由多個 <code>on()</code> 綁定 field</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="http://knexjs.org" target="_blank" rel="noopener">Knex</a>, <a href="http://knexjs.org/#Builder-innerJoin" target="_blank" rel="noopener">innerJoin</a></p>
 
@@ -489,19 +530,12 @@ a:hover {
 	<ul class="pagination">
 		<!-- Prev Nav -->
 		
-		<li class="page-item page-prev">
-			<a href="/crocks/maybe/chain/">
-				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 chain() 將兩層 Maybe 攤平</div>
-			</a>
-		</li>
-		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/crocks/maybe/proppath/">
+			<a href="/ramda/array/sort/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 propPath() 取得 Nested Object 的 Property</div>
+				<div class="page-item-subtitle">使用 sort() 自訂排序</div>
 			</a>
 		</li>
 		
