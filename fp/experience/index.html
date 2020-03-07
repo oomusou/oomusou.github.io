@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-03-04T13:52:51.000Z",
-    "dateModified": "2020-03-05T14:52:31.780Z",
+    "dateModified": "2020-03-07T16:27:21.715Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -455,6 +455,11 @@ a:hover {
 <p>現在只要遇到 API 或 library 提供 callback 就超開心，這表示你能使用 Ramda 組合出各種 callback 來 <code>惡搞</code>，而不像傳統只能被 library 侷限住功能。</p>
 <h2 id="別急著將-Promise-Await"><a href="#別急著將-Promise-Await" class="headerlink" title="別急著將 Promise Await"></a>別急著將 Promise Await</h2><p>ECMAScript 的 promise 其實有 monad 特性，將非同步的 side effect 包在 monad 內，讓你在 <code>then()</code> 間寫 pure function，並在最後一個 <code>then()</code> 處理 side effect，但自從有了 <code>async await</code> 之後，大家幾乎馬上將 promise 透過 <code>await</code> 從 monad 取出，然後回到 imperative 的 impure function 世界混戰，這是非常可惜的，這使得自己提早回到 impure function 處理 side effect，並非 promise 設計初衷。</p>
 <p><code>async await</code> 目的是讓只懂 imperative 的人快速上手處理非同步，但不可過度依賴此 syntatic suguar，重點是透過 promise 習慣以 monad 與 pure function 處理 side effect，這對將來學習 maybe, either 等觀念有很大幫助。</p>
+<p>實務上對於 promise 建議兩種寫法：</p>
+<ul>
+<li>由於 promise 有 functor 特性，將 <code>then()</code> 視為 <code>map()</code> 使用，在每個 <code>then()</code> 中使用 pure function 做 transformation</li>
+<li>Promise 亦支援 composition law，可將所有 <code>then()</code> 中的 pure function 先使用 <code>pipe()</code> 組合成 funtion，再交給 <code>then()</code> 一次執行</li>
+</ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>以上四點是我以 FP 用在實務上的領悟，FP 絕對不是只有 no side effect 這麼單純而已，它事實上是很多配套環環相扣而構成完整 paradigm</li>
 <li>想要 OOP 結合 FP 實務上也很困難，畢竟兩者是完全不同 paradigm，很多原則都互相矛盾，建議學習 FP 就走純 FP，並搭配 FP 的配套 design pattern，如 higher order function、immutable、curried function、partial application、function composition、point-free、monad、functor、maybe、either …. 等，OOP 跟 FP 混搭很容易走火入魔，最後變成兩種 paradigm 都不是的四不像，既違反 OOP 原則又違反 FP 原則而裡外不是人</li>
