@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html >
+<head><meta name="generator" content="Hexo 3.9.0">
+	<meta charset="utf-8">
+	<!-- ### DNS Prefetch ### -->
+	<meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+	<!-- ### Preload ### -->
+	
+
+	<!-- ### Meta & Title & Info ### -->
+	<meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>從 Callback、Promise 到 Async Await | 點燈坊</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color>
+
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="ECMAScript 對 Asynchronous 支援比其他語言先進，從最基本的 Callback 演進到 ECMAScript 2105 的 Promise，再演進到 ECMAScript 2017 的 async await。">
+<!-- Keywords -->
+<meta name="keywords" content=", ECMAScript">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform">
+<meta http-equiv="Cache-Control" content="no-siteapp">
+	<!-- ### Import File ### -->
+	
+	<!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+	
+	<!-- ### Site Verification ### -->
+	
+
+	<!-- ### RSS ### -->
+	
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+	<!-- ### WebApp ### -->
+	<meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="點燈坊">
+<meta name="msapplication-starturl" content="https://fpjs.fun">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="點燈坊">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+	<!-- ### The Open Graph & Twitter Card Protocol ### -->
+	<meta property="og:title" content="從 Callback、Promise 到 Async Await | 點燈坊">
+<meta property="og:site_name" content="點燈坊">
+
+<meta property="og:url" content="https://fpjs.fun/ecmascript/promise/overview/">
+<meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
+<meta property="og:description" content="ECMAScript 對 Asynchronous 支援比其他語言先進，從最基本的 Callback 演進到 ECMAScript 2105 的 Promise，再演進到 ECMAScript 2017 的 async await。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-08-26T07:57:53.000Z">
+<meta property="article:modified_time" content="2019-08-26T07:57:53.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", ECMAScript">
+
+
+	<!-- ### Analytics ### -->
+	
+
+
+
+
+
+	<!-- ### Canonical link ### -->
+	<link rel="canonical" href="https://fpjs.fun/ecmascript/promise/overview/">
+	<!-- ### Structured Data ### -->
+	
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://fpjs.fun/ecmascript/promise/overview/",
+    "@type": "BlogPosting",
+    "logo": "https://fpjs.fun/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://fpjs.fun/ecmascript/promise/overview/"
+    },
+    "headline": "從 Callback、Promise 到 Async Await | 點燈坊",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://fpjs.fun/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2019-08-26T07:57:53.000Z",
+    "dateModified": "2019-09-21T02:07:50.277Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://fpjs.fun/img/default_avatar.png"
+        },
+        "description": "學而時習之，不亦悅乎"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "點燈坊",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://fpjs.fun/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://fpjs.fun/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", ECMAScript",
+    "description": "ECMAScript 對 Asynchronous 支援比其他語言先進，從最基本的 Callback 演進到 ECMAScript 2105 的 Promise，再演進到 ECMAScript 2017 的 async await。"
+}
+</script>
+
+	<!-- ### Custom Head ### -->
+	
+</head>
+<body>
+	
+	
+	<!-- ### Main content ### -->
+	<header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      點燈坊
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    學而時習之，不亦悅乎
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">Home</a>
+      <a href="/tutorial/" class="navbar-link">Tutorial</a>
+      <a href="/archives/" class="navbar-link hide-sm">Archives</a>
+      <a href="/tags/" class="navbar-link">Tags</a>
+      <a href="/search" class="navbar-link">Search</a>
+      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+	
+<!-- ## Post ## -->
+<div class="post-container">
+	<div id="post-card" class="card">
+		<div class="card-item-container">
+			<div class="card-inner-cell">
+				<div class="card-header">
+					
+<h1 class="card-title h3 mb-2">從 Callback、Promise 到 Async Await</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2019-08-26</span>
+</div>
+				</div>
+				<div class="card-body">
+					<article id="post-content">
+						<p>ECMAScript 對 Asynchronous 支援比其他語言先進，從最基本的 Callback 演進到 ECMAScript 2105 的 Promise，再演進到 ECMAScript 2017 的 <code>async await</code>。</p>
+<a id="more"></a>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>ECMAScript 5 (Callback)<br>ECMAScript 2015 (Promise)<br>ECMAScript 2017 (Async Await)</p>
+<h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> API <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'../environment'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">export</span> <span class="token keyword">let</span> fetchProducts <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> axios<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>API<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/products`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>實務上我們會將 API 部分另外寫在 <code>api</code> 目錄下，且另外寫 <code>fetchXXX()</code> function，但 <code>axios.get()</code> 回傳的到底是什麼型別呢？</p>
+<p>是 ES6 新的 promise。</p>
+<h2 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h2><p>由於 asynchronous 會在所有 synchronous 執行完才執行，因此 AJAX 回傳的資料，對於 synchronous 而言，屬於一種 <code>未來值</code>。</p>
+<p>也就是 AJAX 所回傳的資料，將來一定會有，但具體時間未知，只能先回傳 promise，一旦 AJAX 抓到資料，你就可以用 promise 去換真實的資料。</p>
+<p><img src="/images/ecmascript/async/overview/async000.jpg" alt="async000"></p>
+<p>就類似你去麥當勞買漢堡，錢都給了，但漢堡還沒做好，但<strong>未來一定會有</strong>，也是 <code>未來值</code>，因此店員會給你 <code>取餐單</code>，將來你可以用 <code>取餐單</code> 去換漢堡。</p>
+<p><code>取餐單</code> 就是 <code>Promise</code>。</p>
+<h2 id="Why-Promise"><a href="#Why-Promise" class="headerlink" title="Why Promise ?"></a>Why Promise ?</h2><p>由 ECMAScript 的 event loop model 可知，有三種屬於 asynchronous：</p>
+<ul>
+<li>DOM</li>
+<li>AJAX (XMLHttpRequest)</li>
+<li><code>setTimeout()</code></li>
+</ul>
+<p>由於前端一定會使用 AJAX 呼叫 API，這屬於 asynchronous 行為，會被安排在 callback queue ，等 synchronous 執行完，最後才執行 asynchronous。</p>
+<h3 id="Node-Style-Callback"><a href="#Node-Style-Callback" class="headerlink" title="Node Style Callback"></a>Node Style Callback</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">ajaxGet</span><span class="token punctuation">(</span><span class="token string">'/products'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>err<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">else</span> <span class="token punctuation">{</span>
+    <span class="token keyword">var</span> product <span class="token operator">=</span> res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token function">ajaxGet</span><span class="token punctuation">(</span><span class="token string">'/product/${ product[0].id }'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>err<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">else</span> <span class="token punctuation">{</span>
+        <span class="token keyword">var</span> item <span class="token operator">=</span> res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 ES5 若 asynchronous 之間有相依的先後關係，只能使用 callback，這造成有名 callback hell：</p>
+<ul>
+<li>很容易寫出巢狀很深的 code 難以維護</li>
+<li>每個 callback 都要自己維護 exception</li>
+</ul>
+<h3 id="Promise-1"><a href="#Promise-1" class="headerlink" title="Promise"></a>Promise</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'/products'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>res <span class="token operator">=</span><span class="token operator">></span> res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>product <span class="token operator">=</span><span class="token operator">></span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'/products/${ prdouct[0].id }'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>res <span class="token operator">=</span><span class="token operator">></span> res<span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>item <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token keyword">finally</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'done'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>fetchProducts()</code> 會回傳 promise，該物件總共有 3 個 method (也是 higher order function)。</p>
+<ul>
+<li><strong>then()</strong>：傳入要獲取 AJAX 資料的 callback</li>
+<li><strong>catch()</strong>：傳入若 AJAX 錯誤所執行的 callback</li>
+<li><strong>finally()</strong>：傳入 Ajax 最後所執行的 callback</li>
+</ul>
+<p>使用 promise 後：</p>
+<ul>
+<li>程式碼風格改成 pipeline 方式容易閱讀</li>
+<li>每個 <code>then()</code> 都回傳一個全新的 promise</li>
+<li>統一處理 exception</li>
+</ul>
+<h2 id="Async-Await"><a href="#Async-Await" class="headerlink" title="Async Await"></a>Async Await</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">try</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> product <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'/products'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">let</span> item <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">fetch</span><span class="token punctuation">(</span><span class="token string">'/products/${ prdouct[0].id }'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">json</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span> <span class="token keyword">finally</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'done'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Promise 屬於 FP 觀念下的產物  (其實就是 <code>Monad</code>)，若你習慣 imperative 思維，也可以透過 <code>async await</code> 將 asynchronous 寫的很 synchronous。</p>
+<p>將 function 前面宣告 <code>async</code>，表示此為 asynchronous function，也就是內部將使用 <code>await</code> 等 promise 回傳資料。</p>
+<p><code>response</code> 為 <code>fetch()</code> 所回傳的 promise，是 <code>未來值</code>，<code>觀念上</code> 會 await 等 <code>response</code> 成真後才會繼續執行。</p>
+<p>因為看起來很像 synchronous 寫法，也可繼續使用原本的 <code>try...catch...finally</code>。</p>
+<blockquote>
+<p><code>async await</code> 只是程式碼看起來很像 synchronous，但起本質仍然是 asynchronous，因為 await 一定要對方回傳 promise 才能使用，所以是百分之百的 syntatic sugar</p>
+</blockquote>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>綜觀各程式語言發展趨勢，對於 asynchronous 處理，一開始都使用最簡單的 callback 解決，但隨著 asynchronous 使用越多，callback hell 問題越明顯，便開始引入 promise 未來值概念，但 promise 畢竟屬於 FP 產物，最後都引入更像 imperative 的 <code>async await</code></li>
+<li><code>async await</code> 只是讓你程式碼看起來很像 synchronous，但其本質仍然是 asynchronous，因為 <code>async await</code> 一定要搭配 promise，而 promise 就是 asynchronous，因此 <code>async await</code> 完全是 syntatic sugar</li>
+<li>雖然 <code>async await</code> 是 ECMAScript 2017 較新的東西，但個人認為 <code>語意</code> 其實並沒有 <code>then()</code> 好，它會讓你使用 imperative 方式思考，而 <code>then()</code> 語意會讓你使用 pipeline 思考，若搭配 Ramda 與 Wink-fp 之後，進而達成 function composition，保持 FP 原味，個人較喜歡 <code>then()</code></li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/tc39" target="_blank" rel="noopener">TC39</a>, <a href="https://github.com/tc39/proposal-promise-finally" target="_blank" rel="noopener">Promise.prototype.finally</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise" target="_blank" rel="noopener">Promise</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/async_function" target="_blank" rel="noopener">async function</a><br><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/await" target="_blank" rel="noopener">await</a></p>
+
+					</article>
+					<p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/ECMAScript/'>#&nbsp;ECMAScript</a>
+    
+  </span>
+  
+</p>
+				</div>
+				<div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/ramda/object/evolve/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 evolve() 只改變 Object 的 Value</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/ecmascript/promise/event-loop-model/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 Event Loop Model 執行 Asynchronous Function</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+	<!-- ### Footer ### -->
+	<footer class="text-center">
+  <!-- footer copyright -->
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://fpjs.fun">點燈坊</a>
+  </p>
+</footer>
+	
+	<!-- ### Import File ### -->
+	<!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+</body>
+</html>
