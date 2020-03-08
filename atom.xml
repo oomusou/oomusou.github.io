@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2020-03-08T08:58:14.060Z</updated>
+  <updated>2020-03-08T23:44:15.925Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何將兩個 Result Set 合併 ?</title>
+    <link href="https://fpjs.fun/knex/merge/"/>
+    <id>https://fpjs.fun/knex/merge/</id>
+    <published>2020-03-08T23:42:30.000Z</published>
+    <updated>2020-03-08T23:44:15.925Z</updated>
+    
+    <content type="html"><![CDATA[<p>實務上有時必須對兩個以上 Table 做 Query，將結果合併後再傳回，由於 Knex 回傳為 Promise，該如何將這兩個 Promise 合併呢 ?</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.3<br>WebStorm 2019.3.3<br>MySQL 8.0.18<br>Knex 0.20.3<br>Ramda 0.27.0</p><h2 id="Async-Await"><a href="#Async-Await" class="headerlink" title="Async Await"></a>Async Await</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token keyword">async</span> _ <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>  <span class="token keyword">let</span> books1 <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">,</span> <span class="token string">'>'</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">)</span>  <span class="token keyword">let</span> books2 <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">,</span> <span class="token string">'&lt;='</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">)</span>  <span class="token keyword">return</span> books1<span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>books2<span class="token punctuation">)</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>由於 Knex 回傳 promise，若搭配 <code>await</code> 解構後成為 array，因此可使用 <code>Array.prototype.concat()</code> 將兩個 array 加以合併。</p><p>由於使用了 <code>await</code>，因次 function 必須宣告為 <code>async</code> 再轉為 promise。</p><h2 id="Promise-all"><a href="#Promise-all" class="headerlink" title="Promise.all()"></a>Promise.all()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> _ <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>  <span class="token keyword">let</span> books1 <span class="token operator">=</span> <span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">,</span> <span class="token string">'>'</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">)</span>  <span class="token keyword">let</span> books2 <span class="token operator">=</span> <span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">,</span> <span class="token string">'&lt;='</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">)</span>  <span class="token keyword">return</span> Promise<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token punctuation">[</span>books1<span class="token punctuation">,</span> books2<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>flatten<span class="token punctuation">)</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>由於 Knex 回傳為 promise，至於這兩個 promise 誰先完成很難說，要視資料量與網路速度決定，因此使用了 <code>Promise.all()</code> 等兩個 promise 都完成後才合併，算是 asynchronous 版本的 <code>Array.prototype.concat()</code>。</p><p>不過 <code>Promise.all()</code> 的結果為兩層 array，因此還必須透過 Ramda 的 <code>flatten()</code> 打平後才是我們要的結果。</p><p><img src="/images/knex/merge/merge000.png" alt="merge000"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>由本文可發現 promise 在 ECMAScript 有兩種處理方式，<code>await</code> 會將值從 promise 轉為正常值，就可繼續使用 imperative 寫法，最後再使用 <code>async</code> 回傳 promise；而 <code>Promise</code> 系列方法則透過 <code>then()</code> 提供 function 針對 promise 內部資料處理，最後直接回傳 promise，屬於 FP 風格</li><li>由於 <code>then()</code> 要求傳入 function，可善用 Ramda 的 function 或自行組合 function 傳入</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#flatten" target="_blank" rel="noopener">flatten()</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;實務上有時必須對兩個以上 Table 做 Query，將結果合併後再傳回，由於 Knex 回傳為 Promise，該如何將這兩個 Promise 合併呢 ?&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Knex" scheme="https://fpjs.fun/tags/Knex/"/>
+    
+  </entry>
   
   <entry>
     <title>使用 Associate Law 處理 Promise</title>
@@ -388,26 +408,6 @@
     <summary type="html">
     
       &lt;p&gt;Tailwind 特色是讓你不用寫 CSS，只要藉由組合 Utility Class 就能對 HTML Element 做 Styling，如此在 HTML 就可得知結果，不用在糾結於複雜的 CSS Selector Rules，也不用擔心 Precedence 而無法修改 Style。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Tailwind" scheme="https://fpjs.fun/tags/Tailwind/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>為什麼我喜歡 Tailwind CSS ?</title>
-    <link href="https://fpjs.fun/tailwind/why/"/>
-    <id>https://fpjs.fun/tailwind/why/</id>
-    <published>2020-03-01T03:01:52.000Z</published>
-    <updated>2020-03-01T11:16:53.589Z</updated>
-    
-    <content type="html"><![CDATA[<p>很多 Developer 都不喜歡 CSS，我也不例外，但直到 Tailwind CSS 出現，讓我對 CSS 完全改觀，重拾對 UI 熱情。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.3<br>WebStorm 2019.3.3<br>Vue 2.6.10<br>Tailwind CSS 1.2.0</p><h2 id="Traditional-CSS"><a href="#Traditional-CSS" class="headerlink" title="Traditional CSS"></a>Traditional CSS</h2><p>我一直很不喜歡傳統 CSS，有幾點原因：</p><ul><li>CSS 與 HTML 分離，讓我不能只由 HTML 得知結果，還必須搭配 CSS，經常還須觀察 browser 才知道結果如何</li><li>CSS 常搭配複雜的 selector，也很難簡單由 CSS 得知結果，最後還是得藉由 browser 才知道結果如何</li><li>由於 CSS 是以 cascading 設計，實務上會不斷覆蓋 CSS，導致經年累月後 CSS 越來越大，且大部分 CSS 都是無效的，徒然增加 file size 而已</li><li>由於 CSS 是以多 selector 決定，當 selector 衝突時，還必須考慮其 precedence，非常複雜</li></ul><h2 id="CSS-Framework"><a href="#CSS-Framework" class="headerlink" title="CSS Framework"></a>CSS Framework</h2><p>CSS 雖然功能強大，卻也非常繁瑣，因此很多 developer 改用 CSS framework 的 component 加快開發速度，但也面臨不少挑戰：</p><ul><li>Component 格式太制式，很難高度客製化</li><li>若要客製化必須使用 CSS 覆蓋方式，常會面臨 precendence 問題</li><li>一開始開發速度很快，但最後客製化維護又將省下時間吐回來</li></ul><h2 id="Functional-CSS"><a href="#Functional-CSS" class="headerlink" title="Functional CSS"></a>Functional CSS</h2><p>Tailwind CSS 則以 Functional Programming 理念設計，完全顛覆傳統 CSS 與 CSS framework：</p><ul><li>CSS 由眾多 utility class 構成，但這不是 OOP 的 class，可以想像成 FP 的 pure function</li><li>自行在 HTML 組合 utility，由 HTML 就可得知結果，不需透過 browser</li><li>不使用 selector，因此沒有 precedence 問題</li><li>從複雜 selecor 解放，CSS 退化成自行組合 utility 成新的 utility，類似 FP 組合小 function 成新 function 一樣</li><li>由於 utility 顆粒很小，因此很容易自行組合客製化，沒有 CSS framework 的 component 因顆粒太大而難以客製化問題</li><li>由於不覆蓋 CSS，也沒有 CSS 越來越大問題，還可使用 PurgeCSS 將沒用到 CSS 移除，大幅降低 file size</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Functional CSS 的另一個優點是其思考模式與 FP 相同，都是透過最小化問題並搭配 function composition，不會因 ECMAScript 與 CSS 思維差異而造成人格分裂</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;很多 Developer 都不喜歡 CSS，我也不例外，但直到 Tailwind CSS 出現，讓我對 CSS 完全改觀，重拾對 UI 熱情。&lt;/p&gt;
     
     </summary>
     
