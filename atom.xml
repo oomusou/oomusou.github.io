@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2020-03-10T13:47:45.055Z</updated>
+  <updated>2020-03-10T13:55:24.749Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>重新認識 chain()</title>
+    <link href="https://fpjs.fun/ramda/array/chain-again/"/>
+    <id>https://fpjs.fun/ramda/array/chain-again/</id>
+    <published>2020-03-10T13:54:26.000Z</published>
+    <updated>2020-03-10T13:55:24.749Z</updated>
+    
+    <content type="html"><![CDATA[<p>Ramda 的 <code>chain()</code> 是很神奇的 Function，很像 <code>map()</code> 但又不是<code>map()</code>，可以用在 Array 也可用在 Function，實務上常常都可重構成 <code>chain()</code>，但卻不容易發現。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.3<br>VS Code 1.43.0<br>Quokka 1.0.282<br>Ramda 0.27.0</p><h2 id="chain"><a href="#chain" class="headerlink" title="chain()"></a>chain()</h2><blockquote><p><strong>chain()</strong><br><code>Chain m =&gt; (a → m b) → m a → m b</code></p></blockquote><p><code>chain()</code> 所支援的 container 並不是 functor，而是很獨特的 <code>chain()</code>。</p><blockquote><p><strong>map()</strong><br><code>Functor f =&gt; (a → b) → f a → f b</code></p></blockquote><p>對比 <code>map()</code> 是不是非常類似呢 ?</p><p>差異僅在第一個 argument，<code>chain()</code> 是 <code>a -&gt; m b</code>，而 <code>map()</code> 是 <code>a -&gt; b</code>。</p><h2 id="bind"><a href="#bind" class="headerlink" title="bind()"></a>bind()</h2><p>在 FP 裡，其實 signature 為 <code>(a → m b) → m a → m b</code> 稱為 <code>bind()</code>，但因為 ECMAScript 已經有 <code>bind()</code>，且 Ramda 也提供 function 版本的 <code>bind()</code>，因此原本 FP 的 <code>bind()</code> 在 Ramda 只好使用 <code>chain()</code>。</p><h2 id="Monad"><a href="#Monad" class="headerlink" title="Monad"></a>Monad</h2><p>根據定義，monad 必須支援 <code>return()</code> 與 <code>bind()</code>。</p><ul><li><strong>return()</strong>：<code>a -&gt; m b</code></li><li><strong>bind()</strong>：<code>(a -&gt; m b) -&gt; m a -&gt; m b</code></li></ul><p>可發現 <code>bind()</code> 與 <code>map()</code> 差異是 <code>bind()</code> 直接傳入 <code>return()</code>，而 <code>map()</code> 只傳入 <code>a -&gt; b</code> projection function。</p><p>但無論如何，傳入的 <code>f()</code> 都將直接改變 <code>m a</code> 內部資料。</p><p>若以 function 角度，傳入 <code>a -&gt; b</code> 使的 <code>m a</code> 變成 <code>m b</code> ，這很容易理解。</p><p>但若傳入 <code>a -&gt; m b</code>，理論上應該成為 <code>m m b</code>，但為什麼結果還是 <code>m b</code> 呢 ?</p><p>可推論 <code>m a</code> 內部除了 <code>map()</code> 外，還組合了 <code>flatten()</code>，才可能使 <code>m m b</code> 變成 <code>m b</code>。</p><p>這也是為什麼當 <code>chain()</code> 用在 array 時相當於 ECMAScript 的 <code>flatMap()</code>，或者相當於 <code>compose(flatten, map)</code>。</p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li><code>chain()</code> 用於 array 時俗稱 <code>flatMap()</code>，本文以 <code>map()</code> 與 <code>bind()</code> 的角度，也可推論出 <code>chain()</code> 內部就是 <code>flatMap()</code></li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#chain" target="_blank" rel="noopener">chain()</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Ramda 的 &lt;code&gt;chain()&lt;/code&gt; 是很神奇的 Function，很像 &lt;code&gt;map()&lt;/code&gt; 但又不是&lt;code&gt;map()&lt;/code&gt;，可以用在 Array 也可用在 Function，實務上常常都可重構成 &lt;code&gt;chain()&lt;/code&gt;，但卻不容易發現。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Ramda" scheme="https://fpjs.fun/tags/Ramda/"/>
+    
+  </entry>
   
   <entry>
     <title>使用 chain() 組合 Function</title>
@@ -393,26 +413,6 @@
     
     
       <category term="Vue" scheme="https://fpjs.fun/tags/Vue/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>實務上使用 FP 開發一年心得總結</title>
-    <link href="https://fpjs.fun/fp/experience/"/>
-    <id>https://fpjs.fun/fp/experience/</id>
-    <published>2020-03-04T13:52:51.000Z</published>
-    <updated>2020-03-07T16:27:21.715Z</updated>
-    
-    <content type="html"><![CDATA[<p>隨著一年來都以 ECMAScript 為主力，前後端都搭配 Ramda 以 FP 開發，從一開始抱持著懷疑與摸索心態，逐漸地將 FP 原則套用在實際開發上後，發現 FP 並不只是理論而已，而是真的可以用在實戰，雖然學習門檻較高，但只要跨越之後，Codebase 可讀性與可維護性日後都會賺回來。</p><a id="more"></a><h2 id="Pure-Function-是可以實戰的"><a href="#Pure-Function-是可以實戰的" class="headerlink" title="Pure Function 是可以實戰的"></a>Pure Function 是可以實戰的</h2><p>很多人懷疑 pure function 只能做 transformation，都不能做 side effect 怎麼實戰呢 ?</p><p>只有 pure function 當然無法實戰，pure function 必須站在其他 higher order function 巨人肩膀上才能實戰，只有 ECMAScript 的 <code>Array.prototype</code> 與 <code>Object.prototype</code> 的 higher order function 是不夠的，如 Ramda 就提供非常豐富的 higher order function，除了 array 與 object 外，還提供如 function、logic、relation、math … 等 function，藉由 Ramda 的 higher order function，自己就可專心的寫 pure function。</p><p>那 side effect 呢 ? 實務上有兩種方式：</p><ul><li>將 side effect 集中在最前面與最後面，如一開始寫 impure function 取得資料，拿到資料後就是一系列 higher order function + pure function 做 transformation，最後再用 <code>forEach()</code> 或 <code>andThen()</code> 處理 side effect 寫入資料，這種方式雖然不完美，但已經比 imperative 到處 side effect 發散好很多，最少已經將 side effect 縮小在可控範圍內</li><li>以 monad 方式將 side effect 包起來，由 monad 處理 side effect，對於 monad 一樣使用 pure function 操作，這也能將 side effect 縮小在可控範圍內</li></ul><h2 id="組合好-Function-再做事"><a href="#組合好-Function-再做事" class="headerlink" title="組合好 Function 再做事"></a>組合好 Function 再做事</h2><p>傳統寫程式都是在處理 data，呼叫 method 就是為了取得 data 放在 variable，然後再以 statement 去處理 variable，所這就是典型 imperative。</p><p>但 FP 並不是這種思維，寫程式重點在於處理 function，所以拿到問題後，都在思考如何透過 higher order function 組合 function，最後再將 data 一次灌進 function 得到結果，也由於都在組合 function，因此沒有 variable，只會看到不斷的以 expression 定義 function 或 higher order function 組合 function 而已。</p><h2 id="由-Ramda-幫你組合-Callback"><a href="#由-Ramda-幫你組合-Callback" class="headerlink" title="由 Ramda 幫你組合 Callback"></a>由 Ramda 幫你組合 Callback</h2><p>傳統 imperative 的 argument 都是 data，也就是該 method 已經決定了功能，你能做的只是塞資料而已。</p><p>但 FP 的 argument 則是 function，也就是 callback，這就造就了無限可能，可由 Ramda 的 higher order function 組合出各種 callback 傳入，因此該 function 的功能就大大提升。</p><p>現在只要遇到 API 或 library 提供 callback 就超開心，這表示你能使用 Ramda 組合出各種 callback 來 <code>惡搞</code>，而不像傳統只能被 library 侷限住功能。</p><h2 id="別急著將-Promise-Await"><a href="#別急著將-Promise-Await" class="headerlink" title="別急著將 Promise Await"></a>別急著將 Promise Await</h2><p>ECMAScript 的 promise 其實有 monad 特性，將非同步的 side effect 包在 monad 內，讓你在 <code>then()</code> 間寫 pure function，並在最後一個 <code>then()</code> 處理 side effect，但自從有了 <code>async await</code> 之後，大家幾乎馬上將 promise 透過 <code>await</code> 從 monad 取出，然後回到 imperative 的 impure function 世界混戰，這是非常可惜的，這使得自己提早回到 impure function 處理 side effect，並非 promise 設計初衷。</p><p><code>async await</code> 目的是讓只懂 imperative 的人快速上手處理非同步，但不可過度依賴此 syntatic suguar，重點是透過 promise 習慣以 monad 與 pure function 處理 side effect，這對將來學習 maybe, either 等觀念有很大幫助。</p><p>實務上對於 promise 建議兩種寫法：</p><ul><li>由於 promise 有 functor 特性，將 <code>then()</code> 視為 <code>map()</code> 使用，在每個 <code>then()</code> 中使用 pure function 做 transformation</li><li>Promise 亦支援 composition law，可將所有 <code>then()</code> 中的 pure function 先使用 <code>pipe()</code> 組合成 funtion，再交給 <code>then()</code> 一次執行</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>以上四點是我以 FP 用在實務上的領悟，FP 絕對不是只有 no side effect 這麼單純而已，它事實上是很多配套環環相扣而構成完整 paradigm</li><li>想要 OOP 結合 FP 實務上也很困難，畢竟兩者是完全不同 paradigm，很多原則都互相矛盾，建議學習 FP 就走純 FP，並搭配 FP 的配套 design pattern，如 higher order function、immutable、curried function、partial application、function composition、point-free、monad、functor、maybe、either …. 等，OOP 跟 FP 混搭很容易走火入魔，最後變成兩種 paradigm 都不是的四不像，既違反 OOP 原則又違反 FP 原則而裡外不是人</li><li>ECMAScript 並不是 pure functional language，因此有些 FP 感覺很難單純在 ECMAScript 抓到，建議行有餘力可學習 Haskell，藉由這個純 FP 語言訓練 FP 手感，進而用在 ECMAScript 上</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;隨著一年來都以 ECMAScript 為主力，前後端都搭配 Ramda 以 FP 開發，從一開始抱持著懷疑與摸索心態，逐漸地將 FP 原則套用在實際開發上後，發現 FP 並不只是理論而已，而是真的可以用在實戰，雖然學習門檻較高，但只要跨越之後，Codebase 可讀性與可維護性日後都會賺回來。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="FP" scheme="https://fpjs.fun/tags/FP/"/>
     
   </entry>
   
