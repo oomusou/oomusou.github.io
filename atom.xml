@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2020-03-12T06:34:25.186Z</updated>
+  <updated>2020-03-12T07:23:24.143Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用 Promise.all() 將 Array 中所有 Promise 從 Pending 成為 Fulfilled</title>
+    <link href="https://fpjs.fun/ecmascript/promise/all/"/>
+    <id>https://fpjs.fun/ecmascript/promise/all/</id>
+    <published>2020-03-12T07:03:24.000Z</published>
+    <updated>2020-03-12T07:23:24.143Z</updated>
+    
+    <content type="html"><![CDATA[<p>Promise 由於是 Asynchronous，產生速度有快有慢，可使用 <code>Promise.all()</code> 將 Array 中所有 Pending Promise 都成為 Fulfilled Promise。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.15.3<br>VS Code 1.43.0<br>Quokka 1.0.282<br>ECMAScript 2015<br>Wink-fp 1.20.48</p><h2 id="Fulfilled-Promise"><a href="#Fulfilled-Promise" class="headerlink" title="Fulfilled Promise"></a>Fulfilled Promise</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> resolveAfter <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token keyword">let</span> p0 <span class="token operator">=</span> <span class="token function">resolveAfter</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'Sam'</span><span class="token punctuation">)</span><span class="token keyword">let</span> p1 <span class="token operator">=</span> <span class="token function">resolveAfter</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'Jessie'</span><span class="token punctuation">)</span><span class="token keyword">let</span> p2 <span class="token operator">=</span> <span class="token function">resolveAfter</span><span class="token punctuation">(</span><span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'Kevin'</span><span class="token punctuation">)</span>Promise<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token punctuation">[</span>p0<span class="token punctuation">,</span> p1<span class="token punctuation">,</span> p2<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><code>p0</code>、<code>p1</code>、<code>p2</code> 三個 promise 分別在 <code>100ms</code>、<code>200ms</code> 與 <code>300ms</code> 後產生。</p><p>但 <code>Promise.all()</code> 會將等 3 個 promise 都 fulfilled 後才合併成單一 promise。</p><p><img src="/images/ecmascript/promise/all/all000.png" alt="all000"></p><h2 id="Rejected-Promise"><a href="#Rejected-Promise" class="headerlink" title="Rejected Promise"></a>Rejected Promise</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> resolveAfter<span class="token punctuation">,</span> rejectAfter <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token keyword">let</span> p0 <span class="token operator">=</span> <span class="token function">resolveAfter</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'Sam'</span><span class="token punctuation">)</span><span class="token keyword">let</span> p1 <span class="token operator">=</span> <span class="token function">rejectAfter</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'Jessie'</span><span class="token punctuation">)</span><span class="token keyword">let</span> p2 <span class="token operator">=</span> <span class="token function">resolveAfter</span><span class="token punctuation">(</span><span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'Kevin'</span><span class="token punctuation">)</span>Promise<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token punctuation">[</span>p0<span class="token punctuation">,</span> p1<span class="token punctuation">,</span> p2<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><code>p1</code> 為 rejected promise，<code>Promise.all()</code> 中只要有一個為 rejected promise，則最後結果為 rejected promise。</p><p><img src="/images/ecmascript/promise/all/all001.png" alt="all001"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>實務上若要在 synchronous higher order function 內 (如 <code>map()</code>) 呼叫 asynchronous function，就會出現 array 中一堆 pending promise，此使可使用 <code>Promise.all()</code> 使之全部 fulfilled</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://egghead.io/instructors/marius-schulz" target="_blank" rel="noopener">Marius Schulz</a>, <a href="https://egghead.io/lessons/javascript-wait-for-multiple-javascript-promises-to-settle-with-promise-all" target="_blank" rel="noopener">Wait for Multiple JavaScript Promises to Settle with Promise.all()</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all" target="_blank" rel="noopener">Promise.all()</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Promise 由於是 Asynchronous，產生速度有快有慢，可使用 &lt;code&gt;Promise.all()&lt;/code&gt; 將 Array 中所有 Pending Promise 都成為 Fulfilled Promise。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="ECMAScript" scheme="https://fpjs.fun/tags/ECMAScript/"/>
+    
+  </entry>
   
   <entry>
     <title>如何在 forEach() 呼叫 Asynchronous Function ?</title>
@@ -393,26 +413,6 @@
     
     
       <category term="Ramda" scheme="https://fpjs.fun/tags/Ramda/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何將 OR 寫在 () 內 ?</title>
-    <link href="https://fpjs.fun/knex/or/"/>
-    <id>https://fpjs.fun/knex/or/</id>
-    <published>2020-03-06T10:59:55.000Z</published>
-    <updated>2020-03-06T11:09:41.828Z</updated>
-    
-    <content type="html"><![CDATA[<p>實務上有時 OR 條件並不是與 AND 同一層，而是躲在 <code>()</code> 內，這種特殊 SQL 在 Knex 該如何寫呢 ?</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.3<br>WebStorm 2019.3.2<br>Docker Desktop 2.2.0.0 (42247)<br>MySQL 8.0.18<br>Knex 0.20.2</p><h2 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h2><pre class="line-numbers highlight language-sql"><code class="language-sql"><span class="token keyword">select</span> title<span class="token punctuation">,</span> price<span class="token keyword">from</span> books<span class="token keyword">where</span> title <span class="token operator">like</span> <span class="token string">'%JavaScript%'</span>  <span class="token operator">and</span> <span class="token punctuation">(</span>price <span class="token operator">=</span> <span class="token number">100</span> <span class="token operator">or</span> price <span class="token operator">=</span> <span class="token number">200</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>有時候 <code>or</code> 會在 <code>()</code> 括號內，外面才接 <code>and</code>。</p><p><img src="/images/knex/or/or000.png" alt="or000"></p><h2 id="Knex"><a href="#Knex" class="headerlink" title="Knex"></a>Knex</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>  <span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">)</span>  <span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">,</span> <span class="token string">'like'</span><span class="token punctuation">,</span> <span class="token string">'%JavaScript%'</span><span class="token punctuation">)</span>  <span class="token punctuation">.</span><span class="token function">andWhere</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span>    x<span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>     <span class="token punctuation">.</span><span class="token function">orWhere</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">)</span>  <span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>最外層的 <code>and</code> 使用 <code>andWhere()</code> 不訝異，<code>()</code> 的 <code>or</code> 則要以 callback 形式，在 arrow function 內接 <code>where()</code> 與 <code>orWhere()</code>。</p><p><img src="/images/knex/or/or001.png" alt="or001"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Knex 很多進階寫法都使用 callback，當複雜 SQL 不知道怎麼寫時，朝 callback 去找資料準備錯</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;實務上有時 OR 條件並不是與 AND 同一層，而是躲在 &lt;code&gt;()&lt;/code&gt; 內，這種特殊 SQL 在 Knex 該如何寫呢 ?&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Knex" scheme="https://fpjs.fun/tags/Knex/"/>
     
   </entry>
   
