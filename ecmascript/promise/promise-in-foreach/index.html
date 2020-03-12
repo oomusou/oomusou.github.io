@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-03-12T06:02:38.000Z",
-    "dateModified": "2020-03-12T06:30:09.080Z",
+    "dateModified": "2020-03-12T06:34:25.186Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -477,7 +477,7 @@ a:hover {
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p> <code>f()</code> 回傳為 promise。</p>
-<p><img src="/images/ecmascript/promise/await-in-loop/async000.png" alt="async000"></p>
+<p><img src="/images/ecmascript/promise/promise-in-foreach/foreach000.png" alt="async000"></p>
 <p>儘管因為 <code>inc()</code> 宣告為 <code>async</code>， <code>fn()</code> 也成為 asynchronous function，但整體思維與寫法還是與 synchronous function 很像，這就是 <code>async await</code> 的魅力。</p>
 <h2 id="Await-in-forEach"><a href="#Await-in-forEach" class="headerlink" title="Await in forEach()"></a>Await in forEach()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> inc <span class="token operator">=</span> <span class="token keyword">async</span> x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">+</span> <span class="token number">1</span>
 
@@ -496,7 +496,7 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>隨著 <code>Array.prototype</code> 自帶 <code>forEach()</code> 後，由於可搭配 ES6 的 arrow function，因此實務上越來越多人使用 <code>forEach()</code> 取代 <code>for of</code> loop。</p>
 <p>由於 <code>await</code> 是寫在 arrow function 內，因此 arrow function 也要宣告為 <code>async</code>。</p>
-<p><img src="/images/ecmascript/promise/await-in-loop/async001.png" alt="async001"></p>
+<p><img src="/images/ecmascript/promise/promise-in-foreach/foreach001.png" alt="async001"></p>
 <p>但實際執行卻為非預期的 <code>0</code>，why ?</p>
 <p>第 8 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript">arr<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token keyword">async</span> x <span class="token operator">=</span><span class="token operator">></span> sum <span class="token operator">=</span> sum <span class="token operator">+</span> <span class="token keyword">await</span> <span class="token function">inc</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
@@ -539,7 +539,7 @@ Array<span class="token punctuation">.</span>prototype<span class="token punctua
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>array.prototype.forEach()</code> 其內部實作相當於 <code>syncForEach()</code>，是封裝 <code>for</code> loop 的 higher order function。</p>
 <p>但這裡有個問題，因為 <code>inc()</code> 是 asynchronous function，導致 <code>f()</code> 成為 asynchronous function，但為什麼 <code>f()</code> 之前沒加 <code>await</code> ? 這導致 <code>syncForEach()</code> 成為在 synchronous 去執行 asynchronous <code>f()</code>，所以結果是錯的。</p>
-<p><img src="/images/ecmascript/promise/await-in-loop/async002.png" alt="async002"></p>
+<p><img src="/images/ecmascript/promise/promise-in-foreach/foreach002.png" alt="async002"></p>
 <h2 id="asyncForEach"><a href="#asyncForEach" class="headerlink" title="asyncForEach()"></a>asyncForEach()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> inc <span class="token operator">=</span> <span class="token keyword">async</span> x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">+</span> <span class="token number">1</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
@@ -572,7 +572,7 @@ Array<span class="token punctuation">.</span>prototype<span class="token punctua
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>如此除了 <code>asyncForEach()</code> 的 callback 要加上 <code>async await</code> 外，連 <code>asyncForEach()</code> 前也要加上 <code>await</code>，最後使 <code>f()</code> 成為 asynchronous function，如此所有的 function 都在 asynchronous 下，不再有 synchronous function 內執行 asynchronous function 問題。</p>
-<p><img src="/images/ecmascript/promise/await-in-loop/async003.png" alt="async003"></p>
+<p><img src="/images/ecmascript/promise/promise-in-foreach/foreach003.png" alt="async003"></p>
 <h2 id="Promise-all"><a href="#Promise-all" class="headerlink" title="Promise.all()"></a>Promise.all()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> inc <span class="token operator">=</span> <span class="token keyword">async</span> x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">+</span> <span class="token number">1</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
@@ -587,7 +587,7 @@ Array<span class="token punctuation">.</span>prototype<span class="token punctua
 <p>改用 <code>map()</code> 使用 <code>inc()</code>，結果為 array 中一堆 pending promise，再使用 <code>Promise.all()</code> 使 array 中的 promise 成為 fulfilled promise。</p>
 <p>也由於 <code>Promise.all()</code> 回傳為 promise，可用 <code>then()</code> 直接修改 promise 內部資料，在 <code>then()</code> 使用 <code>reduce()</code> 直接計算其 <code>sum</code> 回傳。</p>
 <p>我們可發現整個過程都在 promise 內處理，完全沒透過 <code>await</code> 轉成一般值，也沒透過 imperative 的 <code>for</code> loop 處理，完全使用 FP 的 higher order function 與 pure function 處理，這才是 promise 原本設計。</p>
-<p><img src="/images/ecmascript/promise/await-in-loop/async004.png" alt="async004"></p>
+<p><img src="/images/ecmascript/promise/promise-in-foreach/foreach004.png" alt="async004"></p>
 <h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> sum<span class="token punctuation">,</span> andThen <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> promiseAll <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
@@ -605,7 +605,7 @@ Array<span class="token punctuation">.</span>prototype<span class="token punctua
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>ECMAScript 的 method chaining 在此可讀性不是很好，可改用 Ramda 的 <code>pipe()</code> 組合所有 higher order function。</p>
 <p>Wink-fp 的 <code>promiseAll()</code> 為 <code>Promise.all()</code> 的 function 版本，而 Ramda 的 <code>andThen()</code> 則為 <code>Promise.prototype.then()</code> 的 function 版本。 方便 pipeline function composition 使用。</p>
-<p><img src="/images/ecmascript/promise/await-in-loop/async005.png" alt="async005"></p>
+<p><img src="/images/ecmascript/promise/promise-in-foreach/foreach005.png" alt="async005"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>實務上避免在 <code>Array.prototype</code> 下的 method 使用 <code>async await</code>，因為 <code>Array.prototype</code> 下的 method 皆為 synchronous function，也就是 <code>forEach()</code> 其實就是 <code>syncForEach()</code>，會先執行完最後才執行 callback 內的 asynchronous function，導致結果不如預期，此時應該簡單使用 <code>for of</code> loop，就不會有 callback 為 asynchronous function 延後執行問題</li>
 <li>結論是要避免在 synchronous function 內執行 asynchronous function，<code>forEach()</code> 本質是 <code>syncForEach()</code>，因此執行 asynchronous <code>inc()</code> 會有問題，除非使用 <code>asyncForEach()</code>，這也是為什麼 ES6 規定只要使用到 <code>await</code>，所有的 function 都要搭配 <code>async</code> 成為 asynchronous function，因為這樣才能避免在 synchronous function 內執行 asynchronous function</li>
