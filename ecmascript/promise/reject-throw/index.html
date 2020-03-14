@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-09-19T19:12:03.000Z",
-    "dateModified": "2019-09-24T23:53:04.702Z",
+    "dateModified": "2020-03-14T04:56:05.289Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -451,7 +451,7 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若想在 fulfilled handler 內自行建立 rejected promise，可先建立 <code>Error</code> object，再由 <code>Promise.reject()</code> 包成 rejected promise。</p>
 <p>由於 <code>catch()</code> callback 中的 <code>e</code> 為 <code>Error</code> object，必須使用 <code>e.message</code> 才能取得 <code>Something wrong</code>。</p>
-<p><img src="/images/ecmascript/async/reject-throw/reject002.png" alt="reject002"></p>
+<p><img src="/images/ecmascript/promise/reject-throw/reject002.png" alt="reject002"></p>
 <h2 id="Throw"><a href="#Throw" class="headerlink" title="Throw"></a>Throw</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchData <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'Hello World'</span><span class="token punctuation">;</span>
 
 <span class="token function">fetchData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
@@ -460,7 +460,7 @@ a:hover {
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可在 fulfilled handler 中直接使用 <code>throw</code> 建立 rejected promise，其中 <code>throw</code> 就是 <code>Promise.reject()</code> 的 syntatic sugar。</p>
-<p><img src="/images/ecmascript/async/reject-throw/reject003.png" alt="reject003"></p>
+<p><img src="/images/ecmascript/promise/reject-throw/reject003.png" alt="reject003"></p>
 <h2 id="Try-Catch"><a href="#Try-Catch" class="headerlink" title="Try Catch"></a>Try Catch</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchData <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'Hello World'</span><span class="token punctuation">;</span>
 
 <span class="token keyword">try</span> <span class="token punctuation">{</span>
@@ -473,7 +473,7 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>throw</code> 除了能用在 fulfilled handler 外，也能用在 <code>try catch</code> block 中，如此更符合 imperative 與 synchronous 習慣。</p>
 <p>但別忘了 <code>throw</code> 是 syntatic sugar，當 <code>throw</code> 搭配 <code>await</code> 時，它產生的是包裹 <code>Error</code> object 的 rejected promise。</p>
-<p><img src="/images/ecmascript/async/reject-throw/reject004.png" alt="reject004"></p>
+<p><img src="/images/ecmascript/promise/reject-throw/reject004.png" alt="reject004"></p>
 <h2 id="String-or-Error-Object"><a href="#String-or-Error-Object" class="headerlink" title="String or Error Object ?"></a>String or Error Object ?</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchData <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Promise<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'Hello World'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token function">fetchData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
@@ -482,7 +482,7 @@ a:hover {
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>以語法而言，我們的確能將 string 傳給 <code>Promise.reject()</code>，如此將回傳包裹 string 的 rejected promise， <code>catch()</code> callback 的 <code>e</code> 就可直接抓到 <code>Something wrong</code>。</p>
-<p><img src="/images/ecmascript/async/reject-throw/reject005.png" alt="reject005"></p>
+<p><img src="/images/ecmascript/promise/reject-throw/reject005.png" alt="reject005"></p>
 <p>不過 <code>Error</code> object 畢竟有完整的 stack trace 可用，對於 debug 有幫助。</p>
 <p>MDN 也是建議產生 <code>Error</code> object 的 rejected promise。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>

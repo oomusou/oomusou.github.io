@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-09-30T05:22:14.000Z",
-    "dateModified": "2019-09-30T14:38:36.352Z",
+    "dateModified": "2020-03-13T12:40:30.531Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -451,7 +451,7 @@ a:hover {
 <p>若需求是在 <code>1000ms</code> 後印出 <code>0</code>，<code>2000s</code> 後印出 <code>1</code>，<code>3000s</code> 後印出 <code>2</code>。</p>
 <p>這個問題在 ES5 與 ES6 有不同解法，先討論 ES5。</p>
 <p>直覺會使用 <code>for</code> loop，使用 <code>setTimeout()</code> 在 <code>1000ms</code> 後印出 <code>0</code>，然後再繼續 <code>1000ms</code> 後印出 <code>1</code>，最後再繼續 <code>1000ms</code> 後印出 <code>2</code>，這符合 synchronous 思維。</p>
-<p><img src="/images/ecmascript/async/settimeout-in-loop/timeout000.png" alt="timeout000"></p>
+<p><img src="/images/ecmascript/promise/settimeout-in-loop/timeout000.png" alt="timeout000"></p>
 <p>但結果出乎意外：</p>
 <ul>
 <li>都印出 <code>3</code></li>
@@ -490,7 +490,7 @@ a:hover {
 <p>當 <code>console.log(i)</code> 時，因為 callback 內沒有 <code>i</code>，所以會往外層尋找，又因為 <code>i</code> 沒有 function 包住，所以 <code>i</code> 共用 global scope，這導致 <code>for</code> loop 所累積的 <code>i</code>，會被 callback queue 執行 callback 所使用，因此都讀到 <code>3</code>。</p>
 <p>若我們每個 <code>setTimeout()</code> 都有自己的 function scope，就不會受 <code>for</code> loop 所影響。</p>
 <p>ES5 可使用 IIFE 訂出 function scope，如此 <code>i</code> 傳入 IIFE 的 anonymous function 就被封在 scope 內，不會受 <code>i</code> 累積所影響。</p>
-<p><img src="/images/ecmascript/async/settimeout-in-loop/timeout001.png" alt="timeout001"></p>
+<p><img src="/images/ecmascript/promise/settimeout-in-loop/timeout001.png" alt="timeout001"></p>
 <p>如此已經能印出 <code>0 1 2</code>，但仍都是在 <code>1000ms</code> 一起印出。</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">void</span> <span class="token keyword">function</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -501,7 +501,7 @@ a:hover {
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>IIFE 也可以使用 <code>void</code> 實現。</p>
-<p><img src="/images/ecmascript/async/settimeout-in-loop/timeout002.png" alt="timeout002"></p>
+<p><img src="/images/ecmascript/promise/settimeout-in-loop/timeout002.png" alt="timeout002"></p>
 <p>如此也經能印出 <code>0 1 2</code>，但仍都是在 <code>1000ms</code> 一起印出。</p>
 <h3 id="Asynchronous-Callback"><a href="#Asynchronous-Callback" class="headerlink" title="Asynchronous Callback"></a>Asynchronous Callback</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">void</span> <span class="token keyword">function</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -512,21 +512,21 @@ a:hover {
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>setTimeout()</code> 只是在 event queue 註冊 <code>1000ms</code>，因此在 <code>1000ms</code> 後同時執行，為了要有先後順序，要分別以 <code>1000 * i</code> 註冊，才能分別在 <code>1000ms</code>、<code>2000ms</code> 與 <code>3000ms</code> 後執行。</p>
-<p><img src="/images/ecmascript/async/settimeout-in-loop/timeout003.png" alt="timeout003"></p>
+<p><img src="/images/ecmascript/promise/settimeout-in-loop/timeout003.png" alt="timeout003"></p>
 <p>可發現 <code>0 1 2</code> 是依序印出，這才是我們所要的。</p>
 <h2 id="ECMAScript-2015"><a href="#ECMAScript-2015" class="headerlink" title="ECMAScript 2015"></a>ECMAScript 2015</h2><h3 id="Arrow-Function"><a href="#Arrow-Function" class="headerlink" title="Arrow Function"></a>Arrow Function</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">var</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>在 ES6 則有不同解法，<code>setTimeout()</code> 的 callback 可改用 arrow function。</p>
-<p><img src="/images/ecmascript/async/settimeout-in-loop/timeout004.png" alt="timeout004"></p>
+<p><img src="/images/ecmascript/promise/settimeout-in-loop/timeout004.png" alt="timeout004"></p>
 <p>但兩大問題依舊。</p>
 <h3 id="let"><a href="#let" class="headerlink" title="let"></a>let</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> <span class="token number">3</span><span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>i<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>ES5 的 <code>var</code> 是以 function scope，而 ES6 的 <code>let</code> 則以 <code>{}</code> 為 scope，也因此 <code>setTimeout()</code> 有自己的 scope，不再需要 IIFE 了。</p>
-<p><img src="/images/ecmascript/async/settimeout-in-loop/timeout005.png" alt="timeout005"></p>
+<p><img src="/images/ecmascript/promise/settimeout-in-loop/timeout005.png" alt="timeout005"></p>
 <p><code>let</code> 能印出 <code>0 1 2</code>，但仍都是在 <code>1000ms</code> 一起印出。</p>
 <h3 id="Promise-amp-Await"><a href="#Promise-amp-Await" class="headerlink" title="Promise &amp; Await"></a>Promise &amp; Await</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> sleep <span class="token operator">=</span> ms <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span>resolve <span class="token operator">=</span><span class="token operator">></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> ms<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
@@ -540,7 +540,7 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>ES6 提出了 promise 取代 asyncronous callback，因此可自行定義 <code>sleep()</code> 在 <code>1000ms</code> 後回傳 promise。</p>
 <p>Promise 搭配 <code>await</code> 後，就會如同預期看起來以 synchronous 執行。</p>
-<p><img src="/images/ecmascript/async/settimeout-in-loop/timeout006.png" alt="timeout006"></p>
+<p><img src="/images/ecmascript/promise/settimeout-in-loop/timeout006.png" alt="timeout006"></p>
 <p>ES6 使用 arrow function + let + promise + await 後，可謂功德圓滿，不只結果如預期，且 code 可讀性也很高，接近 synchronous 思維。</p>
 <h2 id="forEach"><a href="#forEach" class="headerlink" title="forEach()"></a>forEach()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> sleep <span class="token operator">=</span> ms <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span>resolve <span class="token operator">=</span><span class="token operator">></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> ms<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
@@ -550,7 +550,7 @@ a:hover {
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>ES5 就有 <code>Array.prototype.forEach()</code>，也可使用 <code>forEach()</code> 取代 <code>for</code> loop。</p>
-<p><img src="/images/ecmascript/async/settimeout-in-loop/timeout007.png" alt="timeout007"></p>
+<p><img src="/images/ecmascript/promise/settimeout-in-loop/timeout007.png" alt="timeout007"></p>
 <p><code>forEach()</code> 能印出 <code>0 1 2</code>，但仍都是在 <code>1000ms</code> 一起印出，why ?</p>
 <p><code>forEach()</code> 本質是 synchronous function，但 <code>sleep()</code> 是 asynchronous function，當 synchronuos 執行 asynchronous 時，會有不可預期結果。</p>
 <h2 id="asyncForEach"><a href="#asyncForEach" class="headerlink" title="asyncForEach()"></a>asyncForEach()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> sleep <span class="token operator">=</span> ms <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span>resolve <span class="token operator">=</span><span class="token operator">></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> ms<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -574,7 +574,7 @@ Array<span class="token punctuation">.</span>prototype<span class="token punctua
 <span class="token punctuation">}</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若仍堅持要在 callback 使用 <code>await</code>，則必須自行實作 <code>asyncForEach()</code>，此為 asynchronous function，因此可正常執行 asynchronous 的 <code>sleep()</code>。</p>
-<p><img src="/images/ecmascript/async/settimeout-in-loop/timeout008.png" alt="timeout008"></p>
+<p><img src="/images/ecmascript/promise/settimeout-in-loop/timeout008.png" alt="timeout008"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>若 ES5，可用 IIFE + asynchronous callback 解決</li>
 <li>若 ES6，可用 arrow function + let + promise + await 解決</li>

@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-09-03T07:08:56.000Z",
-    "dateModified": "2019-09-21T02:15:10.209Z",
+    "dateModified": "2020-03-14T04:54:01.863Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -447,26 +447,26 @@ a:hover {
 <span class="token function">fn</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>若是傳統 synchronous function，則 currying 完全沒有問題。</p>
-<p><img src="/images/ecmascript/async/currying/currying000.png" alt="currying000"></p>
+<p><img src="/images/ecmascript/promise/currying/currying000.png" alt="currying000"></p>
 <h2 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fn <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> y <span class="token operator">=</span><span class="token operator">></span> Promise<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span>x <span class="token operator">+</span> y<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token keyword">await</span> <span class="token function">fn</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>若要回傳 promise，則必須使用 <code>Promise.resolve()</code> 將 <code>x + y</code> 包起來後回傳。</p>
-<p><img src="/images/ecmascript/async/currying/currying001.png" alt="currying001"></p>
+<p><img src="/images/ecmascript/promise/currying/currying001.png" alt="currying001"></p>
 <h2 id="Asynchronous-Function"><a href="#Asynchronous-Function" class="headerlink" title="Asynchronous Function"></a>Asynchronous Function</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fn <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">async</span> y <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">+</span> y<span class="token punctuation">;</span>
 
 <span class="token keyword">await</span> <span class="token function">fn</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>事實上也能在最後一個 argument 前加上 <code>async</code>，則回傳也是 promise。</p>
-<p><img src="/images/ecmascript/async/currying/currying002.png" alt="currying002"></p>
+<p><img src="/images/ecmascript/promise/currying/currying002.png" alt="currying002"></p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fn <span class="token operator">=</span> <span class="token keyword">async</span> x <span class="token operator">=</span><span class="token operator">></span> y <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">+</span> y<span class="token punctuation">;</span>
 
 <span class="token keyword">await</span> <span class="token function">fn</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>但切記 async 要寫在最後一個 argument 前，而不是第一個 argument。</p>
 <p>因為要回傳的是 <code>x + y</code> 的 promise，而非 <code>y =&gt; x + y</code> 的 promise。</p>
-<p><img src="/images/ecmascript/async/currying/currying003.png" alt="currying003"></p>
+<p><img src="/images/ecmascript/promise/currying/currying003.png" alt="currying003"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Currying 與 promise 是 ECMAScript 兩大神技，沒想到竟然可以無縫合作，可直接將 currying 也加上 <code>async</code> 成為 asynchronous function，但別忘了 <code>async</code> 要加在最後一個 argument 前</li>
 </ul>
