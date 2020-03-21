@@ -168,7 +168,7 @@ a:hover {
 	<meta property="og:title" content="使用 sleep() 延遲一段時間再繼續執行 | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://fpjs.fun/wink-fp/async/sleep/">
+<meta property="og:url" content="https://fpjs.fun/wink-fp/promise/sleep/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
 <meta property="og:description" content="很多平台都有 sleep()，讓我們可以等待一段時間再繼續執行，這常見需求在 ECMAScript 該如何實現呢 ?">
 <meta name="twitter:card" content="summary">
@@ -188,19 +188,19 @@ a:hover {
 
 
 	<!-- ### Canonical link ### -->
-	<link rel="canonical" href="https://fpjs.fun/wink-fp/async/sleep/">
+	<link rel="canonical" href="https://fpjs.fun/wink-fp/promise/sleep/">
 	<!-- ### Structured Data ### -->
 	
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://fpjs.fun/wink-fp/async/sleep/",
+    "url": "https://fpjs.fun/wink-fp/promise/sleep/",
     "@type": "BlogPosting",
     "logo": "https://fpjs.fun/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://fpjs.fun/wink-fp/async/sleep/"
+        "@id": "https://fpjs.fun/wink-fp/promise/sleep/"
     },
     "headline": "使用 sleep() 延遲一段時間再繼續執行 | 點燈坊",
     
@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-09-25T18:47:00.000Z",
-    "dateModified": "2019-09-26T05:38:02.576Z",
+    "dateModified": "2020-03-21T11:49:39.471Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -459,7 +459,7 @@ a:hover {
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> sleep <span class="token operator">=</span> ms <span class="token operator">=</span><span class="token operator">></span> cb <span class="token operator">=</span><span class="token operator">></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span>cb<span class="token punctuation">,</span> ms<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>所模擬的 <code>sleep()</code>，底層使用 <code>setTimeout()</code> 實作。</p>
-<p><img src="/images/wink-fp/async/sleep/sleep000.png" alt="sleep000"></p>
+<p><img src="/images/wink-fp/promise/sleep/sleep000.png" alt="sleep000"></p>
 <h2 id="Async-Await"><a href="#Async-Await" class="headerlink" title="Async Await"></a>Async Await</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> sleep <span class="token operator">=</span> ms <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span>resolve <span class="token operator">=</span><span class="token operator">></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> ms<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token keyword">let</span> fn <span class="token operator">=</span> msg <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">async</span> ms <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
@@ -471,7 +471,7 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>setTimeout()</code> 本質是 asynchronous，會在 callback queue 等待，等 synchronous 都執行完才執行，在 ES5 只能使用 callback 實現。</p>
 <p>但 ES6 迎來了 Promise 後，可改讓 <code>sleep()</code> 回傳 Promise 成為 asynchronous function，在 <code>fn()</code> 內則使用 <code>await()</code> 等待 <code>sleep()</code> ，才將 <code>msg</code> 回傳。</p>
-<p><img src="/images/wink-fp/async/sleep/sleep001.png" alt="sleep001"></p>
+<p><img src="/images/wink-fp/promise/sleep/sleep001.png" alt="sleep001"></p>
 <h2 id="Promise-Then"><a href="#Promise-Then" class="headerlink" title="Promise Then"></a>Promise Then</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> sleep <span class="token operator">=</span> ms <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span>resolve <span class="token operator">=</span><span class="token operator">></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> ms<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token keyword">let</span> fn <span class="token operator">=</span> msg <span class="token operator">=</span><span class="token operator">></span> ms <span class="token operator">=</span><span class="token operator">></span> <span class="token function">sleep</span><span class="token punctuation">(</span>ms<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Promise<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
@@ -479,7 +479,7 @@ a:hover {
 <span class="token keyword">await</span> <span class="token function">fn</span><span class="token punctuation">(</span><span class="token string">'Waited 3s'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>async await</code> 都可等價改用 <code>then()</code> 實現。</p>
-<p><img src="/images/wink-fp/async/sleep/sleep002.png" alt="sleep002"></p>
+<p><img src="/images/wink-fp/promise/sleep/sleep002.png" alt="sleep002"></p>
 <h2 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> then<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> resolve <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token punctuation">;</span>
 
@@ -496,7 +496,7 @@ a:hover {
 <p><code>then()</code> 優點是有 pipeline 概念，但可惜 <code>then()</code> 與 <code>resolve()</code> 是掛在 Promise 上，而不是獨立 function，因此只能算 method chaining。</p>
 <p>Ramda 提供了 <code>then()</code>，為 <code>Promise.prototype.then()</code> 的 function 版本。</p>
 <p>Wink-fp 則提供了 <code>resolve()</code>，為 <code>Promise.resolve()</code> 的 function 版本，如此就能完整實現 pipeline。</p>
-<p><img src="/images/wink-fp/async/sleep/sleep003.png" alt="sleep003"></p>
+<p><img src="/images/wink-fp/promise/sleep/sleep003.png" alt="sleep003"></p>
 <h2 id="Function-Composition"><a href="#Function-Composition" class="headerlink" title="Function Composition"></a>Function Composition</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> then<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> resolve <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token punctuation">;</span>
 
@@ -511,7 +511,7 @@ a:hover {
 <span class="token keyword">await</span> <span class="token function">fn</span><span class="token punctuation">(</span><span class="token string">'Waited 3s'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>既然能使用 <code>pipe()</code> 達成 pipeline，反向使用 <code>compose()</code> 就是 function composition 了。</p>
-<p><img src="/images/wink-fp/async/sleep/sleep004.png" alt="sleep004"></p>
+<p><img src="/images/wink-fp/promise/sleep/sleep004.png" alt="sleep004"></p>
 <h2 id="Wink-fp"><a href="#Wink-fp" class="headerlink" title="Wink-fp"></a>Wink-fp</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> then<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> resolve<span class="token punctuation">,</span> sleep <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token punctuation">;</span>
 
@@ -529,7 +529,7 @@ a:hover {
 </blockquote>
 <p><code>Number</code>：ms 延遲時間</p>
 <p><code>Promise</code>：回傳為 <code>Promise</code></p>
-<p><img src="/images/wink-fp/async/sleep/sleep005.png" alt="sleep005"></p>
+<p><img src="/images/wink-fp/promise/sleep/sleep005.png" alt="sleep005"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>ES6 迎來 <code>Promise</code> 後，使得 <code>setTimeout()</code> 這類 asynchronous function 有了新的用法，透過回傳 <code>Promise</code>，就不必再使用 callback 了</li>
 <li>Promise 有兩種用法，一種是透過 ES2017 的 <code>async await</code>，風格接近 imperative；另一種使用 ES6 <code>then()</code>，風格接近 functional</li>
@@ -561,7 +561,7 @@ a:hover {
 		<!-- Prev Nav -->
 		
 		<li class="page-item page-prev">
-			<a href="/wink-fp/async/promisify/">
+			<a href="/wink-fp/promise/promisify/">
 				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
 				<div class="page-item-subtitle">使用 promisify() 將 Callback-based Function 轉成 Promise-based Function</div>
 			</a>

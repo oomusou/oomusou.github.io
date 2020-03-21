@@ -168,7 +168,7 @@ a:hover {
 	<meta property="og:title" content="以 Function Composition 取代 Promise Constructor | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://fpjs.fun/wink-fp/async/composition/">
+<meta property="og:url" content="https://fpjs.fun/wink-fp/promise/composition/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
 <meta property="og:description" content="Promise Constructor 最常用來配合 setTimeout()，在 Callback 中以 Closure 取得 resolve() 與 reject() 建立 Promise，事實上當以 sleep() 取代  setTimeout() 後，就可改以 Function Composition 取代 Promise Constructor。">
 <meta name="twitter:card" content="summary">
@@ -188,19 +188,19 @@ a:hover {
 
 
 	<!-- ### Canonical link ### -->
-	<link rel="canonical" href="https://fpjs.fun/wink-fp/async/composition/">
+	<link rel="canonical" href="https://fpjs.fun/wink-fp/promise/composition/">
 	<!-- ### Structured Data ### -->
 	
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://fpjs.fun/wink-fp/async/composition/",
+    "url": "https://fpjs.fun/wink-fp/promise/composition/",
     "@type": "BlogPosting",
     "logo": "https://fpjs.fun/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://fpjs.fun/wink-fp/async/composition/"
+        "@id": "https://fpjs.fun/wink-fp/promise/composition/"
     },
     "headline": "以 Function Composition 取代 Promise Constructor | 點燈坊",
     
@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-10-02T19:28:50.000Z",
-    "dateModified": "2019-10-03T15:03:38.242Z",
+    "dateModified": "2020-03-21T11:46:03.733Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -472,7 +472,7 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>重點是 <code>inc()</code> 並不是立即執行，而是 <code>setTimeout()</code> 後 3 秒才執行，所以回傳是 promise。</p>
 <p>若要在 asynchronous function 產生 promise，只靠 <code>Promise.resolve()</code> 與 <code>Promise.reject()</code> 寫不出來，必須使用 promise constructor，透過其 executor function 傳進 <code>resolve()</code> 與 <code>reject()</code>，則可在 <code>setTimeout()</code> 的 callback 內由 <code>resolve()</code> 與 <code>reject()</code> 建立 promise 回傳。</p>
-<p><img src="/images/wink-fp/async/composition/cons000.png" alt="constructor000"></p>
+<p><img src="/images/wink-fp/promise/composition/cons000.png" alt="constructor000"></p>
 <h2 id="sleep"><a href="#sleep" class="headerlink" title="sleep()"></a>sleep()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> sleep <span class="token operator">=</span> ms <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span>resolve <span class="token operator">=</span><span class="token operator">></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span>resolve<span class="token punctuation">)</span><span class="token punctuation">,</span> ms<span class="token punctuation">)</span><span class="token punctuation">;</span>
 
 <span class="token keyword">let</span> inc <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
@@ -507,7 +507,7 @@ a:hover {
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fn <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">inc</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>因為 <code>sleep()</code> 回傳 promise，因此可改用 <code>then()</code> 執行 <code>inc()</code>。</p>
-<p><img src="/images/wink-fp/async/composition/cons001.png" alt="constructor001"></p>
+<p><img src="/images/wink-fp/promise/composition/cons001.png" alt="constructor001"></p>
 <h2 id="Wink-fp"><a href="#Wink-fp" class="headerlink" title="Wink-fp"></a>Wink-fp</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> sleep<span class="token punctuation">,</span> resolve<span class="token punctuation">,</span> reject<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token punctuation">;</span>
 
 <span class="token keyword">let</span> inc <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
@@ -525,7 +525,7 @@ a:hover {
 <span class="token function">fn</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Wink-fp 已經提供 <code>sleep()</code>、<code>resolve()</code>、<code>reject()</code> 與 <code>log()</code>，可直接使用。</p>
-<p><img src="/images/wink-fp/async/composition/cons002.png" alt="cons002"></p>
+<p><img src="/images/wink-fp/promise/composition/cons002.png" alt="cons002"></p>
 <h2 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span>  add<span class="token punctuation">,</span> ifElse<span class="token punctuation">,</span> modulo<span class="token punctuation">,</span> equals<span class="token punctuation">,</span> flip <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> concat<span class="token punctuation">,</span> toString<span class="token punctuation">,</span> then <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> sleep<span class="token punctuation">,</span> resolve<span class="token punctuation">,</span> reject<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token punctuation">;</span>
@@ -548,7 +548,7 @@ a:hover {
 <span class="token function">fn</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>其實 <code>inc()</code> 與 <code>fn()</code> 都有 pipeline 特質，可使用 <code>pipe()</code> 與 <code>then()</code> 加以 pipeline。</p>
-<p><img src="/images/wink-fp/async/composition/cons003.png" alt="cons003"></p>
+<p><img src="/images/wink-fp/promise/composition/cons003.png" alt="cons003"></p>
 <h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span>  add<span class="token punctuation">,</span> ifElse<span class="token punctuation">,</span> modulo<span class="token punctuation">,</span> equals<span class="token punctuation">,</span> flip <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> concat<span class="token punctuation">,</span> toString<span class="token punctuation">,</span> then<span class="token punctuation">,</span> useWith<span class="token punctuation">,</span> thunkify <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> sleep<span class="token punctuation">,</span> resolve<span class="token punctuation">,</span> reject<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token punctuation">;</span>
@@ -570,7 +570,7 @@ a:hover {
 <span class="token function">fn</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>fn()</code> 也可使用 <code>useWith()</code> 進一步  point-free。</p>
-<p><img src="/images/wink-fp/async/composition/cons004.png" alt="cons004"></p>
+<p><img src="/images/wink-fp/promise/composition/cons004.png" alt="cons004"></p>
 <h2 id="Function-Composition"><a href="#Function-Composition" class="headerlink" title="Function Composition"></a>Function Composition</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span>  add<span class="token punctuation">,</span> ifElse<span class="token punctuation">,</span> modulo<span class="token punctuation">,</span> equals<span class="token punctuation">,</span> flip <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> concat<span class="token punctuation">,</span> toString<span class="token punctuation">,</span> then<span class="token punctuation">,</span> useWith<span class="token punctuation">,</span> thunkify <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> sleep<span class="token punctuation">,</span> resolve<span class="token punctuation">,</span> reject<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token punctuation">;</span>
@@ -592,7 +592,7 @@ a:hover {
 <span class="token function">fn</span><span class="token punctuation">(</span><span class="token number">3000</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>既然能使用 <code>pipe()</code> 達成 pipeline，反向使用 <code>compose()</code> 就是 function composition 了。</p>
-<p><img src="/images/wink-fp/async/composition/cons005.png" alt="cons005"></p>
+<p><img src="/images/wink-fp/promise/composition/cons005.png" alt="cons005"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>有兩個場景特別適合使用 promise constructor：<ul>
 <li>需同時產生 fulfilled promise 與 rejected promise 時</li>

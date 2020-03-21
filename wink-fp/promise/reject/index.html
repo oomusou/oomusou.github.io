@@ -168,7 +168,7 @@ a:hover {
 	<meta property="og:title" content="使用 reject() 建立 Rejected Promise | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://fpjs.fun/wink-fp/async/reject/">
+<meta property="og:url" content="https://fpjs.fun/wink-fp/promise/reject/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
 <meta property="og:description" content="reject() 是 Promise.reject() 的 Function 版本，特別適合 Function Composition。">
 <meta name="twitter:card" content="summary">
@@ -188,19 +188,19 @@ a:hover {
 
 
 	<!-- ### Canonical link ### -->
-	<link rel="canonical" href="https://fpjs.fun/wink-fp/async/reject/">
+	<link rel="canonical" href="https://fpjs.fun/wink-fp/promise/reject/">
 	<!-- ### Structured Data ### -->
 	
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://fpjs.fun/wink-fp/async/reject/",
+    "url": "https://fpjs.fun/wink-fp/promise/reject/",
     "@type": "BlogPosting",
     "logo": "https://fpjs.fun/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://fpjs.fun/wink-fp/async/reject/"
+        "@id": "https://fpjs.fun/wink-fp/promise/reject/"
     },
     "headline": "使用 reject() 建立 Rejected Promise | 點燈坊",
     
@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2019-09-19T19:13:03.000Z",
-    "dateModified": "2019-09-23T08:02:13.192Z",
+    "dateModified": "2020-03-21T11:48:06.269Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -450,7 +450,7 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若想在 fulfilled handler 內自行建立 rejected promise，可先建立 <code>Error</code> object，再由 <code>Promise.reject()</code> 包成 rejected promise。</p>
 <p>由於 <code>catch()</code> callback 中的 <code>e</code> 為 <code>Error</code> object，必須使用 <code>e.message</code> 才能取得 <code>Something wrong</code>。</p>
-<p><img src="/images/wink-fp/async/reject/reject002.png" alt="reject002"></p>
+<p><img src="/images/wink-fp/promise/reject/reject002.png" alt="reject002"></p>
 <h2 id="Throw"><a href="#Throw" class="headerlink" title="Throw"></a>Throw</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchData <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'Hello World'</span><span class="token punctuation">;</span>
 
 <span class="token function">fetchData</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
@@ -459,7 +459,7 @@ a:hover {
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token keyword">catch</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可在 fulfilled handler 中直接使用 <code>throw</code> 建立 rejected promise，其中 <code>throw</code> 就是 <code>Promise.reject()</code> 的 syntatic sugar。</p>
-<p><img src="/images/wink-fp/async/reject/reject003.png" alt="reject003"></p>
+<p><img src="/images/wink-fp/promise/reject/reject003.png" alt="reject003"></p>
 <h2 id="Try-Catch"><a href="#Try-Catch" class="headerlink" title="Try Catch"></a>Try Catch</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchData <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'Hello World'</span><span class="token punctuation">;</span>
 
 <span class="token keyword">try</span> <span class="token punctuation">{</span>
@@ -472,7 +472,7 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>throw</code> 除了能用在 fulfilled handler 外，也能用在 <code>try catch</code> block 中，如此更符合 imperative 與 synchronous 習慣。</p>
 <p>但別忘了 <code>throw</code> 是 syntatic sugar，當 <code>throw</code> 搭配 <code>await</code> 時，它產生的是包裹 <code>Error</code> object 的 rejected promise。</p>
-<p><img src="/images/wink-fp/async/reject/reject004.png" alt="reject004"></p>
+<p><img src="/images/wink-fp/promise/reject/reject004.png" alt="reject004"></p>
 <h2 id="Functional"><a href="#Functional" class="headerlink" title="Functional"></a>Functional</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> then<span class="token punctuation">,</span> otherwise<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span> 
 <span class="token keyword">import</span> <span class="token punctuation">{</span> resolve<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token punctuation">;</span>
 
@@ -500,7 +500,7 @@ a:hover {
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> reject <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> Promise<span class="token punctuation">.</span><span class="token function">reject</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>至於沒人提供的 <code>reject()</code>，則自行由 <code>Promise.reject()</code> 包成 function。</p>
-<p><img src="/images/wink-fp/async/reject/reject001.png" alt="reject001"></p>
+<p><img src="/images/wink-fp/promise/reject/reject001.png" alt="reject001"></p>
 <h2 id="Wink-fp"><a href="#Wink-fp" class="headerlink" title="Wink-fp"></a>Wink-fp</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> then<span class="token punctuation">,</span> otherwise<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span> 
 <span class="token keyword">import</span> <span class="token punctuation">{</span> resolve<span class="token punctuation">,</span> log<span class="token punctuation">,</span> reject <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token punctuation">;</span>
 
@@ -526,7 +526,7 @@ a:hover {
 </blockquote>
 <p><code>a</code>：data 為任意值</p>
 <p><code>Promise&lt;a&gt;</code>：包成 promise 回傳</p>
-<p><img src="/images/wink-fp/async/reject/reject000.png" alt="reject002"></p>
+<p><img src="/images/wink-fp/promise/reject/reject000.png" alt="reject002"></p>
 <h2 id="Function-Composition"><a href="#Function-Composition" class="headerlink" title="Function Composition"></a>Function Composition</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> then<span class="token punctuation">,</span> otherwise<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span> 
 <span class="token keyword">import</span> <span class="token punctuation">{</span> resolve<span class="token punctuation">,</span> reject<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token punctuation">;</span>
 
@@ -547,7 +547,7 @@ a:hover {
 <span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>既然能使用 <code>pipe()</code> 達成 pipeline，反向使用 <code>compose()</code> 就是 function composition 了。</p>
-<p><img src="/images/wink-fp/async/reject/reject005.png" alt="reject005"></p>
+<p><img src="/images/wink-fp/promise/reject/reject005.png" alt="reject005"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>ECMAScript 很多 API 可能不適合 function composition，但我們可以自己包成 function</li>
 <li>透過 function 化的 <code>reject()</code>，我們就可組合其他 function 產生 rejected Promise</li>
