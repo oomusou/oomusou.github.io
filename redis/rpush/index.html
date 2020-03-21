@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>如何在 Node 使用 Redis 的 INCRBYFLOAT ? | 點燈坊</title>
+<title>如何在 Node 使用 Redis 的 RPUSH ? | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -51,7 +51,7 @@
 
 <meta name="format-detection" content="telephone=no">
 <!-- Description -->
-<meta name="description" content="Redis 的 INCRBYFLOAT 可直接針對 KEY 增加指定 Float，亦可使用 Node Redis 的 incrbyfloat()。">
+<meta name="description" content="Redis 的 RPUSH 可直接針對 List 新增 Element，亦可使用 Node Redis 的 rpush()。">
 <!-- Keywords -->
 <meta name="keywords" content=", Redis">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
@@ -165,17 +165,17 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="如何在 Node 使用 Redis 的 INCRBYFLOAT ? | 點燈坊">
+	<meta property="og:title" content="如何在 Node 使用 Redis 的 RPUSH ? | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://fpjs.fun/redis/incrbyfloat/">
+<meta property="og:url" content="https://fpjs.fun/redis/rpush/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
-<meta property="og:description" content="Redis 的 INCRBYFLOAT 可直接針對 KEY 增加指定 Float，亦可使用 Node Redis 的 incrbyfloat()。">
+<meta property="og:description" content="Redis 的 RPUSH 可直接針對 List 新增 Element，亦可使用 Node Redis 的 rpush()。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-03-21T02:56:07.000Z">
-<meta property="article:modified_time" content="2020-03-21T02:56:07.000Z">
+<meta property="article:published_time" content="2020-03-21T03:52:31.000Z">
+<meta property="article:modified_time" content="2020-03-21T03:52:31.000Z">
 <meta property="article:author" content="Sam Xiao">
 <meta property="og:article:tag" content=", Redis">
 
@@ -188,29 +188,29 @@ a:hover {
 
 
 	<!-- ### Canonical link ### -->
-	<link rel="canonical" href="https://fpjs.fun/redis/incrbyfloat/">
+	<link rel="canonical" href="https://fpjs.fun/redis/rpush/">
 	<!-- ### Structured Data ### -->
 	
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://fpjs.fun/redis/incrbyfloat/",
+    "url": "https://fpjs.fun/redis/rpush/",
     "@type": "BlogPosting",
     "logo": "https://fpjs.fun/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://fpjs.fun/redis/incrbyfloat/"
+        "@id": "https://fpjs.fun/redis/rpush/"
     },
-    "headline": "如何在 Node 使用 Redis 的 INCRBYFLOAT ? | 點燈坊",
+    "headline": "如何在 Node 使用 Redis 的 RPUSH ? | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2020-03-21T02:56:07.000Z",
-    "dateModified": "2020-03-21T02:58:57.700Z",
+    "datePublished": "2020-03-21T03:52:31.000Z",
+    "dateModified": "2020-03-21T03:53:48.618Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -236,7 +236,7 @@ a:hover {
     },
     
     "keywords": ", Redis",
-    "description": "Redis 的 INCRBYFLOAT 可直接針對 KEY 增加指定 Float，亦可使用 Node Redis 的 incrbyfloat()。"
+    "description": "Redis 的 RPUSH 可直接針對 List 新增 Element，亦可使用 Node Redis 的 rpush()。"
 }
 </script>
 
@@ -428,7 +428,7 @@ a:hover {
 			<div class="card-inner-cell">
 				<div class="card-header">
 					
-<h1 class="card-title h3 mb-2">如何在 Node 使用 Redis 的 INCRBYFLOAT ?</h1>
+<h1 class="card-title h3 mb-2">如何在 Node 使用 Redis 的 RPUSH ?</h1>
 
 
 <div class="post-header-info">
@@ -439,16 +439,18 @@ a:hover {
 				</div>
 				<div class="card-body">
 					<article id="post-content">
-						<p>Redis 的 <code>INCRBYFLOAT</code> 可直接針對 KEY 增加指定 Float，亦可使用 Node Redis 的 <code>incrbyfloat()</code>。</p>
+						<p>Redis 的 <code>RPUSH</code> 可直接針對 List 新增 Element，亦可使用 Node Redis 的 <code>rpush()</code>。</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.3<br>WebStorm 2019.3.4<br>Node Redis 2.8.0</p>
-<h2 id="Command"><a href="#Command" class="headerlink" title="Command"></a>Command</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ get price
-$ incrbyfloat price 0.5
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="Command"><a href="#Command" class="headerlink" title="Command"></a>Command</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ rpush mylist 'hello'
+$ rpush mylist 'world'
+$ lrange mylist 0 -1
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <ul>
-<li>使用 <code>INCRBY</code> 對 <code>price</code> key 增加 <code>0.5</code></li>
+<li>使用 <code>rpush</code> 對 <code>mylist</code> key 新增 element</li>
+<li>使用 <code>lrange</code> 顯示 <code>mylist</code>，<code>0</code> 為開始 index，<code>-1</code> 為結束 index</li>
 </ul>
-<p><img src="/images/redis/incrbyfloat/float000.png" alt="float000"></p>
+<p><img src="/images/redis/rpush/rpush000.png" alt="rpush000"></p>
 <h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> createClient <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'redis'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> promisify <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'util'</span>
 
@@ -457,25 +459,32 @@ $ incrbyfloat price 0.5
   port<span class="token punctuation">:</span> <span class="token number">6379</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> redisGet <span class="token operator">=</span> <span class="token function">promisify</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">)</span>
-<span class="token keyword">let</span> redisIncrbyfloat <span class="token operator">=</span> <span class="token function">promisify</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">.</span>incrbyfloat<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">)</span>
+<span class="token keyword">let</span> redisRpush <span class="token operator">=</span> <span class="token function">promisify</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">.</span>rpush<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">)</span>
+<span class="token keyword">let</span> redisLrange <span class="token operator">=</span> <span class="token function">promisify</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">.</span>lrange<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">)</span>
 
-<span class="token function">redisGet</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
-<span class="token function">redisIncrbyfloat</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>第 10 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> redisIncrbyfloat <span class="token operator">=</span> <span class="token function">promisify</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">.</span>incrbyfloat<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">)</span>
+<span class="token function">redisRpush</span><span class="token punctuation">(</span><span class="token string">'mylist'</span><span class="token punctuation">,</span> <span class="token string">'hello'</span><span class="token punctuation">)</span>
+<span class="token function">redisRpush</span><span class="token punctuation">(</span><span class="token string">'mylist'</span><span class="token punctuation">,</span> <span class="token string">'world'</span><span class="token punctuation">)</span>
+<span class="token function">redisLrange</span><span class="token punctuation">(</span><span class="token string">'mylist'</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> redisRpush <span class="token operator">=</span> <span class="token function">promisify</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">.</span>rpush<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">)</span>
+<span class="token keyword">let</span> redisLrange <span class="token operator">=</span> <span class="token function">promisify</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">.</span>lrange<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>使用 <code>promisify()</code> 將 <code>rpush()</code> 與 <code>orange()</code> 從 callback 轉成回傳 promise。</p>
+<p>12 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">redisRpush</span><span class="token punctuation">(</span><span class="token string">'mylist'</span><span class="token punctuation">,</span> <span class="token string">'hello'</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>使用 <code>promisify()</code> 將 <code>incrbyfloat()</code> 從 callback 轉成回傳 promise。</p>
-<p>13 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">redisIncrbyfloat</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">,</span> <span class="token number">0.5</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
+<p>使用 <code>redisRpush()</code> 對 <code>mylist</code> key 新增 <code>hello</code>。</p>
+<p>14 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">redisLrange</span><span class="token punctuation">(</span><span class="token string">'mylist'</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>使用 <code>redisIncrbyfloat()</code> 對 <code>price</code> key 直接新增 <code>0.5</code>，回傳為新增後結果的 promise。</p>
-<p><img src="/images/redis/incrbyfloat/float001.png" alt="float001"></p>
+<p>使用 <code>redisLrange()</code> 顯示 <code>mylist</code> 所有資料，回傳為 array promise。</p>
+<p><img src="/images/redis/rpush/rpush001.png" alt="rpush001"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>Node Redis 所提供的 <code>incrbyfloat()</code> 為 callback based，可使用 <code>promisify()</code> 轉成 promise based</li>
+<li>Node Redis 所提供的 <code>rpush()</code> 與 <code>lrange()</code> 為 callback based，可使用 <code>promisify()</code> 轉成 promise based</li>
+<li>由於 <code>lrange()</code> 回傳多筆資料，因此為 array promise</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://redis.io" target="_blank" rel="noopener">Redis</a>, <a href="https://redis.io/commands/incrbyfloat" target="_blank" rel="noopener">INCRBYFLOAT</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://redis.io" target="_blank" rel="noopener">Redis</a>, <a href="https://redis.io/commands/rpush" target="_blank" rel="noopener">RPUSH</a><br><a href="https://redis.io" target="_blank" rel="noopener">Redis</a>, <a href="https://redis.io/commands/lrange" target="_blank" rel="noopener">LRANGE</a></p>
 
 					</article>
 					<p class="post-footer-info mb-0 pt-2">
@@ -494,19 +503,12 @@ $ incrbyfloat price 0.5
 	<ul class="pagination">
 		<!-- Prev Nav -->
 		
-		<li class="page-item page-prev">
-			<a href="/redis/rpush/">
-				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">如何在 Node 使用 Redis 的 RPUSH ?</div>
-			</a>
-		</li>
-		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/redis/hincrby/">
+			<a href="/redis/incrbyfloat/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">如何在 Node 使用 Redis 的 HINCRBY ?</div>
+				<div class="page-item-subtitle">如何在 Node 使用 Redis 的 INCRBYFLOAT ?</div>
 			</a>
 		</li>
 		
