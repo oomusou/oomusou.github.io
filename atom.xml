@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2020-03-21T02:09:54.756Z</updated>
+  <updated>2020-03-21T02:22:23.140Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何在 Node 使用 Redis 的 HINCRBY ?</title>
+    <link href="https://fpjs.fun/redis/hincrby/"/>
+    <id>https://fpjs.fun/redis/hincrby/</id>
+    <published>2020-03-21T02:20:26.000Z</published>
+    <updated>2020-03-21T02:22:23.140Z</updated>
+    
+    <content type="html"><![CDATA[<p>Redis 的 <code>HINCRBY</code> 可直接針對 Hash 增加指定值，亦可使用 Node Redis 的 <code>hincrby()</code>。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.3<br>WebStorm 2019.3.4<br>Node Redis 2.8.0</p><h2 id="Command"><a href="#Command" class="headerlink" title="Command"></a>Command</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ hget book price$ hincrby book price 10<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><ul><li>使用 <code>HINCRBY</code> 對 <code>book</code> key 的 <code>price</code> field 增加 <code>10</code></li></ul><p><img src="/images/redis/hincrby/hincrby000.png" alt="hincrby000"></p><h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> createClient <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'redis'</span><span class="token keyword">import</span> <span class="token punctuation">{</span> promisify <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'util'</span><span class="token keyword">let</span> myRedis <span class="token operator">=</span> <span class="token function">createClient</span><span class="token punctuation">(</span><span class="token punctuation">{</span>  host<span class="token punctuation">:</span> <span class="token string">'localhost'</span><span class="token punctuation">,</span>  port<span class="token punctuation">:</span> <span class="token number">6379</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token keyword">let</span> redisHget <span class="token operator">=</span> <span class="token function">promisify</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">.</span>hget<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">)</span><span class="token keyword">let</span> redisHincrby <span class="token operator">=</span> <span class="token function">promisify</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">.</span>hincrby<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">)</span><span class="token function">redisHget</span><span class="token punctuation">(</span><span class="token string">'book'</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span><span class="token function">redisHincrby</span><span class="token punctuation">(</span><span class="token string">'book'</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>第 9 行</p><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> redisHget <span class="token operator">=</span> <span class="token function">promisify</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">.</span>hget<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">)</span><span class="token keyword">let</span> redisHincrby <span class="token operator">=</span> <span class="token function">promisify</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">.</span>hincrby<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span>myRedis<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>使用 <code>promisify()</code> 將 <code>hincrby()</code> 與 <code>hget()</code> 從 callback 轉成回傳 promise。</p><p>13 行</p><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">redisHincrby</span><span class="token punctuation">(</span><span class="token string">'book'</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">,</span> <span class="token number">10</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>使用 <code>redisIncrby()</code> 對 <code>book</code> key 的 <code>price</code> field 直接新增 <code>10</code>，回傳為新增後結果的 promise。</p><p><img src="/images/redis/hincrby/hincrby001.png" alt="hincrby001"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Node Redis 所提供的 <code>hincrby()</code> 為 callback based，可使用 <code>promisify()</code> 轉成 promise based</li><li><code>hincrby()</code> 不只是對 key 的 field 增加 <code>1</code> 而已，而是可自行指定增加值</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://redis.io" target="_blank" rel="noopener">Redis</a>, <a href="https://redis.io/commands/hincrby" target="_blank" rel="noopener">HINCRBY</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Redis 的 &lt;code&gt;HINCRBY&lt;/code&gt; 可直接針對 Hash 增加指定值，亦可使用 Node Redis 的 &lt;code&gt;hincrby()&lt;/code&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Redis" scheme="https://fpjs.fun/tags/Redis/"/>
+    
+  </entry>
   
   <entry>
     <title>如何在 Node 使用 Redis 的 INCRBY ?</title>
@@ -397,28 +417,6 @@
     
     
       <category term="Knex" scheme="https://fpjs.fun/tags/Knex/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何只安裝 Production 所需 Package 進 Docker ?</title>
-    <link href="https://fpjs.fun/docker/node/production/"/>
-    <id>https://fpjs.fun/docker/node/production/</id>
-    <published>2020-03-15T02:57:55.000Z</published>
-    <updated>2020-03-15T03:05:08.597Z</updated>
-    
-    <content type="html"><![CDATA[<p>Node 的一大特色就是需依賴大量的 Package，但有些 Package 只是開發或編譯使用，如 Babel、Nodemon 只會安裝在 <code>devDependencies</code>，像這類 Package 就不須安裝在發布的 Docker Image 內，可大幅降低 Image Size。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.3<br>Docker Desktop 2.2.0.3 (42716)<br>WebStorm 2019.3.3<br>Node 12.4.0</p><h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">FROM node:lts-alpineWORKDIR /usr/appCOPY package.json .RUN yarn install --productionCOPY dist/* ./CMD [ "node", "index.js" ]<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>第 4 行</p><pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">RUN yarn install --production<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>在 docker 內下 <code>yarn install</code> 安裝所有 package 時，別忘了加上 <code>--production</code>，如此只會安裝 <code>dependencies</code> 下的 package，而不會安裝 <code>devDependencies</code> 下的 package，可大幅降低 image 的 size。</p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>實務上常常忘記加上 <code>--production</code>，導致 image 過於肥大，這樣喪失了 NPM 當初設計 <code>dependencies</code> 與 <code>devDependencies</code> 的意義</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Node 的一大特色就是需依賴大量的 Package，但有些 Package 只是開發或編譯使用，如 Babel、Nodemon 只會安裝在 &lt;code&gt;devDependencies&lt;/code&gt;，像這類 Package 就不須安裝在發布的 Docker Image 內，可大幅降低 Image Size。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Docker" scheme="https://fpjs.fun/tags/Docker/"/>
-    
-      <category term="Node" scheme="https://fpjs.fun/tags/Node/"/>
     
   </entry>
   
