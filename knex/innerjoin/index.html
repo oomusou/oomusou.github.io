@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-04-02T12:48:00.000Z",
-    "dateModified": "2020-04-02T12:55:16.637Z",
+    "dateModified": "2020-04-02T13:45:10.189Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -449,15 +449,21 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Inner join 是 SQL 最基本的功能。</p>
 <p><img src="/images/knex/innerjoin/join000.png" alt="join000"></p>
-<h2 id="Knex"><a href="#Knex" class="headerlink" title="Knex"></a>Knex</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
+<h2 id="Knex"><a href="#Knex" class="headerlink" title="Knex"></a>Knex</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> format<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+
+<span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'books.title'</span><span class="token punctuation">,</span> <span class="token string">'books.price'</span><span class="token punctuation">,</span> <span class="token string">'categories.name'</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">innerJoin</span><span class="token punctuation">(</span><span class="token string">'categories'</span><span class="token punctuation">,</span> <span class="token string">'books.categoryId'</span><span class="token punctuation">,</span> <span class="token string">'categories.categoryId'</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'categories.name'</span><span class="token punctuation">,</span> <span class="token string">'JS'</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">'{title}/{name}: {price}'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若 inner join 的條件只有一個 field，直接在 <code>innerJoin()</code> 的第二個 argument 與第三個 argument 指定 field 即可。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> format<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+
+<span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'books.title'</span><span class="token punctuation">,</span> <span class="token string">'books.price'</span><span class="token punctuation">,</span> <span class="token string">'categories.name'</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">innerJoin</span><span class="token punctuation">(</span><span class="token string">'categories'</span><span class="token punctuation">,</span> x <span class="token operator">=</span><span class="token operator">></span>
     x<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">'books.categoryId'</span><span class="token punctuation">,</span> <span class="token string">'categories.categoryId'</span><span class="token punctuation">)</span>
@@ -465,7 +471,7 @@ a:hover {
   <span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'categories.name'</span><span class="token punctuation">,</span> <span class="token string">'JS'</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">'{title}/{name}: {price}'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>innerJoin()</code> 的第二個 argument 也能傳入 callback，使用 <code>x.on()</code> 綁定 field。</p>
 <h2 id="Knex-fp"><a href="#Knex-fp" class="headerlink" title="Knex-fp"></a>Knex-fp</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipeK<span class="token punctuation">,</span> select<span class="token punctuation">,</span> innerJoin<span class="token punctuation">,</span> where <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'knex-fp'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
