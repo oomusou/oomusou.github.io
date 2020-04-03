@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2020-04-02T13:45:10.189Z</updated>
+  <updated>2020-04-03T02:09:29.133Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用 format() 自訂日期顯示格式</title>
+    <link href="https://fpjs.fun/date-fns/format/"/>
+    <id>https://fpjs.fun/date-fns/format/</id>
+    <published>2020-04-03T02:07:03.000Z</published>
+    <updated>2020-04-03T02:09:29.133Z</updated>
+    
+    <content type="html"><![CDATA[<p>後端通常日期會以 ISO String  回傳給前端，要前端自行根據 Timezone 顯示該時區正確時間，且日期格式又會根據客戶需求調整，這常見需求該如何實現呢 ?</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.4<br>VS Code 1.43.2<br>Quokka 1.0.285<br>Ramda 0.27.0<br>Date-fp 5.0.3<br>Date-fns 2.11.1<br>Wink-fp 1.20.67</p><h2 id="toLocaleString-NaN"><a href="#toLocaleString-NaN" class="headerlink" title="toLocaleString()"></a>toLocaleString()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> s <span class="token operator">=</span> <span class="token string">'2020-04-02T11:30:00Z'</span><span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toLocaleString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>最簡單方法是使用內建的 <code>toLocaleString()</code>，它會自動根據目前 timezone 顯示正確時間，唯 format 可能不是我們想要的。</p><p><img src="/images/date-fns/format/format000.png" alt="format000"></p><h2 id="Date-fp"><a href="#Date-fp" class="headerlink" title="Date-fp"></a>Date-fp</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token keyword">import</span> <span class="token punctuation">{</span> format <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'date-fp'</span><span class="token keyword">import</span> <span class="token punctuation">{</span> date <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span> <span class="token keyword">let</span> s <span class="token operator">=</span> <span class="token string">'2020-04-02T11:30:00Z'</span><span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>  date<span class="token punctuation">,</span>  <span class="token function">format</span><span class="token punctuation">(</span><span class="token string">'YYYY-MM-DD HH:mm:ss'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token function">f</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Date-fp 有提供 <code>format()</code>，唯 Date-fp 將所有時間均視為 UTC 時間，因此其 <code>format()</code> 後格式是對了，但 timezone 不對。</p><blockquote><p>Wink-fp 的 <code>date()</code> 只是 <code>new Date</code> 的 function 化，適合 function pipeline</p></blockquote><p><img src="/images/date-fns/format/format001.png" alt="format001"></p><h2 id="Date-fns"><a href="#Date-fns" class="headerlink" title="Date-fns"></a>Date-fns</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token keyword">import</span> <span class="token punctuation">{</span> format <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'date-fns/fp'</span><span class="token keyword">import</span> <span class="token punctuation">{</span> date <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token keyword">let</span> s <span class="token operator">=</span> <span class="token string">'2020-04-02T11:30:00Z'</span><span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>  date<span class="token punctuation">,</span>  <span class="token function">format</span><span class="token punctuation">(</span><span class="token string">'yyyy-MM-dd HH:mm:ss'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token function">f</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Date-fns 所提供的 <code>format()</code> 就很理想，除了能轉成指定格式，也會自動轉成正確 timezone。</p><p><img src="/images/date-fns/format/format002.png" alt="format002"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>若想擁有 FP 的 curried function，且 data 放在最後一個 argument，過去 Date-fp 是首選，唯其 <code>format()</code> 只支援 UTC time 是遺憾之處，此時可改用 Date-fns 的 <code>format()</code>，依然可以繼續 function pipeline</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://cullophid.github.io/date-fp/index.html" target="_blank" rel="noopener">Date-fp</a>, <a href="https://cullophid.github.io/date-fp/docs/functions/format.html" target="_blank" rel="noopener">format()</a><br><a href="https://date-fns.org" target="_blank" rel="noopener">Date-fns</a>, <a href="https://date-fns.org/v2.11.1/docs/format" target="_blank" rel="noopener">format()</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;後端通常日期會以 ISO String  回傳給前端，要前端自行根據 Timezone 顯示該時區正確時間，且日期格式又會根據客戶需求調整，這常見需求該如何實現呢 ?&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Ramda" scheme="https://fpjs.fun/tags/Ramda/"/>
+    
+  </entry>
   
   <entry>
     <title>如何 Inner Join 兩個 Table ?</title>
@@ -393,26 +413,6 @@
     
     
       <category term="Wink-fp" scheme="https://fpjs.fun/tags/Wink-fp/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用 JSON.parse() 將 JSON String 轉成 Object</title>
-    <link href="https://fpjs.fun/ecmascript/json/parse/"/>
-    <id>https://fpjs.fun/ecmascript/json/parse/</id>
-    <published>2020-03-28T07:10:07.000Z</published>
-    <updated>2020-03-28T07:12:03.543Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>JSON.stringify()</code> 可將 object 轉成 JSON String，若要將 JSON String 轉成 Object，則可使用 <code>JSON.parse()</code>。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.3<br>VS Code 1.43.0<br>WebStorm 2019.3.3<br>ECMAScript 2015</p><h2 id="JSON-parse"><a href="#JSON-parse" class="headerlink" title="JSON.parse()"></a>JSON.parse()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span> <span class="token punctuation">}</span><span class="token keyword">let</span> str <span class="token operator">=</span> JSON<span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token keyword">let</span> result <span class="token operator">=</span> JSON<span class="token punctuation">.</span><span class="token function">parse</span><span class="token punctuation">(</span>str<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><code>obj</code> 為 object literal，<code>str</code> 為 JSON string，可再使用 <code>JSON.parse()</code> 轉成 object。</p><p><img src="/images/ecmascript/json/parse/parse000.png" alt="parse000"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li><code>JSON.parse()</code> 為 ECMAScript 生態系常用 method，可將 JSON string 轉為 object</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse" target="_blank" rel="noopener">JSON.parse()</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;&lt;code&gt;JSON.stringify()&lt;/code&gt; 可將 object 轉成 JSON String，若要將 JSON String 轉成 Object，則可使用 &lt;code&gt;JSON.parse()&lt;/code&gt;。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="ECMAScript" scheme="https://fpjs.fun/tags/ECMAScript/"/>
     
   </entry>
   
