@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2020-04-04T11:34:17.015Z</updated>
+  <updated>2020-04-04T15:58:22.131Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用 Promise.all() 等 Array 中所有 Promise 都 Fulfilled</title>
+    <link href="https://fpjs.fun/ecmascript/promise/all/"/>
+    <id>https://fpjs.fun/ecmascript/promise/all/</id>
+    <published>2020-04-04T15:55:21.000Z</published>
+    <updated>2020-04-04T15:58:22.131Z</updated>
+    
+    <content type="html"><![CDATA[<p>Promise 由於是 Asynchronous，產生速度有快有慢，可使用 <code>Promise.all()</code> 等 Array 中所有 Promise 從 Pending 都成為 Fulfilled。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.4<br>VS Code 1.43.2<br>Quokka 1.0.285<br>ECMAScript 2015</p><h2 id="Fulfilled-Promise"><a href="#Fulfilled-Promise" class="headerlink" title="Fulfilled Promise"></a>Fulfilled Promise</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> p0 <span class="token operator">=</span> Promise<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token keyword">let</span> p1 <span class="token operator">=</span> Promise<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token keyword">let</span> p2 <span class="token operator">=</span> Promise<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>Promise<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token punctuation">[</span>p0<span class="token punctuation">,</span> p1<span class="token punctuation">,</span> p2<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><code>p0</code>、<code>p1</code>、<code>p2</code> 為 3 個 promise， <code>Promise.all()</code> 會等 3 個 promise 都 fulfilled 後才合併成單一 promise。</p><p><img src="/images/ecmascript/promise/all/all000.png" alt="all000"></p><h2 id="Rejected-Promise"><a href="#Rejected-Promise" class="headerlink" title="Rejected Promise"></a>Rejected Promise</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> p0 <span class="token operator">=</span> Promise<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token keyword">let</span> p1 <span class="token operator">=</span> Promise<span class="token punctuation">.</span><span class="token function">reject</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token keyword">let</span> p2 <span class="token operator">=</span> Promise<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>Promise<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token punctuation">[</span>p0<span class="token punctuation">,</span> p1<span class="token punctuation">,</span> p2<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><code>p2</code> 為 rejected promise，<code>Promise.all()</code> 中只要有一個為 rejected promise，則最後結果為 rejected promise。</p><p><img src="/images/ecmascript/promise/all/all001.png" alt="all001"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>實務上若要在 synchronous higher order function 內 (如 <code>map()</code>) 呼叫 asynchronous function，就會出現 array 中一堆 pending promise，此使可使用 <code>Promise.all()</code> 使之全部 fulfilled</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://egghead.io/instructors/marius-schulz" target="_blank" rel="noopener">Marius Schulz</a>, <a href="https://egghead.io/lessons/javascript-wait-for-multiple-javascript-promises-to-settle-with-promise-all" target="_blank" rel="noopener">Wait for Multiple JavaScript Promises to Settle with Promise.all()</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all" target="_blank" rel="noopener">Promise.all()</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Promise 由於是 Asynchronous，產生速度有快有慢，可使用 &lt;code&gt;Promise.all()&lt;/code&gt; 等 Array 中所有 Promise 從 Pending 都成為 Fulfilled。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="ECMAScript" scheme="https://fpjs.fun/tags/ECMAScript/"/>
+    
+  </entry>
   
   <entry>
     <title>使用 bind() 實現 Partial Application</title>
@@ -393,26 +413,6 @@
     
     
       <category term="Ramda" scheme="https://fpjs.fun/tags/Ramda/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用 Recursion 實現 reduce()</title>
-    <link href="https://fpjs.fun/ecmascript/recursion/reduce/"/>
-    <id>https://fpjs.fun/ecmascript/recursion/reduce/</id>
-    <published>2020-03-29T23:59:09.000Z</published>
-    <updated>2020-03-30T00:00:53.740Z</updated>
-    
-    <content type="html"><![CDATA[<p>Recursion 為 FP 中重要的一支，亦可使用其實現 <code>reduce()</code>。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.3<br>VS Code 1.42.1<br>Quokka 1.0.277<br>ECMAScript 2015</p><h2 id="reduce"><a href="#reduce" class="headerlink" title="reduce()"></a>reduce()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token keyword">let</span> reducer <span class="token operator">=</span> <span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span><span class="token operator">=</span> x<span class="token keyword">let</span> reduce <span class="token operator">=</span> f <span class="token operator">=</span><span class="token operator">></span> init <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">[</span>h<span class="token punctuation">,</span> <span class="token operator">...</span>t<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">!</span>h <span class="token operator">?</span> init <span class="token punctuation">:</span> <span class="token function">reduce</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token function">f</span><span class="token punctuation">(</span>init<span class="token punctuation">,</span> h<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token function">reduce</span><span class="token punctuation">(</span>reducer<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Resursion 會將 array 拆分成 head 與 tail，若 head 為 <code>undefined</code> 時為初始值 <code>[]</code>，剩下的 tail 將 recursive 呼叫本身的 <code>reduce()</code>。</p><p><img src="/images/ecmascript/recursion/reduce/reduce000.png" alt="reduce000"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>將 array 拆成 head 與 tail 為 recursion 慣用 pattern，然後 tail 會不斷呼叫自己 recursive 解決問題</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Recursion 為 FP 中重要的一支，亦可使用其實現 &lt;code&gt;reduce()&lt;/code&gt;。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="ECMAScript" scheme="https://fpjs.fun/tags/ECMAScript/"/>
     
   </entry>
   
