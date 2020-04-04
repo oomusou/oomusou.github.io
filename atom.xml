@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2020-04-04T08:24:29.440Z</updated>
+  <updated>2020-04-04T11:34:17.015Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用 bind() 實現 Partial Application</title>
+    <link href="https://fpjs.fun/ecmascript/function/bind/"/>
+    <id>https://fpjs.fun/ecmascript/function/bind/</id>
+    <published>2020-04-04T11:30:22.000Z</published>
+    <updated>2020-04-04T11:34:17.015Z</updated>
+    
+    <content type="html"><![CDATA[<p>Partial Application 是當 Function 提供不足 Argument 時，會回傳以剩下 Argument 所構成的新 Function，這種看似神奇的概念，事實上 <code>bind()</code> 就能實現。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.4<br>VS Code 1.43.2<br>Quokka 1.0.285<br>ECMAScript 2015</p><h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token keyword">let</span> add5 <span class="token operator">=</span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token function">add5</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Ramda 所提供的 function 都支援 partial application，如 <code>add()</code> 原本需要兩個 argument，若僅提供 <code>5</code> 亦可回傳新的 <code>add5()</code> 而不會 runtime 錯誤。</p><p><img src="/images/ecmascript/function/bind/bind000.png" alt="bind000"></p><h2 id="bind"><a href="#bind" class="headerlink" title="bind()"></a>bind()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> add <span class="token operator">=</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">+</span> y<span class="token keyword">let</span> add5 <span class="token operator">=</span> add<span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">)</span><span class="token function">add5</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>  <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><code>add()</code> 為普通 function，可使用 <code>Array.prototype.bind()</code> 實現 partial application，第一個 argument 因為沒有要取代 <code>this</code>，因此傳入 <code>null</code> 即可，之後可傳入 argument，<code>bind()</code> 將以剩下的 argument 成為新的 function。</p><p><img src="/images/ecmascript/function/bind/bind001.png" alt="bind001"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Partial application 為 FP 重要概念，也是 point-free 與 function composition 的理論基礎，事實上 <code>bind()</code> 已經支援 partial application，只是語法不夠漂亮而已</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Partial Application 是當 Function 提供不足 Argument 時，會回傳以剩下 Argument 所構成的新 Function，這種看似神奇的概念，事實上 &lt;code&gt;bind()&lt;/code&gt; 就能實現。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="ECMAScript" scheme="https://fpjs.fun/tags/ECMAScript/"/>
+    
+  </entry>
   
   <entry>
     <title>使用 Builder 動態組合 SQL</title>
@@ -388,26 +408,6 @@
     <summary type="html">
     
       &lt;p&gt;Recursion 為 FP 中重要的一支，亦可使用其實現 &lt;code&gt;reduce()&lt;/code&gt;。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="ECMAScript" scheme="https://fpjs.fun/tags/ECMAScript/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用 Recursion 實現 filter()</title>
-    <link href="https://fpjs.fun/ecmascript/recursion/filter/"/>
-    <id>https://fpjs.fun/ecmascript/recursion/filter/</id>
-    <published>2020-03-29T23:47:53.000Z</published>
-    <updated>2020-03-29T23:50:45.171Z</updated>
-    
-    <content type="html"><![CDATA[<p>Recursion 為 FP 中重要的一支，亦可使用其實現 <code>filter()</code>。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.3<br>VS Code 1.42.1<br>Quokka 1.0.277<br>ECMAScript 2015</p><h2 id="filter"><a href="#filter" class="headerlink" title="filter()"></a>filter()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> isOdd <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token keyword">let</span> filter <span class="token operator">=</span> f <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">[</span>h<span class="token punctuation">,</span> <span class="token operator">...</span>t<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token operator">!</span>h <span class="token operator">?</span> <span class="token punctuation">[</span><span class="token punctuation">]</span> <span class="token punctuation">:</span>   <span class="token function">f</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token punctuation">[</span>h<span class="token punctuation">,</span> <span class="token operator">...</span><span class="token function">filter</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">]</span> <span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token operator">...</span><span class="token function">filter</span><span class="token punctuation">(</span>f<span class="token punctuation">)</span><span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token function">filter</span><span class="token punctuation">(</span>isOdd<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?  </span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Resursion 會將 array 拆分成 head 與 tail，若 head 為 <code>undefined</code> 時為初始值 <code>[]</code>，若 <code>f(h)</code> 為 <code>true</code> 則會包含 <code>h</code>，否則剩下的 tail 將 recursive 呼叫本身的 <code>map()</code> 並使用 <code>...</code> array spread 展開。</p><p><img src="/images/ecmascript/recursion/filter/filter000.png" alt="filter000"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>將 array 拆成 head 與 tail 為 recursion 慣用 pattern，然後 tail 會不斷呼叫自己 recursive 解決問題</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Recursion 為 FP 中重要的一支，亦可使用其實現 &lt;code&gt;filter()&lt;/code&gt;。&lt;/p&gt;
     
     </summary>
     
