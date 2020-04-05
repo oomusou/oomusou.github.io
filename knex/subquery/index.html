@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-04-05T02:31:55.000Z",
-    "dateModified": "2020-04-05T02:33:32.745Z",
+    "dateModified": "2020-04-05T02:38:03.117Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -450,7 +450,9 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>有些時候我們會使用 subquery 取得 field 資料。</p>
 <p><img src="/images/knex/subquery/subquery000.png" alt="subquery000"></p>
-<h2 id="Knex"><a href="#Knex" class="headerlink" title="Knex"></a>Knex</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> categoryId <span class="token operator">=</span> mySQL<span class="token punctuation">.</span><span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'books.categoryId'</span><span class="token punctuation">)</span>
+<h2 id="Knex"><a href="#Knex" class="headerlink" title="Knex"></a>Knex</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+
+<span class="token keyword">let</span> categoryId <span class="token operator">=</span> mySQL<span class="token punctuation">.</span><span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'books.categoryId'</span><span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> category <span class="token operator">=</span> <span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'categories'</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span>
@@ -460,7 +462,7 @@ a:hover {
 <span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">,</span> category<span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 1 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> categoryId <span class="token operator">=</span> mySQL<span class="token punctuation">.</span><span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'books.categoryId'</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -478,15 +480,21 @@ a:hover {
   <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>將 <code>category</code> 放在 <code>select()</code> 的 argument 中。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+
+<span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">,</span> <span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'categories'</span><span class="token punctuation">)</span>
     <span class="token punctuation">.</span><span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span>
     <span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span> mySQL<span class="token punctuation">.</span><span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'books.categoryId'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
     <span class="token punctuation">.</span><span class="token keyword">as</span><span class="token punctuation">(</span><span class="token string">'category'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
   <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若不想建立 <code>category</code> 與 <code>categroyId</code>，寫在一起可讀性也不差。</p>
-<h2 id="Knex-fp"><a href="#Knex-fp" class="headerlink" title="Knex-fp"></a>Knex-fp</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> categoryId <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'books.categoryId'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>mySQL<span class="token punctuation">)</span>
+<h2 id="Knex-fp"><a href="#Knex-fp" class="headerlink" title="Knex-fp"></a>Knex-fp</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ref<span class="token punctuation">,</span> select<span class="token punctuation">,</span> where<span class="token punctuation">,</span> <span class="token keyword">as</span><span class="token punctuation">,</span> pipeK <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'knex-fp'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+
+<span class="token keyword">let</span> categoryId <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'books.categoryId'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>mySQL<span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> category <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
@@ -497,7 +505,7 @@ a:hover {
 <span class="token function">pipeK</span><span class="token punctuation">(</span>
   <span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">,</span> category<span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 1 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> categoryId <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'books.categoryId'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>mySQL<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -516,14 +524,18 @@ a:hover {
 <span class="token punctuation">)</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>由 <code>pipeK()</code> 組合 Knex 的 <code>select()</code> 與 Wink-fp 的 <code>log()</code>。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">pipeK</span><span class="token punctuation">(</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ref<span class="token punctuation">,</span> select<span class="token punctuation">,</span> where<span class="token punctuation">,</span> <span class="token keyword">as</span><span class="token punctuation">,</span> pipeK <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'knex-fp'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+
+<span class="token function">pipeK</span><span class="token punctuation">(</span>
   <span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">,</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
     <span class="token function">select</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
     <span class="token function">where</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'books.categoryId'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>mySQL<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
     <span class="token keyword">as</span><span class="token punctuation">(</span><span class="token string">'category'</span><span class="token punctuation">)</span>
   <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'categories'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">(</span>log<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token function">mySQL</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若不想建立 <code>category</code> 與 <code>categroyId</code>，也可通通寫在 <code>pipeK()</code> 內，可讀性亦佳。</p>
 <p><img src="/images/knex/subquery/subquery001.png" alt="subquery001"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
