@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-04-02T12:26:03.000Z",
-    "dateModified": "2020-04-06T10:07:32.318Z",
+    "dateModified": "2020-04-06T14:08:00.914Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -441,7 +441,7 @@ a:hover {
 					<article id="post-content">
 						<p>ECMAScript 為動態語言，Function Parameter 並不必指定 Type Annotation，因此可以傳入任何 Type，理論上必須在 Runtime 使用 <code>typeof</code> 做 Type Check，否則依賴 Type Coercion 很容易產生 Bug；Maybe 提供了另外一種方式：只會將正確 Type 進行運算，而不需使用 <code>typeof</code> 檢查。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catelina 10.15.4<br>VS Code 1.43.2<br>Quokka 1.0.285<br>Crocks 0.12.4<br>Ramda 0.27.0<br>Wink-fp 1.20.66</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catelina 10.15.4<br>VS Code 1.43.2<br>Quokka 1.0.285<br>Crocks 0.12.4</p>
 <h2 id="Number"><a href="#Number" class="headerlink" title="Number"></a>Number</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> inc <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">+</span> <span class="token number">1</span>
 
 <span class="token keyword">let</span> f <span class="token operator">=</span> n <span class="token operator">=</span><span class="token operator">></span> <span class="token function">inc</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span>
@@ -501,14 +501,14 @@ a:hover {
 
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token function">Just</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>引進了 Maybe，它包含兩種值：Just 與 Nothing：</p>
+<p>引進了 maybe，它包含兩種值：just 與 nothing：</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript">Maybe a <span class="token operator">=</span> Nothing <span class="token operator">|</span> Just a
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <ul>
 <li><code>Just</code>：我們所預期值，將會執行運算</li>
 <li><code>Nothing</code>：我們不預期值，不會執行運算</li>
 </ul>
-<p>以本例而言，我們預期值是 number，是故為 Just；而 string 與 <code>undefined</code> 都不是我們預期值，是故為 Nothing。</p>
+<p>以本例而言，我們預期值是 number，是故為 just；而 string 與 <code>undefined</code> 都不是我們預期值，是故為 nothing。</p>
 <p>第 1 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Maybe<span class="token punctuation">,</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'crocks'</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -525,12 +525,12 @@ a:hover {
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>inc<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><code>map()</code> 如同 Ramda 的 <code>map()</code> 一樣，data 也是最後一個 argument，因此可 point-free 省略。</p>
-<p><code>map()</code> 用於 Functor，而 Maybe 也具有 Functor 特性，故也可使用 <code>map()</code>。</p>
-<p>當 <code>map()</code> 用在 Maybe 時，它會幫我們將 Just 內的值透過傳入 function 改變之。</p>
+<p><code>map()</code> 用於 functor，而 maybe 也具有 functor 特性，故也可使用 <code>map()</code>。</p>
+<p>當 <code>map()</code> 用在 maybe 時，它會幫我們將 just 內的值透過傳入 function 改變之。</p>
 <p><img src="/images/crocks/maybe/overview/maybe004.png" alt="maybe004"></p>
-<p>由於 <code>f()</code> 回傳為 Maybe，因此印出 <code>Just 3</code>，而非原本的 <code>3</code>。</p>
+<p>由於 <code>f()</code> 回傳為 maybe，因此印出 <code>Just 3</code>，而非原本的 <code>3</code>。</p>
 <blockquote>
-<p>目前我們已經將 number 包進 Just，且印出也是 Just，而非原本的 number ，稍後會從 Just 萃取出 number</p>
+<p>目前我們已經將 number 包進 Just，且印出也是 Just，而非原本的 number ，稍後會從 just 萃取出 number</p>
 </blockquote>
 <h2 id="Just"><a href="#Just" class="headerlink" title="Just"></a>Just</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Maybe<span class="token punctuation">,</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'crocks'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
@@ -553,7 +553,7 @@ a:hover {
 <p><code>log()</code> 配合 <code>||</code> 為 ECMAScript 常用測試 callback 手法</p>
 </blockquote>
 <p><img src="/images/crocks/maybe/overview/maybe005.png" alt="maybe005"></p>
-<p>印出了 <code>calling inc()</code>，表示若輸入為 Just， 真的有執行傳入 <code>map()</code> 的 function。</p>
+<p>印出了 <code>calling inc()</code>，表示若輸入為 just， 真的有執行傳入 <code>map()</code> 的 function。</p>
 <h2 id="Nothing"><a href="#Nothing" class="headerlink" title="Nothing"></a>Nothing</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Maybe<span class="token punctuation">,</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'crocks'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
@@ -567,9 +567,9 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>inc()</code> 與 <code>f()</code> 完全不變，只是改將 <code>Nothing()</code> 傳入 <code>f()</code>。</p>
 <p><img src="/images/crocks/maybe/overview/maybe006.png" alt="maybe006"></p>
-<p>沒顯示 <code>calling inc()</code>，表示 <code>inc()</code> 根本沒執行，直接回傳 Nothing。</p>
+<p>沒顯示 <code>calling inc()</code>，表示 <code>inc()</code> 根本沒執行，直接回傳 nothing。</p>
 <blockquote>
-<p>當使用 Maybe 時，只有 Just 才會執行 <code>map()</code> 傳入 function，Nothing 完全不執行，這確保了只有正確 type 的 Just 才會執行 <code>inc()</code>，不需我們自己做 <code>typeof</code> 檢查，也不會產生不可預期結果</p>
+<p>當使用 maybe 時，只有 just 才會執行 <code>map()</code> 傳入 function，nothing 完全不執行，這確保了只有正確 type 的 just 才會執行 <code>inc()</code>，不需我們自己做 <code>typeof</code> 檢查，也不會產生不可預期結果</p>
 </blockquote>
 <h2 id="safeNum"><a href="#safeNum" class="headerlink" title="safeNum()"></a>safeNum()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Maybe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'crocks'</span>
 
@@ -594,13 +594,13 @@ a:hover {
   <span class="token function">map</span><span class="token punctuation">(</span>inc<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>由 Just 與 Nothing 我們可發現，只要我們能將 value 包進 Maybe，儘管不做 <code>typeof</code> 檢查，也能確保沒有不預期結果。</p>
-<p>所以我們將原本判斷型別的動作，改由 <code>safeNum()</code> 將任意值包進 Maybe。</p>
+<p>由 just 與 nothing 我們可發現，只要我們能將 value 包進 maybe，儘管不做 <code>typeof</code> 檢查，也能確保沒有不預期結果。</p>
+<p>所以我們將原本判斷型別的動作，改由 <code>safeNum()</code> 將任意值包進 maybe。</p>
 <p>使用 <code>pipe()</code> 將 <code>safeNum()</code> 與 <code>map(inc)</code> 組合成 <code>f()</code>。</p>
 <p>第 7 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> safeNum <span class="token operator">=</span> v <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">typeof</span> v <span class="token operator">===</span> <span class="token string">'number'</span> <span class="token operator">?</span> <span class="token function">Just</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token function">Nothing</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>使用 <code>typeof</code> 判斷是否為 number，若是 number，則以 Just 包進來，否則為 Nothing。</p>
+<p>使用 <code>typeof</code> 判斷是否為 number，若是 number，則以 just 包進來，否則為 nothing。</p>
 <blockquote>
 <p>Ｑ：到底還是使用了 <code>typeof</code> ?</p>
 </blockquote>
@@ -632,14 +632,14 @@ a:hover {
 <p>第 9 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> safe <span class="token operator">=</span> f <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">f</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token function">Just</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">:</span> <span class="token function">Nothing</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>將 <code>safeNum()</code> 重構成更一般性的 <code>safe()</code> higher order function，可透過傳入 function 組合出能將任何 value 包成 Maybe 的 <code>safe()</code>。</p>
+<p>將 <code>safeNum()</code> 重構成更一般性的 <code>safe()</code> higher order function，可透過傳入 function 組合出能將任何 value 包成 maybe 的 <code>safe()</code>。</p>
 <p>11 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">safe</span><span class="token punctuation">(</span>isNumber<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span>inc<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>由 <code>safe(isNumber)</code> 組合出 <code>safeNum()</code>，最後依然使用 <code>pipe()</code> 組合，如此可安全將任何 value 包成 Maybe。</p>
+<p>由 <code>safe(isNumber)</code> 組合出 <code>safeNum()</code>，最後依然使用 <code>pipe()</code> 組合，如此可安全將任何 value 包成 maybe。</p>
 <p><img src="/images/crocks/maybe/overview/maybe008.png" alt="maybe008"></p>
 <h2 id="Helper-Function"><a href="#Helper-Function" class="headerlink" title="Helper Function"></a>Helper Function</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> inc<span class="token punctuation">,</span> map<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> safe<span class="token punctuation">,</span> isNumber <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'crocks'</span>
@@ -656,7 +656,7 @@ a:hover {
 <p>事實上 Crocks 已經提供了 <code>safe()</code> 與 <code>isNumber()</code> 可直接使用。</p>
 <p>連 <code>inc()</code> 也一併使用 Ramda 版本。</p>
 <blockquote>
-<p>目前只剩下最後一哩路： <code>f()</code> 回傳 Maybe，所以印出結果是錯的，不過也因為能在一般狀況下就發現錯誤，我們很容易修正</p>
+<p>目前只剩下最後一哩路： <code>f()</code> 回傳 maybe，所以印出結果是錯的，不過也因為能在一般狀況下就發現錯誤，我們很容易修正</p>
 </blockquote>
 <p><img src="/images/crocks/maybe/overview/maybe009.png" alt="maybe009"></p>
 <h2 id="Unwrap-from-Maybe"><a href="#Unwrap-from-Maybe" class="headerlink" title="Unwrap from Maybe"></a>Unwrap from Maybe</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> inc<span class="token punctuation">,</span> map<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
@@ -672,7 +672,7 @@ a:hover {
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'8'</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span class="token function">f</span><span class="token punctuation">(</span>undefined<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Crocks 提供了 <code>option()</code> 將值從 Maybe 取出，且可提供預設值，當 Maybe 內為 Nothing 時為回傳該值，因為 Nothing 完全不會經過 <code>inc()</code> 運算。</p>
+<p>Crocks 提供了 <code>option()</code> 將值從 maybe 取出，且可提供預設值，當 maybe 內為 nothing 時為回傳該值，因為 nothing 完全不會經過 <code>inc()</code> 運算。</p>
 <p><img src="/images/crocks/maybe/overview/maybe010.png" alt="maybe010"></p>
 <p><code>f()</code> 的 signature 完全沒變，結果也完全相同。</p>
 <h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><p>比較這兩種寫法，我們得到了什麼 ?</p>
@@ -685,18 +685,18 @@ a:hover {
   <span class="token function">option</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若使用 FP 的 Maybe，思維就不一樣了：</p>
+<p>若使用 FP 的 maybe，思維就不一樣了：</p>
 <ul>
-<li>先組合出能包進 Maybe 的 function，因此會先寫出 <code>safe(isNumber)</code>，就算你很粗心也被逼的要寫出來，否則無法繼續</li>
-<li>接下來要使 Maybe 能經過運算，一定得使用 <code>map()</code> 傳入 function</li>
-<li>若很粗心忘記寫 <code>option()</code>，一般情況顯示 Maybe 就是錯的，一定會回來補上 <code>option()</code></li>
+<li>先組合出能包進 maybe 的 function，因此會先寫出 <code>safe(isNumber)</code>，就算你很粗心也被逼的要寫出來，否則無法繼續</li>
+<li>接下來要使 maybe 能經過運算，一定得使用 <code>map()</code> 傳入 function</li>
+<li>若很粗心忘記寫 <code>option()</code>，一般情況顯示 maybe 就是錯的，一定會回來補上 <code>option()</code></li>
 </ul>
 <p>也就是每個步驟都被逼著走，且在 <code>一般情況</code> 就會發現錯誤，不像 imperative 的 <code>typeof</code> 在一般情況不會錯，只有在 <code>特殊情況</code> 才會出錯，這就是 bug 來源。</p>
-<p>Maybe 還可讓你在寫 unit test 時不用想很奇怪的 test case，因為 Maybe 會確保沒有不預期結果，因為型別不對根本不會執行運算。</p>
+<p>Maybe 還可讓你在寫 unit test 時不用想很奇怪的 test case，因為 maybe 會確保沒有不預期結果，因為型別不對根本不會執行運算。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>Maybe 事實上就是 FP 的 Monad，但不知道 Monad 也沒關係</li>
+<li>Maybe 事實上就是 FP 的 monad，但不知道 monad 也沒關係</li>
 <li>Maybe 在 ECMAScript 的重要性遠超過其他語言，可避免動態語言產生不預期結果，大幅降低 bug 產生，使 ECMAScript 更安全</li>
-<li>Crocks 已經提供了 Maybe 所需要的 helper function，可直接使用</li>
+<li>Crocks 已經提供了 maybe 所需要的 helper function，可直接使用</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://egghead.io/instructors/andrew-van-slaars" target="_blank" rel="noopener">Andy Van Slaars</a>, <a href="https://egghead.io/lessons/javascript-understand-the-maybe-data-type" target="_blank" rel="noopener">Understanding the Maybe Data Type</a><br><a href="https://egghead.io/instructors/andrew-van-slaars" target="_blank" rel="noopener">Andy Van Slaars</a>, <a href="https://egghead.io/lessons/javascript-create-a-maybe-with-a-safe-utility-function" target="_blank" rel="noopener">Create a Maybe with a Safe Utility Function</a><br><a href="https://egghead.io/instructors/andrew-van-slaars" target="_blank" rel="noopener">Andy Van Slaars</a>, <a href="https://egghead.io/lessons/javascript-unwrap-values-from-a-maybe" target="_blank" rel="noopener">Unwrap Values from a Maybe</a><br><a href="https://blog.bitsrc.io/@giladshoham" target="_blank" rel="noopener">Gilad Shoham</a>, <a href="https://blog.bitsrc.io/get-better-type-checking-in-javascript-with-the-maybe-type-e7f70b23b505" target="_blank" rel="noopener">Get Better Type Checking in JavaScript with the Maybe Type</a></p>
 
