@@ -53,7 +53,7 @@
 <!-- Description -->
 <meta name="description" content="Ramda 的 prop() 可能回傳 undefined，這也是常見 Bug 來源之一；而 Crocks 的 prop() 則回傳 Maybe，可確保 ECMAScript 不再回傳不預期結果。 ">
 <!-- Keywords -->
-<meta name="keywords" content=", Crocks">
+<meta name="keywords" content=", Crocks, Maybe">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
 <meta http-equiv="Cache-Control" content="no-transform">
 <meta http-equiv="Cache-Control" content="no-siteapp">
@@ -174,10 +174,10 @@ a:hover {
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-04-06T13:50:14.000Z">
-<meta property="article:modified_time" content="2020-04-06T13:50:14.000Z">
+<meta property="article:published_time" content="2020-04-07T10:57:25.000Z">
+<meta property="article:modified_time" content="2020-04-07T10:57:25.000Z">
 <meta property="article:author" content="Sam Xiao">
-<meta property="og:article:tag" content=", Crocks">
+<meta property="og:article:tag" content=", Crocks, Maybe">
 
 
 	<!-- ### Analytics ### -->
@@ -209,8 +209,8 @@ a:hover {
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2020-04-06T13:50:14.000Z",
-    "dateModified": "2020-04-06T13:52:22.788Z",
+    "datePublished": "2020-04-07T10:57:25.000Z",
+    "dateModified": "2020-04-07T11:00:05.128Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -235,7 +235,7 @@ a:hover {
         "query-input": "required name=search_term_string"
     },
     
-    "keywords": ", Crocks",
+    "keywords": ", Crocks, Maybe",
     "description": "Ramda 的 prop() 可能回傳 undefined，這也是常見 Bug 來源之一；而 Crocks 的 prop() 則回傳 Maybe，可確保 ECMAScript 不再回傳不預期結果。 "
 }
 </script>
@@ -434,7 +434,7 @@ a:hover {
 <div class="post-header-info">
 	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
 		alt="Sam Xiao's Avatar">
-	<span>2020-04-06</span>
+	<span>2020-04-07</span>
 </div>
 				</div>
 				<div class="card-body">
@@ -481,24 +481,35 @@ a:hover {
 </blockquote>
 <p>若 key 找不到，<code>prop()</code> 會回傳 <code>undefined</code>，所以儘管使用了 Ramda 的 <code>prop()</code>，問題依舊沒解決，一樣是 <code>NaN</code>。</p>
 <p><img src="/images/crocks/maybe/prop/prop002.png" alt="prop002"></p>
-<h2 id="either"><a href="#either" class="headerlink" title="either()"></a>either()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> multiply<span class="token punctuation">,</span> either<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> multiply<span class="token punctuation">,</span> either<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
   title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span>
 <span class="token punctuation">}</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">either</span><span class="token punctuation">(</span>
-  <span class="token function">pipe</span><span class="token punctuation">(</span>
-    <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token function">multiply</span><span class="token punctuation">(</span><span class="token number">0.8</span><span class="token punctuation">)</span>
-  <span class="token punctuation">)</span><span class="token punctuation">,</span> 
-  <span class="token function">always</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">either</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">multiply</span><span class="token punctuation">(</span><span class="token number">0.8</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
 <span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於 <code>NaN</code> 視為 falsy value，在 Ramda 可用 <code>either()</code> 補救提供預設值 <code>0</code>。</p>
 <p><img src="/images/crocks/maybe/prop/prop005.png" alt="prop005"></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> propOr<span class="token punctuation">,</span> multiply <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
+  title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">propOr</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">multiply</span><span class="token punctuation">(</span><span class="token number">0.8</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>另一個方法是改用 <code>propOr()</code> 提供 default value。</p>
 <h2 id="Maybe"><a href="#Maybe" class="headerlink" title="Maybe"></a>Maybe</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> multiply<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> prop<span class="token punctuation">,</span> map<span class="token punctuation">,</span> option <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'crocks'</span>
 
@@ -528,6 +539,7 @@ a:hover {
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Ramda 與 ECMAScript 妥協，有些 function 回傳 <code>undefiend</code>，如 <code>prop()</code>，這很容易產生 bug</li>
 <li>Ramda 雖然能使用 <code>either()</code> 補救 <code>prop()</code> 回傳 <code>undefined</code>，但沒有 <code>prop()</code> 回傳 maybe 搭配 <code>option()</code> 優雅</li>
+<li>Ramda 的 <code>propOr()</code> 雖然也可行，但 happy path 使用 <code>prop()</code> 也不會發現問題</li>
 <li>Crocks 的 <code>prop()</code> 除了用在 object，也能用在 array</li>
 <li>Crocks 的 <code>prop()</code> 回傳的是 maybe，強迫我們要透過 <code>option()</code> 處理 <code>undefined</code>，實務上建議使用 Crocks 的 <code>prop()</code> 取代 Ramda 的 <code>prop()</code></li>
 </ul>
@@ -542,6 +554,8 @@ a:hover {
     
     <a class="post-tags-list-item" href='/tags/Crocks/'>#&nbsp;Crocks</a>
     
+    <a class="post-tags-list-item" href='/tags/Maybe/'>#&nbsp;Maybe</a>
+    
   </span>
   
 </p>
@@ -551,18 +565,18 @@ a:hover {
 		<!-- Prev Nav -->
 		
 		<li class="page-item page-prev">
-			<a href="/crocks/maybe/find/">
+			<a href="/crocks/maybe/proppath/">
 				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用回傳 Maybe 的 find() 更安全</div>
+				<div class="page-item-subtitle">使用 propPath() 取得 Nested Object 的 Property</div>
 			</a>
 		</li>
 		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/crocks/maybe/map/">
+			<a href="/tailwind/utility/border/radius/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 map() 改變 Maybe 內的值</div>
+				<div class="page-item-subtitle">使用 rounded 設定圓角</div>
 			</a>
 		</li>
 		
