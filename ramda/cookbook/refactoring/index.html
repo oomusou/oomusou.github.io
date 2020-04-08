@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-04-08T01:50:28.000Z",
-    "dateModified": "2020-04-08T01:56:52.823Z",
+    "dateModified": "2020-04-08T05:45:52.145Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -450,7 +450,7 @@ a:hover {
 
 <span class="token keyword">let</span> f <span class="token operator">=</span> o <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
   <span class="token keyword">let</span> url <span class="token operator">=</span> <span class="token function">makeUrl</span><span class="token punctuation">(</span>o<span class="token punctuation">.</span>id<span class="token punctuation">)</span>
-  <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token operator">...</span>o<span class="token punctuation">,</span> url <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span> <span class="token operator">...</span>o<span class="token punctuation">,</span> url <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
 <span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
@@ -462,7 +462,7 @@ a:hover {
 <p>第 7 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> o <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
   <span class="token keyword">let</span> url <span class="token operator">=</span> <span class="token function">makeUrl</span><span class="token punctuation">(</span>o<span class="token punctuation">.</span>id<span class="token punctuation">)</span>
-  <span class="token keyword">return</span> <span class="token punctuation">{</span><span class="token operator">...</span>o<span class="token punctuation">,</span> url <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span> <span class="token operator">...</span>o<span class="token punctuation">,</span> url <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>從 object 取得 <code>id</code> 變成 <code>url</code>，再將 <code>url</code> 新增至 object 回傳。</p>
@@ -486,8 +486,8 @@ a:hover {
 <span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>重構第一步是將 operator 以 function 取代。</p>
-<p>Template string 可以 Wink-fp 的 <code>format()</code> 取代。</p>
-<p><code>.</code> dot operator 可用 Crocks 的 <code>prop()</code>，因為它回傳 maybe，所以必須組合 <code>option()</code>。</p>
+<p>Template string 可用 Wink-fp 的 <code>format()</code> 取代。</p>
+<p><code>.</code> dot operator 可用 Crocks 的 <code>prop()</code> 取代，因為它回傳 maybe，所以必須組合 <code>option()</code>。</p>
 <p>新增 property 可用 Ramda 的 <code>assoc()</code> 取代。</p>
 <p><img src="/images/ramda/cookbook/refactoring/chain001.png" alt="chain001"></p>
 <h2 id="Function-Pipeline"><a href="#Function-Pipeline" class="headerlink" title="Function Pipeline"></a>Function Pipeline</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> assoc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
@@ -610,20 +610,23 @@ a:hover {
 <span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>重構第六步是以其他 function 取代特定 pattern。</p>
-<p><code>converge()</code> + <code>identity()</code> 剛好是 <code>chain()</code> 的 pattern，可再進一步使用 <code>chain()</code> 重構。</p>
+<p><code>converge()</code> + <code>identity()</code> pattern 剛好是 <code>chain()</code>，可再進一步重構。</p>
+<blockquote>
+<p>這個步驟是 optional，若找得到特定 pattern 則重構，否則到第五步即可</p>
+</blockquote>
 <p><img src="/images/ramda/cookbook/refactoring/chain006.png" alt="chain005"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>本文展示了從 imperative 重構成 FP 的常用 SOP：<ol>
 <li>將 operator 以 function 取代</li>
 <li>以 <code>pipe()</code> 或 <code>compose()</code> 組合 function</li>
-<li>將 function 內的 function 重構到 funciton 外</li>
+<li>將原 function 內的 function 重構到 funciton 外</li>
 <li>以 function 取代 variable</li>
 <li>將 function 也 point-free</li>
 <li>以其他 function 取代特定 pattern</li>
 </ol>
 </li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://egghead.io/instructors/andrew-van-slaars" target="_blank" rel="noopener">Andy Van Slaars</a>, <a href="https://egghead.io/lessons/javascript-refactor-to-point-free-functions-with-ramda-using-compose-and-converge" target="_blank" rel="noopener">Refactor to Point Free Functions with Ramda usign compose and converge</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://egghead.io/instructors/andrew-van-slaars" target="_blank" rel="noopener">Andy Van Slaars</a>, <a href="https://egghead.io/lessons/javascript-refactor-to-point-free-functions-with-ramda-using-compose-and-converge" target="_blank" rel="noopener">Refactor to Point Free Functions with Ramda using compose and converge</a></p>
 
 					</article>
 					<p class="post-footer-info mb-0 pt-2">
