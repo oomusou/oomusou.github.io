@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>使用 coalesce() 提早提供 Function 處理 Nothing | 點燈坊</title>
+<title>使用 coalesce() 提早處理 Nothing 與 Just | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -51,7 +51,7 @@
 
 <meta name="format-detection" content="telephone=no">
 <!-- Description -->
-<meta name="description" content="alt() 雖然能提早處理 Nothing，但卻是 Hardcode String，實務上使用 Function 的機會更多，此時可使用 coalensce()。">
+<meta name="description" content="alt() 只能提早處理 Nothing，若要同時提早處理 Nothing 與 Just，就要使用 coalesce()。">
 <!-- Keywords -->
 <meta name="keywords" content=", Crocks, Maybe">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
@@ -165,17 +165,17 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="使用 coalesce() 提早提供 Function 處理 Nothing | 點燈坊">
+	<meta property="og:title" content="使用 coalesce() 提早處理 Nothing 與 Just | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
 <meta property="og:url" content="https://fpjs.fun/crocks/maybe/coalesce/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
-<meta property="og:description" content="alt() 雖然能提早處理 Nothing，但卻是 Hardcode String，實務上使用 Function 的機會更多，此時可使用 coalensce()。">
+<meta property="og:description" content="alt() 只能提早處理 Nothing，若要同時提早處理 Nothing 與 Just，就要使用 coalesce()。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-13T23:38:41.000Z">
-<meta property="article:modified_time" content="2020-01-13T23:38:41.000Z">
+<meta property="article:published_time" content="2020-04-08T15:07:17.000Z">
+<meta property="article:modified_time" content="2020-04-08T15:07:17.000Z">
 <meta property="article:author" content="Sam Xiao">
 <meta property="og:article:tag" content=", Crocks, Maybe">
 
@@ -202,15 +202,15 @@ a:hover {
         "@type": "WebPage",
         "@id": "https://fpjs.fun/crocks/maybe/coalesce/"
     },
-    "headline": "使用 coalesce() 提早提供 Function 處理 Nothing | 點燈坊",
+    "headline": "使用 coalesce() 提早處理 Nothing 與 Just | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2020-01-13T23:38:41.000Z",
-    "dateModified": "2020-01-13T23:40:52.044Z",
+    "datePublished": "2020-04-08T15:07:17.000Z",
+    "dateModified": "2020-04-08T15:09:06.295Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -236,7 +236,7 @@ a:hover {
     },
     
     "keywords": ", Crocks, Maybe",
-    "description": "alt() 雖然能提早處理 Nothing，但卻是 Hardcode String，實務上使用 Function 的機會更多，此時可使用 coalensce()。"
+    "description": "alt() 只能提早處理 Nothing，若要同時提早處理 Nothing 與 Just，就要使用 coalesce()。"
 }
 </script>
 
@@ -428,22 +428,22 @@ a:hover {
 			<div class="card-inner-cell">
 				<div class="card-header">
 					
-<h1 class="card-title h3 mb-2">使用 coalesce() 提早提供 Function 處理 Nothing</h1>
+<h1 class="card-title h3 mb-2">使用 coalesce() 提早處理 Nothing 與 Just</h1>
 
 
 <div class="post-header-info">
 	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
 		alt="Sam Xiao's Avatar">
-	<span>2020-01-14</span>
+	<span>2020-04-08</span>
 </div>
 				</div>
 				<div class="card-body">
 					<article id="post-content">
-						<p><code>alt()</code> 雖然能提早處理 Nothing，但卻是 Hardcode String，實務上使用 Function 的機會更多，此時可使用 <code>coalensce()</code>。</p>
+						<p><code>alt()</code> 只能提早處理 Nothing，若要同時提早處理 Nothing 與 Just，就要使用 <code>coalesce()</code>。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.15.2<br>VS Code 1.41.1<br>Quokka 1.0.272<br>Ramda 0.26.1<br>Crocks 0.12.4</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.4<br>VS Code 1.43.2<br>Quokka 1.0.285<br>Ramda 0.27.0<br>Crocks 0.12.4</p>
 <h2 id="alt"><a href="#alt" class="headerlink" title="alt()"></a>alt()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> prop<span class="token punctuation">,</span> option<span class="token punctuation">,</span> isString<span class="token punctuation">,</span> and<span class="token punctuation">,</span> not<span class="token punctuation">,</span> isEmpty<span class="token punctuation">,</span> safe<span class="token punctuation">,</span> alt<span class="token punctuation">,</span> Maybe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'crocks'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> join<span class="token punctuation">,</span> split<span class="token punctuation">,</span> toLower<span class="token punctuation">,</span> concat<span class="token punctuation">,</span> map<span class="token punctuation">,</span> chain <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> join<span class="token punctuation">,</span> split<span class="token punctuation">,</span> toLower<span class="token punctuation">,</span> concat<span class="token punctuation">,</span> map<span class="token punctuation">,</span> chain <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> <span class="token punctuation">{</span> <span class="token keyword">of</span> <span class="token punctuation">}</span> <span class="token operator">=</span> Maybe
 
@@ -454,100 +454,93 @@ a:hover {
 
 <span class="token keyword">let</span> isNonEmptyString <span class="token operator">=</span> <span class="token function">and</span><span class="token punctuation">(</span><span class="token function">not</span><span class="token punctuation">(</span>isEmpty<span class="token punctuation">)</span><span class="token punctuation">,</span> isString<span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> createSlug <span class="token operator">=</span> <span class="token function">compose</span><span class="token punctuation">(</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">'-'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">split</span><span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">)</span><span class="token punctuation">,</span> toLower<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> appendSlug <span class="token operator">=</span> <span class="token function">concat</span><span class="token punctuation">(</span><span class="token string">'https://lambda4.fun/crocks/'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> createUrl <span class="token operator">=</span> <span class="token function">compose</span><span class="token punctuation">(</span>appendSlug<span class="token punctuation">,</span> createSlug<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> fn <span class="token operator">=</span> <span class="token function">compose</span><span class="token punctuation">(</span>
-  <span class="token function">option</span><span class="token punctuation">(</span><span class="token string">'https://lambda4.fun'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span>createUrl<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">alt</span><span class="token punctuation">(</span><span class="token keyword">of</span><span class="token punctuation">(</span><span class="token string">'page-not-found'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">chain</span><span class="token punctuation">(</span><span class="token function">safe</span><span class="token punctuation">(</span>isNonEmptyString<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> createUrl <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  toLower<span class="token punctuation">,</span>
+  <span class="token function">split</span><span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">join</span><span class="token punctuation">(</span><span class="token string">'-'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">concat</span><span class="token punctuation">(</span><span class="token string">'https://fpjs.fun/crocks/'</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
-<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>19 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fn <span class="token operator">=</span> <span class="token function">compose</span><span class="token punctuation">(</span>
-  <span class="token function">option</span><span class="token punctuation">(</span><span class="token string">'https://lambda4.fun'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span>createUrl<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">alt</span><span class="token punctuation">(</span><span class="token keyword">of</span><span class="token punctuation">(</span><span class="token string">'page-not-found'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">chain</span><span class="token punctuation">(</span><span class="token function">safe</span><span class="token punctuation">(</span>isNonEmptyString<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span>
+  <span class="token function">alt</span><span class="token punctuation">(</span><span class="token keyword">of</span><span class="token punctuation">(</span><span class="token string">'page-not-found'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span>createUrl<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">option</span><span class="token punctuation">(</span><span class="token string">'https://fpjs.fun'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>20 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">chain</span><span class="token punctuation">(</span><span class="token function">safe</span><span class="token punctuation">(</span>isNonEmptyString<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">alt</span><span class="token punctuation">(</span><span class="token keyword">of</span><span class="token punctuation">(</span><span class="token string">'page-not-found'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span>createUrl<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">option</span><span class="token punctuation">(</span><span class="token string">'https://fpjs.fun'</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>使用了 <code>chain()</code> 做判斷，當 Maybe 為 Nothing 時，則 Maybe 內改由 <code>page-of-found</code> 取代。</p>
-<p>若 <code>fn()</code> 可傳入 <code>true</code> 或 <code>false</code>，當 <code>true</code> 時為 <code>page-not-found</code>，<code>false</code> 時為 <code>url-not-found</code>，該如何改寫呢 ?</p>
+<p>使用了 <code>chain()</code> 做判斷，當 maybe 為 nothing 時，則 maybe 內改由 <code>page-of-found</code> 取代，由於只處理 nothing，可使用 <code>of()</code> 產生 maybe 即可。</p>
 <p><img src="/images/crocks/maybe/coalesce/coalesce000.png" alt="coalesce000"></p>
-<h2 id="coalesce"><a href="#coalesce" class="headerlink" title="coalesce()"></a>coalesce()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> isString<span class="token punctuation">,</span> and<span class="token punctuation">,</span> not<span class="token punctuation">,</span> isEmpty<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> safe<span class="token punctuation">,</span> option<span class="token punctuation">,</span> map<span class="token punctuation">,</span> coalesce<span class="token punctuation">,</span> chain <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'crocks'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> join<span class="token punctuation">,</span> split<span class="token punctuation">,</span> toLower<span class="token punctuation">,</span> concat<span class="token punctuation">,</span> identity<span class="token punctuation">,</span> always<span class="token punctuation">,</span> ifElse <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="coalesce"><a href="#coalesce" class="headerlink" title="coalesce()"></a>coalesce()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> prop<span class="token punctuation">,</span> option<span class="token punctuation">,</span> isString<span class="token punctuation">,</span> and<span class="token punctuation">,</span> not<span class="token punctuation">,</span> isEmpty<span class="token punctuation">,</span> safe<span class="token punctuation">,</span> alt<span class="token punctuation">,</span> coalesce <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'crocks'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> join<span class="token punctuation">,</span> split<span class="token punctuation">,</span> toLower<span class="token punctuation">,</span> concat<span class="token punctuation">,</span> map<span class="token punctuation">,</span> chain<span class="token punctuation">,</span> always<span class="token punctuation">,</span> identity <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> format <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
+  title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span>
+  price<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
 
 <span class="token keyword">let</span> isNonEmptyString <span class="token operator">=</span> <span class="token function">and</span><span class="token punctuation">(</span><span class="token function">not</span><span class="token punctuation">(</span>isEmpty<span class="token punctuation">)</span><span class="token punctuation">,</span> isString<span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> createSlug <span class="token operator">=</span> <span class="token function">compose</span><span class="token punctuation">(</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">'-'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">split</span><span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">)</span><span class="token punctuation">,</span> toLower<span class="token punctuation">)</span>
+<span class="token keyword">let</span> createUrl <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  toLower<span class="token punctuation">,</span>
+  <span class="token function">split</span><span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">join</span><span class="token punctuation">(</span><span class="token string">'-'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">concat</span><span class="token punctuation">(</span><span class="token string">'https://fpjs.fun/crocks/'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> appendSlug <span class="token operator">=</span> <span class="token function">concat</span><span class="token punctuation">(</span><span class="token string">'https://lambda4.fun/crocks/'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> defaultUrl <span class="token operator">=</span> flag <span class="token operator">=</span><span class="token operator">></span> flag <span class="token operator">?</span> 
-  <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'page-not-found'</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> 
-  <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'url-not-found'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> createUrl <span class="token operator">=</span> <span class="token function">compose</span><span class="token punctuation">(</span>appendSlug<span class="token punctuation">,</span> createSlug<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
-  title<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
-  price<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> fn <span class="token operator">=</span> flag <span class="token operator">=</span><span class="token operator">></span> <span class="token function">compose</span><span class="token punctuation">(</span>
-  <span class="token function">option</span><span class="token punctuation">(</span><span class="token string">'https://lambda4.fun'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span>createUrl<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">coalesce</span><span class="token punctuation">(</span><span class="token function">defaultUrl</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span><span class="token punctuation">,</span> identity<span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">chain</span><span class="token punctuation">(</span><span class="token function">safe</span><span class="token punctuation">(</span>isNonEmptyString<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>  
-
-<span class="token function">fn</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>21 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fn <span class="token operator">=</span> flag <span class="token operator">=</span><span class="token operator">></span> <span class="token function">compose</span><span class="token punctuation">(</span>
-  <span class="token function">option</span><span class="token punctuation">(</span><span class="token string">'https://lambda4.fun'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">coalesce</span><span class="token punctuation">(</span><span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'page-not-found'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">format</span><span class="token punctuation">(</span><span class="token string">'i-love-{}'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span>createUrl<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">coalesce</span><span class="token punctuation">(</span><span class="token function">defaultUrl</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span><span class="token punctuation">,</span> identity<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">option</span><span class="token punctuation">(</span><span class="token string">'https://fpjs.fun'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>19 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">chain</span><span class="token punctuation">(</span><span class="token function">safe</span><span class="token punctuation">(</span>isNonEmptyString<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span>
+  <span class="token function">coalesce</span><span class="token punctuation">(</span><span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'page-not-found'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">format</span><span class="token punctuation">(</span><span class="token string">'i-love-{}'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span>createUrl<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">option</span><span class="token punctuation">(</span><span class="token string">'https://fpjs.fun'</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>將 <code>alt()</code> 改成 <code>coalesce()</code>。</p>
+<p>需求改變，不只 nothing 時要顯示 <code>page-not-found</code>，just 時要在 prefix 加上 <code>i-love-</code>。</p>
+<p>這種 nothing 與 just 都要插隊提早處理的，就得改用 <code>coalesce()</code>。</p>
 <blockquote>
-<p><strong>coalesce()</strong><br><code>Maybe a ~&gt; ((() -&gt; b), (a -&gt; b))) -&gt; Maybe b</code><br>傳入兩個 function，當 Nothing 時執行第一個 function，Just 時執行第二個 function</p>
+<p><strong>coalesce()</strong><br><code>((() -&gt; b), (a -&gt; b))) -&gt; Maybe a -&gt; Maybe b</code><br>傳入兩個 function，當 nothing 時執行第一個 function，just 時執行第二個 function</p>
 </blockquote>
-<p><code>Maybe a</code>：data 為 Maybe</p>
-<p><code>((() -&gt; b), (a -&gt; b)))</code>：傳入兩個 function，當 Nothing 時執行 <code>() -&gt; b</code>；當 Just 時執行 <code>a -&gt; b</code>。</p>
+<p><code>((() -&gt; b), (a -&gt; b)))</code>：傳入兩個 function，當 nothing 時執行 <code>() -&gt; b</code>；當 just 時執行 <code>a -&gt; b</code>。</p>
+<p><code>Maybe a</code>：data 為 maybe</p>
 <p><code>Maybe b</code>：回傳新的 Maybe</p>
 <p>與 <code>alt()</code> 比較：</p>
 <blockquote>
-<p><strong>alt()</strong><br><code>Maybe a ~&gt; Maybe a -&gt; Maybe a</code><br>當 Maybe 為 Nothing 時，以 <code>alt()</code> 傳入的 Maybe 取代之</p>
+<p><strong>alt()</strong><br><code>Maybe a -&gt; Maybe a -&gt; Maybe a</code><br>當 maybe 為 nothing 時，以 <code>alt()</code> 傳入的 maybe 取代之</p>
 </blockquote>
-<p><code>alt()</code> 要求你傳入 Maybe，因此需使用 <code>of()</code> 轉成 Maybe。</p>
-<p>但 <code>coalesce()</code> 則不必，只要提供 <code>() -&gt; b</code> 與 <code>a -&gt; b</code> 兩個 funtion 即可，會自動轉成 <code>Maybe b</code>。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">coalesce</span><span class="token punctuation">(</span><span class="token function">defaultUrl</span><span class="token punctuation">(</span>flag<span class="token punctuation">)</span><span class="token punctuation">,</span> identity<span class="token punctuation">)</span><span class="token punctuation">,</span>
+<p><code>alt()</code> 要求你傳入 maybe，因此需使用 <code>of()</code> 轉成 maybe。</p>
+<p>但 <code>coalesce()</code> 則不必，只要提供 <code>() -&gt; b</code> 與 <code>a -&gt; b</code> 兩個 funtion 即可，會 <code>自動</code> 轉成 <code>Maybe b</code>。</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">coalesce</span><span class="token punctuation">(</span><span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'page-not-found'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">format</span><span class="token punctuation">(</span><span class="token string">'i-love-{}'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>當 Nothing 時執行 <code>defaultUrl(flag)</code> 回傳新的 Maybe。</p>
-<p>當 Just 時不變，因此傳入 Ramda 的 <code>identity()</code>。</p>
-<p>10 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> defaultUrl <span class="token operator">=</span> flag <span class="token operator">=</span><span class="token operator">></span> flag <span class="token operator">?</span> 
-  <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'page-not-found'</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> 
-  <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'url-not-found'</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p><code>coalesce()</code> 要求傳入 function，因此 <code>page-not-found</code> 與 <code>url-not-found</code> 要透過 Ramda 的 <code>always()</code> 包成 function 回傳。</p>
+<p>當 Nothing 時執行 <code>always(&#39;page-not-found&#39;)</code> 回傳新 maybe。</p>
+<p>當 Just 時執行 <code>format(&#39;i-love-{}&#39;)</code> 亦回傳新 maybe。</p>
 <p><img src="/images/crocks/maybe/coalesce/coalesce001.png" alt="coalesce001"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li><code>alt()</code> 與 <code>coalesce()</code> 功能相同，都是在 function 內提早處理 Nothing</li>
-<li><code>alt()</code> 直接傳入 Maybe；而 <code>coalesce()</code> 則要求你傳入兩個 function，當 Nothing 時執行第一個 function，Just 時執行第二個 function</li>
+<li><code>alt()</code> 只能提早處理 nothing，而 <code>coalesce()</code> 則可同時處理 nothing 與 just</li>
+<li><code>coalesce()</code> 要求你傳入兩個 function，當 nothing 時執行第一個 function，Just 時執行第二個 function</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://egghead.io/instructors/andrew-van-slaars" target="_blank" rel="noopener">Andy Van Slaars</a>, <a href="https://egghead.io/lessons/javascript-recover-from-a-nothing-with-the-coalesce-method" target="_blank" rel="noopener">Recover from a Nothing with the coalesce() Method</a><br><a href="https://evilsoft.github.io/crocks/" target="_blank" rel="noopener">Crocks</a>, <a href="https://evilsoft.github.io/crocks/docs/crocks/Maybe.html#alt" target="_blank" rel="noopener">alt()</a><br><a href="https://evilsoft.github.io/crocks/" target="_blank" rel="noopener">Crocks</a>, <a href="https://evilsoft.github.io/crocks/docs/crocks/Maybe.html#coalesce" target="_blank" rel="noopener">coalesce()</a></p>
 
@@ -570,19 +563,12 @@ a:hover {
 	<ul class="pagination">
 		<!-- Prev Nav -->
 		
-		<li class="page-item page-prev">
-			<a href="/gridsome/template/">
-				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">Gridsome 之 Template 與 Page Query</div>
-			</a>
-		</li>
-		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/ecmascript/object/getter/">
+			<a href="/crocks/maybe/alt/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">ECMAScript 之 Getter Property</div>
+				<div class="page-item-subtitle">使用 alt() 提早處理 Nothing</div>
 			</a>
 		</li>
 		
