@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2020-04-10T22:17:45.018Z</updated>
+  <updated>2020-04-11T06:54:57.334Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何使自訂 Function 回傳 Maybe ?</title>
+    <link href="https://fpjs.fun/crocks/maybe/safeleft/"/>
+    <id>https://fpjs.fun/crocks/maybe/safeleft/</id>
+    <published>2020-04-11T06:52:39.000Z</published>
+    <updated>2020-04-11T06:54:57.334Z</updated>
+    
+    <content type="html"><![CDATA[<p>傳統 ECMAScript 的 Function 都沒回傳 Maybe，我們該如何將既有 Function 改成回傳 Maybe 呢 ?</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.4<br>VS Code 1.43.2<br>Quokka 1.0.285<br>Crocks 0.12.4</p><h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token function">inc</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span class="token function">inc</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>使用 Ramda 的 <code>inc()</code>，但 Ramda 維持 garbage in garbage out 哲學，若輸入 string，則回傳 <code>NaN</code>，這是常見的 bug 來源。</p><p><img src="/images/crocks/maybe/safelift/safelift000.png" alt="safelift000"></p><h2 id="Maybe"><a href="#Maybe" class="headerlink" title="Maybe"></a>Maybe</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token keyword">import</span> <span class="token punctuation">{</span> isNumber<span class="token punctuation">,</span> safe<span class="token punctuation">,</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'crocks'</span><span class="token keyword">let</span> safeInc <span class="token operator">=</span> n <span class="token operator">=</span><span class="token operator">></span> <span class="token function">map</span><span class="token punctuation">(</span>inc<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token function">safe</span><span class="token punctuation">(</span>isNumber<span class="token punctuation">)</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token function">safeInc</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span class="token function">safeInc</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>建立 <code>safeInc()</code> 不回傳 <code>NaN</code>，而改回傳 maybe。</p><p>首先使用 <code>safe(isNumber)</code> 將 <code>n</code> 包進 maybe，再使用 <code>map()</code> 將 <code>inc()</code> 傳入，使 <code>inc()</code> 能直接改變 maybe 內部值。</p><p><img src="/images/crocks/maybe/safelift/safelift001.png" alt="safelift001"></p><h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> inc<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token keyword">import</span> <span class="token punctuation">{</span> isNumber<span class="token punctuation">,</span> safe<span class="token punctuation">,</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'crocks'</span><span class="token keyword">let</span> safeInc <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>  <span class="token function">safe</span><span class="token punctuation">(</span>isNumber<span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">map</span><span class="token punctuation">(</span>inc<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token function">safeInc</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span class="token function">safeInc</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>可使用 <code>pipe()</code> 組合 <code>safe(isNumber)</code> 與 <code>map(inc)</code> 使 <code>safeInc()</code> 能 point-free 增加可讀性。</p><p><img src="/images/crocks/maybe/safelift/safelift003.png" alt="safelift003"></p><h2 id="safeLift"><a href="#safeLift" class="headerlink" title="safeLift()"></a>safeLift()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token keyword">import</span> <span class="token punctuation">{</span> isNumber<span class="token punctuation">,</span> safeLift <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'crocks'</span><span class="token keyword">let</span> safeInc <span class="token operator">=</span> <span class="token function">safeLift</span><span class="token punctuation">(</span>isNumber<span class="token punctuation">)</span><span class="token punctuation">(</span>inc<span class="token punctuation">)</span><span class="token function">safeInc</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span class="token function">safeInc</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>也可使用 <code>safeLift()</code> 直接將 <code>inc()</code> 轉成回傳 maybe 的 function。</p><blockquote><p><strong>safeLift()</strong><br><code>((* -&gt; Boolean) | Pred) -&gt; (a -&gt; b) -&gt; * -&gt; Maybe b</code><br>將 unary funtion 轉成回傳 maybe 的 function</p></blockquote><p><code>(* -&gt; Boolean) | Pred)</code>：傳入 predicate 告訴 <code>safeLift()</code> 該如何判斷合法值進入 maybe</p><p><code>a -&gt; b</code>：原 unary function</p><p><code>*</code>：data 為任意型別</p><p><code>Maybe b</code>：回傳為 maybe</p><p><img src="/images/crocks/maybe/safelift/safelift004.png" alt="safelift004"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li><code>safeLift()</code> 讓我們不用將每個 unary function 手動 porting 成回傳 maybe，可直接使用 <code>safeLift()</code> higher order function 轉成回傳 maybe 的 function</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://egghead.io/instructors/andrew-van-slaars" target="_blank" rel="noopener">Andy Van Slaars</a>, <a href="https://egghead.io/lessons/javascript-make-your-own-functions-safer-by-lifting-them-into-a-maybe-context" target="_blank" rel="noopener">Make Your Own Functions Safer by Lifting Them into a Maybe Context</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;傳統 ECMAScript 的 Function 都沒回傳 Maybe，我們該如何將既有 Function 改成回傳 Maybe 呢 ?&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Crocks" scheme="https://fpjs.fun/tags/Crocks/"/>
+    
+      <category term="Maybe" scheme="https://fpjs.fun/tags/Maybe/"/>
+    
+  </entry>
   
   <entry>
     <title>使用 converge() 組合 Function</title>
@@ -411,26 +433,6 @@
     
     
       <category term="Tailwind" scheme="https://fpjs.fun/tags/Tailwind/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何不顯示 Browser Popup ?</title>
-    <link href="https://fpjs.fun/webstorm/general/browser-popup/"/>
-    <id>https://fpjs.fun/webstorm/general/browser-popup/</id>
-    <published>2020-04-06T08:13:59.000Z</published>
-    <updated>2020-04-06T08:16:42.609Z</updated>
-    
-    <content type="html"><![CDATA[<p>WebStorm 的 Browser Popup 對於純 HTML 很有幫助，但若對於 Vue 則意義則不大，該如何將 Browser Popup 關起來呢 ?</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.4<br>WebStorm 2019.3.4</p><h2 id="Browser-Popup"><a href="#Browser-Popup" class="headerlink" title="Browser Popup"></a>Browser Popup</h2><p><img src="/images/webstorm/general/browser-popup/popup000.png" alt="popup000"></p><p>WebStorm 預設對 <code>*.vue</code> 還顯示 Browser Popup，這對 Vue 沒有幫助，還會影響編輯 HTML。</p><p><img src="/images/webstorm/general/browser-popup/popup001.png" alt="popup001"></p><p><strong><em>Preferences -&gt; Tools -&gt; Web Browsers</em></strong></p><p>不要選擇 <code>Show browser popup in the editor</code>。</p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;WebStorm 的 Browser Popup 對於純 HTML 很有幫助，但若對於 Vue 則意義則不大，該如何將 Browser Popup 關起來呢 ?&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="WebStorm" scheme="https://fpjs.fun/tags/WebStorm/"/>
     
   </entry>
   
