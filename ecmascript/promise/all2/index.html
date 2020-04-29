@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-04-21T00:39:34.000Z",
-    "dateModified": "2020-04-21T10:51:57.508Z",
+    "dateModified": "2020-04-29T03:19:28.755Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -501,7 +501,7 @@ a:hover {
   <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>y <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span> <span class="token punctuation">{</span><span class="token operator">...</span>y<span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token function">fetchPrice</span><span class="token punctuation">(</span>y<span class="token punctuation">.</span>id<span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>新的 <code>price</code> property 呼叫 <code>fetchPrice()</code> 產生，但由於 <code>fetchPrice()</code> 為 async function，因此目前 <code>price</code> 為 Promise，因此產生了 nested Promise。</p>
-<p><img src="/images/ecmascript/promise/nested-promise/promise000.png" alt="promise000"></p>
+<p><img src="/images/ecmascript/promise/all2/promise000.png" alt="promise000"></p>
 <p>20 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token keyword">async</span> y <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
   result<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
@@ -511,7 +511,7 @@ a:hover {
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於結果為 <code>result</code> side effect，因此可使用 <code>forEach()</code> 處裡，因為 <code>price</code> 為 Promise，因此加上了 <code>await</code> 取得其內部值，<code>forEach()</code> 的 callback 也升級為 async function。</p>
-<p><img src="/images/ecmascript/promise/nested-promise/promise001.png" alt="promise001"></p>
+<p><img src="/images/ecmascript/promise/all2/promise001.png" alt="promise001"></p>
 <h2 id="Promise-Then"><a href="#Promise-Then" class="headerlink" title="Promise Then"></a>Promise Then</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchData <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> id<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> id<span class="token punctuation">:</span> <span class="token number">2</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
@@ -542,7 +542,7 @@ a:hover {
 <span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>若不想使用 async await，就要將 side effect 寫在 <code>price</code> Promise 的 <code>then()</code> 內。</p>
-<p><img src="/images/ecmascript/promise/nested-promise/promise002.png" alt="promise002"></p>
+<p><img src="/images/ecmascript/promise/all2/promise002.png" alt="promise002"></p>
 <h2 id="Promise-all"><a href="#Promise-all" class="headerlink" title="Promise.all()"></a>Promise.all()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchData <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> id<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> id<span class="token punctuation">:</span> <span class="token number">2</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
@@ -589,7 +589,7 @@ a:hover {
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> result <span class="token operator">=</span> x<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>一次將結果寫入 side effect。</p>
-<p><img src="/images/ecmascript/promise/nested-promise/promise003.png" alt="promise003"></p>
+<p><img src="/images/ecmascript/promise/all2/promise003.png" alt="promise003"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>將 synchronous 值與 asynchronous 值透過 <code>Promise.all()</code> 包在一起傳到下一個 Promise chain 為慣用手法，這使的 nested Promise 可不必依靠 side effect 就可自給自足產生</li>
 </ul>
