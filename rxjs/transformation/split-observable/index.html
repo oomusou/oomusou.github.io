@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-05-05T13:46:48.000Z",
-    "dateModified": "2020-05-05T13:51:04.389Z",
+    "dateModified": "2020-05-06T14:13:56.000Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -528,9 +528,6 @@ a:hover {
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>除了 <code>pluck()</code> 出 <code>image</code> property 外，因為圖片是放在 <code>public/images</code> 目錄下，因此我們還須透過 <code>map()</code> 加上完整路徑。</p>
-<blockquote>
-<p>這裡的 <code>map()</code> 雖然為 synchronous，但必須使用 RxJS 的 <code>map()</code>，不能使用 Ramda 的 <code>map()</code> 會出錯，事實上 RxJS 的 <code>map()</code> 已經是 synchronous</p>
-</blockquote>
 <h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: click$ }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
@@ -579,14 +576,14 @@ a:hover {
   <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>switchMap()</code> 的 callback 可用 <code>always()</code> 使其 point-free。</p>
+<p><code>switchMap()</code> 的 callback 可使用 Ramda 的 <code>always()</code> 使其 point-free。</p>
 <p>25 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> image$ <span class="token operator">=</span> book$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'image'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">concat</span><span class="token punctuation">(</span><span class="token string">'/images/'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>map()</code> 的 callback 可用 <code>concat()</code> 使其 point-free。</p>
+<p><code>map()</code> 的 callback 可使用 Ramda 的 <code>concat()</code> 使其 point-free。</p>
 <h2 id="Function-Composition"><a href="#Function-Composition" class="headerlink" title="Function Composition"></a>Function Composition</h2><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: click$ }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
