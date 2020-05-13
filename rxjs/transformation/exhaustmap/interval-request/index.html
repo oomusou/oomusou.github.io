@@ -168,7 +168,7 @@ a:hover {
 	<meta property="og:title" content="使用 exhaustMap() 每隔一段時間重新讀取 API | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://fpjs.fun/rxjs/transformation/exhaustmap/interval/">
+<meta property="og:url" content="https://fpjs.fun/rxjs/transformation/exhaustmap/interval-request/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
 <meta property="og:description" content="實務上有些資料會不斷變動，因此希望每隔一段時間就重新呼叫 API 讀取資料，這種常見的需求該如何使用 RxJS 實現呢 ?">
 <meta name="twitter:card" content="summary">
@@ -188,19 +188,19 @@ a:hover {
 
 
 	<!-- ### Canonical link ### -->
-	<link rel="canonical" href="https://fpjs.fun/rxjs/transformation/exhaustmap/interval/">
+	<link rel="canonical" href="https://fpjs.fun/rxjs/transformation/exhaustmap/interval-request/">
 	<!-- ### Structured Data ### -->
 	
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://fpjs.fun/rxjs/transformation/exhaustmap/interval/",
+    "url": "https://fpjs.fun/rxjs/transformation/exhaustmap/interval-request/",
     "@type": "BlogPosting",
     "logo": "https://fpjs.fun/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://fpjs.fun/rxjs/transformation/exhaustmap/interval/"
+        "@id": "https://fpjs.fun/rxjs/transformation/exhaustmap/interval-request/"
     },
     "headline": "使用 exhaustMap() 每隔一段時間重新讀取 API | 點燈坊",
     
@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-05-07T01:03:17.000Z",
-    "dateModified": "2020-05-13T12:51:13.547Z",
+    "dateModified": "2020-05-13T14:47:35.912Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -442,7 +442,7 @@ a:hover {
 						<p>實務上有些資料會不斷變動，因此希望每隔一段時間就重新呼叫 API 讀取資料，這種常見的需求該如何使用 RxJS 實現呢 ?</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.4<br>WebStorm 2020.1<br>Vue 2.6.11<br>Vue-rx 6.2<br>RxJS 6.5.5</p>
-<h2 id="Browser"><a href="#Browser" class="headerlink" title="Browser"></a>Browser</h2><p><img src="/images/rxjs/transformation/exhaustmap/interval/exhaustmap000.png" alt="exhaustmap000"></p>
+<h2 id="Browser"><a href="#Browser" class="headerlink" title="Browser"></a>Browser</h2><p><img src="/images/rxjs/transformation/exhaustmap/interval-request/exhaustmap000.png" alt="exhaustmap000"></p>
 <p>顯示所有書籍的 <code>title</code> 與 <code>price</code>。</p>
 <h2 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h2><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">[</span>
   <span class="token punctuation">{</span>
@@ -525,7 +525,7 @@ a:hover {
 <blockquote>
 <p><strong>exhaustMap()</strong><br>一個 Observable 的每一個 value 都會對應到另外一個 Observable，且會等前一個 Observable 繼續走完，不會中途取消，且所覆蓋的 Observable 將取消</p>
 </blockquote>
-<p><img src="/images/rxjs/transformation/exhaustmap/interval/exhaustMap002.png" alt="exhaustMap002"></p>
+<p><img src="/images/rxjs/transformation/exhaustmap/interval-request/exhaustMap002.png" alt="exhaustMap002"></p>
 <h2 id="switchMap"><a href="#switchMap" class="headerlink" title="switchMap()"></a>switchMap()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books$ <span class="token operator">=</span> <span class="token function">interval</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">switchMap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> fetchBooks$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
     <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span>
@@ -536,7 +536,7 @@ a:hover {
 <blockquote>
 <p><strong>switchMap()</strong><br>一個 Observable 的每一個 value 都會對應到另外一個 Observable</p>
 </blockquote>
-<p><img src="/images/rxjs/transformation/exhaustmap/interval/exhaustmap001.png" alt="exhaustmap001"></p>
+<p><img src="/images/rxjs/transformation/exhaustmap/interval-request/exhaustmap001.png" alt="exhaustmap001"></p>
 <p>若注意觀察 <code>swtichMap()</code> 會發現下面的 <code>30</code> 只有兩個，因為新的 <code>50</code> 已經出現，導致最後一個 <code>30</code> 被取消了。</p>
 <p>本例 <code>timer(1000)</code> 可視為上面 stream，<code>() =&gt; fetchBooks$().pipe(pluck(&#39;data&#39;, &#39;books&#39;)</code> 則為下面 stream，我們希望不管 <code>interval()</code> 間格為何，每次最少為完整的 stream 顯示，而不要因為有新的 stream 出現，導致原本的 stream 到一半被取消。</p>
 <p><code>exhaustMap()</code> 則不然，儘管有新的 <code>5</code> 已經出現，但原本 <code>30</code> 仍會繼續走完，至於 <code>50</code> 則會取消，這才是我們要的。 </p>
@@ -551,7 +551,7 @@ a:hover {
 <p><strong>mergeMap()</strong><br>將兩層 Observable 攤平成一層 Observable</p>
 </blockquote>
 <p><code>mergeMap()</code> 會最完整保留所有 Observable，但若新的 Observable 出現，可能出現新舊資料混合問題。</p>
-<p><img src="/images/rxjs/transformation/exhaustmap/interval/exhaustMap003.png" alt="exhaustMap003"></p>
+<p><img src="/images/rxjs/transformation/exhaustmap/interval-request/exhaustMap003.png" alt="exhaustMap003"></p>
 <h2 id="Summary"><a href="#Summary" class="headerlink" title="Summary"></a>Summary</h2><ul>
 <li><code>exhaustMap()</code>：以舊 Observable 為主，若重複則新 Observable 完全放棄</li>
 <li><code>switchMap()</code>：若新 Observable 出現，則以新 Observable 為主，舊 Observable 則中止</li>
