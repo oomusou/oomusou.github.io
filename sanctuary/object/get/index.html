@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-05-13T00:06:36.000Z",
-    "dateModified": "2020-05-13T01:02:51.691Z",
+    "dateModified": "2020-05-13T06:00:29.347Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -533,7 +533,7 @@ a:hover {
 <h2 id="Associative-Law"><a href="#Associative-Law" class="headerlink" title="Associative Law"></a>Associative Law</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> Boolean <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary-def'</span>
 
-<span class="token keyword">let</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> <span class="token keyword">get</span><span class="token punctuation">,</span> boolean<span class="token punctuation">,</span> is<span class="token punctuation">,</span> I<span class="token punctuation">,</span> fromMaybe<span class="token punctuation">,</span> equals<span class="token punctuation">,</span> Just <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> <span class="token keyword">get</span><span class="token punctuation">,</span> boolean<span class="token punctuation">,</span> is<span class="token punctuation">,</span> equals<span class="token punctuation">,</span> Just <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> inStock<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
@@ -551,8 +551,54 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>根據 associative law，我們可將 <code>map()</code> 提出來，只需一個 <code>map()</code> 即可。</p>
 <p><img src="/images/sanctuary/object/get/get004.png" alt="get004"></p>
+<h2 id="map-Again"><a href="#map-Again" class="headerlink" title="map() Again"></a>map() Again</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Boolean <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary-def'</span>
+
+<span class="token keyword">let</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> <span class="token keyword">get</span><span class="token punctuation">,</span> boolean<span class="token punctuation">,</span> is<span class="token punctuation">,</span> fromMaybe <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> inStock<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> inStock<span class="token punctuation">:</span> <span class="token boolean">false</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> inStock<span class="token punctuation">:</span> <span class="token string">'false'</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+  map <span class="token punctuation">(</span><span class="token keyword">get</span> <span class="token punctuation">(</span>is <span class="token punctuation">(</span>Boolean<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token string">'inStock'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  map <span class="token punctuation">(</span>map <span class="token punctuation">(</span>boolean <span class="token punctuation">(</span><span class="token string">'Sold Out'</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token string">'Avaliable'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  map <span class="token punctuation">(</span>fromMaybe <span class="token punctuation">(</span><span class="token string">'Sold Out'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>以上寫法都是在 <code>get()</code> 之後馬上處理 Maybe，雖然可行，但卻中斷了原本 happy path 去處理 <code>Maybe</code>，類似在 imperative 中插入 <code>if</code> 去判斷 <code>undefined</code> 一樣。</p>
+<p>比較好的寫法是原本邏輯直接在 Maybe 內處理，最後再使用 <code>fromMaybe()</code> 取得內部值。</p>
+<blockquote>
+<p>兩層 <code>map()</code> 乍看之下很怪，外層的 <code>map()</code> 是處理 Array，內層 <code>map()</code> 是處理 Maybe</p>
+</blockquote>
+<p><img src="/images/sanctuary/object/get/get005.png" alt="get005"></p>
+<h2 id="Associative-Law-1"><a href="#Associative-Law-1" class="headerlink" title="Associative Law"></a>Associative Law</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Boolean <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary-def'</span>
+
+<span class="token keyword">let</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> <span class="token keyword">get</span><span class="token punctuation">,</span> boolean<span class="token punctuation">,</span> is<span class="token punctuation">,</span> fromMaybe <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> inStock<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> inStock<span class="token punctuation">:</span> <span class="token boolean">false</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> inStock<span class="token punctuation">:</span> <span class="token string">'false'</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">pipe</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
+  <span class="token keyword">get</span> <span class="token punctuation">(</span>is <span class="token punctuation">(</span>Boolean<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token string">'inStock'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  map <span class="token punctuation">(</span>boolean <span class="token punctuation">(</span><span class="token string">'Sold Out'</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token string">'Avaliable'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  fromMaybe <span class="token punctuation">(</span><span class="token string">'Sold Out'</span><span class="token punctuation">)</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>根據 associative law 可將處理 array 的 <code>map()</code> 提出來，<code>pipe()</code> 內只留下處理 Maybe 的 <code>map()</code>，這樣就好看多了。</p>
+<p><img src="/images/sanctuary/object/get/get006.png" alt="get006"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li><code>get()</code> 多包了一層 Maybe 雖然比較安全，但相對處理上也必須付出代價，本文使用了 <code>maybe()</code>、<code>fromMaybe()</code> 與 <code>equals()</code> 多種方式處理  Maybe，可視實務需求靈活運用</li>
+<li><code>get()</code> 多包了一層 Maybe 雖然比較安全，但相對處理上也必須付出代價，可在 <code>get()</code> 之後立即處理 Maybe，也可在 Maybe 內繼續運算，實務上建議以 happy path 在 Maybe 內，直到最後再從 Maybe 內取出</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://sanctuary.js.org" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://sanctuary.js.org/#section:maybe" target="_blank" rel="noopener">Maybe</a><br><a href="https://sanctuary.js.org" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://sanctuary.js.org/#maybe" target="_blank" rel="noopener">maybe()</a><br><a href="https://sanctuary.js.org" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://sanctuary.js.org/#fromMaybe" target="_blank" rel="noopener">fromMaybe()</a><br><a href="https://sanctuary.js.org" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://sanctuary.js.org/#fromMaybe" target="_blank" rel="noopener">equals()</a></p>
 
