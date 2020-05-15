@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-05-14T14:31:34.000Z",
-    "dateModified": "2020-05-15T01:08:33.722Z",
+    "dateModified": "2020-05-15T15:37:11.065Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -542,9 +542,10 @@ a:hover {
 
 <span class="token keyword">let</span> subscriptions <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">let</span> title$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>click$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
-    <span class="token function">exhaustMap</span><span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> <span class="token function">fetchBook$</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token function">catchError</span><span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">of</span><span class="token punctuation">(</span><span class="token string">'RxJS in Action'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token function">exhaustMap</span><span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> <span class="token function">fetchBook$</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+      <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token function">catchError</span><span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">of</span><span class="token punctuation">(</span><span class="token string">'RxJS in Action'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">)</span>
   <span class="token punctuation">)</span>
 
   <span class="token keyword">return</span> <span class="token punctuation">{</span> title$ <span class="token punctuation">}</span>
@@ -556,22 +557,32 @@ a:hover {
   subscriptions<span class="token punctuation">,</span>
 <span class="token punctuation">}</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>16 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> title$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>click$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">exhaustMap</span><span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> <span class="token function">fetchBook$</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">catchError</span><span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">of</span><span class="token punctuation">(</span><span class="token string">'RxJS in Action'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用 <code>catchError()</code> 捕捉 rejected Promise，與一般 imperative 的 <code>catch</code> 都是以 side effect 印出 error 不同，由於還在 stream 中，RxJS 要求在 <code>catchError()</code> 內回傳 Observable 繼續 stream。</p>
+<p>值得注意的是 <code>catchError()</code> 要寫在 <code>fetchBook$()</code> 的 <code>pipe()</code> 內，而非 <code>click$</code> 的 <code>pipe()</code> 內，因為 <code>catchError()</code> 是要攔截 <code>fetchBook$()</code> 所回傳的 rejected Promise。</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> title$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>click$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">exhaustMap</span><span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> <span class="token function">fetchBook$</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">catchError</span><span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">of</span><span class="token punctuation">(</span><span class="token string">'RxJS in Action'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>使用 <code>catchError()</code> 捕捉 rejected Promise，與一般 imperative 的 <code>catch</code> 都是以 side effect 印出 error 不同，由於還在 stream 中，RxJS 要求在 <code>catchError()</code> 內回傳 Observable 繼續 stream。</p>
+<p>初學者常會將 <code>catchError()</code> 寫在 <code>click$</code> 的 <code>pipe()</code>，這樣寫第一次會顯示 <code>RxJS in Action</code>，之後 ECMAScript 就 error 不執行了。</p>
+<p>當 <code>fetchBook$()</code> 產生 rejected Promise 時，其 <code>pipe()</code> 內並沒有 <code>catchError()</code>，因此將 error 往外層傳，<code>click$</code> 的 <code>catchError()</code> 收到 error 顯示 <code>RxJS in Action</code>，但重點是 <code>fetchBook$()</code> 本身的 rejected Promise 並沒有處理， 造成 runtime error 而停止執行。</p>
 <blockquote>
 <p><strong>catchError()</strong><br>處理 stream 中的 error，提供新的 Observable 繼續 stream</p>
 </blockquote>
 <p><img src="/images/rxjs/error-handling/catcherror/catch003.png" alt="catcherror003"></p>
 <p><code>a</code>、<code>b</code> 為原本 Observable 遇到 <code>x</code> error，由 <code>catchError()</code> 提供新的 <code>1</code>、<code>2</code>、<code>3</code> … Observable 繼續。</p>
-<h2 id="throwError"><a href="#throwError" class="headerlink" title="throwError()"></a>throwError()</h2><p><img src="/images/rxjs/error-handling/catcherror/catch005.png" alt="catch005"></p>
-<p>若回傳為 rejected Promise，不顯示 title 並立即顯示 error message。</p>
+<h2 id="Error-Message"><a href="#Error-Message" class="headerlink" title="Error Message"></a>Error Message</h2><p><img src="/images/rxjs/error-handling/catcherror/catch004.png" alt="catch005"></p>
+<p>若想顯示 error message 而非 <code>RxJS in Action</code>。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: click$ }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Show book<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
@@ -581,22 +592,17 @@ a:hover {
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> <span class="token punctuation">{</span> ajax <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/ajax'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> throwError <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> exhaustMap<span class="token punctuation">,</span> pluck<span class="token punctuation">,</span> catchError<span class="token punctuation">,</span> share <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> <span class="token keyword">of</span> <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> exhaustMap<span class="token punctuation">,</span> pluck<span class="token punctuation">,</span> catchError <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span>
 
 <span class="token keyword">let</span> fetchBook$ <span class="token operator">=</span> id <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/book/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> subscriptions <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">let</span> title$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>click$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
-    <span class="token function">exhaustMap</span><span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> <span class="token function">fetchBook$</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token function">catchError</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> <span class="token function">throwError</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token function">share</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-  <span class="token punctuation">)</span>
-
-  title$<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>
-    <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
-    e <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>message<span class="token punctuation">)</span>
+    <span class="token function">exhaustMap</span><span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> <span class="token function">fetchBook$</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+      <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token function">catchError</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">of</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">)</span>
+    <span class="token punctuation">)</span><span class="token punctuation">)</span>
   <span class="token punctuation">)</span>
 
   <span class="token keyword">return</span> <span class="token punctuation">{</span> title$ <span class="token punctuation">}</span>
@@ -608,33 +614,22 @@ a:hover {
   subscriptions<span class="token punctuation">,</span>
 <span class="token punctuation">}</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>16 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> title$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>click$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">exhaustMap</span><span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> <span class="token function">fetchBook$</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">catchError</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> <span class="token function">throwError</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">share</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+  <span class="token function">exhaustMap</span><span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> <span class="token function">fetchBook$</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">catchError</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">of</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
-
-title$<span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span>
-  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
-  e <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>message<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>實務上有時我們會希望有 error 就終止執行，並立即顯示錯誤訊息。</p>
-<p>由於 <code>catchError()</code> 只能回傳 Observable，因此使用 <code>throwError()</code> 產生包含 error 的 Observable 回傳，再由 Observer 顯示錯誤訊息。</p>
-<p>會發現最後加了 <code>share()</code>，因為 <code>title()</code> 除了 <code>return</code> 外還被 <code>subscribe()</code>，因此造成了兩次 API request，因此特別加上 <code>share()</code>。</p>
-<blockquote>
-<p><strong>throwError()</strong><br>產生有 error 的 Observable</p>
-</blockquote>
-<p><img src="/images/rxjs/error-handling/catcherror/catch004.png" alt="catch004"></p>
-<p>回傳完全沒有任何資料的 Observable。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由於 <code>catchError()</code>要求我們以回傳新的 Observable 作為處理 rejected Promise，因此我們只能用 <code>of()</code> 將  <code>e.message</code> 包成 Observable 回傳。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>FRP 在處理 error 與 imperative 觀念不同，imperative 是遇到 error 就直接處理 side effect，但 FRP 因為還在 stream 中，只能提供 Observable 繼續，或者提供只有 error 的 Observable，再由 Observer 處理 side effect</li>
-<li>RxJS 常常不小心造成重複 API request，記得時時使用 Dev Tools 觀察 network，並適時加上 <code>share()</code> </li>
+<li>FRP 在處理 error 與 imperative 觀念不同，imperative 是遇到 error 就直接處理 side effect，但 FRP 因為還在 stream 中，只能提供 Observable 繼續</li>
+<li>記得 <code>catchError()</code> 要寫在 API Observable 的 <code>pipe()</code> 內，而非 DOM event Observable 的 <code>pipe()</code> 內，因為要處理的是 rejected Promise，而非 DOM 的 error</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://rxjs.dev" target="_blank" rel="noopener">RxJS</a>, <a href="https://rxjs.dev/api/operators/catchError" target="_blank" rel="noopener">catchError()</a><br><a href="https://rxjs.dev" target="_blank" rel="noopener">RxJS</a>, <a href="https://rxjs.dev/api/index/function/throwError" target="_blank" rel="noopener">throwError()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://rxjs.dev" target="_blank" rel="noopener">RxJS</a>, <a href="https://rxjs.dev/api/operators/catchError" target="_blank" rel="noopener">catchError()</a></p>
 
 					</article>
 					<p class="post-footer-info mb-0 pt-2">
