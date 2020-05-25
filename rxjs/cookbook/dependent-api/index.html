@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-05-23T15:25:42.000Z",
-    "dateModified": "2020-05-25T15:33:10.818Z",
+    "dateModified": "2020-05-25T23:33:45.847Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -676,6 +676,50 @@ a:hover {
 <blockquote>
 <p>RxJS operator 的 callback 為 synchronous context，可安心使用 Ramda 或 Sanctuary 的 function 使其 point-free</p>
 </blockquote>
+<h2 id="Subscription"><a href="#Subscription" class="headerlink" title="Subscription"></a>Subscription</h2><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>Posts<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(x, i) in posts$<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span><span class="token punctuation">></span></span>{{ x.title }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ajax <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/ajax'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> flatMap<span class="token punctuation">,</span> pluck<span class="token punctuation">,</span> toArray <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> head <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> subscriptions <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> posts$ <span class="token operator">=</span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token string">'https://jsonplaceholder.typicode.com/users?username=Bret'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">map</span><span class="token punctuation">(</span>head<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">flatMap</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`https://jsonplaceholder.typicode.com/posts?userId=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">)</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">{</span> posts$ <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  name<span class="token punctuation">:</span><span class="token string">'App'</span><span class="token punctuation">,</span>
+  subscriptions
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>15 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> subscriptions <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> posts$ <span class="token operator">=</span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token string">'https://jsonplaceholder.typicode.com/users?username=Bret'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">map</span><span class="token punctuation">(</span>head<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">flatMap</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`https://jsonplaceholder.typicode.com/posts?userId=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">)</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">{</span> posts$ <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>也可使用 Vue-rx 的 subscriptions，如此就不用使用 <code>data</code> side effect，可直接使用 arrow function。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Promise Chain 的 <code>then()</code> 兼具 <code>map()</code>、<code>flatMap()</code> 與 <code>subscribe()</code> 特性，因此用起來比較簡單，但缺點是只有一個 <code>then()</code> 能用，而不像 RxJS 有 100 多個 operator，可在各式各樣情境靈活使用</li>
 <li>Promise Chain 雖然已經有 FP 味道，但卻使用了 method chaining</li>
