@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-05-13T14:44:51.000Z",
-    "dateModified": "2020-05-13T14:51:29.033Z",
+    "dateModified": "2020-06-10T05:59:11.764Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -441,30 +441,29 @@ a:hover {
 					<article id="post-content">
 						<p>為避免 User 產生重複 API Request，將 Button Disabled 是一種方式，也可改用 <code>exhaustMap()</code> 實現。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.4<br>WebStorm 2020.1<br>Vue 2.6.11<br>Vue-rx 6.2<br>RxJS 6.5.5</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.4<br>WebStorm 2020.1<br>Vue 2.6.11<br>RxJS 6.5.5</p>
 <h2 id="switchMap"><a href="#switchMap" class="headerlink" title="switchMap()"></a>switchMap()</h2><p><img src="/images/rxjs/transformation/exhaustmap/pause-request/pause000.png" alt="pause000"></p>
 <p>未使用 disabled button，因此 user 的每一個 click 都會產生新的 API request。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: click$ }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Show book<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>click$<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Show book<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>{{ title$ }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">:src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>image$<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> <span class="token keyword">from</span> <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ajax <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/ajax'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> delay<span class="token punctuation">,</span> map<span class="token punctuation">,</span> pluck<span class="token punctuation">,</span> share<span class="token punctuation">,</span> switchMap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span>
 
-<span class="token keyword">let</span> fetchBook$ <span class="token operator">=</span> id <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">from</span><span class="token punctuation">(</span>axios<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/books/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> fetchBook$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/books/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> subscriptions <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">let</span> book$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>click$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
     <span class="token function">switchMap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">fetchBook$</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
     <span class="token function">share</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
   <span class="token punctuation">)</span>
 
@@ -475,10 +474,7 @@ a:hover {
     <span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`/images/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
   <span class="token punctuation">)</span>
 
-  <span class="token keyword">return</span> <span class="token punctuation">{</span>
-    title$<span class="token punctuation">,</span>
-    image$
-  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span> title$<span class="token punctuation">,</span> image$ <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
@@ -487,12 +483,13 @@ a:hover {
   subscriptions<span class="token punctuation">,</span>
 <span class="token punctuation">}</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>14 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchBook$ <span class="token operator">=</span> id <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">from</span><span class="token punctuation">(</span>axios<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/books/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>13 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchBook$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/books/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Delay 10 秒鐘模擬慢速網路。</p>
 <p>19 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> book$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>click$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
@@ -506,25 +503,24 @@ a:hover {
 <p>當 API 尚未完全回傳資料時，無論 user 按幾次 click 都不會產生新的 API request，這才是我們所要的。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: click$ }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Show book<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>click$<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Show book<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>{{ title$ }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>img</span> <span class="token attr-name">:src</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>image$<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> <span class="token keyword">from</span> <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ajax <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/ajax'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> delay<span class="token punctuation">,</span> map<span class="token punctuation">,</span> pluck<span class="token punctuation">,</span> share<span class="token punctuation">,</span> exhaustMap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span>
 
-<span class="token keyword">let</span> fetchBook$ <span class="token operator">=</span> id <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">from</span><span class="token punctuation">(</span>axios<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/books/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> fetchBook$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/books/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">10000</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> subscriptions <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">let</span> book$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>click$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
     <span class="token function">exhaustMap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">fetchBook$</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
     <span class="token function">share</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
   <span class="token punctuation">)</span>
 
@@ -535,10 +531,7 @@ a:hover {
     <span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`/images/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
   <span class="token punctuation">)</span>
 
-  <span class="token keyword">return</span> <span class="token punctuation">{</span>
-    title$<span class="token punctuation">,</span>
-    image$
-  <span class="token punctuation">}</span>
+  <span class="token keyword">return</span> <span class="token punctuation">{</span> title$<span class="token punctuation">,</span> image$ <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
@@ -547,17 +540,16 @@ a:hover {
   subscriptions<span class="token punctuation">,</span>
 <span class="token punctuation">}</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>19 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> book$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>click$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">exhaustMap</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">fetchBook$</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">share</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>從 <code>swtichMap()</code> 換成 <code>exhaustMap()</code> 問題就解決了。</p>
 <p><img src="/images/rxjs/transformation/exhaustmap/pause-request/pause002.png" alt="pause002"></p>
-<p><code>1</code>、<code>3</code>、<code>5</code> 可視為每次 user click，<code>10</code>、<code>10</code>、<code>10</code> 為每次 API 回傳資料，要傳 3 個 <code>10</code> 才算回傳完全。</p>
+<p><code>1</code>、<code>3</code>、<code>5</code> 可視為每次 user click，<code>10</code>、<code>10</code>、<code>10</code> 可視為每次 API 回傳資料，要傳 3 個 <code>10</code> 才算回傳完全。</p>
 <p>關鍵在第三次按 <code>5</code> 是在第二次 API 尚未回傳完全時按下，<code>switchMap()</code> 會取消原本傳輸而發起新的 API request，這就是 <code>switchMap()</code> 造成重複 API request 主因，且第二次傳輸的資料不完全也是錯的。</p>
 <p><img src="/images/rxjs/transformation/exhaustmap/pause-request/pause003.png" alt="pause003"></p>
 <p><code>exhaustMap()</code> 則不然，因為第二次 API 尚未回傳完全，因此拒絕了 user 第三次按 <code>5</code> 所發起的新 API request，所以不會有重複 API request，且資料都是完整的。</p>
