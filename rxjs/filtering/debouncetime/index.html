@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-06-09T11:31:38.000Z",
-    "dateModified": "2020-06-09T14:29:35.231Z",
+    "dateModified": "2020-06-10T06:08:56.518Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -505,7 +505,7 @@ a:hover {
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> <span class="token punctuation">{</span> <span class="token keyword">of</span> <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> ajax <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/ajax'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pluck<span class="token punctuation">,</span> debounceTime<span class="token punctuation">,</span> flatMap<span class="token punctuation">,</span> catchError <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pluck<span class="token punctuation">,</span> debounceTime<span class="token punctuation">,</span> exhaustMap<span class="token punctuation">,</span> catchError <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span>
 
 <span class="token keyword">let</span> fetchCategory$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/categories/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'category'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
@@ -514,9 +514,9 @@ a:hover {
 
 <span class="token keyword">let</span> subscriptions <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">let</span> category$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>input$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
-    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'event'</span><span class="token punctuation">,</span> <span class="token string">'target'</span><span class="token punctuation">,</span> <span class="token string">'value'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
     <span class="token function">debounceTime</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token function">flatMap</span><span class="token punctuation">(</span>fetchCategory$<span class="token punctuation">)</span>
+    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'event'</span><span class="token punctuation">,</span> <span class="token string">'target'</span><span class="token punctuation">,</span> <span class="token string">'value'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">exhaustMap</span><span class="token punctuation">(</span>fetchCategory$<span class="token punctuation">)</span>
   <span class="token punctuation">)</span>
 
   <span class="token keyword">return</span> <span class="token punctuation">{</span> category$ <span class="token punctuation">}</span>
@@ -543,21 +543,19 @@ a:hover {
 <p><code>fetchCategory()</code> 也由原本回傳 Promise 改成回傳 Observable。</p>
 <p>19 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> category$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>input$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'event'</span><span class="token punctuation">,</span> <span class="token string">'target'</span><span class="token punctuation">,</span> <span class="token string">'value'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">debounceTime</span><span class="token punctuation">(</span><span class="token number">500</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">flatMap</span><span class="token punctuation">(</span>fetchCategory$<span class="token punctuation">)</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'event'</span><span class="token punctuation">,</span> <span class="token string">'target'</span><span class="token punctuation">,</span> <span class="token string">'value'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">exhaustMap</span><span class="token punctuation">(</span>fetchCategory$<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
-
-<span class="token keyword">return</span> <span class="token punctuation">{</span> category$ <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>RxJS 提供了 <code>debounceTime()</code> operator，可直接對 input stream 做 debounce，由於 input stream 是 Observable，因此使用 <code>flatMap()</code> 讀取 API 避免 Observable of Observable。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>RxJS 提供了 <code>debounceTime()</code> operator，可直接對 input stream 做 debounce，由於 input stream 是 Observable，因此使用 <code>exhaustMap()</code> 讀取 API 避免 Observable of Observable。</p>
 <p>直接回傳 <code>category$</code> 供 HTML template 顯示。</p>
 <blockquote>
 <p><strong>debounceTime()</strong><br>每隔一段時間才過濾 Observable</p>
 </blockquote>
 <p><img src="/images/rxjs/filtering/debouncetime/debounce001.png" alt="debounce001"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>Debounce 是 RxJS 經典應用，若用 Event Model 將很難實現，但若改用 Stream Model 思考則相當直覺簡單</li>
+<li>Debounce 是 RxJS 經典應用，若用 Event Model 將很難實現，但若改用 Stream Model 思考則相當直覺</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://medium.com/@kartikjagdale11" target="_blank" rel="noopener">Kartik Jagdale</a>, <a href="https://medium.com/aviabird/rxjs-reducing-number-of-api-calls-to-your-server-using-debouncetime-d71c209a4613" target="_blank" rel="noopener">RxJS: Reducing number of API Calls to your server using debounceTime()</a></p>
 
