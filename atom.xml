@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2020-06-10T16:01:57.723Z</updated>
+  <updated>2020-06-13T01:41:00.969Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>編譯 Nginx-rtmp-module</title>
+    <link href="https://fpjs.fun/hls/nginx-rtmp-module/make/"/>
+    <id>https://fpjs.fun/hls/nginx-rtmp-module/make/</id>
+    <published>2020-06-13T01:19:47.000Z</published>
+    <updated>2020-06-13T01:41:00.969Z</updated>
+    
+    <content type="html"><![CDATA[<p>若要使用 Nginx 的 <code>nginx-rtmp-module</code>，需要自行下載 source code 並重新編譯 Nginx，本文記錄其編譯過程。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ubuntu 20.04<br>Nginx 1.18.0<br>Nginx-rtmp-module 1.2.1</p><h2 id="Nginx-rtmp-module"><a href="#Nginx-rtmp-module" class="headerlink" title="Nginx-rtmp-module"></a>Nginx-rtmp-module</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ sudo -i$ cd /usr/local$ wget https://github.com/arut/nginx-rtmp-module/archive/v1.2.1.tar.gz$ tar -xvzf ./v1.2.1.tar.gz$ cd ./nginx-1.18.0$ apt update$ apt -y install openssl libssl-dev $ ./configure --add-module=../nginx-rtmp-module-1.2.1 --prefix=/usr/local/nginx<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>第 2 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ cd /usr/local<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>Working directory 在 <code>/usr/local</code>，其中 Nginx 的 source code 已經下載至 <code>/usr/local/nginx-1.18.0</code>，且 <code>nginx-rtmp-module</code> 的 souce code 也將下載在此目錄下。</p><p>第 3 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ wget https://github.com/arut/nginx-rtmp-module/archive/v1.2.1.tar.gz<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>下載 <code>nginx-rtmp-module</code> 的 source code。</p><p>第 4 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ tar -xvzf ./v1.2.1.tar.gz<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>使用 <code>tar</code> 解壓縮為 <code>nginx-rtmp-module-1.2.1</code> 目錄。</p><p>第 5 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ cd ./nginx-1.18.0<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>進入 <code>nginx-1.18.0</code> 目錄，此為 Nginx source code 所在，即將開始編譯 Nginx。</p><p>第 6 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ apt update$ apt -y install openssl libssl-dev <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p><code>nginx-rtmp-module</code> 編譯過程需要 openssl。</p><p>第 8 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ ./configure --add-module=../nginx-rtmp-module-1.2.1 --prefix=/usr/local/nginx<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>使用 <code>configure</code> 產生 makefile。</p><ul><li><code>--add-module</code>：設定 <code>nginx-rtmp-module</code> 的 source code 目錄供 Nginx 編譯使用</li><li><code>--prefix</code>：設定 Nginx 編譯之後將安裝的目錄</li></ul><pre class="line-numbers highlight language-shell"><code class="language-shell">$ cd objs$ vim Makefile<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p><code>configure</code> 所產生的 makefile 會導致編譯失敗，需要做些修改，進入 <code>objs</code> 目錄修改 <code>Makefile</code>。</p><pre class="line-numbers highlight language-makefile"><code class="language-makefile">CFLAGS <span class="token operator">=</span>  -pipe  -O -W -Wall -Wpointer-arith -Wno-unused-parameter -Werror -g -Wno-implicit-fallthrough<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>在 <code>Makefile</code> 的 <code>CFLAGS</code> 最後加上 <code>-Wno-implicit-fallthrough</code>。</p><p><img src="/images/hls/nginx-rtmp-module/make/make000.png" alt="make000"></p><p>因爲 <code>nginx-rtmp-module</code> 的 source code 在 <code>switch</code> 使用了 <code>fall through</code> 寫法導致無法編譯，須在 <code>CFLAGS</code> 加上 <code>-Wno-implicit-fallthrough</code> 避免 <code>gcc</code> 編譯錯誤。</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ cd ..$ make && make install<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>回到 Nginx 目錄下編譯 Nginx。</p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li><code>fall through</code> 可能跟 <code>gcc</code> 的版本與預設編譯參數有關，若以 Ubuntu 20.04 的環境而言，編譯 <code>nginx-rtmp-module</code> 需手動修改 makefile 才能編譯成功</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/arut" target="_blank" rel="noopener">Roman Arutyunyan</a>, <a href="https://github.com/arut/nginx-rtmp-module" target="_blank" rel="noopener">Nginx-rtmp-module</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;若要使用 Nginx 的 &lt;code&gt;nginx-rtmp-module&lt;/code&gt;，需要自行下載 source code 並重新編譯 Nginx，本文記錄其編譯過程。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Nginx" scheme="https://fpjs.fun/tags/Nginx/"/>
+    
+  </entry>
   
   <entry>
     <title>如何同時使用 RxJS 與 Ramda ?</title>
@@ -399,28 +419,6 @@
     
     
       <category term="macOS" scheme="https://fpjs.fun/tags/macOS/"/>
-    
-      <category term="Nginx" scheme="https://fpjs.fun/tags/Nginx/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>編譯 Linux 版 Nginx</title>
-    <link href="https://fpjs.fun/ubuntu/server/nginx/make/"/>
-    <id>https://fpjs.fun/ubuntu/server/nginx/make/</id>
-    <published>2020-06-08T01:25:59.000Z</published>
-    <updated>2020-06-11T05:56:25.122Z</updated>
-    
-    <content type="html"><![CDATA[<p>除了使用 <code>apt</code> 安裝 Nginx 外，也可直接下載其 source 自行編譯。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ubuntu Server 20.04</p><h2 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ sudo -i$ cd /usr/local$ wget https://nginx.org/download/nginx-1.18.0.tar.gz$ tar -zxvf nginx-1.18.0.tar.gz$ cd nginx-1.18.0$ apt install libpcre3 libpcre3-dev$ ./configure$ make && make install$ /usr/local/nginx/sbin/nginx -v<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>第 3 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ wget https://nginx.org/download/nginx-1.18.0.tar.gz<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>下載 Nginx source code。</p><p>第 4 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ tar -zxvf nginx-1.18.0.tar.gz<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>使用 <code>tar</code> 解壓縮。</p><p>第 6 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ apt install libpcre3 libpcre3-dev<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>Nginx 編譯需要 PCRE，安裝所需要的 package。</p><p>第 7 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ ./configure<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>建立預設 makefile。</p><p>第 8 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ make && make install<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>編譯並且安裝。</p><p>第 9 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ /usr/local/nginx/sbin/nginx -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>執行 <code>make install</code> 後的 Nginx。</p><p><img src="/images/ubuntu/server/nginx/make/make000.png" alt="make000"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Nginx 的 source code 也能拿到 macOS 自行編譯，且不需另外安裝 <code>libpcre3</code> 與 <code>libpcre3-dev</code></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;除了使用 &lt;code&gt;apt&lt;/code&gt; 安裝 Nginx 外，也可直接下載其 source 自行編譯。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Ubuntu" scheme="https://fpjs.fun/tags/Ubuntu/"/>
     
       <category term="Nginx" scheme="https://fpjs.fun/tags/Nginx/"/>
     
