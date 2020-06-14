@@ -168,7 +168,7 @@ a:hover {
 	<meta property="og:title" content="使用 mergeMap() 呼叫有相依性 API | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://fpjs.fun/rxjs/transformation/mergemap/">
+<meta property="og:url" content="https://fpjs.fun/rxjs/transformation/mergemap/dependent-api/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
 <meta property="og:description" content="由於 RESTful API 特性，實務上常會遇到無法單一 API 就能拿到結果，必須連續呼叫多次 API，本文分別以 Async Await、Promise Chain、Ramda 與 RxJS 示範，可比較其背後不同 Mental Model 。">
 <meta name="twitter:card" content="summary">
@@ -188,19 +188,19 @@ a:hover {
 
 
 	<!-- ### Canonical link ### -->
-	<link rel="canonical" href="https://fpjs.fun/rxjs/transformation/mergemap/">
+	<link rel="canonical" href="https://fpjs.fun/rxjs/transformation/mergemap/dependent-api/">
 	<!-- ### Structured Data ### -->
 	
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://fpjs.fun/rxjs/transformation/mergemap/",
+    "url": "https://fpjs.fun/rxjs/transformation/mergemap/dependent-api/",
     "@type": "BlogPosting",
     "logo": "https://fpjs.fun/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://fpjs.fun/rxjs/transformation/mergemap/"
+        "@id": "https://fpjs.fun/rxjs/transformation/mergemap/dependent-api/"
     },
     "headline": "使用 mergeMap() 呼叫有相依性 API | 點燈坊",
     
@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-06-10T13:30:55.000Z",
-    "dateModified": "2020-06-10T13:33:52.438Z",
+    "dateModified": "2020-06-14T02:26:49.979Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -442,7 +442,7 @@ a:hover {
 						<p>由於 RESTful API 特性，實務上常會遇到無法單一 API 就能拿到結果，必須連續呼叫多次 API，本文分別以 Async Await、Promise Chain、Ramda 與 RxJS 示範，可比較其背後不同 Mental Model 。</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.4<br>WebStorm 2020.1.1<br>Vue 2.6.11<br>Ramda 0.0.27<br>RxJS 6.5.5</p>
-<h2 id="Browser"><a href="#Browser" class="headerlink" title="Browser"></a>Browser</h2><p><img src="/images/rxjs/transformation/mergemap/api000.png" alt="api000"></p>
+<h2 id="Browser"><a href="#Browser" class="headerlink" title="Browser"></a>Browser</h2><p><img src="/images/rxjs/transformation/mergemap/dependent-api/api000.png" alt="api000"></p>
 <p>顯示 book id 為 <code>1</code> 的 category。</p>
 <h2 id="API"><a href="#API" class="headerlink" title="API"></a>API</h2><p><code>http://localhost:3000/categories/:id</code> 能回傳該 <code>categoryId</code> 的 <code>category</code>，但 <code>categoryId</code> 必須先呼叫 <code>http://localhost:3000/books/:id</code> 取得 <code>categoryId</code>。</p>
 <p>也就是 API request 有其相依性，必須先呼叫某 API 取得其值，再根據該值呼叫其他 API。</p>
@@ -665,7 +665,7 @@ a:hover {
   <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於 <code>fetchCategoryId$()</code> 回傳 Observable，要在 <code>subscribe()</code> 內的 <code>x</code> 才能取出 <code>categoryId</code>，因此在 <code>subscribe()</code> 再次呼叫 <code>fetchCategory$()</code> ，並在其 <code>subscribe()</code> 寫入 <code>category</code> data。</p>
-<p>這種 Observable of Observable 很容易寫出 Nested Subscribe，可讀性很差，跟 Callback Hell 差不多。</p>
+<p>這種 Higher Order Observable 很容易寫出 Nested Subscribe，可讀性很差，跟 Callback Hell 差不多。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>{{ category$ }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
@@ -701,12 +701,12 @@ a:hover {
   <span class="token function">mergeMap</span><span class="token punctuation">(</span>fetchCategory$<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p><code>fetchCategoryId$()</code> 回傳已是 Observable，又接著呼叫 <code>fetchCategory$()</code> 亦回傳 Observable，因此預期將會是 Observable of Observable。</p>
+<p><code>fetchCategoryId$()</code> 回傳已是 Observable，又接著呼叫 <code>fetchCategory$()</code> 亦回傳 Observable，因此預期將會是 Higher Order Observable。</p>
 <p>Observable 並不像 Promise 的 <code>then()</code> 會自動攤平 Promise，必須明確使用 <code>mergeMap()</code> 使 Observable 攤平。</p>
 <blockquote>
 <p><strong>mergeMap()</strong><br>將兩層 Observable 攤平成一層 Observable</p>
 </blockquote>
-<p><img src="/images/rxjs/transformation/mergemap/api001.png" alt="api001"></p>
+<p><img src="/images/rxjs/transformation/mergemap/dependent-api/api001.png" alt="api001"></p>
 <p>22 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">return</span> <span class="token punctuation">{</span> category$ <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
