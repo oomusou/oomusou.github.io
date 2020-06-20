@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2020-06-20T05:18:22.219Z</updated>
+  <updated>2020-06-20T13:40:19.630Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何測試 Build 過的 Vue ?</title>
+    <link href="https://fpjs.fun/vue/vue-cli/serve-dist/"/>
+    <id>https://fpjs.fun/vue/vue-cli/serve-dist/</id>
+    <published>2020-06-20T13:35:13.000Z</published>
+    <updated>2020-06-20T13:40:19.630Z</updated>
+    
+    <content type="html"><![CDATA[<p>平常開發可使用 Webpack 的 DevServer，但最後應該測試經過 Webpack 、Babel 、PostCSS …等工具處理過的檔案，畢竟這才是最後在 Production Server 執行的 HTML、CSS 與 JavaScript。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.5<br>Vue CLI 4.4.4<br>Vue 2.6.11<br>Serve 11.3.2</p><h2 id="Install-Package"><a href="#Install-Package" class="headerlink" title="Install Package"></a>Install Package</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn global add serve<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>Vue CLI 並沒有能力直接執行 <code>dist</code> 目錄下檔案，須自行安裝 <code>serve</code>。</p><p><img src="/images/vue/vue-cli/serve-dist/serve000.png" alt="serve000"></p><h2 id="Build-Vue"><a href="#Build-Vue" class="headerlink" title="Build Vue"></a>Build Vue</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn build<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>執行 <code>yarn build</code> 使用 Webpack、Babel、PostCSS 重新處理  Vue。</p><p><img src="/images/vue/vue-cli/serve-dist/serve001.png" alt="serve001"></p><h2 id="Serve-Dist"><a href="#Serve-Dist" class="headerlink" title="Serve Dist"></a>Serve Dist</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ serve dist<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>使用 <code>Serve</code> 執行 <code>dist</code> 目錄下檔案，也就是剛剛 <code>yarn build</code> 所產生的 HTML、CSS 與 JavaScript。</p><p><img src="/images/vue/vue-cli/serve-dist/serve002.png" alt="serve002"></p><p>Serve 跑在 <code>http://localhost:5000</code>。</p><h2 id="Browser"><a href="#Browser" class="headerlink" title="Browser"></a>Browser</h2><p><img src="/images/vue/vue-cli/serve-dist/serve003.png" alt="serve003"></p><p>Vue 順利執行在 <code>http://localhost:5000</code>。</p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>實務上建議最後一定要測試 <code>dist</code> 目錄下的檔案，畢竟經過 Webpack、Babel、PostCSS … 等工具處理過，與 <code>yarn serve</code> 直接執行不見得完全相同，可能發現意想不到的 bug</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;平常開發可使用 Webpack 的 DevServer，但最後應該測試經過 Webpack 、Babel 、PostCSS …等工具處理過的檔案，畢竟這才是最後在 Production Server 執行的 HTML、CSS 與 JavaScript。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Vue" scheme="https://fpjs.fun/tags/Vue/"/>
+    
+  </entry>
   
   <entry>
     <title>深入探討 switchMap()</title>
@@ -395,28 +415,6 @@
     
     
       <category term="RxJS" scheme="https://fpjs.fun/tags/RxJS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>如何在 Ubuntu 安裝 Docker ?</title>
-    <link href="https://fpjs.fun/ubuntu/general/docker/install/"/>
-    <id>https://fpjs.fun/ubuntu/general/docker/install/</id>
-    <published>2020-06-10T07:58:50.000Z</published>
-    <updated>2020-06-11T05:59:26.995Z</updated>
-    
-    <content type="html"><![CDATA[<p>Docker 本來就是 Linux 的技術，只要在 Ubuntu 裝上 Docker Engine，就可以在 Ubuntu 內使用 Docker。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ubuntu Focal Fossa 20.04<br>Docker 19.03.11</p><h2 id="Install-by-Repository"><a href="#Install-by-Repository" class="headerlink" title="Install by Repository"></a>Install by Repository</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ sudo apt update$ sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common$ sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -$ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"$ sudo apt update$ sudo apt install docker-ce docker-ce-cli containerd.io<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Docker 官網介紹由 repository 安裝 Docker。</p><p>第 2 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ sudo apt install apt-transport-https ca-certificates curl gnupg-agent software-properties-common<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>安裝允許 <code>apt</code> 使用 HTTPS 所需 package。</p><p>第 3 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ sudo curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>新增 Docker 官方的 GPG key。</p><p>第 4 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>新增 repository。</p><p>第 5 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ sudo apt update<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>更新剛剛所新增的 respository。</p><p>第 6 行</p><pre class="line-numbers highlight language-shell"><code class="language-shell">$ sudo apt install docker-ce docker-ce-cli containerd.io<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>安裝 Docker 所需 package。</p><p><img src="/images/ubuntu/general/docker/install/install000.png" alt="install000"></p><h2 id="Snap"><a href="#Snap" class="headerlink" title="Snap"></a>Snap</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ sudo snap install docker<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>亦可使用 Snap 安裝 Docker。</p><p><img src="/images/ubuntu/general/docker/install/install001.png" alt="install001"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Docker 官網的方式較麻煩，可改用 Snap 安裝簡單安裝</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://docs.docker.com" target="_blank" rel="noopener">Docker</a>, <a href="https://docs.docker.com/engine/install/ubuntu/" target="_blank" rel="noopener">Install Docker Engine on Ubuntu</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Docker 本來就是 Linux 的技術，只要在 Ubuntu 裝上 Docker Engine，就可以在 Ubuntu 內使用 Docker。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Docker" scheme="https://fpjs.fun/tags/Docker/"/>
-    
-      <category term="Ubuntu" scheme="https://fpjs.fun/tags/Ubuntu/"/>
     
   </entry>
   
