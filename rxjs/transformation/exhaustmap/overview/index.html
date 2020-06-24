@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-06-23T15:11:50.000Z",
-    "dateModified": "2020-06-23T15:14:55.907Z",
+    "dateModified": "2020-06-24T12:51:12.846Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -657,7 +657,7 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於使用 <code>concatMap()</code>，因此按了 <code>3</code> 次會呼叫 <code>3</code> 次 API，只是三次 API 結果都相同，因此顯示都是 <code>FP in JavaScript</code>。</p>
 <p><img src="/images/rxjs/transformation/exhaustmap/overview/exhaustmap008.png" alt="exhaustmap008"></p>
-<p>由 Chrome 的 Developer Tool 也證實真 <code>concatMap()</code> 呼叫了 <code>3</code> 次 API。</p>
+<p><code>concatMap()</code> 會引起 <code>3</code> 次 API request。</p>
 <h3 id="exhaustMap-1"><a href="#exhaustMap-1" class="headerlink" title="exhaustMap()"></a>exhaustMap()</h3><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: click$, data: 1 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
@@ -707,7 +707,7 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由 <code>concatMap()</code> 改成 <code>exhaustMap()</code>，且 API request 特別 delay <code>2</code> 秒鐘，因此button 連按 <code>3</code> 次時，後面兩次 API request 尚未結束，因此其產生的 Inner Observable 被 <code>exhaustMap()</code> 捨棄，只有一次 API request。</p>
 <p><img src="/images/rxjs/transformation/exhaustmap/overview/exhaustmap009.png" alt="exhaustmap009"></p>
-<p>由 Chrome 的 Developer Tool 也證實 <code>exhaustMap()</code> 只有 <code>1</code> 次 API request。</p>
+<p><code>exhaustMap()</code> 只會引起 <code>1</code> 次 API request。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Higher Order Observable 為學習 RxJS 無法逃避課題，而初學者常常在 <code>mergeMap()</code>、<code>concatMap()</code>、<code>exhaustMap()</code> 與 <code>switchMap()</code> 之間有選擇障礙</li>
 <li>由於 <code>exhaustMap()</code> 本質是 <code>map()</code> + <code>exhaust()</code>，因此第一個 Inner Observable 尚未結束時，已發生 Outer Observable 都會捨棄</li>
