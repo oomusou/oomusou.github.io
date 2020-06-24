@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>深入探討 switchMap() | 點燈坊</title>
+<title>使用 switchMap() 保留最新 Inner Observable | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -165,7 +165,7 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="深入探討 switchMap() | 點燈坊">
+	<meta property="og:title" content="使用 switchMap() 保留最新 Inner Observable | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
 <meta property="og:url" content="https://fpjs.fun/rxjs/transformation/switchmap/overview/">
@@ -202,7 +202,7 @@ a:hover {
         "@type": "WebPage",
         "@id": "https://fpjs.fun/rxjs/transformation/switchmap/overview/"
     },
-    "headline": "深入探討 switchMap() | 點燈坊",
+    "headline": "使用 switchMap() 保留最新 Inner Observable | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-06-19T23:55:43.000Z",
-    "dateModified": "2020-06-21T15:51:11.891Z",
+    "dateModified": "2020-06-24T14:39:11.402Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -428,7 +428,7 @@ a:hover {
 			<div class="card-inner-cell">
 				<div class="card-header">
 					
-<h1 class="card-title h3 mb-2">深入探討 switchMap()</h1>
+<h1 class="card-title h3 mb-2">使用 switchMap() 保留最新 Inner Observable</h1>
 
 
 <div class="post-header-info">
@@ -525,7 +525,12 @@ a:hover {
   <span class="token function">switchMap</span><span class="token punctuation">(</span>fetchInner$<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>若想在眾多 Higher Order Observable 中只取最新一筆，之前都 cancel，可改用 <code>switchMap()</code> 將 Inner Observable 攤平。</p>
+<p>若想在眾多 Higher Order Observable 中只取最新一筆，之前都捨棄，可改用 <code>switchMap()</code> 將 Higher Order Observable 攤平。</p>
+<blockquote>
+<p><strong>switchMap()</strong><br>將 Higher Order Observable 攤平，若有新的 Inner Observable 將捨棄尚未完成的 Inner Observale</p>
+</blockquote>
+<p><img src="/images/rxjs/transformation/switchmap/overview/switchmap006.png" alt="switchmap006"></p>
+<p>50 在 30 還沒結束時就出現，swtichMap() 會優先顯示 50 並捨棄尚未完成的 30。</p>
 <p><img src="/images/rxjs/transformation/switchmap/overview/switchmap003.png" alt="switchmap003"></p>
 <h2 id="map-switchAll"><a href="#map-switchAll" class="headerlink" title="map() + switchAll()"></a>map() + switchAll()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> interval<span class="token punctuation">,</span> <span class="token keyword">of</span><span class="token punctuation">,</span> <span class="token keyword">from</span> <span class="token punctuation">}</span> <span class="token operator">=</span> Rx
 <span class="token keyword">let</span> <span class="token punctuation">{</span> take<span class="token punctuation">,</span> map<span class="token punctuation">,</span> delay<span class="token punctuation">,</span> switchAll <span class="token punctuation">}</span> <span class="token operator">=</span> RxOperators
@@ -559,7 +564,12 @@ a:hover {
 <p>事實上 <code>switchMap()</code> 就是 <code>map()</code> + <code>switchAll()</code>。</p>
 <p>這就要談到 <code>mergeAll()</code> 與 <code>switchAll()</code> 的不同。</p>
 <p><code>mergeAll()</code> 會直接將 Inner Observable 依照原本 Inner Observable 的 timing 攤平。</p>
-<p>而 <code>switchAll()</code> 只會取 Inner Observable 最新的一筆，其餘全部 cancel。</p>
+<p>而 <code>switchAll()</code> 只會取 Inner Observable 最新的一筆，其餘全部捨棄。</p>
+<blockquote>
+<p><strong>switchAll()</strong><br>將 Inner Observable 攤平並只取同時間最新的 Inner Observable，因此個數可能捨棄</p>
+</blockquote>
+<p><img src="/images/rxjs/transformation/switchmap/overview/switchmap007.png" alt="switchmap007"></p>
+<p>將 Inner Observable 攤平，<code>c</code> 與 <code>e</code> 將取最新的 <code>e</code>，<code>d</code> 與 <code>f</code> 將取最新的 <code>f</code>。</p>
 <p><img src="/images/rxjs/transformation/switchmap/overview/switchmap004.png" alt="switchmap004"></p>
 <p>特別將 <code>mergeMap()</code> 、 <code>switchMap()</code> 與 <code>map()</code> 的 timing 都放在一起，可明顯發現 Inner Observable 在 <code>mergeMap()</code> 與 <code>map()</code> 的 timing 完全一樣，<code>switchMap()</code> 則只取 Inner Observable 最新一筆。</p>
 <h2 id="Real-World-Example"><a href="#Real-World-Example" class="headerlink" title="Real World Example"></a>Real World Example</h2><p><img src="/images/rxjs/transformation/switchmap/overview/switchmap005.png" alt="switchmap005"></p>
@@ -610,7 +620,7 @@ a:hover {
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: click$, data: 2 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: click$, data: 3 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>3<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>3 個 button 都使用 <code>click$</code> subject，唯 <code>data</code> 不一樣，這模擬了 table 分頁的 <code>下一頁</code>，依次按下 <code>1</code>、<code>2</code>、<code>3</code>，就類似 <code>下一頁</code> 快速按了 <code>3</code> 次，我們預期最終只顯示 <code>第三頁</code>，而 <code>第一頁</code> 與 <code>第二頁</code> 全都 cancel 不顯示。</p>
+<p>3 個 button 都使用 <code>click$</code> subject，唯 <code>data</code> 不一樣，這模擬了 table 分頁的 <code>下一頁</code>，依次按下 <code>1</code>、<code>2</code>、<code>3</code>，就類似 <code>下一頁</code> 快速按了 <code>3</code> 次，我們預期最終只顯示 <code>第三頁</code>，而 <code>第一頁</code> 與 <code>第二頁</code> 全都捨棄不顯示。</p>
 <p>14 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> delayLut <span class="token operator">=</span> <span class="token punctuation">{</span>
   <span class="token number">1</span><span class="token punctuation">:</span> <span class="token number">3000</span><span class="token punctuation">,</span>
@@ -639,6 +649,8 @@ a:hover {
 <li><code>Speaking JavaScript</code></li>
 </ul>
 <p>而非只顯示 <code>Speaking JavaScript</code>。</p>
+<p><img src="/images/rxjs/transformation/switchmap/overview/switchmap008.png" alt="switchmap008"></p>
+<p><code>mergeMap()</code> 會引起 <code>3</code> 次 API request。</p>
 <h3 id="switchMap-1"><a href="#switchMap-1" class="headerlink" title="switchMap()"></a>switchMap()</h3><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: click$, data: 1 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
@@ -685,13 +697,16 @@ a:hover {
   <span class="token function">switchMap</span><span class="token punctuation">(</span>fetchBook$<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>從 <code>mergeMap()</code> 改用 <code>switchMap()</code> 後，將只取最新的 <code>Speaking JavaScript</code> 一筆，前兩筆 <code>RxJS in Action</code> 與 <code>FP in JavaScript</code> 將被 cancel，這正是我們所要的。</p>
+<p>從 <code>mergeMap()</code> 改用 <code>switchMap()</code> 後，將只取最新的 <code>Speaking JavaScript</code> 一筆，前兩筆 <code>RxJS in Action</code> 與 <code>FP in JavaScript</code> 將被捨棄，這正是我們所要的。</p>
+<p><img src="/images/rxjs/transformation/switchmap/overview/switchmap009.png" alt="switchmap009"></p>
+<p>雖然 <code>switchMap()</code> 只顯示最新一筆，但仍然會引起 <code>3</code> 次 API request，只是經過 <code>switchMap()</code> 處理後才捨棄前兩筆。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Higher Order Observable 為學習 RxJS 無法逃避課題，而初學者常常在 <code>mergeMap()</code>、<code>concatMap()</code>、<code>exhaustMap()</code> 與 <code>switchMap()</code> 之間有選擇障礙</li>
 <li>由於 <code>switchMap()</code> 本質是 <code>map()</code> + <code>switchAll()</code>，因此只取 Inner Observable 最新的一筆</li>
 <li>若要確保 DOM Event 只取最新的 API request，可改用 <code>switchMap()</code></li>
+<li>雖然 <code>switchMap()</code> 會保留最新 Inner Observable，但仍會發出 API request，只是 <code>switchMap()</code> 捨棄舊有 Inner Observable 而已</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://rxjs.dev" target="_blank" rel="noopener">RxJS</a>, <a href="https://rxjs.dev/api/operators/map" target="_blank" rel="noopener">map()</a><br><a href="https://rxjs.dev" target="_blank" rel="noopener">RxJS</a>, <a href="https://rxjs.dev/api/operators/switchMap" target="_blank" rel="noopener">switchMap()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://rxjs.dev" target="_blank" rel="noopener">RxJS</a>, <a href="https://rxjs.dev/api/operators/map" target="_blank" rel="noopener">map()</a><br><a href="https://rxjs.dev" target="_blank" rel="noopener">RxJS</a>, <a href="https://rxjs.dev/api/operators/switchAll" target="_blank" rel="noopener">switchAll()</a><br><a href="https://rxjs.dev" target="_blank" rel="noopener">RxJS</a>, <a href="https://rxjs.dev/api/operators/switchMap" target="_blank" rel="noopener">switchMap()</a></p>
 
 					</article>
 					<p class="post-footer-info mb-0 pt-2">
