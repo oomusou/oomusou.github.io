@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-07-04T07:56:58.000Z",
-    "dateModified": "2020-07-04T08:00:10.122Z",
+    "dateModified": "2020-07-08T15:04:33.476Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -585,7 +585,7 @@ a:hover {
 
 <span class="token keyword">let</span> fetchBook$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/books/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">catchError</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">,</span> EMPTY<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token function">catchError</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>status <span class="token operator">||</span> <span class="token string">'404'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> EMPTY<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> subscriptions <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -610,13 +610,14 @@ a:hover {
 <p>13 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchBook$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/books/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">catchError</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">,</span> EMPTY<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token function">catchError</span><span class="token punctuation">(</span>e <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>e<span class="token punctuation">.</span>status <span class="token operator">||</span> <span class="token string">'404'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> EMPTY<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於想先用 <code>console.log()</code> 印出 error，再回傳 <code>EMPTY</code> Observable，因此使用 comma operator 將 <code>console.log()</code> 與 <code>EMPTY</code> 合併成一行由左向右執行。</p>
+<p>當斷網時 <code>e.status</code> 為 <code>0</code>，可利用 <code>||</code> 視為 falsy value 回傳 <code>404</code>。</p>
 <p>如此不僅不會中斷 stream，也可以完美以 side effect 印出 error log。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>FRP 在處理 error 與 imperative 觀念不同，Imperative 是遇到 error 就直接處理 side effect，但 FRP 因為還在 stream 中，只能提供新 Observable 繼續使 stream 不中斷</li>
+<li>FRP 在處理 error 與 Imperative 觀念不同，Imperative 是遇到 error 就直接處理 side effect，但 FRP 因為還在 stream 中，只能提供新 Observable 繼續使 stream 不中斷</li>
 <li>記得 <code>catchError()</code> 要寫在 API Observable 的 <code>pipe()</code> 內，而非 DOM event Observable 的 <code>pipe()</code> 內，因為要處理的是 HTTP error，而非 DOM error</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://rxjs.dev" target="_blank" rel="noopener">RxJS</a>, <a href="https://rxjs.dev/api/operators/catchError" target="_blank" rel="noopener">catchError()</a><br><a href="https://rxjs.dev" target="_blank" rel="noopener">RxJS</a>, <a href="https://rxjs.dev/api/index/function/empty" target="_blank" rel="noopener">EMPTY</a></p>
