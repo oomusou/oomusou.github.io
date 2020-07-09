@@ -174,8 +174,8 @@ a:hover {
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-01-21T03:48:23.000Z">
-<meta property="article:modified_time" content="2020-01-21T03:48:23.000Z">
+<meta property="article:published_time" content="2020-07-09T15:55:46.000Z">
+<meta property="article:modified_time" content="2020-07-09T15:55:46.000Z">
 <meta property="article:author" content="Sam Xiao">
 <meta property="og:article:tag" content=", Gridsome, Tailwind">
 
@@ -209,8 +209,8 @@ a:hover {
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2020-01-21T03:48:23.000Z",
-    "dateModified": "2020-04-06T06:25:18.275Z",
+    "datePublished": "2020-07-09T15:55:46.000Z",
+    "dateModified": "2020-07-09T15:58:37.163Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -434,14 +434,14 @@ a:hover {
 <div class="post-header-info">
 	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
 		alt="Sam Xiao's Avatar">
-	<span>2020-01-21</span>
+	<span>2020-07-09</span>
 </div>
 				</div>
 				<div class="card-body">
 					<article id="post-content">
 						<p>Gridsome 基於 Vue，也可以使用 Tailwind CSS，與 Vue CLI 設定上大體類似，只有在 Gridsome Configuration 稍有不同。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.2<br>WebStorm 2019.3.1<br>Node 12.4.0<br>Vue 2.6.10<br>Gridsome 0.7.12<br>Tailwind 1.1.4</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.5<br>WebStorm 2020.1.3<br>Gridsome CLI 0.3.3<br>Gridsome 0.7.19<br>Tailwind 1.4.6</p>
 <h2 id="Create-Gridsome-Project"><a href="#Create-Gridsome-Project" class="headerlink" title="Create Gridsome Project"></a>Create Gridsome Project</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ gridsome create gridsome-tailwind
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>使用 Gridsome CLI 建立 project。</p>
@@ -450,12 +450,12 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>使用 Yarn 安裝 Tailwind。</p>
 <p><img src="/images/tailwind/general/gridsome/gridsome001.png" alt="gridsome001"></p>
-<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add @fullhuman/postcss-purgecss autoprefixer --dev
+<p>在 Tailwind 1.4.0 之後，預設已經安裝 PurgeCSS。</p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add autoprefixer --dev
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>使用 Yarn 安裝 Purgecss 與 Autoprefixer 在 <code>devDependencies</code>。</p>
+<p>使用 Yarn 安裝 Purgecss 與 AutoPrefixer 在 <code>devDependencies</code>。</p>
 <ul>
-<li><strong>Purgecss</strong>：只將 Tailwind 用到部分取出，可大幅降低 CSS 檔案大小</li>
-<li><strong>Autoprefixer</strong>：自動加上各 browser 的 vendor prefix，如 <code>::-webkit-input-</code>、<code>::-moz-</code>、<code>::-mu-input</code> … 等</li>
+<li><strong>AutoPrefixer</strong>：自動加上各 browser 的 vendor prefix，如 <code>::-webkit-input-</code>、<code>::-moz-</code>、<code>::-mu-input</code> … 等</li>
 </ul>
 <p><img src="/images/tailwind/general/gridsome/gridsome002.png" alt="gridsome002"></p>
 <h2 id="Add-Tailwind-to-Global-CSS"><a href="#Add-Tailwind-to-Global-CSS" class="headerlink" title="Add Tailwind to Global CSS"></a>Add Tailwind to Global CSS</h2><p><strong>src/assets/css/tailwind.css</strong></p>
@@ -466,65 +466,74 @@ a:hover {
 <p>新增 <code>src/assets/css/tailwind.css</code>。</p>
 <p>Tailwind 在 build-time 會將以上以標準 CSS 取代。</p>
 <p><img src="/images/tailwind/general/gridsome/gridsome003.png" alt="gridsome003"></p>
-<h2 id="Tailwind-Configuration"><a href="#Tailwind-Configuration" class="headerlink" title="Tailwind Configuration"></a>Tailwind Configuration</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ npx tailwind init
+<h2 id="Tailwind-Configuration"><a href="#Tailwind-Configuration" class="headerlink" title="Tailwind Configuration"></a>Tailwind Configuration</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ npx tailwindcss init
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>使用 <code>tailwind init</code> 在 project 根目錄建立 <code>tailwind.config.js</code>。</p>
 <p><img src="/images/tailwind/general/gridsome/gridsome004.png" alt="gridsome004"></p>
+<p><strong>tailwind.config.js</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  purge<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    <span class="token string">'./src/**/*.vue'</span><span class="token punctuation">,</span>
+    <span class="token string">'./src/**/*.js'</span><span class="token punctuation">,</span>
+    <span class="token string">'./src/**/*.jsx'</span><span class="token punctuation">,</span>
+    <span class="token string">'./src/**/*.html'</span><span class="token punctuation">,</span>
+    <span class="token string">'./src/**/*.pug'</span><span class="token punctuation">,</span>
+    <span class="token string">'./src/**/*.md'</span><span class="token punctuation">,</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  theme<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    extend<span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  variants<span class="token punctuation">:</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
+  plugins<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Tailwind 1.4 新增 <code>purge</code> property，可直接設定 PuregeCSS 要管理的檔案。</p>
+<p><img src="/images/tailwind/general/gridsome/gridsome011.png" alt="gridsome011"></p>
 <h2 id="Gridsome-Configuration"><a href="#Gridsome-Configuration" class="headerlink" title="Gridsome Configuration"></a>Gridsome Configuration</h2><p><strong>gridsome.config.js</strong></p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> tailwindcss <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">"tailwindcss"</span><span class="token punctuation">)</span>
 <span class="token keyword">let</span> autoprefixer <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'autoprefixer'</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> postcssPurgecss <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`@fullhuman/postcss-purgecss`</span></span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> purgecss <span class="token operator">=</span> <span class="token function">postcssPurgecss</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  content<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-    <span class="token string">"./src/**/*.vue"</span><span class="token punctuation">,</span>
-    <span class="token string">"./src/**/*.js"</span><span class="token punctuation">,</span>
-    <span class="token string">"./src/**/*.jsx"</span><span class="token punctuation">,</span>
-    <span class="token string">"./src/**/*.html"</span><span class="token punctuation">,</span>
-    <span class="token string">"./src/**/*.pug"</span><span class="token punctuation">,</span>
-    <span class="token string">"./src/**/*.md"</span><span class="token punctuation">,</span>
-  <span class="token punctuation">]</span><span class="token punctuation">,</span>
-  whitelist<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"svg:not(:root).svg-inline--fa"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  whitelistPatterns<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token regex">/^fa-/</span><span class="token punctuation">,</span> <span class="token operator">/</span><span class="token operator">^</span>svg<span class="token operator">-</span>inline<span class="token operator">--</span>fa<span class="token operator">/</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  whitelistPatternsChildren<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token regex">/^token/</span><span class="token punctuation">,</span> <span class="token regex">/^pre/</span><span class="token punctuation">,</span> <span class="token operator">/</span><span class="token operator">^</span>code<span class="token operator">/</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  defaultExtractor<span class="token punctuation">:</span> content <span class="token operator">=</span><span class="token operator">></span> content<span class="token punctuation">.</span><span class="token function">match</span><span class="token punctuation">(</span><span class="token regex">/[A-Za-z0-9-_:/]+/g</span><span class="token punctuation">)</span> <span class="token operator">||</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-
 
 module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
-  siteName<span class="token punctuation">:</span> <span class="token string">"The Site Name"</span><span class="token punctuation">,</span>
+  siteName<span class="token punctuation">:</span> <span class="token string">'Gridsome'</span><span class="token punctuation">,</span>
   plugins<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
   css<span class="token punctuation">:</span> <span class="token punctuation">{</span>
     loaderOptions<span class="token punctuation">:</span> <span class="token punctuation">{</span>
       postcss<span class="token punctuation">:</span> <span class="token punctuation">{</span>
         plugins<span class="token punctuation">:</span> <span class="token punctuation">[</span>
           tailwindcss<span class="token punctuation">,</span>
-          autoprefixer<span class="token punctuation">,</span>
-          <span class="token operator">...</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">===</span> <span class="token string">"production"</span> <span class="token operator">?</span> <span class="token punctuation">[</span>purgecss<span class="token punctuation">]</span> <span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+          autoprefixer
         <span class="token punctuation">]</span><span class="token punctuation">,</span>
       <span class="token punctuation">}</span><span class="token punctuation">,</span>
     <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>在 <code>gridsome.config.js</code> 設定使用 Tailwind 、 PostCSS 與 Puregecss。</p>
-<p>第 6 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">content<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-  <span class="token string">"./src/**/*.vue"</span><span class="token punctuation">,</span>
-  <span class="token string">"./src/**/*.js"</span><span class="token punctuation">,</span>
-  <span class="token string">"./src/**/*.jsx"</span><span class="token punctuation">,</span>
-  <span class="token string">"./src/**/*.html"</span><span class="token punctuation">,</span>
-  <span class="token string">"./src/**/*.pug"</span><span class="token punctuation">,</span>
-  <span class="token string">"./src/**/*.md"</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span><span class="token punctuation">,</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>在 <code>src</code> 目錄下的這些檔案 將受 Purgecss 接管。</p>
-<p>30 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token operator">...</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">===</span> <span class="token string">"production"</span> <span class="token operator">?</span> <span class="token punctuation">[</span>purgecss<span class="token punctuation">]</span> <span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>只有在 <code>yarn build</code> 時在會執行 Purgecss，<code>yarn serve</code> 時不必執行。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 7 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">css<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+  loaderOptions<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    postcss<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+      plugins<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+        tailwindcss<span class="token punctuation">,</span>
+        autoprefixer
+      <span class="token punctuation">]</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 <code>gridsome.config.js</code> 設定使用 Tailwind 與 AutoPrefixer。</p>
 <p><img src="/images/tailwind/general/gridsome/gridsome006.png" alt="gridsome006"></p>
+<h2 id="PostCSS-Configuraton"><a href="#PostCSS-Configuraton" class="headerlink" title="PostCSS Configuraton"></a>PostCSS Configuraton</h2><p><strong>postcss.config.js</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  plugins<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'tailwindcss'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'autoprefixer'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 project 根目錄建立 <code>postcss.config.js</code>。</p>
+<p>Tailwind 基於 PostCSS，之前安裝的 Autoprefixer 也必須靠 PostCSS 啟動。</p>
+<p><img src="/images/tailwind/general/gridsome/gridsome012.png" alt="gridsome012"></p>
+<p>之前必須在 <code>postcss.config.js</code> 寫很多 PurgeCSS 設定，Tailwind 1.4 則不需要。</p>
 <h2 id="main-js"><a href="#main-js" class="headerlink" title="main.js"></a>main.js</h2><p><strong>src/main.js</strong></p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> DefaultLayout <span class="token keyword">from</span> <span class="token string">'~/layouts/Default.vue'</span>
 <span class="token keyword">import</span> <span class="token string">'./assets/css/tailwind.css'</span>
@@ -555,26 +564,25 @@ module<span class="token punctuation">.</span>exports <span class="token operato
 <p>第 3 行</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text-4xl font-bold text-red-700<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Hello, world!<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>直接在 <code>&lt;h1/&gt;</code> 套用 Tailwind 的 utility class，可發現其可讀性很高，就算不熟 Tailwind，也能由其 class name 了解其意義。</p>
+<p>直接在 <code>&lt;h1/&gt;</code> 套用 Tailwind 的 utility，可發現其可讀性很高，就算不熟 Tailwind，也能由其 class name 了解其意義。</p>
 <p><img src="/images/tailwind/general/gridsome/gridsome008.png" alt="gridsome008"></p>
 <h2 id="Development-Mode"><a href="#Development-Mode" class="headerlink" title="Development Mode"></a>Development Mode</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn serve
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>啟動 development mode 的 dev server。</p>
+<p>啟動 development mode 的 DevServer。</p>
 <p><img src="/images/tailwind/general/gridsome/gridsome009.png" alt="gridsome009"></p>
 <p>可發現 Tailwind CSS 已經成功套用。</p>
 <h2 id="Production-Mode"><a href="#Production-Mode" class="headerlink" title="Production Mode"></a>Production Mode</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn build
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>使用 production mode 編譯 Gridsome 並啟動 Purgecss。</p>
+<p>使用 production mode 編譯 Gridsome 並啟動 PurgeCSS。</p>
 <p><img src="/images/tailwind/general/gridsome/gridsome010.png" alt="gridsome010"></p>
-<p>在 <code>dist/css</code> 目錄下，可發現 CSS 只有 1 kb，因為 Purgecss 只取出用到部分。</p>
+<p>在 <code>dist/css</code> 目錄下，可發現 CSS 只有 <code>4</code> kb，因為 PurgeCSS 只取出用到部分。</p>
 <p><img src="/images/tailwind/general/gridsome/gridsome005.png" alt="gridsome005"></p>
-<p>若沒使用 Purgecss，則 CSS 高達 683 kb，可見 Tailwind 一定要搭配 Purgecss 才能發揮威力。</p>
+<p>若沒使用 PurgeCSS，則 CSS 高達 1.5MB，可見 Tailwind 一定要搭配 PurgeCSS 才能發揮威力。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>Tailwind 基於 Postcss，搭配 Purgecss 後，除了可將 CSS size 大幅降低，也不用擔心沒用到的 CSS 影響 size</li>
-<li>Gridsome 不必在 <code>postcss.config.js</code> 設定 Autoprefixer、Purgecss 與 PostCSS，直接設定在 <code>gridsome.config.js</code> 即可</li>
+<li>Tailwind 基於 Postcss，搭配 PurgeCSS 後，除了可將 CSS size 大幅降低，也不用擔心沒用到的 CSS 影響 size</li>
+<li>Tailwind 1.4 已經內建 PurgeCSS，已不需要在 <code>postcss.config.js</code> 做複雜設定</li>
 </ul>
-<h2 id="Sample-Code"><a href="#Sample-Code" class="headerlink" title="Sample Code"></a>Sample Code</h2><p>完整範例可在我的 <a href="https://github.com/oomusou/gridsome-tailwind" target="_blank" rel="noopener">GitHub</a> 上找到</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://blp.is" target="_blank" rel="noopener">blp.is</a>, <a href="https://blp.is/tailwind-and-purge-css-config-for-gridsome/" target="_blank" rel="noopener">Tailwind and PurgeCSS Config for Gridsome</a><br><a href="https://tailwindcss.com" target="_blank" rel="noopener">tailwindcss</a>, <a href="https://tailwindcss.com/docs/installation" target="_blank" rel="noopener">Intallation</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://blp.is" target="_blank" rel="noopener">blp.is</a>, <a href="https://blp.is/tailwind-and-purge-css-config-for-gridsome/" target="_blank" rel="noopener">Tailwind and PurgeCSS Config for Gridsome</a><br><a href="https://tailwindcss.com" target="_blank" rel="noopener">TailwindCSS</a>, <a href="https://tailwindcss.com/docs/installation" target="_blank" rel="noopener">Intallation</a></p>
 
 					</article>
 					<p class="post-footer-info mb-0 pt-2">
@@ -595,19 +603,12 @@ module<span class="token punctuation">.</span>exports <span class="token operato
 	<ul class="pagination">
 		<!-- Prev Nav -->
 		
-		<li class="page-item page-prev">
-			<a href="/ecmascript/array/splice/">
-				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 splice() 直接修改原本 Array</div>
-			</a>
-		</li>
-		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/ecmascript/array/of/">
+			<a href="/gridsome/overview/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 Array.of() 取代 Array.apply() 建立 Array</div>
+				<div class="page-item-subtitle">Gridsome 初體驗</div>
 			</a>
 		</li>
 		
