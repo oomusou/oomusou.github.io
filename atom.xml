@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2020-07-17T11:15:09.005Z</updated>
+  <updated>2020-07-17T14:16:42.945Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>淺談 macOS 的 App 安裝與反安裝</title>
+    <link href="https://fpjs.fun/macos/app/install-uninstall/"/>
+    <id>https://fpjs.fun/macos/app/install-uninstall/</id>
+    <published>2020-07-17T14:15:13.000Z</published>
+    <updated>2020-07-17T14:16:42.945Z</updated>
+    
+    <content type="html"><![CDATA[<p>macOS 雖然很好用，但在安裝/反安裝 app 的方式與 Windows 不太一樣，這是剛從 Windows 跳到 macOS 時一定會疑惑的地方。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.5</p><h2 id="App-安裝"><a href="#App-安裝" class="headerlink" title="App 安裝"></a>App 安裝</h2><p>macOS 一共有 5 種安裝 app 方式 :</p><ol><li><p><strong>從 App Store 下載</strong></p><p>這是最安全的方式，不用擔心安裝到惡意程式，也是 Apple 推薦的方式，將來 app 有任何更新，App Store 會通知你，使用體驗與 iOS 相同。</p></li><li><p><strong>下載 dmg 格式</strong></p><p>有的 app 並不想透過 App Store 審核機制，而是自行在網站上提供下載 dmg 檔案。dmg 本質是一個光碟映像檔，你只要將 app 拖曳到你自己的 <code>Applications</code> 目錄下就算安裝完成。</p><p>這種方式理論上可能安裝到惡意程式，須自行承擔風險。</p></li><li><p><strong>下載 pkg 格式</strong></p><p>這種格式較少見，提供類似 Windows <code>下一步下一步</code> 的安裝方式，但 Microsoft 非常喜歡使用這種方式，如 <code>.NET Core SDK</code>、<code>Office for Mac</code>、<code>Visual Studio for Mac</code> … 等。</p></li></ol><ol start="4"><li><p><strong>使用 Homebrew 安裝</strong></p><p>有一類工具是由 Linux open source 移植到 macOS 的 CLI app，如 Git、NVM，這類工具就需要如 Ubuntu 的  <code>apt-get</code> 方式安裝，而 Homebrew 就是 macOS 的 <code>apt-get</code>。</p><p>另外 macOS 的 GUI app 也可藉由 <code>brew cask install</code> 安裝。</p></li><li><p><strong>使用 Docker 安裝</strong></p><p>一些原本在 Linux 上的 server，如 Nginx、PostgreSQL、Redis … 等，雖然也可藉由 Homebrew 安裝 macOS 版本，但也可直接安裝 Docker 版。</p></li></ol><h2 id="App-反安裝"><a href="#App-反安裝" class="headerlink" title="App 反安裝"></a>App 反安裝</h2><p>macOS 一共有 5 種反安裝 app 方式 :</p><ol><li><strong>直接刪除</strong></li></ol><p>Apple 建議刪除 app 就如同 iOS 一樣，只要將 icon 刪除即可，因為每個在 <code>Applications</code> 下的 app，事實上是一個子目錄，所有的程式都在該目錄下，因此可以直接刪除。</p><p>但這種刪除方式事實上並不乾淨，因為 app 還是會將一些紀錄檔與暫存檔存在其他目錄，雖然這些檔案不大，留著也不會影響操作，畢竟不是程式，但仍然不是最乾淨的反安裝方式。</p><ol start="2"><li><strong>使用 CleanMyMac X 刪除</strong></li></ol><p>CleanMyMac X 會幫你分析該 app 的紀錄檔與暫存檔所在，除了將 app 目錄刪除外，還會連帶將紀錄檔與暫存檔刪除，這是較為建議的 app 反安裝方式。</p><ol start="3"><li><strong>使用 Uninstall Script</strong></li></ol><p>Pkg 格式雖然安裝很方便，都是 <code>下一步下一步</code>，但反安裝就頭大了，macOS 並沒有對 pkg  提供反安裝，而且 pkg 可能將程式安裝在多個不同目錄下，因此只將 icon 刪除，是絕對無法刪除乾淨。</p><p>Pkg 格式就需要原廠提供反安裝 app、或者 uninstall script，才能徹底移除乾淨，畢竟只有原廠才知道安裝了哪些檔案，以及安裝到哪些目錄下。</p><ol start="4"><li><strong>使用 Homebrew Uninstall</strong></li></ol><p>Homebrew 除了會幫你管理安裝外，還會幫你管理反安裝，只要透過 Homebrew 反安裝，就能刪除的很乾淨。</p><p>有些 pkg 格式也能找到 Homebrew 安裝方式，如 <code>.NET Core SDK</code>，推薦就改用 Homebrew 幫我們管理即可。</p><ol start="5"><li><strong>使用 Docker 移除</strong></li></ol><p>若使用 Docker 安裝的 server，可直接用 Docker 移除，也非常乾淨。</p><h2 id="測試-App"><a href="#測試-App" class="headerlink" title="測試 App"></a>測試 App</h2><p>若有些 app 只是測試用，隨時可能刪除，建議可用 <a href="https://www.parallels.com/products/desktop/" target="_blank" rel="noopener">Parallel Desktop</a> 安裝一個 macOS VM，反正 VM 隨時可以刪除重建，也不會影響到外層真正的 macOS。</p><p>要如何找 macOS 的安裝 image 呢？別忘了我們有個隱藏磁區專門放 macOS 的 image，Parallel Desktop 會自動讀取這個隱藏磁區安裝 macOS VM。</p><blockquote><p>macOS 貼心的地方是每次 OS 更新，都會幫你更新隱藏磁區的 image，因此你每次建立 VM 時，都會是最新版的 macOS</p></blockquote><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>macOS 一般來說使用者體驗都很好，可以讓你專注在自己的工作上，不用花太多心思在 OS 本身，但唯獨安裝與反安裝 app 這塊，因為有太多方式，且各有各的配套方案，因此需要特別提出來給初學者參考</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;macOS 雖然很好用，但在安裝/反安裝 app 的方式與 Windows 不太一樣，這是剛從 Windows 跳到 macOS 時一定會疑惑的地方。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="macOS" scheme="https://fpjs.fun/tags/macOS/"/>
+    
+  </entry>
   
   <entry>
     <title>自行建立 RxJS 的 exhaustMapTo() Operator</title>
@@ -435,26 +455,6 @@
       <category term="CSS" scheme="https://fpjs.fun/tags/CSS/"/>
     
       <category term="CSS Grid" scheme="https://fpjs.fun/tags/CSS-Grid/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用 entries() 讓 for of Loop 也有 Index</title>
-    <link href="https://fpjs.fun/ecmascript/array/entries-index/"/>
-    <id>https://fpjs.fun/ecmascript/array/entries-index/</id>
-    <published>2020-07-14T03:56:32.000Z</published>
-    <updated>2020-07-14T04:04:36.616Z</updated>
-    
-    <content type="html"><![CDATA[<p>ECMAScript 2015 支援 <code>for of</code> Loop 後，幾乎都用 <code>for of</code> 取代 <code>for</code> 了，但可否在 <code>for of</code> 內也能取得 Index 呢 ?</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.5<br>VS Code 1.47.0<br>Quokka 1.0.307<br>ECMAScript 2015</p><h2 id="for"><a href="#for" class="headerlink" title="for"></a>for</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token keyword">let</span> f <span class="token operator">=</span> a <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>  <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>  <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> a<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>    <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">!==</span> a<span class="token punctuation">.</span>length <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>      result<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>  <span class="token keyword">return</span> result<span class="token punctuation">}</span><span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><code>f()</code> 要取得不包含最後一筆的 Array，因此必須取得 index 判斷是否為 <code>arr.length -1</code>，傳統使用 <code>for</code> loop 實現。</p><p><img src="/images/ecmascript/array/entries-index/entries000.png" alt="entries000"></p><h2 id="for-of"><a href="#for-of" class="headerlink" title="for of"></a>for of</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token keyword">let</span> f <span class="token operator">=</span> a <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>  <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>  <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> <span class="token punctuation">[</span>i<span class="token punctuation">,</span> x<span class="token punctuation">]</span> <span class="token keyword">of</span> a<span class="token punctuation">.</span><span class="token function">entries</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>    <span class="token keyword">if</span> <span class="token punctuation">(</span>i <span class="token operator">!==</span> a<span class="token punctuation">.</span>length <span class="token operator">-</span><span class="token number">1</span><span class="token punctuation">)</span>      result<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>a<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span>  <span class="token keyword">return</span> result<span class="token punctuation">}</span><span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>若要改用 <code>for of</code>，最大的挑戰是 index 怎麼取得 ?</p><p>可使用 ES6 的 <code>Array.prototype.entries()</code> 取得 index，由於 <code>entries()</code> 回傳為 array，可使用 array destructuring 直接解構出 index。</p><p><img src="/images/ecmascript/array/entries-index/entries001.png" alt="entries001"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>搭配 <code>entries()</code> 之後，就不用擔心 <code>for of</code> loop 取不到 index 了</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;ECMAScript 2015 支援 &lt;code&gt;for of&lt;/code&gt; Loop 後，幾乎都用 &lt;code&gt;for of&lt;/code&gt; 取代 &lt;code&gt;for&lt;/code&gt; 了，但可否在 &lt;code&gt;for of&lt;/code&gt; 內也能取得 Index 呢 ?&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="ECMAScript" scheme="https://fpjs.fun/tags/ECMAScript/"/>
     
   </entry>
   
