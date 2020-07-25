@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2020-07-25T06:14:02.155Z</updated>
+  <updated>2020-07-25T09:19:13.282Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,46 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用 zipObj() 將兩個 Array 合併成 Object</title>
+    <link href="https://fpjs.fun/ramda/array/zipobj/"/>
+    <id>https://fpjs.fun/ramda/array/zipobj/</id>
+    <published>2020-07-25T09:17:36.000Z</published>
+    <updated>2020-07-25T09:19:13.282Z</updated>
+    
+    <content type="html"><![CDATA[<p>若 Key 與 Value 都放在不同 Array，最後想合併成單一 Object，就要使用 Ramda 的 <code>zipObj()</code>。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>VS Code 1.47.2<br>Quokka 1.0.309<br>Ramda 0.27.0</p><h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> girls <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'Mary'</span><span class="token punctuation">,</span> <span class="token string">'Jessie'</span><span class="token punctuation">]</span><span class="token keyword">let</span> cars <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'BMW'</span><span class="token punctuation">,</span> <span class="token string">'TOYOTA'</span><span class="token punctuation">,</span> <span class="token string">'Benz'</span><span class="token punctuation">]</span><span class="token keyword">let</span> zipObj <span class="token operator">=</span> k <span class="token operator">=</span><span class="token operator">></span> v <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>  <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>  <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> k<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>    result<span class="token punctuation">[</span>k<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> v<span class="token punctuation">[</span>i<span class="token punctuation">]</span>  <span class="token keyword">return</span> result<span class="token punctuation">}</span><span class="token function">zipObj</span><span class="token punctuation">(</span>girls<span class="token punctuation">)</span><span class="token punctuation">(</span>cars<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Imperative 會以 <code>k</code> array 做 <code>for</code> loop，動態將建立 <code>result</code> Object 的 property。</p><p><img src="/images/ramda/array/zipobj/zipobj002.png" alt="zipobj002"></p><h2 id="reduce"><a href="#reduce" class="headerlink" title="reduce()"></a>reduce()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> girls <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'Mary'</span><span class="token punctuation">,</span> <span class="token string">'Jessie'</span><span class="token punctuation">]</span><span class="token keyword">let</span> cars <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'BMW'</span><span class="token punctuation">,</span> <span class="token string">'TOYOTA'</span><span class="token punctuation">,</span> <span class="token string">'Benz'</span><span class="token punctuation">]</span><span class="token keyword">let</span> zipObj <span class="token operator">=</span> k <span class="token operator">=</span><span class="token operator">></span> v <span class="token operator">=</span><span class="token operator">></span> k<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span>a<span class="token punctuation">,</span> <span class="token operator">...</span><span class="token punctuation">{</span><span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">:</span> v<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token function">zipObj</span><span class="token punctuation">(</span>girls<span class="token punctuation">)</span><span class="token punctuation">(</span>cars<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>結果為單一 Object，故適合使用 <code>reduce()</code> 建立 Object，唯初始值為 <code>{}</code>。</p><p><img src="/images/ramda/array/zipobj/zipobj003.png" alt="zipobj003"></p><h2 id="Functional"><a href="#Functional" class="headerlink" title="Functional"></a>Functional</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> zip<span class="token punctuation">,</span> fromPairs<span class="token punctuation">,</span> compose<span class="token punctuation">,</span> curry <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token keyword">let</span> girls <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'Mary'</span><span class="token punctuation">,</span> <span class="token string">'Jessie'</span><span class="token punctuation">]</span><span class="token keyword">let</span> cars <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'BMW'</span><span class="token punctuation">,</span> <span class="token string">'TOYOTA'</span><span class="token punctuation">,</span> <span class="token string">'Benz'</span><span class="token punctuation">]</span><span class="token keyword">let</span> zipObj <span class="token operator">=</span> <span class="token function">curry</span><span class="token punctuation">(</span><span class="token function">compose</span><span class="token punctuation">(</span>  fromPairs<span class="token punctuation">,</span>  zip<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token function">zipObj</span><span class="token punctuation">(</span>girls<span class="token punctuation">)</span><span class="token punctuation">(</span>cars<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Functional  會將 <code>zip()</code> 與 <code>fromParis()</code> 組合成 <code>zipObj()</code>。</p><p><img src="/images/ramda/array/zipobj/zipobj000.png" alt="zipobj000"></p><h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> zipObj <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token keyword">let</span> girls <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'Mary'</span><span class="token punctuation">,</span> <span class="token string">'Jessie'</span><span class="token punctuation">]</span><span class="token keyword">let</span> boys <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'BMW'</span><span class="token punctuation">,</span> <span class="token string">'TOYOTA'</span><span class="token punctuation">,</span> <span class="token string">'Benz'</span><span class="token punctuation">]</span><span class="token function">zipObj</span><span class="token punctuation">(</span>girls<span class="token punctuation">)</span><span class="token punctuation">(</span>boys<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Ramda 已經提供 <code>zipObj()</code>，可直接使用。</p><blockquote><p><strong>zipObj()</strong><br><code>[String] → [*] → {String: *}</code><br>將兩個 Array 配對合併成單一 Object</p></blockquote><p><code>[String]</code>：提供 key 的 Array</p><p><code>[*]</code>：提供 value 的 Array</p><p><code>{String: *}</code>：配對合併成單一 Object</p><p><img src="/images/ramda/array/zipobj/zipobj001.png" alt="zipobj001"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>實務上常會遇到 key 與 value 來自不同 Array，最後要合併成單一 Object，此時 <code>zipObj()</code> 就非常好用</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#zipObj" target="_blank" rel="noopener">zipObj()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#zip" target="_blank" rel="noopener">zip()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#fromPairs" target="_blank" rel="noopener">fromPairs()</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;若 Key 與 Value 都放在不同 Array，最後想合併成單一 Object，就要使用 Ramda 的 &lt;code&gt;zipObj()&lt;/code&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Ramda" scheme="https://fpjs.fun/tags/Ramda/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>如何計算 N 次方 ?</title>
+    <link href="https://fpjs.fun/ecmascript/number/power/"/>
+    <id>https://fpjs.fun/ecmascript/number/power/</id>
+    <published>2020-07-25T06:23:30.000Z</published>
+    <updated>2020-07-25T06:28:32.278Z</updated>
+    
+    <content type="html"><![CDATA[<p>計算 N 次方，直覺都會想到使用 <code>Math.pow()</code>，事實上還有其他 2 種方式。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>VS Code 1.47.2<br>Quokka 1.0.311<br>ECMAScript 2016</p><h2 id="Math-pow"><a href="#Math-pow" class="headerlink" title="Math.pow()"></a>Math.pow()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript">Math<span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><code>2</code> 的 <code>3</code> 次方，最標準的方式就是使用 <code>Math.pow()</code>。</p><p><img src="/images/ecmascript/number/power/power000.png" alt="power000"></p><h2 id="lt-lt-Operator"><a href="#lt-lt-Operator" class="headerlink" title="&lt;&lt; Operator"></a>&lt;&lt; Operator</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token number">2</span> <span class="token operator">&lt;</span><span class="token operator">&lt;</span> <span class="token number">2</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>也可以使用 <code>&lt;&lt;</code> shift operator，也就是 <code>2 &lt;&lt; (n-1)</code>，但這種 2 進位方式，只能用在 2 的 n 次方。</p><p><img src="/images/ecmascript/number/power/power001.png" alt="power001"></p><h2 id="Operator"><a href="#Operator" class="headerlink" title="** Operator"></a>** Operator</h2><pre class="line-numbers highlight language-JavaScript"><code class="language-JavaScript">2 ** 3 // ?<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>ES2016 新增了 <code>**</code> 計算次方，可讀性佳，也不侷限於只能計算 2 的 n 次方。</p><p><img src="/images/ecmascript/number/power/power002.png" alt="power002"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>ES2016 的 <code>**</code> 語意更佳，實務上建議使用</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://twitter.com/rauschma" target="_blank" rel="noopener">Dr.Axel Rauschmayer</a>, <a href="http://shop.oreilly.com/product/0636920029564.do" target="_blank" rel="noopener">Speaking JavaScript</a><br><a href="https://medium.com/@bretcameron/12-javascript-tricks-you-wont-find-in-most-tutorials-a9c9331f169d" target="_blank" rel="noopener">Bret Cameron</a>, <a href="https://medium.com/@bretcameron/12-javascript-tricks-you-wont-find-in-most-tutorials-a9c9331f169d" target="_blank" rel="noopener">12 JavaScript Tricks You Won’t Find in Most Tutorials</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;計算 N 次方，直覺都會想到使用 &lt;code&gt;Math.pow()&lt;/code&gt;，事實上還有其他 2 種方式。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="ECMAScript" scheme="https://fpjs.fun/tags/ECMAScript/"/>
+    
+  </entry>
   
   <entry>
     <title>手動從 Float 轉成 Integer</title>
@@ -380,46 +420,6 @@
     <summary type="html">
     
       &lt;p&gt;Clean Shot X 為 Setapp 所提供的輔助 Drag &amp;amp; Drop 工具，可讓 macOS 的 Drap &amp;amp; Drop 更為直覺好用。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="macOS" scheme="https://fpjs.fun/tags/macOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ImageOptim 安裝與設定</title>
-    <link href="https://fpjs.fun/macos/app/image-optim/"/>
-    <id>https://fpjs.fun/macos/app/image-optim/</id>
-    <published>2020-07-19T17:14:56.000Z</published>
-    <updated>2020-07-19T17:16:47.184Z</updated>
-    
-    <content type="html"><![CDATA[<p>ImageOptim 為 App Store 的工具，可快速將 PNG / JPG 加以無失真壓縮。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.5<br>ImageOptim 1.3.0</p><h2 id="Preferences"><a href="#Preferences" class="headerlink" title="Preferences"></a>Preferences</h2><p><img src="/images/macos/app/image-optim/optim000.png" alt="optim000"></p><p><strong><em>Preferences -&gt; General</em></strong></p><ul><li><strong>Replace Origin</strong>：<code>true</code> 直接將原圖取代</li><li><strong>Compression options</strong>：<code>Offline</code> 以內建工具壓縮，不需要網路</li></ul><h2 id="Notifications"><a href="#Notifications" class="headerlink" title="Notifications"></a>Notifications</h2><p><img src="/images/macos/app/image-optim/optim001.png" alt="optim001"></p><p>ImageOptim 預設壓縮完圖片會使用 Notification 發出聲音，建議關閉 Notification。</p><h2 id="Hide-Icon"><a href="#Hide-Icon" class="headerlink" title="Hide Icon"></a>Hide Icon</h2><p><img src="/images/macos/app/image-optim/optim002.png" alt="optim002"></p><p>ImageOptim 本身並沒有提供設定隱藏 menu 上的 icon，只能自行使用 Bartender 隱藏。</p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>ImageOptim 本身是很好用工具，唯額外設定不足，必須自行靠 Notification 與 Bartender 補強</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;ImageOptim 為 App Store 的工具，可快速將 PNG / JPG 加以無失真壓縮。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="macOS" scheme="https://fpjs.fun/tags/macOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Clean Shot X 安裝與設定</title>
-    <link href="https://fpjs.fun/macos/app/clean-shot-x/"/>
-    <id>https://fpjs.fun/macos/app/clean-shot-x/</id>
-    <published>2020-07-19T17:03:24.000Z</published>
-    <updated>2020-07-19T17:10:42.498Z</updated>
-    
-    <content type="html"><![CDATA[<p>Clean Shot X 為 Setapp 所提供的 Capture Screen 工具，可用來取代 macOS 內建的 Screenshots。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.5<br>Clean Shot X 3.3</p><h2 id="General"><a href="#General" class="headerlink" title="General"></a>General</h2><p><img src="/images/macos/app/clean-shot-x/clean-shot000.png" alt="clean-shot000"></p><ul><li><strong>Startup: Start at login</strong>：<code>true</code></li><li><strong>Sounds: Play sounds</strong>：<code>false</code></li><li><strong>Menu bar: Show icon</strong>：<code>false</code></li><li><strong>After capture：Show Quick Access Overlay</strong>：Only when recording</li><li><strong>After capture：Open Annotate tool</strong>：<code>true</code></li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Clean Shot X 為 Setapp 所提供的 Capture Screen 工具，可用來取代 macOS 內建的 Screenshots。&lt;/p&gt;
     
     </summary>
     
