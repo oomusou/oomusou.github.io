@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2020-07-25T09:19:13.282Z</updated>
+  <updated>2020-07-25T11:50:45.325Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何將 String 轉成 API 所需 Object ?</title>
+    <link href="https://fpjs.fun/ramda/cookbook/string-to-object/"/>
+    <id>https://fpjs.fun/ramda/cookbook/string-to-object/</id>
+    <published>2020-07-25T11:41:57.000Z</published>
+    <updated>2020-07-25T11:50:45.325Z</updated>
+    
+    <content type="html"><![CDATA[<p>實務上很多資訊都來自於 String，但 API 要求的 Body 卻是 Object，所以由 String 成 Object 需求常常遇到，這該如何使用 Ramda 實現呢 ?</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>VS Code 1.47.2<br>Quokka 1.0.309<br>Ramda 0.27.0</p><h2 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token string">'831669-Jacky-07-14.jpg'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>String 包含 <code>id</code>、<code>name</code> 與 <code>birthday</code> 三項資訊。</p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"831619"</span><span class="token punctuation">,</span>  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Jacky"</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>但 API 僅需 Object 有 <code>id</code> 與 <code>name</code>。</p><h2 id="zipObj"><a href="#zipObj" class="headerlink" title="zipObj()"></a>zipObj()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> split<span class="token punctuation">,</span> take<span class="token punctuation">,</span> zipObj <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token keyword">let</span> filename <span class="token operator">=</span> <span class="token string">'831669-Jacky-07-14.jpg'</span><span class="token function">pipe</span><span class="token punctuation">(</span>  <span class="token function">split</span><span class="token punctuation">(</span><span class="token string">'-'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">take</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  <span class="token function">zipObj</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token string">'name'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">(</span>filename<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li><strong>split()</strong>：將 String 依 <code>-</code> 拆分成 Array</li><li><strong>take()</strong>：由於 Object 只需 <code>id</code> 與 <code>name</code>，因此只需取前兩筆即可</li><li><strong>zipObj()</strong>：將兩 Array 合併成 Object，第一個 argument 為 key Array</li></ul><p><img src="/images/ramda/cookbook/string-to-object/zipobj000.png" alt="zipobj000"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>由 String 組合成 Object 看似很難，但只要能先組成 Array，可用的 function 就很多，最後再透過 <code>zipObj()</code> 將兩 Array 組合成 Object</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#pipe" target="_blank" rel="noopener">pipe()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#split" target="_blank" rel="noopener">split()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#take" target="_blank" rel="noopener">take()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#zipObj" target="_blank" rel="noopener">zipObj()</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;實務上很多資訊都來自於 String，但 API 要求的 Body 卻是 Object，所以由 String 成 Object 需求常常遇到，這該如何使用 Ramda 實現呢 ?&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Ramda" scheme="https://fpjs.fun/tags/Ramda/"/>
+    
+  </entry>
   
   <entry>
     <title>使用 zipObj() 將兩個 Array 合併成 Object</title>
@@ -400,26 +420,6 @@
     <summary type="html">
     
       &lt;p&gt;macOS 內建設定大都已經很好用，只需少數客製化設定，特別將自己慣用設定記錄下來，適合初學者參考。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="macOS" scheme="https://fpjs.fun/tags/macOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Yoink 安裝與設定</title>
-    <link href="https://fpjs.fun/macos/app/yoink/"/>
-    <id>https://fpjs.fun/macos/app/yoink/</id>
-    <published>2020-07-19T17:20:16.000Z</published>
-    <updated>2020-07-19T17:21:43.833Z</updated>
-    
-    <content type="html"><![CDATA[<p>Clean Shot X 為 Setapp 所提供的輔助 Drag &amp; Drop 工具，可讓 macOS 的 Drap &amp; Drop 更為直覺好用。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.5<br>Yoink 3.5.98</p><h2 id="Preferences"><a href="#Preferences" class="headerlink" title="Preferences"></a>Preferences</h2><p><img src="/images/macos/app/yoink/yoink000.png" alt="yoink000"></p><p><strong><em>Preferences -&gt; General</em></strong></p><ul><li><strong>Launch Yoink at Login</strong>：<code>true</code> </li><li><strong>Show menu bar icon</strong>：<code>false</code></li></ul><h2 id="Biggest-Size"><a href="#Biggest-Size" class="headerlink" title="Biggest Size"></a>Biggest Size</h2><p><img src="/images/macos/app/yoink/yoink001.png" alt="yoink001"></p><p><strong><em>Window Size -&gt; Biggest</em></strong>：<code>true</code></p><p>讓 Yoink 在左側 window 最大方便操作。</p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Yoink 預設值已經很好用，只要稍加微調即可</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Clean Shot X 為 Setapp 所提供的輔助 Drag &amp;amp; Drop 工具，可讓 macOS 的 Drap &amp;amp; Drop 更為直覺好用。&lt;/p&gt;
     
     </summary>
     
