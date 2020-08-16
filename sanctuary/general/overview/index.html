@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-08-16T08:20:18.000Z",
-    "dateModified": "2020-08-16T08:22:38.815Z",
+    "dateModified": "2020-08-16T13:17:07.934Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -442,7 +442,7 @@ a:hover {
 						<p>Sanctuary 為著名的 Functional Library，其比 Ramda 嚴格，也能在 Runtime 檢查型別，且完整支援 Fantasy Land 的 Algebraic Data Type，寫起來更有 Haskell 感覺。</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>Sanctuary 3.1.0<br>Ramda 0.27.0</p>
-<h2 id="Maybe"><a href="#Maybe" class="headerlink" title="Maybe"></a>Maybe</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> propEq <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Maybe-Monad"><a href="#Maybe-Monad" class="headerlink" title="Maybe Monad"></a>Maybe Monad</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> propEq <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> <span class="token punctuation">{</span> find<span class="token punctuation">,</span> prop <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
@@ -481,13 +481,13 @@ a:hover {
   find
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Ramda 與 ECMAScript 的 <code>find()</code> 都可能回傳 <code>undefined</code>，但 Sanctuary 的 <code>find()</code> 則回傳 Maybe。</p>
+<p>Ramda 與 ECMAScript 的 <code>find()</code> 都可能回傳 <code>undefined</code>，但 Sanctuary 的 <code>find()</code> 則回傳 Maybe Monad。</p>
 <blockquote>
-<p><strong>find()</strong><br><code>Foldable f =&gt; (a -&gt; Boolean) -&gt; f a -&gt; Maybe a</code><br>回傳第一個符合 predicate 的 element，但包在 Maybe 內</p>
+<p><strong>find()</strong><br><code>Foldable f =&gt; (a -&gt; Boolean) -&gt; f a -&gt; Maybe a</code><br>回傳第一個符合 predicate 的 element，但包在 Maybe Monad 內</p>
 </blockquote>
 <p><code>a -&gt; Boolean</code>：判斷條件的 predicate</p>
 <p><code>f a</code>：data 為 Foldable</p>
-<p><code>Maybe a</code>：將結果包進 Maybe 內回傳</p>
+<p><code>Maybe a</code>：將結果包進 Maybe Monad 內回傳</p>
 <p><img src="/images/sanctuary/general/overview/overview002.png" alt="overview002"></p>
 <h2 id="fromMaybe"><a href="#fromMaybe" class="headerlink" title="fromMaybe()"></a>fromMaybe()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> propEq<span class="token punctuation">,</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
@@ -521,16 +521,16 @@ a:hover {
   <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若只想取得 <code>price</code> property，以 <code>map(prop)</code> 繼續改變 Maybe 內部值，最後使用 <code>fromMaybe()</code> 取得 Maybe 內部值。</p>
+<p>若只想取得 <code>price</code> property，以 <code>map(prop)</code> 繼續改變 Maybe Monad 內部值，最後使用 <code>fromMaybe()</code> 取得 Maybe Monad 內部值。</p>
 <blockquote>
-<p><strong>fromMaybe()</strong><br><code>a -&gt; Maybe a -&gt; a</code><br>從 Maybe 取出內部值</p>
+<p><strong>fromMaybe()</strong><br><code>a -&gt; Maybe a -&gt; a</code><br>從 Maybe Monad 取出內部值</p>
 </blockquote>
-<p><code>a</code>：若 Maybe 內為 Nothing 的預設值</p>
-<p><code>Maybe a</code>：data 為 Maybe</p>
-<p><code>a</code>：回傳 Maybe 內的值</p>
+<p><code>a</code>：若 Maybe Monad 內為 Nothing 的預設值</p>
+<p><code>Maybe a</code>：data 為 Maybe Monad</p>
+<p><code>a</code>：回傳 Maybe Monad 內的值</p>
 <p><img src="/images/sanctuary/general/overview/overview000.png" alt="overview000"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>理論上 Ramda 的 function 若可能回傳 <code>undefined</code>，則建議改用 Sanctuary 的 function 改回傳 Maybe</li>
+<li>理論上 Ramda 的 function 若可能回傳 <code>undefined</code>，則建議改用 Sanctuary 的 function 改回傳 Maybe Monad</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://sanctuary.js.org" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://sanctuary.js.org/#find" target="_blank" rel="noopener">find()</a><br><a href="https://sanctuary.js.org" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://sanctuary.js.org/#fromMaybe" target="_blank" rel="noopener">fromMaybe()</a></p>
 
@@ -554,16 +554,16 @@ a:hover {
 		<li class="page-item page-prev">
 			<a href="/adt/maybe/find/">
 				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">自行實作回傳 Maybe 的 find()</div>
+				<div class="page-item-subtitle">自行實作回傳 Maybe Monad 的 find()</div>
 			</a>
 		</li>
 		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/sanctuary/ramda/maybe/">
+			<a href="/sanctuary/feature/maybe/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">Sanctuary 與 Ramda 比較：Maybe</div>
+				<div class="page-item-subtitle">Sanctuary 之 Maybe Monad</div>
 			</a>
 		</li>
 		
