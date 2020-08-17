@@ -51,7 +51,7 @@
 
 <meta name="format-detection" content="telephone=no">
 <!-- Description -->
-<meta name="description" content="若想在 Array.prototype.map() 的 Callback 得知目前 Element 的 Index，其 Callback 的第二個參數就是 Index，但 Ramda 的 map() 並沒有提供此功能，該如何解決呢 ?">
+<meta name="description" content="若想在 Array.prototype.map() 的 Callback 得知目前 Element 的 Index，其 Callback 的第二個參數就是 Index，但 Ramda 的 map() 並沒有提供此功能，可使用 addIndex() 加上 Index。">
 <!-- Keywords -->
 <meta name="keywords" content=", Ramda">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
@@ -170,12 +170,12 @@ a:hover {
 
 <meta property="og:url" content="https://fpjs.fun/ramda/function/addindex/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
-<meta property="og:description" content="若想在 Array.prototype.map() 的 Callback 得知目前 Element 的 Index，其 Callback 的第二個參數就是 Index，但 Ramda 的 map() 並沒有提供此功能，該如何解決呢 ?">
+<meta property="og:description" content="若想在 Array.prototype.map() 的 Callback 得知目前 Element 的 Index，其 Callback 的第二個參數就是 Index，但 Ramda 的 map() 並沒有提供此功能，可使用 addIndex() 加上 Index。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-07-07T07:21:36.000Z">
-<meta property="article:modified_time" content="2019-07-07T07:21:36.000Z">
+<meta property="article:published_time" content="2020-08-17T08:01:56.000Z">
+<meta property="article:modified_time" content="2020-08-17T08:01:56.000Z">
 <meta property="article:author" content="Sam Xiao">
 <meta property="og:article:tag" content=", Ramda">
 
@@ -209,8 +209,8 @@ a:hover {
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2019-07-07T07:21:36.000Z",
-    "dateModified": "2020-07-19T15:37:04.988Z",
+    "datePublished": "2020-08-17T08:01:56.000Z",
+    "dateModified": "2020-08-17T08:03:31.143Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -236,7 +236,7 @@ a:hover {
     },
     
     "keywords": ", Ramda",
-    "description": "若想在 Array.prototype.map() 的 Callback 得知目前 Element 的 Index，其 Callback 的第二個參數就是 Index，但 Ramda 的 map() 並沒有提供此功能，該如何解決呢 ?"
+    "description": "若想在 Array.prototype.map() 的 Callback 得知目前 Element 的 Index，其 Callback 的第二個參數就是 Index，但 Ramda 的 map() 並沒有提供此功能，可使用 addIndex() 加上 Index。"
 }
 </script>
 
@@ -434,84 +434,53 @@ a:hover {
 <div class="post-header-info">
 	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
 		alt="Sam Xiao's Avatar">
-	<span>2019-07-07</span>
+	<span>2020-08-17</span>
 </div>
 				</div>
 				<div class="card-body">
 					<article id="post-content">
-						<p>若想在 <code>Array.prototype.map()</code> 的 Callback 得知目前 Element 的 Index，其 Callback 的第二個參數就是 Index，但 Ramda 的 <code>map()</code> 並沒有提供此功能，該如何解決呢 ?</p>
+						<p>若想在 <code>Array.prototype.map()</code> 的 Callback 得知目前 Element 的 Index，其 Callback 的第二個參數就是 Index，但 Ramda 的 <code>map()</code> 並沒有提供此功能，可使用 <code>addIndex()</code> 加上 Index。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.14.5<br>VS Code 1.33.1<br>Quokka 1.0.209<br>Ramda 0.26.1</p>
-<h2 id="Array-prototype-map"><a href="#Array-prototype-map" class="headerlink" title="Array.prototype.map()"></a>Array.prototype.map()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.14.6<br>Ramda 0.27.0</p>
+<h2 id="map"><a href="#map" class="headerlink" title="map()"></a>map()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">]</span>
 
-<span class="token comment" spellcheck="true">// mapIndex :: [a] -> [b]</span>
-<span class="token keyword">let</span> mapIndex <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>i<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">.</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>title<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> a <span class="token operator">=</span><span class="token operator">></span> a<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>i<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>title<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
 
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">mapIndex</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 7 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// mapIndex :: [a] -> [b]</span>
-<span class="token keyword">let</span> mapIndex <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>i<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">.</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>title<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> a <span class="token operator">=</span><span class="token operator">></span> a<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>i<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>title<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>第二個參數 <code>i</code> 就是 index，可直接使用。</p>
 <p><img src="/images/ramda/function/addindex/index000.png" alt="index000"></p>
-<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> addIndex <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
+<h2 id="addIndex"><a href="#addIndex" class="headerlink" title="addIndex()"></a>addIndex()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> addIndex <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">]</span>
 
-<span class="token comment" spellcheck="true">// mapIndex :: (a -> b) -> [a] -> [b]</span>
-<span class="token keyword">let</span> mapIndex <span class="token operator">=</span> <span class="token function">addIndex</span><span class="token punctuation">(</span>map<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> mapi <span class="token operator">=</span> <span class="token function">addIndex</span><span class="token punctuation">(</span>map<span class="token punctuation">)</span>
 
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">mapIndex</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>i<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">.</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>title<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">mapi</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>i<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>title<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 9 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// mapIndex :: (a -> b) -> [a] -> [b]</span>
-<span class="token keyword">let</span> mapIndex <span class="token operator">=</span> <span class="token function">addIndex</span><span class="token punctuation">(</span>map<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> mapi <span class="token operator">=</span> <span class="token function">addIndex</span><span class="token punctuation">(</span>map<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><code>map()</code> 必須經過 <code>addIndex()</code> 包裝後，其 callback 才有 index 可用。</p>
 <blockquote>
 <p><strong>addIndex()</strong><br><code>((a … → b) … → [a] → *) → ((a …, Int, [a] → b) … → [a] → *)</code><br>將 callback 加上 index</p>
 </blockquote>
 <p><img src="/images/ramda/function/addindex/index001.png" alt="index001"></p>
-<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> addIndex<span class="token punctuation">,</span> useWith<span class="token punctuation">,</span> concat<span class="token punctuation">,</span> identity<span class="token punctuation">,</span> compose<span class="token punctuation">,</span> flip<span class="token punctuation">,</span> prop <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">// mapIndex :: (a -> b) -> [a] -> [b]</span>
-<span class="token keyword">let</span> mapIndex <span class="token operator">=</span> <span class="token function">addIndex</span><span class="token punctuation">(</span>map<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">// getTitle :: Object -> String</span>
-<span class="token keyword">let</span> getTitle <span class="token operator">=</span> <span class="token function">compose</span><span class="token punctuation">(</span><span class="token function">concat</span><span class="token punctuation">(</span><span class="token string">'.'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">// getIndex :: Object -> String</span>
-<span class="token keyword">let</span> getIndex <span class="token operator">=</span> <span class="token function">compose</span><span class="token punctuation">(</span>String<span class="token punctuation">,</span> identity<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> cb <span class="token operator">=</span> <span class="token function">useWith</span><span class="token punctuation">(</span>
-  <span class="token function">flip</span><span class="token punctuation">(</span>concat<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>getTitle<span class="token punctuation">,</span> getIndex<span class="token punctuation">]</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">mapIndex</span><span class="token punctuation">(</span>cb<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>也可以將 callback 進一步 point-free。</p>
-<blockquote>
-<p>這個 point-free 在 production code 就不建議使用，因為太複雜了，可讀性不高，僅適合拿來練習 point-free</p>
-</blockquote>
-<p><img src="/images/ramda/function/addindex/index002.png" alt="index002"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>其他沒有 index 的 callback，也可使用 <code>addIndex()</code> 加上 index</li>
-<li>有些 point-free 會使 callback 更為複雜，已失去其本意，在 production code 不建議使用，只適合拿來練功</li>
+<li><code>addIndex()</code> 除了可用在 <code>map()</code> 外，也可用在 <code>forEach()</code></li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#map" target="_blank" rel="noopener">map()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#addIndex" target="_blank" rel="noopener">addIndex()</a></p>
 
@@ -532,19 +501,12 @@ console<span class="token punctuation">.</span><span class="token function">dir<
 	<ul class="pagination">
 		<!-- Prev Nav -->
 		
-		<li class="page-item page-prev">
-			<a href="/ramda/function/call/">
-				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 call() 動態產生 Converging Function</div>
-			</a>
-		</li>
-		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/ramda/array/anypass/">
+			<a href="/sanctuary/maybe/maybe_/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 anyPass() 產生符合部分條件的 Predicate</div>
+				<div class="page-item-subtitle">使用 maybe_() 支援 Nothing 提供 Thunk</div>
 			</a>
 		</li>
 		
