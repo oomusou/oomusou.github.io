@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-08-15T16:37:20.000Z",
-    "dateModified": "2020-08-16T13:04:16.219Z",
+    "dateModified": "2020-08-17T01:10:21.480Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -490,7 +490,44 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若改用 Sanctuary 的 <code>head()</code> 則不用擔心 empty array，因為 <code>head()</code> 會回傳 Maybe Monad，遇到 empty array 則回傳 Nothing，因此不會執行 <code>map()</code> 內的 <code>toUpper()</code>，所以不會有 runtime error。</p>
 <p><img src="/images/sanctuary/feature/maybe/maybe002.png" alt="maybe002"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> toUpper<span class="token punctuation">,</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="maybe"><a href="#maybe" class="headerlink" title="maybe()"></a>maybe()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> toUpper<span class="token punctuation">,</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+
+<span class="token keyword">let</span> <span class="token punctuation">{</span> head<span class="token punctuation">,</span> maybe<span class="token punctuation">,</span> I <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> data0 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'foo'</span><span class="token punctuation">,</span> <span class="token string">'bar'</span><span class="token punctuation">,</span> <span class="token string">'baz'</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> data1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  head<span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span>toUpper<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> display <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  f<span class="token punctuation">,</span>
+  <span class="token function">maybe</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">(</span>I<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token function">display</span><span class="token punctuation">(</span>data0<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">display</span><span class="token punctuation">(</span>data1<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Maybe Monad 畢竟無法用於顯示，因此必須將結果從 Maybe Monad 內取出。</p>
+<p>14 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> display <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  f<span class="token punctuation">,</span>
+  <span class="token function">maybe</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">(</span>I<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用 <code>maybe()</code> 從 Maybe Monad 中取出內部值。</p>
+<blockquote>
+<p><strong>maybe()</strong><br><code>b -&gt; (a -&gt; b) -&gt; Maybe a -&gt; b</code><br>從 Maybe Monad 內部值取出</p>
+</blockquote>
+<p><code>b</code>：提供 Nothing 的預設值</p>
+<p><code>a -&gt; b</code>：處理 Just 的 function</p>
+<p><code>Maybe a</code>：data 為 Maybe Monad</p>
+<p><code>b</code>：回傳 Maybe Monad 內部值</p>
+<p><img src="/images/sanctuary/feature/maybe/maybe006.png" alt="maybe006"></p>
+<h2 id="fromMaybe"><a href="#fromMaybe" class="headerlink" title="fromMaybe()"></a>fromMaybe()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> toUpper<span class="token punctuation">,</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> <span class="token punctuation">{</span> head<span class="token punctuation">,</span> fromMaybe <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
@@ -503,18 +540,29 @@ a:hover {
   <span class="token function">map</span><span class="token punctuation">(</span>toUpper<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> show <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+<span class="token keyword">let</span> display <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   f<span class="token punctuation">,</span>
   <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
-<span class="token function">show</span><span class="token punctuation">(</span>data0<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">show</span><span class="token punctuation">(</span>data1<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">display</span><span class="token punctuation">(</span>data0<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">display</span><span class="token punctuation">(</span>data1<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>但 <code>f()</code> 畢竟回傳的是 Just 與 Nothing，無法用於最終顯示。</p>
-<p>可在最後要顯示時使用 <code>fromMaybe(&#39;&#39;)</code> 提供 Nothing 的預設值顯示。</p>
+<p>14 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> display <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  f<span class="token punctuation">,</span>
+  <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>若需求只是要處理 Nothing 如何顯示，可簡單使用 <code>fromMaybe()</code>。</p>
+<blockquote>
+<p><strong>fromMaybe()</strong><br><code>a -&gt; Maybe a -&gt; a</code><br>從 Maybe Monad 內部值取出</p>
+</blockquote>
+<p><code>a</code>：提供 Nothing 的預設值</p>
+<p><code>Maybe a</code>：data 為 Maybe Monad</p>
+<p><code>a</code>：回傳 Maybe Monad 內部值</p>
 <p><img src="/images/sanctuary/feature/maybe/maybe003.png" alt="maybe003"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> toUpper<span class="token punctuation">,</span> pipe<span class="token punctuation">,</span> concat<span class="token punctuation">,</span> append<span class="token punctuation">,</span> flip <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Maybe-Chain"><a href="#Maybe-Chain" class="headerlink" title="Maybe Chain"></a>Maybe Chain</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> toUpper<span class="token punctuation">,</span> pipe<span class="token punctuation">,</span> concat<span class="token punctuation">,</span> append<span class="token punctuation">,</span> flip <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> <span class="token punctuation">{</span> head<span class="token punctuation">,</span> maybe<span class="token punctuation">,</span> fromMaybe <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>

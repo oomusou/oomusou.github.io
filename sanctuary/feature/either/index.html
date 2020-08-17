@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-08-16T13:09:43.000Z",
-    "dateModified": "2020-08-16T13:12:12.557Z",
+    "dateModified": "2020-08-17T01:13:20.040Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -542,7 +542,7 @@ a:hover {
 <span class="token function">display</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span class="token function">display</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Either Monad 畢竟用於顯示，因此必須將結果從 Either Monad 內取出。</p>
+<p>Either Monad 畢竟無法用於顯示，因此必須將結果從 Either Monad 內取出。</p>
 <p>16 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> display <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">f</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span>
@@ -551,12 +551,12 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用 <code>either()</code> 從 Either Monad 中取出內部值。</p>
 <blockquote>
-<p><strong>either()</strong><br><code>(a -&gt; c) -&gt; (b -&gt; c) -&gt; Either a b -&gt; c</code><br>將 Either 內部值取出</p>
+<p><strong>either()</strong><br><code>(a -&gt; c) -&gt; (b -&gt; c) -&gt; Either a b -&gt; c</code><br>從 Either Monad 內部值取出值</p>
 </blockquote>
 <p><code>a -&gt; c</code>：處理 Left 的 function</p>
 <p><code>b -&gt; c</code>：處理 Right 的 function</p>
-<p><code>Either a b</code>：data 為 Either</p>
-<p><code>c</code>：回傳 Either 內部值</p>
+<p><code>Either a b</code>：data 為 Either Monad</p>
+<p><code>c</code>：回傳 Either Monad 內部值</p>
 <p><img src="/images/sanctuary/feature/either/either002.png" alt="either002"></p>
 <h2 id="fromEither"><a href="#fromEither" class="headerlink" title="fromEither()"></a>fromEither()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
@@ -588,6 +588,12 @@ a:hover {
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若需求是只要有 exception 不必顯示錯誤訊息，顯示 <code>0</code> 即可，可簡單使用 <code>fromEither()</code> 即可。</p>
+<blockquote>
+<p><strong>fromEither()</strong><br><code>b -&gt; Either a b -&gt; b</code><br>從 Either Monad 內部值取出值</p>
+</blockquote>
+<p><code>b</code>：提供 Left 的預設值</p>
+<p><code>Either a b</code>：data 為 Either Monad</p>
+<p><code>b</code>：回傳 Either Monad 內部值</p>
 <p><img src="/images/sanctuary/feature/either/either003.png" alt="either003"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>FP 使用 Either Monad 處理 exception 為大勢所趨，因為 <code>try catch</code> 無法在 Function Pipeline 下處理</li>
