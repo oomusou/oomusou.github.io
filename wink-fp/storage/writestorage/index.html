@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-08-25T14:54:32.000Z",
-    "dateModified": "2020-08-25T15:23:25.641Z",
+    "dateModified": "2020-08-25T23:50:11.593Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -441,8 +441,8 @@ a:hover {
 					<article id="post-content">
 						<p>Local Storage 雖可透過 Web API 的 <code>localStorage.setItem()</code> 寫入，但其並非 Curried Function 不適合 Function Pipeline，Wink-fp 特別包成適合 FP 的 <code>writeStorage()</code>。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>Wink-fp 1.20.98</p>
-<h2 id="Functional"><a href="#Functional" class="headerlink" title="Functional"></a>Functional</h2><p><img src="/images/wink-fp/storage/writestorage/write000.png" alt="write000"></p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>Wink-fp 1.20.99</p>
+<h2 id="Functional"><a href="#Functional" class="headerlink" title="Functional"></a>Functional</h2><p><img src="/images/wink-fp/storage/writeStorage/write000.png" alt="write000"></p>
 <p>按下 <code>Write Local Storage</code> 會寫入 local storage。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
@@ -451,12 +451,13 @@ a:hover {
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> curry<span class="token punctuation">,</span> bind <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> curry<span class="token punctuation">,</span> bind<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> writeStorage <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">always</span><span class="token punctuation">(</span>localStorage<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">bind</span><span class="token punctuation">(</span>localStorage<span class="token punctuation">.</span>setItem<span class="token punctuation">)</span><span class="token punctuation">,</span>
   curry
-<span class="token punctuation">)</span><span class="token punctuation">(</span>localStorage<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> onWrite <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token function">writeStorage</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token punctuation">)</span>
@@ -472,15 +473,17 @@ a:hover {
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>10 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> writeStorage <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">always</span><span class="token punctuation">(</span>localStorage<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">bind</span><span class="token punctuation">(</span>localStorage<span class="token punctuation">.</span>setItem<span class="token punctuation">)</span><span class="token punctuation">,</span>
   curry
-<span class="token punctuation">)</span><span class="token punctuation">(</span>localStorage<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若使用 Web API，寫入 local storage 要使用 <code>localStorage.setItem()</code>，但這種 API 並非 curried function 不適合 Function Pipeline。</p>
 <ul>
+<li>使用 <code>always()</code> 組合 <code>() =&gt; localStorage</code></li>
 <li>使用 <code>bind()</code> 從 <code>localStorae.setItem()</code> 取出 free function</li>
 <li>使用 <code>curry()</code> 將 normal function 轉成 curried function</li>
 </ul>
