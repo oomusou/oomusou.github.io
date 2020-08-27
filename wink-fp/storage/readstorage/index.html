@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-08-26T01:24:39.000Z",
-    "dateModified": "2020-08-26T15:00:21.160Z",
+    "dateModified": "2020-08-27T01:23:35.122Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -452,19 +452,19 @@ a:hover {
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> bind<span class="token punctuation">,</span> ifElse<span class="token punctuation">,</span> isNil<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> bind<span class="token punctuation">,</span> ifElse<span class="token punctuation">,</span> isNil<span class="token punctuation">,</span> pipe<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
-<span class="token keyword">let</span> <span class="token punctuation">{</span> Just<span class="token punctuation">,</span> Nothing<span class="token punctuation">,</span> fromMaybe<span class="token punctuation">,</span> K <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> <span class="token punctuation">{</span> Just<span class="token punctuation">,</span> Nothing<span class="token punctuation">,</span> fromMaybe <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> readStorage <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">bind</span><span class="token punctuation">(</span>localStorage<span class="token punctuation">.</span>getItem<span class="token punctuation">,</span> localStorage<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">ifElse</span><span class="token punctuation">(</span>isNil<span class="token punctuation">,</span> <span class="token function">K</span><span class="token punctuation">(</span>Nothing<span class="token punctuation">)</span><span class="token punctuation">,</span> Just<span class="token punctuation">)</span>
+  <span class="token function">ifElse</span><span class="token punctuation">(</span>isNil<span class="token punctuation">,</span> <span class="token function">always</span><span class="token punctuation">(</span>Nothing<span class="token punctuation">)</span><span class="token punctuation">,</span> Just<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> onRead <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">this</span><span class="token punctuation">.</span>result <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-    <span class="token function">K</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
     readStorage<span class="token punctuation">,</span>
     <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
   <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -485,7 +485,7 @@ a:hover {
 <p>14 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> readStorage <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">bind</span><span class="token punctuation">(</span>localStorage<span class="token punctuation">.</span>getItem<span class="token punctuation">,</span> localStorage<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">ifElse</span><span class="token punctuation">(</span>isNil<span class="token punctuation">,</span> <span class="token function">K</span><span class="token punctuation">(</span>Nothing<span class="token punctuation">)</span><span class="token punctuation">,</span> Just<span class="token punctuation">)</span>
+  <span class="token function">ifElse</span><span class="token punctuation">(</span>isNil<span class="token punctuation">,</span> <span class="token function">always</span><span class="token punctuation">(</span>Nothing<span class="token punctuation">)</span><span class="token punctuation">,</span> Just<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若使用 Web API，讀出 local storage 要使用 <code>localStorage.getItem()</code>，但這種 API 並非 free function，且若 key 不存在會回傳 <code>undefined</code>， 這些都不適合 Function Pipeline，因此重新建立 free function 且回傳 Maybe Monad 的 <code>readStorage()</code>。</p>
@@ -496,7 +496,7 @@ a:hover {
 <p>19 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onRead <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">this</span><span class="token punctuation">.</span>result <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-    <span class="token function">K</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
     readStorage<span class="token punctuation">,</span>
     <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
   <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -511,15 +511,15 @@ a:hover {
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> readStorage <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
-<span class="token keyword">let</span> <span class="token punctuation">{</span> fromMaybe<span class="token punctuation">,</span> K <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> <span class="token punctuation">{</span> fromMaybe <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> onRead <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">this</span><span class="token punctuation">.</span>result <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-    <span class="token function">K</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
     readStorage<span class="token punctuation">,</span>
     <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
   <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -542,7 +542,7 @@ a:hover {
 
 <span class="token keyword">let</span> onRead <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">this</span><span class="token punctuation">.</span>result <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-    <span class="token function">K</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
     readStorage<span class="token punctuation">,</span>
     <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
   <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
@@ -561,22 +561,21 @@ a:hover {
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> always<span class="token punctuation">,</span> thunkify <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> effect <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> readStorage <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
-<span class="token keyword">let</span> <span class="token punctuation">{</span> fromMaybe<span class="token punctuation">,</span> K <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> <span class="token punctuation">{</span> fromMaybe <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> name <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'Sam'</span><span class="token punctuation">)</span>
 <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> onRead <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">K</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   readStorage<span class="token punctuation">,</span>
   <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">effect</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  thunkify
 <span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> setup <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
@@ -588,24 +587,22 @@ a:hover {
   setup
 <span class="token punctuation">}</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>18 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onRead <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">K</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   readStorage<span class="token punctuation">,</span>
   <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">effect</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  thunkify
 <span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>readStorage()</code> 要在 Vue 3 才能發揮威力。</p>
 <p>由於 <code>readStorage()</code> 為 free function，因此可輕易整合進 Function Pipeline 中：</p>
 <ul>
-<li>使用 K combinator 回傳 <code>name</code></li>
+<li>使用 <code>always()</code> K combinator 回傳 <code>name</code></li>
 <li>使用 <code>readStorage()</code> 讀出 local storage</li>
 <li>使用 <code>fromMaybe()</code> 從 Maybe Monad 取出 String</li>
 <li>使用 <code>effect()</code> 寫入 <code>result</code> reactive model</li>
-<li>使用 <code>thunkify()</code> 建立 thunk</li>
 </ul>
 <p>若使用 Web API 的 <code>localStorae.getItem()</code>，則根本無法透過 Function Pipeline 組合出 <code>onRead()</code>。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>

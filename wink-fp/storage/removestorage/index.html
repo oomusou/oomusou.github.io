@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-08-26T10:58:56.000Z",
-    "dateModified": "2020-08-26T16:08:43.725Z",
+    "dateModified": "2020-08-27T01:26:54.026Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -520,13 +520,10 @@ a:hover {
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> removeStorage <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
-<span class="token keyword">let</span> <span class="token punctuation">{</span> K <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
 <span class="token keyword">let</span> onRemove <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">K</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   removeStorage
 <span class="token punctuation">)</span>
 
@@ -539,17 +536,17 @@ a:hover {
   setup
 <span class="token punctuation">}</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>13 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onRemove <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">K</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   removeStorage
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>removeStorage()</code> 要在 Vue 3 才能發揮威力。</p>
 <p>由於 <code>removeStorage()</code> 為 free function，因此可輕易整合進 Function Pipeline 中：</p>
 <ul>
-<li>由 K combinator 回傳 <code>name</code></li>
+<li>由 <code>always()</code> K combinator 回傳 <code>name</code></li>
 <li>使用 <code>removeStorage()</code> 移除 local storage</li>
 </ul>
 <p>若使用 Web API 的 <code>localStorae.removeItem()</code>，則根本無法透過 Function Pipeline 組合出 <code>onRemove()</code>。</p>
