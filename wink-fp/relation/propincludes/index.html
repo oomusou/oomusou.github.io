@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-08-30T02:53:22.000Z",
-    "dateModified": "2020-08-30T02:55:44.531Z",
+    "dateModified": "2020-09-01T23:46:17.530Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -507,13 +507,15 @@ a:hover {
 
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'JavaScript'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>13 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> s <span class="token operator">=</span><span class="token operator">></span> <span class="token function">filter</span><span class="token punctuation">(</span><span class="token function">propIncludes</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>12 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// f :: String -> [a] -> [a]</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> s <span class="token operator">=</span><span class="token operator">></span> <span class="token function">filter</span><span class="token punctuation">(</span><span class="token function">propIncludes</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>若能提供類似 <code>propEq()</code> 的 <code>propIncludes()</code>，則可讀性更高。</p>
-<p>10 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> propIncludes <span class="token operator">=</span> <span class="token punctuation">(</span>k<span class="token punctuation">,</span> v<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> o <span class="token operator">=</span><span class="token operator">></span> <span class="token function">includes</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> <span class="token function">prop</span><span class="token punctuation">(</span>k<span class="token punctuation">,</span> o<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// propIncludes :: (k, v) -> {k: v} -> Boolean</span>
+<span class="token keyword">let</span> propIncludes <span class="token operator">=</span> <span class="token punctuation">(</span>k<span class="token punctuation">,</span> v<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> o <span class="token operator">=</span><span class="token operator">></span> <span class="token function">includes</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> <span class="token function">prop</span><span class="token punctuation">(</span>k<span class="token punctuation">,</span> o<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>使用用 <code>prop()</code> 取得 value，再使用 <code>includes()</code> 判斷。</p>
 <p><img src="/images/wink-fp/relation/propincludes/propincludes006.png" alt="propincludes006"></p>
 <h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> includes<span class="token punctuation">,</span> filter<span class="token punctuation">,</span> curry<span class="token punctuation">,</span> useWith<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
@@ -525,20 +527,19 @@ a:hover {
 <span class="token punctuation">]</span>
 
 <span class="token comment" spellcheck="true">// propIncludes :: k -> v -> {k: v} -> Boolean</span>
-<span class="token keyword">let</span> propIncludes <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">useWith</span><span class="token punctuation">(</span>pipe<span class="token punctuation">,</span> <span class="token punctuation">[</span>prop<span class="token punctuation">,</span> includes<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  curry
+<span class="token keyword">let</span> propIncludes <span class="token operator">=</span> <span class="token function">useWith</span><span class="token punctuation">(</span>
+  pipe<span class="token punctuation">,</span> <span class="token punctuation">[</span>prop<span class="token punctuation">,</span> includes<span class="token punctuation">]</span>
 <span class="token punctuation">)</span>
 
 <span class="token comment" spellcheck="true">// f :: String -> [a] -> [a]</span>
 <span class="token keyword">let</span> f <span class="token operator">=</span> s <span class="token operator">=</span><span class="token operator">></span> <span class="token function">filter</span><span class="token punctuation">(</span><span class="token function">propIncludes</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">,</span> s<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'JavaScript'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>10 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> propIncludes <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">useWith</span><span class="token punctuation">(</span>pipe<span class="token punctuation">,</span> <span class="token punctuation">[</span>prop<span class="token punctuation">,</span> includes<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  curry
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// propIncludes :: k -> v -> {k: v} -> Boolean</span>
+<span class="token keyword">let</span> propIncludes <span class="token operator">=</span> <span class="token function">useWith</span><span class="token punctuation">(</span>
+  pipe<span class="token punctuation">,</span> <span class="token punctuation">[</span>prop<span class="token punctuation">,</span> includes<span class="token punctuation">]</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>亦可使用 <code>useWith()</code> 使其 point-free。</p>
