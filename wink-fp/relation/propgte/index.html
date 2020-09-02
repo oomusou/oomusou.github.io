@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-08-31T00:01:39.000Z",
-    "dateModified": "2020-09-01T23:38:41.656Z",
+    "dateModified": "2020-09-02T00:01:19.265Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -470,10 +470,14 @@ a:hover {
 <span class="token punctuation">]</span>
 
 <span class="token comment" spellcheck="true">// f :: a -> [Object] -> [Object]</span>
-<span class="token keyword">let</span> f <span class="token operator">=</span> v <span class="token operator">=</span><span class="token operator">></span> <span class="token function">filter</span><span class="token punctuation">(</span><span class="token function">pipe</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">flip</span><span class="token punctuation">(</span>gte<span class="token punctuation">)</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span> <span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> v <span class="token operator">=</span><span class="token operator">></span> <span class="token function">filter</span><span class="token punctuation">(</span><span class="token function">pipe</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">flip</span><span class="token punctuation">(</span>gte<span class="token punctuation">)</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// f :: a -> [Object] -> [Object]</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> v <span class="token operator">=</span><span class="token operator">></span> <span class="token function">filter</span><span class="token punctuation">(</span><span class="token function">pipe</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">flip</span><span class="token punctuation">(</span>gte<span class="token punctuation">)</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>對於這種 Object Array，且 predicate 非 <code>等於</code>，要使 <code>filter()</code> 的 callback 能 point-free 有兩種方法，先談較直覺的 <code>prop()</code>。</p>
 <p>由於是 Object，直覺要先使用 <code>prop()</code> 取得 value，再使用 <code>gte()</code> 比較其值，因此採用 <code>pipe()</code> 將 <code>prop()</code> 與 <code>gte()</code> 組合產生 <code>filter()</code> 所需的 callback。</p>
 <p><img src="/images/wink-fp/relation/propgte/propgte001.png" alt="propgte001"></p>
@@ -490,6 +494,10 @@ a:hover {
 
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// f :: a -> [Object] -> [Object]</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> v <span class="token operator">=</span><span class="token operator">></span> <span class="token function">filter</span><span class="token punctuation">(</span><span class="token function">propSatisfies</span><span class="token punctuation">(</span><span class="token function">flip</span><span class="token punctuation">(</span>gte<span class="token punctuation">)</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>第二個方法是採用 <code>propSatisfies()</code>，只要不能採用 <code>propEq()</code>，都可改用 <code>propSatisfies()</code> 達成。</p>
 <p><img src="/images/wink-fp/relation/propgte/propgte002.png" alt="propgte002"></p>
 <h2 id="propGte"><a href="#propGte" class="headerlink" title="propGte()"></a>propGte()</h2><h3 id="prop-1"><a href="#prop-1" class="headerlink" title="prop()"></a>prop()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> filter<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> gte<span class="token punctuation">,</span> flip<span class="token punctuation">,</span> pipe<span class="token punctuation">,</span> useWith <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
@@ -537,6 +545,12 @@ a:hover {
 
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// propGte :: String -> a -> Object -> Boolean</span>
+<span class="token keyword">let</span> propGte <span class="token operator">=</span> <span class="token function">useWith</span><span class="token punctuation">(</span>
+  <span class="token function">flip</span><span class="token punctuation">(</span>propSatisfies<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>identity<span class="token punctuation">,</span> <span class="token function">flip</span><span class="token punctuation">(</span>gte<span class="token punctuation">)</span><span class="token punctuation">]</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可以使用 <code>propSatisfies()</code>，但因為其 argument 順序剛好與 <code>propGte()</code> 相反，因此先透過 <code>flip()</code> 翻轉。</p>
 <p><img src="/images/wink-fp/relation/propgte/propgte004.png" alt="propgte008"></p>
 <h2 id="Wink-fp"><a href="#Wink-fp" class="headerlink" title="Wink-fp"></a>Wink-fp</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> filter <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
@@ -579,6 +593,13 @@ a:hover {
 
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 10 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// f :: a -> [Object] -> [Object]</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">propGte</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  filter
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>有了 <code>propGte()</code> 除了語意更清楚外，<code>f()</code> 也能輕鬆加以 point-free。</p>
 <p><img src="/images/wink-fp/relation/propgte/propgte006.png" alt="propgte010"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>

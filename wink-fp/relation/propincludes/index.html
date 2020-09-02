@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-08-30T02:53:22.000Z",
-    "dateModified": "2020-09-01T23:46:17.530Z",
+    "dateModified": "2020-09-02T00:06:06.342Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -474,6 +474,10 @@ a:hover {
 
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'JavaScript'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 7 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// f :: String -> [a] -> [a]</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> s <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">=</span><span class="token operator">></span> a<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>title<span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>也可使用 ECMAScript 的 <code>filter()</code> 搭配 <code>includes()</code> 求得。</p>
 <p><img src="/images/wink-fp/relation/propincludes/propincludes001.png" alt="propincludes001"></p>
 <h2 id="propSatisfies"><a href="#propSatisfies" class="headerlink" title="propSatisfies()"></a>propSatisfies()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> propSatisfies<span class="token punctuation">,</span> includes<span class="token punctuation">,</span> filter <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
@@ -489,6 +493,10 @@ a:hover {
 
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'JavaScript'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// f :: String -> [a] -> [a]</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> s <span class="token operator">=</span><span class="token operator">></span> <span class="token function">filter</span><span class="token punctuation">(</span><span class="token function">propSatisfies</span><span class="token punctuation">(</span><span class="token function">includes</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>Ramda 亦提供 <code>filter()</code> 與 <code>includes()</code>，但若要使 <code>filter()</code> 能 point-free，則必須搭配 <code>propSatisfies()</code>，整體可讀性較差。</p>
 <p><img src="/images/wink-fp/relation/propincludes/propincludes002.png" alt="propincludes002"></p>
 <h2 id="propIncludes"><a href="#propIncludes" class="headerlink" title="propIncludes()"></a>propIncludes()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> includes<span class="token punctuation">,</span> filter<span class="token punctuation">,</span> curry<span class="token punctuation">,</span> useWith<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> pipe<span class="token punctuation">,</span> chain<span class="token punctuation">,</span> ap<span class="token punctuation">,</span> flip <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
@@ -584,6 +592,13 @@ a:hover {
 
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'JavaScript'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 10 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// f :: String -> [a]</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">propIncludes</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  filter
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>可使用 <code>pipe()</code> 串起 <code>filter()</code> 與 <code>propIncludes()</code> 使 <code>f()</code> 能 point-free。</p>
 <p><img src="/images/wink-fp/relation/propincludes/propincludes005.png" alt="propincludes005"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>

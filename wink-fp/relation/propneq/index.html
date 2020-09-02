@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-09-01T00:03:47.000Z",
-    "dateModified": "2020-09-01T00:05:29.662Z",
+    "dateModified": "2020-09-02T00:41:13.397Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -455,6 +455,10 @@ a:hover {
 
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'Speaking JavaScript'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// f :: a -> [Object] -> [Object]</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> v <span class="token operator">=</span><span class="token operator">></span> <span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>title <span class="token operator">!==</span> v<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>我們想找出所有 title <code>不是</code> Speaking JavaScript 的書，若使用 <code>filter()</code>，勢必使用 <code>反向邏輯</code>，也就是 <code>!==</code>。</p>
 <p><img src="/images/wink-fp/relation/propneq/propneq000.png" alt="propneq000"></p>
 <h2 id="not"><a href="#not" class="headerlink" title="not()"></a>not()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> filter<span class="token punctuation">,</span> propEq<span class="token punctuation">,</span> not <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
@@ -470,6 +474,10 @@ a:hover {
 
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'Speaking JavaScript'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// f :: a -> [Object] -> [Object]</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> v <span class="token operator">=</span><span class="token operator">></span> <span class="token function">filter</span><span class="token punctuation">(</span><span class="token function">pipe</span><span class="token punctuation">(</span><span class="token function">propEq</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">,</span> v<span class="token punctuation">)</span><span class="token punctuation">,</span> not<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>使用 <code>pipe()</code> 將 <code>propEq()</code> 與 <code>not()</code> 組合起來，使 <code>filter()</code> 的 predicate 能 point-free。</p>
 <p><img src="/images/wink-fp/relation/propneq/propneq001.png" alt="propneq001"></p>
 <h2 id="complement"><a href="#complement" class="headerlink" title="complement()"></a>complement()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> filter<span class="token punctuation">,</span> propEq<span class="token punctuation">,</span> complement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
@@ -485,6 +493,10 @@ a:hover {
 
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'Speaking JavaScript'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// f :: a -> [Object] -> [Object]</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> v <span class="token operator">=</span><span class="token operator">></span> <span class="token function">filter</span><span class="token punctuation">(</span><span class="token function">complement</span><span class="token punctuation">(</span>propEq<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">,</span> v<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>也可使用 <code>propEq()</code> 取 <code>complement()</code>，這也能使 <code>filter()</code> 的 predicate 能 point-free。</p>
 <p><img src="/images/wink-fp/relation/propneq/propneq002.png" alt="propneq002"></p>
 <h2 id="propNEq"><a href="#propNEq" class="headerlink" title="propNEq()"></a>propNEq()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> filter<span class="token punctuation">,</span> propEq<span class="token punctuation">,</span> complement <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
@@ -503,7 +515,16 @@ a:hover {
 
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'Speaking JavaScript'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// propNEq :: String -> a -> Object -> Boolean</span>
+<span class="token keyword">let</span> propNEq <span class="token operator">=</span> <span class="token function">complement</span><span class="token punctuation">(</span>propEq<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>若要模仿 <code>propEq()</code> 而有 <code>propNEq()</code>，可使用 <code>complement()</code> 與 <code>propEq()</code> 組合。</p>
+<p>12 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// f :: a -> [Object] -> [Object]</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> v <span class="token operator">=</span><span class="token operator">></span> <span class="token function">filter</span><span class="token punctuation">(</span><span class="token function">propNEq</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">,</span> v<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>如此在 <code>filter()</code> 內能簡單地使用 <code>propNEq()</code>。</p>
 <p><img src="/images/wink-fp/relation/propneq/propneq005.png" alt="propneq005"></p>
 <h2 id="Wink-fp"><a href="#Wink-fp" class="headerlink" title="Wink-fp"></a>Wink-fp</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> filter <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> propNEq <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
@@ -545,6 +566,13 @@ a:hover {
 
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token string">'Speaking JavaScript'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>10 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// f :: a -> [Object] -> [Object]</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">propNEq</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  filter
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>有了 <code>propNEq()</code> 之後就可輕易組合 <code>filter()</code> 與 <code>propNEq()</code>，使 <code>f()</code> 也能 point-free。</p>
 <p><img src="/images/wink-fp/relation/propneq/propneq003.png" alt="propneq006"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
