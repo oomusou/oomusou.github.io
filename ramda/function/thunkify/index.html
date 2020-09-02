@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>使用 thunkify() 使 Function 多墊一層 Unit | 點燈坊</title>
+<title>使用 thunkify() 使 Function 延遲執行 | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -51,7 +51,7 @@
 
 <meta name="format-detection" content="telephone=no">
 <!-- Description -->
-<meta name="description" content="thunkify() 在 Ramda 算罕用的 Function，但在使 Promise Chain 成為 Pipeline 且 Point-free 時，就會需要 thunkify()。">
+<meta name="description" content="thunkify() 在 Ramda 算較罕用的 Function，若搭配能接受 Thunk 的 API，thunkify() 就能發會功用。">
 <!-- Keywords -->
 <meta name="keywords" content=", Ramda">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
@@ -165,17 +165,17 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="使用 thunkify() 使 Function 多墊一層 Unit | 點燈坊">
+	<meta property="og:title" content="使用 thunkify() 使 Function 延遲執行 | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
 <meta property="og:url" content="https://fpjs.fun/ramda/function/thunkify/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
-<meta property="og:description" content="thunkify() 在 Ramda 算罕用的 Function，但在使 Promise Chain 成為 Pipeline 且 Point-free 時，就會需要 thunkify()。">
+<meta property="og:description" content="thunkify() 在 Ramda 算較罕用的 Function，若搭配能接受 Thunk 的 API，thunkify() 就能發會功用。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2019-09-29T08:24:01.000Z">
-<meta property="article:modified_time" content="2019-09-29T08:24:01.000Z">
+<meta property="article:published_time" content="2020-09-02T10:44:48.000Z">
+<meta property="article:modified_time" content="2020-09-02T10:44:48.000Z">
 <meta property="article:author" content="Sam Xiao">
 <meta property="og:article:tag" content=", Ramda">
 
@@ -202,15 +202,15 @@ a:hover {
         "@type": "WebPage",
         "@id": "https://fpjs.fun/ramda/function/thunkify/"
     },
-    "headline": "使用 thunkify() 使 Function 多墊一層 Unit | 點燈坊",
+    "headline": "使用 thunkify() 使 Function 延遲執行 | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2019-09-29T08:24:01.000Z",
-    "dateModified": "2020-07-19T15:37:04.993Z",
+    "datePublished": "2020-09-02T10:44:48.000Z",
+    "dateModified": "2020-09-02T10:48:06.028Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -236,7 +236,7 @@ a:hover {
     },
     
     "keywords": ", Ramda",
-    "description": "thunkify() 在 Ramda 算罕用的 Function，但在使 Promise Chain 成為 Pipeline 且 Point-free 時，就會需要 thunkify()。"
+    "description": "thunkify() 在 Ramda 算較罕用的 Function，若搭配能接受 Thunk 的 API，thunkify() 就能發會功用。"
 }
 </script>
 
@@ -428,82 +428,126 @@ a:hover {
 			<div class="card-inner-cell">
 				<div class="card-header">
 					
-<h1 class="card-title h3 mb-2">使用 thunkify() 使 Function 多墊一層 Unit</h1>
+<h1 class="card-title h3 mb-2">使用 thunkify() 使 Function 延遲執行</h1>
 
 
 <div class="post-header-info">
 	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
 		alt="Sam Xiao's Avatar">
-	<span>2019-09-29</span>
+	<span>2020-09-02</span>
 </div>
 				</div>
 				<div class="card-body">
 					<article id="post-content">
-						<p><code>thunkify()</code> 在 Ramda 算罕用的 Function，但在使 Promise Chain 成為 Pipeline 且 Point-free 時，就會需要 <code>thunkify()</code>。</p>
+						<p><code>thunkify()</code> 在 Ramda 算較罕用的 Function，若搭配能接受 Thunk 的 API，<code>thunkify()</code> 就能發會功用。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.14.6<br>VS Code 1.38.1<br>Quokka 1.0.253<br>Ramda 0.26.1<br>Wink-fp 0.1.1</p>
-<h2 id="thunkify"><a href="#thunkify" class="headerlink" title="thunkify()"></a>thunkify()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> thunkify <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>Ramda 0.27.1</p>
+<h2 id="thunkify"><a href="#thunkify" class="headerlink" title="thunkify()"></a>thunkify()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> thunkify<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
-<span class="token comment" spellcheck="true">// add :: (Number, Number) -> Number</span>
-<span class="token keyword">let</span> add <span class="token operator">=</span> <span class="token punctuation">(</span>a<span class="token punctuation">,</span> b<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span> b<span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// f :: Number -> Numer -> () -> Number</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">thunkify</span><span class="token punctuation">(</span>add<span class="token punctuation">)</span>
 
-<span class="token comment" spellcheck="true">// fn :: (Number, Number) -> Unit -> Number</span>
-<span class="token keyword">let</span> fn <span class="token operator">=</span> <span class="token function">thunkify</span><span class="token punctuation">(</span>add<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token comment" spellcheck="true">// g :: () -> Number</span>
+<span class="token keyword">let</span> g <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
 
-<span class="token function">fn</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>原本 <code>add()</code> 的 signature 為 <code>(Number, Number) -&gt; Number</code>，當使用 Ramda 的 <code>thunkify()</code> 後，會變成 <code>(Number, Number) -&gt; Unit -&gt; Number</code>，很類似 Number <code>always()</code> 成為 <code>Number -&gt; (Unit -&gt; Number)</code>。</p>
+<span class="token comment" spellcheck="true">// add :: Number -> Number -> Number</span>
+<span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">g</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>原本 <code>add()</code> 的 signature 為 <code>Number -&gt; Number -&gt; Number</code>，當使用 Ramda 的 <code>thunkify()</code> 後，會變成 <code>Number -&gt; Number -&gt; () -&gt; Number</code>。</p>
+<p><code>f()</code> 為使用 <code>thunkify()</code> 產生，等價於 <code>g()</code> 自行加上 <code>() =&gt;</code>。</p>
+<p>可發現原本 <code>add()</code> 可直接求值，但 <code>f</code> 與 <code>g</code> 都必須透過 <code>()</code> 才能有結果。</p>
 <blockquote>
-<p><strong>thunkify()</strong><br><code>(a, b, ..., j) -&gt; k) -&gt; (a, b, ..., j) -&gt; () -&gt; k)</code></p>
-<p>將原本 function 多墊一層 <code>Unit</code> </p>
+<p><strong>thunkify()</strong><br><code>(a, b, ..., j) -&gt; k) -&gt; (a, b, ..., j) -&gt; () -&gt; k)</code><br>將原本結果多墊一層 <code>()</code> 才執行</p>
 </blockquote>
 <p><code>(a, b, ..., j) -&gt; k)</code>：原 function</p>
-<p><code>(a, b, ..., j) -&gt; () -&gt; k)</code>：signature 都不變，但多墊了一層 <code>Unit</code></p>
-<blockquote>
-<p>可以簡單想成 <code>thunkify()</code> 為 <code>alway()</code> 的 function 版本</p>
-</blockquote>
+<p><code>(a, b, ..., j) -&gt; () -&gt; k)</code>：signature 都不變，但多墊了一層 <code>()</code></p>
 <p><img src="/images/ramda/function/thunkify/thunkify000.png" alt="thunkify000"></p>
-<h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> resolveAfter <span class="token operator">=</span> ms <span class="token operator">=</span><span class="token operator">></span> val <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">new</span> <span class="token class-name">Promise</span><span class="token punctuation">(</span>
-  resolve <span class="token operator">=</span><span class="token operator">></span> <span class="token function">setTimeout</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">resolve</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">,</span> ms<span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<h2 id="fromMaybe"><a href="#fromMaybe" class="headerlink" title="fromMaybe()"></a>fromMaybe()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> multiply<span class="token punctuation">,</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
-<span class="token keyword">await</span> <span class="token function">resolveAfter</span><span class="token punctuation">(</span><span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>resolveAfter()</code> 欲延遲一段時間才產生 promise，標準做法是使用 <code>setTimeout()</code> 延遲一段時間，然後在其 callback 中呼叫 promise constructor 的 <code>resolve()</code>。</p>
+<span class="token keyword">let</span> <span class="token punctuation">{</span> head<span class="token punctuation">,</span> fromMaybe <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+<span class="token comment" spellcheck="true">// fib :: Number -> Number</span>
+<span class="token keyword">let</span> fib <span class="token operator">=</span> n <span class="token operator">=</span><span class="token operator">></span> n <span class="token operator">&lt;=</span> <span class="token number">1</span> <span class="token operator">?</span> n <span class="token punctuation">:</span> fib <span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">+</span> fib <span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// f :: [Number] -> Number</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  head<span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">multiply</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token function">fib</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>11 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// f :: [Number] -> Number</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  head<span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">multiply</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token function">fib</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>head()</code> 回傳為 Maybe Monad，若為 Nothing 則回傳 Fibonacci Number。</p>
+<p>15 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token function">fib</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Sanctuary 提供了 <code>frommMaybe()</code> 重 Maybe Monad 內部取出值。</p>
+<blockquote>
+<p><strong>fromMaybe()</strong><br><code>a -&gt; Maybe a -&gt; a</code><br>從 Maybe Monad 內部取出值</p>
+</blockquote>
+<p><code>a</code>：提供 Nothing 的預設值</p>
+<p><code>Maybe a</code>：data 為 Maybe Monad</p>
+<p><code>a</code>：回傳 Maybe Monad 內部值</p>
+<p>計算 Fibonacci Number 是很耗 CPU 運算，若沒遇到 Nothing，則 <code>fib(30)</code> 就白浪費 CPU 了。</p>
+<p>比較理想的方式是傳入 <code>() -&gt; fib(30)</code>，因為是 function，因此 <code>fib(30)</code> 不必求值，等 Nothing 出現時才計算 <code>fib(30)</code>，可避免 CPU 無效運算。</p>
 <p><img src="/images/ramda/function/thunkify/thunkify001.png" alt="thunkify001"></p>
-<h2 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> then<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> sleep<span class="token punctuation">,</span> resolve <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token punctuation">;</span>
+<h2 id="fromMaybe-1"><a href="#fromMaybe-1" class="headerlink" title="fromMaybe_()"></a>fromMaybe_()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> multiply<span class="token punctuation">,</span> map<span class="token punctuation">,</span> thunkify <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
-<span class="token keyword">let</span> resolveAfter <span class="token operator">=</span> ms <span class="token operator">=</span><span class="token operator">></span> val <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  sleep<span class="token punctuation">,</span>
-  <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">always</span><span class="token punctuation">(</span>val<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">then</span><span class="token punctuation">(</span>resolve<span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">(</span>ms<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> <span class="token punctuation">{</span> head<span class="token punctuation">,</span> fromMaybe_ <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
-<span class="token keyword">await</span> <span class="token function">resolveAfter</span><span class="token punctuation">(</span><span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>但 <code>setTimeout()</code> 畢竟是 callback-based function，在 ES6 後我們有了 Wink-fp 的 <code>sleep()</code>，其為 promised-based function。</p>
-<p>既然 <code>sleep()</code> 回傳是 promise，就能使用 Ramda 的 <code>then()</code> 加以 pipeline。</p>
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+
+<span class="token comment" spellcheck="true">// fib :: Number -> Number</span>
+<span class="token keyword">let</span> fib <span class="token operator">=</span> n <span class="token operator">=</span><span class="token operator">></span> n <span class="token operator">&lt;=</span> <span class="token number">1</span> <span class="token operator">?</span> n <span class="token punctuation">:</span> fib <span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">+</span> fib <span class="token punctuation">(</span>n <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// fib_ :: Number -> () -> Number</span>
+<span class="token keyword">let</span> fib_ <span class="token operator">=</span> <span class="token function">thunkify</span><span class="token punctuation">(</span>fib<span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// f :: [Number] -> Number</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  head<span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">multiply</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">fromMaybe_</span><span class="token punctuation">(</span><span class="token function">fib_</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>18 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">fromMaybe_</span><span class="token punctuation">(</span><span class="token function">fib_</span><span class="token punctuation">(</span><span class="token number">30</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Sanctuary 另外提供了 <code>frommMaybe_()</code> 支援 Thunk，可用來避免 CPU 無效運算。</p>
+<blockquote>
+<p><strong>fromMaybe_()</strong><br><code>(() -&gt; a) -&gt; Maybe a -&gt; a</code><br>從 Maybe Monad 內部取出值，但支援 Thunk</p>
+</blockquote>
+<p><code>() -&gt; a</code>：為 Nothing 的預設值提供 Thunk</p>
+<p><code>Maybe a</code>：data 為 Maybe Monad</p>
+<p><code>a</code>：回傳 Maybe Monad 內部值</p>
+<p><code>fromMaybe()</code> 與 <code>fromMaybe_()</code> 的差異在於第一個 argument 為 <code>() -&gt; a</code>，也就是 Thunk，因此 <code>fib(x)</code> 將不會事先運算好才傳進 <code>fromMaybe_()</code>，而是只將 <code>() -&gt; a</code> 傳進 <code>fromMaybe_()</code>，因為是 function 不會立即計算 Fibonacci Number，直到真的遇到 Nothing 時才會計算。</p>
+<p>11 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// fib_ :: Number -> () -> Number</span>
+<span class="token keyword">let</span> fib_ <span class="token operator">=</span> <span class="token function">thunkify</span><span class="token punctuation">(</span>fib<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>為了配合 <code>fromMaybe_()</code> 需要 Thunk，使用 <code>thunkify()</code> 將 <code>fib()</code> 轉成可回傳 Thunk 的 <code>fib_()</code>。</p>
 <p><img src="/images/ramda/function/thunkify/thunkify002.png" alt="thunkify002"></p>
-<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> useWith<span class="token punctuation">,</span> flip<span class="token punctuation">,</span> then<span class="token punctuation">,</span> thunkify <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> sleep<span class="token punctuation">,</span> resolve <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> resolveAfter <span class="token operator">=</span> <span class="token function">useWith</span><span class="token punctuation">(</span>
-  <span class="token function">flip</span><span class="token punctuation">(</span>then<span class="token punctuation">)</span><span class="token punctuation">,</span> 
-  <span class="token punctuation">[</span>sleep<span class="token punctuation">,</span> <span class="token function">thunkify</span><span class="token punctuation">(</span>resolve<span class="token punctuation">)</span><span class="token punctuation">]</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token keyword">await</span> <span class="token function">resolveAfter</span><span class="token punctuation">(</span><span class="token number">300</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>能進一步將 <code>resolveAfter()</code> 的 <code>ms</code> 與 <code>val</code> point-free 嗎 ?</p>
-<p>其實仔細觀察，會發現最後執行的 function 為 <code>then()</code>，<code>sleep()</code> 與 <code>resolve()</code> 會分階段吸收 argument，頗有 <code>useWith()</code> 味道。</p>
-<p>但 <code>then()</code> 第一個 argument 為 function，第二個 argument 為 promise，但 <code>resolveAfter()</code> 第一個 argument 為 <code>sleep()</code> 所需的 <code>ms</code>，故必須先 <code>flip(then)</code> 顛倒其 signature。</p>
-<p><code>resolve()</code> 所接的是 <code>always</code>，並不是簡單的 data，故需使用 <code>thunkify(resolve)</code> 將 <code>resolve()</code> 多墊一層 <code>Unit</code>。</p>
-<p><img src="/images/ramda/function/thunkify/thunkify003.png" alt="thunkify003"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>由於 <code>then()</code> 後面都要接 function，pipeline 時會需要接 <code>always()</code>，此時 point-free 時就會用到 <code>thunkify()</code></li>
+<li>只要是很耗 CPU 或耗 memory 的運算，使用 Thunk 的 lazy evaluation 特性可大幅增進執行效率</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#thunkify" target="_blank" rel="noopener">thunkify()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#pipe" target="_blank" rel="noopener">pipe()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#then" target="_blank" rel="noopener">then()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#always" target="_blank" rel="noopener">always()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#useWith" target="_blank" rel="noopener">useWith()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#flip" target="_blank" rel="noopener">flip()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#thunkify" target="_blank" rel="noopener">thunkify()</a></p>
 
 					</article>
 					<p class="post-footer-info mb-0 pt-2">
@@ -522,19 +566,12 @@ a:hover {
 	<ul class="pagination">
 		<!-- Prev Nav -->
 		
-		<li class="page-item page-prev">
-			<a href="/ecmascript/promise/settimeout-in-loop/">
-				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">如何在 For Loop 使用 setTimeout() ?</div>
-			</a>
-		</li>
-		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/react/hooks/toggle-state/">
+			<a href="/sanctuary/maybe/frommaybe_/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">如何使用 useState() Toggle State ?</div>
+				<div class="page-item-subtitle">使用 fromMaybe_() 支援 Nothing 提供 Thunk</div>
 			</a>
 		</li>
 		
