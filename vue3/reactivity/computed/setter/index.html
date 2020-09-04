@@ -174,8 +174,8 @@ a:hover {
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-08-15T08:27:06.000Z">
-<meta property="article:modified_time" content="2020-08-15T08:27:06.000Z">
+<meta property="article:published_time" content="2020-09-04T01:09:04.000Z">
+<meta property="article:modified_time" content="2020-09-04T01:09:04.000Z">
 <meta property="article:author" content="Sam Xiao">
 <meta property="og:article:tag" content=", Vue">
 
@@ -209,8 +209,8 @@ a:hover {
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2020-08-15T08:27:06.000Z",
-    "dateModified": "2020-08-15T11:43:46.263Z",
+    "datePublished": "2020-09-04T01:09:04.000Z",
+    "dateModified": "2020-09-04T01:11:05.109Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -434,14 +434,14 @@ a:hover {
 <div class="post-header-info">
 	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
 		alt="Sam Xiao's Avatar">
-	<span>2020-08-15</span>
+	<span>2020-09-04</span>
 </div>
 				</div>
 				<div class="card-body">
 					<article id="post-content">
 						<p>Computed 除了是 Function 外，也可以是 Object，此時 Computed 就有了 Setter，Vue 3 一樣可使用 <code>computed()</code> 將 Object 轉成 Computed。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>WebStorm 2020.2<br>Vue 3.0.0<br>Vue3-fp 0.0.3</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>Vue 3.0.0<br>Vue3-fp 0.0.3</p>
 <h2 id="Computed-Setter"><a href="#Computed-Setter" class="headerlink" title="Computed Setter"></a>Computed Setter</h2><p><img src="/images/vue3/reactivity/computed/setter/setter000.png" alt="setter000"></p>
 <p>當 <code>&lt;input&gt;</code> 內容動態改變時，右方顯示也會動態更新。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
@@ -502,7 +502,7 @@ a:hover {
 </blockquote>
 <p><code>get : () -&gt; a</code>：提供 computed getter</p>
 <p><code>set: a -&gt; ()</code>：提供 computed setter</p>
-<h2 id="Function-Pipeline"><a href="#Function-Pipeline" class="headerlink" title="Function Pipeline"></a>Function Pipeline</h2><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+<h2 id="Function-Pipeline"><a href="#Function-Pipeline" class="headerlink" title="Function Pipeline"></a>Function Pipeline</h2><h3 id="tap"><a href="#tap" class="headerlink" title="tap()"></a>tap()</h3><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">v-model</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>fullName<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
   {{ fullName }}
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
@@ -537,32 +537,56 @@ a:hover {
   <span class="token function">tap</span><span class="token punctuation">(</span>setLastName<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> setup <span class="token operator">=</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+<span class="token keyword">let</span> fullName <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">always</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">:</span> getFullName<span class="token punctuation">,</span> <span class="token keyword">set</span><span class="token punctuation">:</span> setFullName <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  computed
+<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> models <span class="token operator">=</span> <span class="token punctuation">{</span>
   firstName<span class="token punctuation">,</span>
-  lastName<span class="token punctuation">,</span>
-  fullName<span class="token punctuation">:</span> <span class="token function">computed</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-    <span class="token keyword">get</span><span class="token punctuation">:</span> getFullName<span class="token punctuation">,</span>
-    <span class="token keyword">set</span><span class="token punctuation">:</span> setFullName
-  <span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
+  lastName
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> computeds <span class="token operator">=</span> <span class="token punctuation">{</span>
+  fullName
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> setup <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">always</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span>models<span class="token punctuation">,</span> <span class="token operator">...</span>computeds<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
 
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
   name<span class="token punctuation">:</span><span class="token string">'App'</span><span class="token punctuation">,</span>
   setup
 <span class="token punctuation">}</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>36 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> setup <span class="token operator">=</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>50 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> setup <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">always</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span>models<span class="token punctuation">,</span> <span class="token operator">...</span>computeds<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>使用 <code>always()</code> 建立 <code>setup()</code>，model 與 computed 因為太多而另外定義。</p>
+<p>41 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> models <span class="token operator">=</span> <span class="token punctuation">{</span>
   firstName<span class="token punctuation">,</span>
-  lastName<span class="token punctuation">,</span>
-  fullName<span class="token punctuation">:</span> <span class="token function">computed</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-    <span class="token keyword">get</span><span class="token punctuation">:</span> getFullName<span class="token punctuation">,</span>
-    <span class="token keyword">set</span><span class="token punctuation">:</span> setFullName
-  <span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>使用 <code>always()</code> 建立 <code>setup()</code>。</p>
+  lastName
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 <code>models</code> 定義所有 model。</p>
+<p>46 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> computeds <span class="token operator">=</span> <span class="token punctuation">{</span>
+  fullName
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>在 <code>computeds</code> 定義所有 computed。</p>
+<p>36 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fullName <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">always</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">:</span> getFullName<span class="token punctuation">,</span> <span class="token keyword">set</span><span class="token punctuation">:</span> setFullName <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  computed
+<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>組合 <code>fullName</code> computed，它是由 <code>getFullName</code> getter 與 <code>setFullName</code> setter 組合而成。</p>
 <p>15 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> getFullName <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">unwrap</span><span class="token punctuation">(</span>lastName<span class="token punctuation">)</span><span class="token punctuation">,</span>
@@ -608,6 +632,71 @@ a:hover {
 <li>使用 <code>last()</code> 讀取 Array 中最後一筆</li>
 <li>使用 <code>effect()</code> 寫入 <code>lastName</code> model</li>
 </ul>
+<h3 id="ap"><a href="#ap" class="headerlink" title="ap()"></a>ap()</h3><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">v-model</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>fullName<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  {{ fullName }}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ref<span class="token punctuation">,</span> computed <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> split<span class="token punctuation">,</span> always<span class="token punctuation">,</span> ap<span class="token punctuation">,</span> head<span class="token punctuation">,</span> last <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> formatN <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> unwrap<span class="token punctuation">,</span> effect <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
+
+<span class="token keyword">let</span> firstName <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'Sam'</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> lastName <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'Xiao'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> getFullName <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">unwrap</span><span class="token punctuation">(</span>lastName<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">formatN</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'{0} {1}'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token function">unwrap</span><span class="token punctuation">(</span>firstName<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> setFirstName <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  head<span class="token punctuation">,</span>
+  <span class="token function">effect</span><span class="token punctuation">(</span>firstName<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> setLastName <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  last<span class="token punctuation">,</span>
+  <span class="token function">effect</span><span class="token punctuation">(</span>lastName<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> setFullName <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">split</span><span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">ap</span><span class="token punctuation">(</span>setFirstName<span class="token punctuation">,</span> setLastName<span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> fullName <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">always</span><span class="token punctuation">(</span><span class="token punctuation">{</span> <span class="token keyword">get</span><span class="token punctuation">:</span> getFullName<span class="token punctuation">,</span> <span class="token keyword">set</span><span class="token punctuation">:</span> setFullName <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  computed
+<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> models <span class="token operator">=</span> <span class="token punctuation">{</span>
+  firstName<span class="token punctuation">,</span>
+  lastName
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> computeds <span class="token operator">=</span> <span class="token punctuation">{</span>
+  fullName
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> setup <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">always</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span>models<span class="token punctuation">,</span> <span class="token operator">...</span>computeds<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  name<span class="token punctuation">:</span><span class="token string">'App'</span><span class="token punctuation">,</span>
+  setup
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>30 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> setFullName <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">split</span><span class="token punctuation">(</span><span class="token string">' '</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">ap</span><span class="token punctuation">(</span>setFirstName<span class="token punctuation">,</span> setLastName<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由於 <code>split()</code> 結果為 array，可使用 <code>ap()</code> 取代多次 <code>tap()</code> 一行執行兩個 side effect。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li><code>computed()</code> 除了能接受 arrow function 外，也能接受 object 組合 computed setter</li>
 <li>Function Pipeline 寫法雖然行數較多，但每一行都是 pure function 無 side effect，且都是 point-free 職責明確</li>
@@ -631,19 +720,12 @@ a:hover {
 	<ul class="pagination">
 		<!-- Prev Nav -->
 		
-		<li class="page-item page-prev">
-			<a href="/vue/vuecli/https/">
-				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">在本機以 HTTPS 測試 Vue</div>
-			</a>
-		</li>
-		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/vue3-fp/reactivity/effect/">
+			<a href="/wink-fp/function/seq/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 unwrap() 與 effect() 處理 Side Effect</div>
+				<div class="page-item-subtitle">使用 seq() 同時執行多個 Side Effect</div>
 			</a>
 		</li>
 		
