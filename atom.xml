@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2020-09-11T07:01:58.421Z</updated>
+  <updated>2020-09-11T11:17:40.172Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Gridsome 之 Image Processing</title>
+    <link href="https://fpjs.fun/gridsome/feature/g-image/"/>
+    <id>https://fpjs.fun/gridsome/feature/g-image/</id>
+    <published>2020-09-11T07:06:59.000Z</published>
+    <updated>2020-09-11T11:17:40.172Z</updated>
+    
+    <content type="html"><![CDATA[<p>Gridsome 特別提供 <code>&lt;g-image&gt;</code> 支援 Image Processing 增進效率，實務上建議使用 <code>&lt;g-image&gt;</code> 取代 <code>&lt;img&gt;</code>。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>Gridsome 0.7.19</p><h2 id="img-vs-g-image"><a href="#img-vs-g-image" class="headerlink" title="img vs. g-image"></a>img vs. g-image</h2><p><img src="/images/gridsome/feature/g-image/g-image011.png" alt="g-image011"></p><p>Gridsome 的 image 就是使用 <code>&lt;g-image&gt;</code> 產生。</p><p>HTML 已經自帶 <code>&lt;img&gt;</code>，與 Gridsome 所提供的 <code>&lt;g-image&gt;</code> 有什麼不同呢 ?</p><ul><li><code>&lt;img&gt;</code> 會將圖片完整下載下來；而 <code>&lt;g-image&gt;</code> 會自動根據 device 不同下載不同解析度圖片</li><li><code>&lt;img&gt;</code> 雖然有帶 <code>width</code> 與 <code>height</code> attribute，但卻是將完整圖片下載後才調整，因此浪費下載時間；而 <code>&lt;g-image&gt;</code> 是將圖片先調整過 width 與 height 才下載，size 會變小因此節省下載時間，user 體驗較佳</li><li><code>&lt;img&gt;</code> 會等圖片全部下載成功才顯示；而 <code>&lt;g-image&gt;</code> 會先下載 <code>低解析度</code> 版本圖片，等 <code>高解析度</code> 版本圖片下載成功後再顯示，user 體驗較佳</li><li><code>gridsome-transformer-remark</code> 會自動將 markdown 內的圖片轉成 <code>&lt;g-image&gt;</code></li></ul><h2 id="Crop-Image-by-Default"><a href="#Crop-Image-by-Default" class="headerlink" title="Crop Image by Default"></a>Crop Image by Default</h2><p><strong>pages/Index.vue</strong></p><p><img src="/images/gridsome/feature/g-image/g-image001.png" alt="g-image001"></p><p>在 <code>pages/Index.vue</code> 就有使用 <code>&lt;g-image&gt;</code>。</p><p><img src="/images/gridsome/feature/g-image/g-image000.png" alt="g-image000"></p><p>可發現其原始圖片為 <code>245</code> x <code>245</code>。</p><p><img src="/images/gridsome/feature/g-image/g-image003.png" alt="g-image003"></p><p>明確指定 <code>width</code> 與 <code>height</code>。</p><p><img src="/images/gridsome/feature/g-image/g-image002.png" alt="g-image002"></p><p>會發現實際下載圖片為 <code>200</code> x <code>200</code>，且時 <code>src</code> 也自帶 <code>width</code> 與 <code>height</code>。</p><h2 id="Fit"><a href="#Fit" class="headerlink" title="Fit"></a>Fit</h2><h3 id="Cover"><a href="#Cover" class="headerlink" title="Cover"></a>Cover</h3><p><img src="/images/gridsome/feature/g-image/g-image004.png" alt="g-image004"></p><p><code>fit</code> attribute 預設為 <code>cover</code>，表示會自動 crop 符合 <code>width</code> 與 <code>height</code>。</p><blockquote><p>由於指定 <code>width</code> 與 <code>height</code> 與原始比例相同，因此 <code>fit=&quot;cover&quot;</code> 無感</p></blockquote><p><img src="/images/gridsome/feature/g-image/g-image007.png" alt="g-image007"></p><p>若將 <code>width</code> 加以改變，可明顯看出圖片會以 crop 處理。</p><p><img src="/images/gridsome/feature/g-image/g-image008.png" alt="g-image008"></p><h3 id="Contain"><a href="#Contain" class="headerlink" title="Contain"></a>Contain</h3><p><img src="/images/gridsome/feature/g-image/g-image005.png" alt="g-image005"></p><p>當 <code>fit</code> 設定為 <code>contain</code> 時，則原始圖片會 <code>包含</code> 在指定 <code>width</code> 與 <code>height</code> 內。</p><p><img src="/images/gridsome/feature/g-image/g-image006.png" alt="g-image005"></p><h3 id="Fill"><a href="#Fill" class="headerlink" title="Fill"></a>Fill</h3><p><img src="/images/gridsome/feature/g-image/g-image009.png" alt="g-image009"></p><p>當 <code>fit</code> 設定為 <code>fill</code> 時，則原始圖片會破壞比例延伸滿足 <code>width</code> 與 <code>height</code>。</p><p><img src="/images/gridsome/feature/g-image/g-image010.png" alt="g-image010"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>若 <code>width</code> 與 <code>height</code> 與原比例相同，則 <code>fit=&quot;cover&quot;</code> 可省略</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.udemy.com/user/reed-barger/" target="_blank" rel="noopener">Reed Barger</a>, <a href="https://www.udemy.com/course/blazing-fast-vue-and-graphql-with-gridsome/learn/lecture/14862465#overview" target="_blank" rel="noopener">G-image for Performant Image Loading</a><br><a href="https://gridsome.org" target="_blank" rel="noopener">Gridsome</a>, <a href="https://gridsome.org/docs/images/" target="_blank" rel="noopener">Image processing</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;Gridsome 特別提供 &lt;code&gt;&amp;lt;g-image&amp;gt;&lt;/code&gt; 支援 Image Processing 增進效率，實務上建議使用 &lt;code&gt;&amp;lt;g-image&amp;gt;&lt;/code&gt; 取代 &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Gridsome" scheme="https://fpjs.fun/tags/Gridsome/"/>
+    
+  </entry>
   
   <entry>
     <title>Gridsome 之 Smart Link Prefetching</title>
@@ -228,26 +248,6 @@
     <summary type="html">
     
       &lt;p&gt;SEO 一直是 SPA 硬傷，但 Gridsome 已經整合 Vue-meta，可直接針對 SEO 做最佳化。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Gridsome" scheme="https://fpjs.fun/tags/Gridsome/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Gridsome 之 Image Processing</title>
-    <link href="https://fpjs.fun/gridsome/feature/g-image/"/>
-    <id>https://fpjs.fun/gridsome/feature/g-image/</id>
-    <published>2020-09-08T11:12:40.000Z</published>
-    <updated>2020-09-08T11:16:14.582Z</updated>
-    
-    <content type="html"><![CDATA[<p>Gridsome 特別提供 <code>&lt;g-image&gt;</code> 支援 Image Processing 增進效率，實務上建議使用 <code>&lt;g-image&gt;</code> 取代 <code>&lt;img&gt;</code>。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>Gridsome 0.7.19</p><h2 id="img-vs-g-image"><a href="#img-vs-g-image" class="headerlink" title="img vs. g-image"></a>img vs. g-image</h2><p>HTML 已經自帶 <code>&lt;img&gt;</code>，與 Gridsome 所提供的 <code>&lt;g-image&gt;</code> 有什麼不同呢 ?</p><ul><li><code>&lt;img&gt;</code> 會將圖片完整下載下來；而 <code>&lt;g-image&gt;</code> 會自動根據 device 不同下載不同解析度圖片</li><li><code>&lt;img&gt;</code> 雖然有帶 <code>width</code> 與 <code>height</code> attribute，但卻是將完整圖片下載後才調整，因此浪費下載時間；而 <code>&lt;g-image&gt;</code> 是將圖片先調整過 width 與 height 才下載，size 會變小因此節省下載時間，user 體驗較佳</li><li><code>&lt;img&gt;</code> 會等圖片全部下載成功才顯示；而 <code>&lt;g-image&gt;</code> 會先下載 <code>低解析度</code> 版本圖片，等 <code>高解析度</code> 版本圖片下載成功後再顯示，user 體驗較佳</li><li><code>gridsome-transformer-remark</code> 會自動將 markdown 內的圖片轉成 <code>&lt;g-image&gt;</code></li></ul><h2 id="Crop-Image-by-Default"><a href="#Crop-Image-by-Default" class="headerlink" title="Crop Image by Default"></a>Crop Image by Default</h2><p><strong>pages/Index.vue</strong></p><p><img src="/images/gridsome/feature/g-image/g-image001.png" alt="g-image001"></p><p>在 <code>pages/Index.vue</code> 就有使用 <code>&lt;g-image&gt;</code>。</p><p><img src="/images/gridsome/feature/g-image/g-image000.png" alt="g-image000"></p><p>可發現其原始圖片為 <code>245</code> x <code>245</code>。</p><p><img src="/images/gridsome/feature/g-image/g-image003.png" alt="g-image003"></p><p>明確指定 <code>width</code> 與 <code>height</code>。</p><p><img src="/images/gridsome/feature/g-image/g-image002.png" alt="g-image002"></p><p>會發現實際下載圖片為 <code>200</code> x <code>200</code>，且時 <code>src</code> 也自帶 <code>width</code> 與 <code>height</code>。</p><h2 id="Fit"><a href="#Fit" class="headerlink" title="Fit"></a>Fit</h2><h3 id="Cover"><a href="#Cover" class="headerlink" title="Cover"></a>Cover</h3><p><img src="/images/gridsome/feature/g-image/g-image004.png" alt="g-image004"></p><p><code>fit</code> attribute 預設為 <code>cover</code>，表示會自動 crop 符合 <code>width</code> 與 <code>height</code>。</p><blockquote><p>由於指定 <code>width</code> 與 <code>height</code> 與原始比例相同，因此 <code>fit=&quot;cover&quot;</code> 無感</p></blockquote><p><img src="/images/gridsome/feature/g-image/g-image007.png" alt="g-image007"></p><p>若將 <code>width</code> 加以改變，可明顯看出圖片會以 crop 處理。</p><p><img src="/images/gridsome/feature/g-image/g-image008.png" alt="g-image008"></p><h3 id="Contain"><a href="#Contain" class="headerlink" title="Contain"></a>Contain</h3><p><img src="/images/gridsome/feature/g-image/g-image005.png" alt="g-image005"></p><p>當 <code>fit</code> 設定為 <code>contain</code> 時，則原始圖片會 <code>包含</code> 在指定 <code>width</code> 與 <code>height</code> 內。</p><p><img src="/images/gridsome/feature/g-image/g-image006.png" alt="g-image005"></p><h3 id="Fill"><a href="#Fill" class="headerlink" title="Fill"></a>Fill</h3><p><img src="/images/gridsome/feature/g-image/g-image009.png" alt="g-image009"></p><p>當 <code>fit</code> 設定為 <code>fill</code> 時，則原始圖片會破壞比例延伸滿足 <code>width</code> 與 <code>height</code>。</p><p><img src="/images/gridsome/feature/g-image/g-image010.png" alt="g-image010"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>若 <code>width</code> 與 <code>height</code> 與原比例相同，則 <code>fit=&quot;cover&quot;</code> 可省略</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.udemy.com/user/reed-barger/" target="_blank" rel="noopener">Reed Barger</a>, <a href="https://www.udemy.com/course/blazing-fast-vue-and-graphql-with-gridsome/learn/lecture/14862465#overview" target="_blank" rel="noopener">G-image for Performant Image Loading</a><br><a href="https://gridsome.org" target="_blank" rel="noopener">Gridsome</a>, <a href="https://gridsome.org/docs/images/" target="_blank" rel="noopener">Image processing</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Gridsome 特別提供 &lt;code&gt;&amp;lt;g-image&amp;gt;&lt;/code&gt; 支援 Image Processing 增進效率，實務上建議使用 &lt;code&gt;&amp;lt;g-image&amp;gt;&lt;/code&gt; 取代 &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt;。&lt;/p&gt;
     
     </summary>
     
