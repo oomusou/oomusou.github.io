@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-09-19T00:34:51.000Z",
-    "dateModified": "2020-09-19T00:37:07.085Z",
+    "dateModified": "2020-09-19T01:59:51.906Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -454,7 +454,7 @@ a:hover {
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 
-<span class="token comment" spellcheck="true">// counter :: Ref Number</span>
+<span class="token comment" spellcheck="true">// count :: Ref Number</span>
 <span class="token keyword">export</span> <span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
 
 <span class="token comment" spellcheck="true">// onClick :: () -> ()</span>
@@ -464,7 +464,7 @@ a:hover {
 <p>第 1 行</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
-  {{ counter }}
+  {{ count }}
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>HTML template 不再限定要在單一 root element 底下，這是很親民的改變。</p>
@@ -475,11 +475,11 @@ a:hover {
 <p>第 9 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 
-<span class="token comment" spellcheck="true">// counter :: Ref Number</span>
+<span class="token comment" spellcheck="true">// count :: Ref Number</span>
 <span class="token keyword">export</span> <span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>引用 <code>ref()</code> 建立 model。</p>
-<p><code>counter</code> model 由於要 binding 到 HTML template，因此需要 reactive，Vue 3 引進 <code>ref()</code> reactivity API 建立 <code>counter</code> model，並將其 initial value <code>0</code> 傳入 <code>ref()。</code></p>
+<p><code>count</code> model 由於要 binding 到 HTML template，因此需要 reactive，Vue 3 引進 <code>ref()</code> reactivity API 建立 <code>count</code> model，並將其 initial value <code>0</code> 傳入 <code>ref()。</code></p>
 <p>由於 <code>count</code> 需讓 HTML template 使用，因此加上 <code>export</code>。</p>
 <blockquote>
 <p><strong>ref()</strong><br><code>a -&gt; Ref a</code><br>由 primitive 建立 model</p>
@@ -495,9 +495,9 @@ a:hover {
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// onClick :: () -> ()</span>
 <span class="token keyword">export</span> <span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token punctuation">.</span>value<span class="token operator">++</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p><code>onClick()</code> method 對 <code>counter</code> model 遞增。</p>
+<p><code>onClick()</code> method 對 <code>count</code> model 遞增。</p>
 <p>由於不再使用 <code>this</code> 讀取 model，可放心使用 arrow function。</p>
-<p><code>counter</code> model 基於 <code>Ref&lt;T&gt;</code> type，因此要使用 <code>.value</code> 讀取其內部值。</p>
+<p><code>count</code> model 基於 <code>Ref&lt;T&gt;</code> type，因此要使用 <code>.value</code> 讀取其內部值。</p>
 <p>由於 <code>onClick()</code> 需讓 HTML template 使用，因此加上 <code>export</code> 。</p>
 <blockquote>
 <p>以上為 Vue 3 Composition API 標準寫法，既然 Vue 3 有其 Functional 特性，可進一步使用 Function Pipeline。</p>
@@ -534,10 +534,10 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>onClick()</code> 本質是 function，由於不再使用 <code>this</code> 讀取 model，理論上可使用 Ramda 的 <code>pipe()</code> 以 pure function 組合出 <code>onClick()</code>。</p>
 <ul>
-<li><code>pipe()</code> 要求都是 pure function，因此將 <code>counter</code> 改成 <code>() =&gt; counter</code></li>
-<li>由 <code>.value</code> 讀取 <code>counter</code> 內部值</li>
-<li>對 <code>counter</code> 加 <code>1</code></li>
-<li>將結果寫入 <code>counter.value</code></li>
+<li><code>pipe()</code> 要求都是 pure function，因此將 <code>count</code> 改成 <code>() =&gt; count</code></li>
+<li>由 <code>.value</code> 讀取 <code>count</code> 內部值</li>
+<li>對 <code>count</code> 加 <code>1</code></li>
+<li>將結果寫入 <code>count.value</code></li>
 </ul>
 <blockquote>
 <p>這種風格與 Promise Chain 很像，每個 <code>then()</code> 都是 function，且不斷將值傳到下一個 function。</p>
@@ -573,11 +573,11 @@ a:hover {
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
-<li><p>使用 <code>unwrap()</code> 讀取 <code>counter</code>，相當於 <code>() =&gt; counter.value</code></p>
+<li><p>使用 <code>unwrap()</code> 讀取 <code>count</code>，相當於 <code>() =&gt; count.value</code></p>
 </li>
-<li><p>使用 <code>inc()</code> 對 <code>counter</code> 加一，相當於 <code>x =&gt; x + 1</code></p>
+<li><p>使用 <code>inc()</code> 對 <code>count</code> 加一，相當於 <code>x =&gt; x + 1</code></p>
 </li>
-<li>使用 <code>effect()</code> 寫入 <code>counter</code>，相當於 <code>x =&gt; counter.value = x</code></li>
+<li>使用 <code>effect()</code> 寫入 <code>count</code>，相當於 <code>x =&gt; count.value = x</code></li>
 </ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>由經典的 counter 可發現 Vue 3 的最大改變在於 <code>this</code> 不見了，且 <code>data</code> 的初始值也搬出來由 <code>ref()</code> 建立，method 不再需要靠 <code>this</code> 存取 model，有助於 Extract Function 與 Function Pipeline</li>
