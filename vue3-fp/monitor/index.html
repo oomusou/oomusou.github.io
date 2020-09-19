@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>使用 monitor() 監視 Reactive Model | 點燈坊</title>
+<title>使用 monitor() 監視 Model | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -53,7 +53,7 @@
 <!-- Description -->
 <meta name="description" content="watch() 並非 Curry Function 不適合 Function Pipeline，Vue3-fp 提供了 Curry Function 版本的 monitor()。">
 <!-- Keywords -->
-<meta name="keywords" content=", Vue3-fp">
+<meta name="keywords" content=", Vue">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
 <meta http-equiv="Cache-Control" content="no-transform">
 <meta http-equiv="Cache-Control" content="no-siteapp">
@@ -165,7 +165,7 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="使用 monitor() 監視 Reactive Model | 點燈坊">
+	<meta property="og:title" content="使用 monitor() 監視 Model | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
 <meta property="og:url" content="https://fpjs.fun/vue3-fp/monitor/">
@@ -174,10 +174,10 @@ a:hover {
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-09-05T07:26:42.000Z">
-<meta property="article:modified_time" content="2020-09-05T07:26:42.000Z">
+<meta property="article:published_time" content="2020-09-18T12:26:08.000Z">
+<meta property="article:modified_time" content="2020-09-18T12:26:08.000Z">
 <meta property="article:author" content="Sam Xiao">
-<meta property="og:article:tag" content=", Vue3-fp">
+<meta property="og:article:tag" content=", Vue">
 
 
 	<!-- ### Analytics ### -->
@@ -202,15 +202,15 @@ a:hover {
         "@type": "WebPage",
         "@id": "https://fpjs.fun/vue3-fp/monitor/"
     },
-    "headline": "使用 monitor() 監視 Reactive Model | 點燈坊",
+    "headline": "使用 monitor() 監視 Model | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2020-09-05T07:26:42.000Z",
-    "dateModified": "2020-09-06T02:43:57.554Z",
+    "datePublished": "2020-09-18T12:26:08.000Z",
+    "dateModified": "2020-09-18T12:32:01.807Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -235,7 +235,7 @@ a:hover {
         "query-input": "required name=search_term_string"
     },
     
-    "keywords": ", Vue3-fp",
+    "keywords": ", Vue",
     "description": "watch() 並非 Curry Function 不適合 Function Pipeline，Vue3-fp 提供了 Curry Function 版本的 monitor()。"
 }
 </script>
@@ -428,13 +428,13 @@ a:hover {
 			<div class="card-inner-cell">
 				<div class="card-header">
 					
-<h1 class="card-title h3 mb-2">使用 monitor() 監視 Reactive Model</h1>
+<h1 class="card-title h3 mb-2">使用 monitor() 監視 Model</h1>
 
 
 <div class="post-header-info">
 	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
 		alt="Sam Xiao's Avatar">
-	<span>2020-09-05</span>
+	<span>2020-09-18</span>
 </div>
 				</div>
 				<div class="card-body">
@@ -443,36 +443,63 @@ a:hover {
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>Vue 3.0.0<br>Vue3-fp 0.0.4</p>
 <h2 id="Compositon-API"><a href="#Compositon-API" class="headerlink" title="Compositon API"></a>Compositon API</h2><p><img src="/images/vue3-fp/monitor/monitor000.png" alt="monitor"></p>
-<p>每秒鐘更新 counter，一旦 counter 更新就馬上 <code>console.log()</code>。</p>
+<p>每秒鐘更新 <code>count</code> model，一旦 model 更新就馬上 <code>console.log()</code>。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  {{ counter }}
+  {{ count }}
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> <span class="token punctuation">{</span> ref<span class="token punctuation">,</span> watch <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 
-<span class="token keyword">let</span> counter <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// count :: Ref Number</span>
+<span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// logCount :: Number -> ()</span>
+<span class="token keyword">let</span> logCount <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// incCount :: () -> ()</span>
+<span class="token keyword">let</span> incCount <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token punctuation">.</span>value<span class="token operator">++</span>
+
+<span class="token comment" spellcheck="true">// setup :: () -> Data</span>
+<span class="token keyword">let</span> setup <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token function">watch</span><span class="token punctuation">(</span>count<span class="token punctuation">,</span> logCount<span class="token punctuation">)</span>
+  <span class="token function">setInterval</span><span class="token punctuation">(</span>incCount<span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">{</span> count <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
 
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
   name<span class="token punctuation">:</span><span class="token string">'App'</span><span class="token punctuation">,</span>
-  setup<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-    <span class="token function">watch</span><span class="token punctuation">(</span>counter<span class="token punctuation">,</span> x <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> counter<span class="token punctuation">.</span>value<span class="token operator">++</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span>
+  setup
 
-    <span class="token keyword">return</span> <span class="token punctuation">{</span> counter <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>13 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">watch</span><span class="token punctuation">(</span>counter<span class="token punctuation">,</span> x <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><code>watch()</code> 第一個 argument 傳入要監視的 reactive model，第二個 argument 為要執行的 function。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>11 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// logCount :: Number -> ()</span>
+<span class="token keyword">let</span> logCount <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>將 model 由 <code>console.log()</code> 印出。</p>
+<p>14 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// incCount :: () -> ()</span>
+<span class="token keyword">let</span> incCount <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token punctuation">.</span>value<span class="token operator">++</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>將 model 遞增。</p>
+<p>17 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// setup :: () -> Data</span>
+<span class="token keyword">let</span> setup <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token function">watch</span><span class="token punctuation">(</span>count<span class="token punctuation">,</span> logCount<span class="token punctuation">)</span>
+  <span class="token function">setInterval</span><span class="token punctuation">(</span>incCount<span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">{</span> count <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>watch()</code> 第一個 argument 傳入要監視的 model，第二個 argument 為要執行的 function。</p>
 <blockquote>
-<p>這裡不能寫成 <code>watch(counter, console.log)</code>，因為 <code>watch()</code> 的 callback 有兩個 argument，第一個為 <code>目前值</code>，第二個為 <code>過去值</code>，這裏要明確表示只使用 <code>目前值</code>，故 <code>x</code> 不能省略</p>
+<p>這裡不能寫成 <code>watch(counter, logCount)</code>，因為 <code>watch()</code> 的 callback 有兩個 argument，第一個為 <code>目前值</code>，第二個為 <code>過去值</code>，這裏要明確表示只使用 <code>目前值</code>，故 <code>x</code> 不能省略</p>
 </blockquote>
 <h2 id="Function-Pipeline"><a href="#Function-Pipeline" class="headerlink" title="Function Pipeline"></a>Function Pipeline</h2><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  {{ counter }}
+  {{ count }}
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
@@ -481,26 +508,31 @@ a:hover {
 <span class="token keyword">import</span> <span class="token punctuation">{</span> unwrap<span class="token punctuation">,</span> effect <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> log<span class="token punctuation">,</span> interval <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
-<span class="token keyword">let</span> counter <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// count :: Ref Number</span>
+<span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
 
+<span class="token comment" spellcheck="true">// monitor :: Ref a -> (a -> *) -> StopHandle</span>
 <span class="token keyword">let</span> monitor <span class="token operator">=</span> v <span class="token operator">=</span><span class="token operator">></span> f <span class="token operator">=</span><span class="token operator">></span> <span class="token function">watch</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">f</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> logCounter <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+<span class="token comment" spellcheck="true">// logCount :: () -> ()</span>
+<span class="token keyword">let</span> logCount <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   log
 <span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> incCounter <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">unwrap</span><span class="token punctuation">(</span>counter<span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token comment" spellcheck="true">// incCount :: () -> ()</span>
+<span class="token keyword">let</span> incCount <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">unwrap</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">,</span>
   inc<span class="token punctuation">,</span>
-  <span class="token function">effect</span><span class="token punctuation">(</span>counter<span class="token punctuation">)</span>
+  <span class="token function">effect</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
+<span class="token comment" spellcheck="true">// setup :: () -> Data</span>
 <span class="token keyword">let</span> setup <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">always</span><span class="token punctuation">(</span>logCounter<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">monitor</span><span class="token punctuation">(</span>counter<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">thunkify</span><span class="token punctuation">(</span>incCounter<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">always</span><span class="token punctuation">(</span>logCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">monitor</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">thunkify</span><span class="token punctuation">(</span>incCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">interval</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">always</span><span class="token punctuation">(</span><span class="token punctuation">{</span> counter <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token function">always</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
@@ -508,52 +540,61 @@ a:hover {
   setup
 <span class="token punctuation">}</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>13 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> monitor <span class="token operator">=</span> v <span class="token operator">=</span><span class="token operator">></span> f <span class="token operator">=</span><span class="token operator">></span> <span class="token function">watch</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">f</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>14 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// monitor :: Ref a -> (a -> *) -> StopHandle</span>
+<span class="token keyword">let</span> monitor <span class="token operator">=</span> v <span class="token operator">=</span><span class="token operator">></span> f <span class="token operator">=</span><span class="token operator">></span> <span class="token function">watch</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">f</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p><code>watch()</code> 並非 curry function，因此自行定義 <code>monitor()</code> 將 <code>watch()</code> 封裝成 curry function 方便 Function Pipeline。</p>
-<p>25 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> setup <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">always</span><span class="token punctuation">(</span>logCounter<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">monitor</span><span class="token punctuation">(</span>counter<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">thunkify</span><span class="token punctuation">(</span>incCounter<span class="token punctuation">)</span><span class="token punctuation">,</span>
+<p>29 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// setup :: () -> Data</span>
+<span class="token keyword">let</span> setup <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">always</span><span class="token punctuation">(</span>logCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">monitor</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">thunkify</span><span class="token punctuation">(</span>incCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">interval</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">always</span><span class="token punctuation">(</span><span class="token punctuation">{</span> counter <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token function">always</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>使用 <code>always()</code> 將 <code>logCounter()</code> 包成 function 傳給 <code>monitor</code>。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用 <code>always()</code> 將 <code>logCount()</code> 包成 function 傳給 <code>monitor()</code>。</p>
 <blockquote>
 <p><code>watchEffect()</code> 因為要求 Thunk，所以使用 <code>thunkify()</code> 包裝，但 <code>monitor()</code> 只需一般 function，故使用 <code>always()</code> 即可</p>
 </blockquote>
 <h2 id="Vue3-fp"><a href="#Vue3-fp" class="headerlink" title="Vue3-fp"></a>Vue3-fp</h2><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  {{ counter }}
+  {{ count }}
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ref<span class="token punctuation">,</span> watch <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> always<span class="token punctuation">,</span> thunkify<span class="token punctuation">,</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> unwrap<span class="token punctuation">,</span> effect<span class="token punctuation">,</span> monitor <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> unwrap<span class="token punctuation">,</span> effect <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> log<span class="token punctuation">,</span> interval <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
-<span class="token keyword">let</span> counter <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token comment" spellcheck="true">// count :: Ref Number</span>
+<span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> logCounter <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+<span class="token comment" spellcheck="true">// monitor :: Ref a -> (a -> *) -> StopHandle</span>
+<span class="token keyword">let</span> monitor <span class="token operator">=</span> v <span class="token operator">=</span><span class="token operator">></span> f <span class="token operator">=</span><span class="token operator">></span> <span class="token function">watch</span><span class="token punctuation">(</span>v<span class="token punctuation">,</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">f</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token comment" spellcheck="true">// logCount :: () -> ()</span>
+<span class="token keyword">let</span> logCount <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   log
 <span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> incCounter <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">unwrap</span><span class="token punctuation">(</span>counter<span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token comment" spellcheck="true">// incCount :: () -> ()</span>
+<span class="token keyword">let</span> incCount <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">unwrap</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">,</span>
   inc<span class="token punctuation">,</span>
-  <span class="token function">effect</span><span class="token punctuation">(</span>counter<span class="token punctuation">)</span>
+  <span class="token function">effect</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
+<span class="token comment" spellcheck="true">// setup :: () -> Data</span>
 <span class="token keyword">let</span> setup <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">always</span><span class="token punctuation">(</span>logCounter<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">monitor</span><span class="token punctuation">(</span>counter<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">thunkify</span><span class="token punctuation">(</span>incCounter<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">always</span><span class="token punctuation">(</span>logCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">monitor</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">thunkify</span><span class="token punctuation">(</span>incCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">interval</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">always</span><span class="token punctuation">(</span><span class="token punctuation">{</span> counter <span class="token punctuation">}</span><span class="token punctuation">)</span>
+  <span class="token function">always</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
@@ -561,7 +602,7 @@ a:hover {
   setup
 <span class="token punctuation">}</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 8 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> unwrap<span class="token punctuation">,</span> effect<span class="token punctuation">,</span> monitor <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -569,8 +610,8 @@ a:hover {
 <blockquote>
 <p><strong>monitor()</strong><br><code>Ref a -&gt; (a -&gt; *) -&gt; StopHandle</code><br><code>watch()</code> 的 curry function 版本</p>
 </blockquote>
-<p><code>Ref a</code>：傳入要監視的 reactive model</p>
-<p><code>(a -&gt; *)</code>：傳入若 reactive model 變動要執行的 function</p>
+<p><code>Ref a</code>：傳入要監視的 model</p>
+<p><code>(a -&gt; *)</code>：傳入若 model 變動要執行的 function</p>
 <p><code>StopHandle</code>：回傳 StopHandle</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>並非所有 function 都要 <code>thunkify()</code>，要視 function 的 signature 決定</li>
@@ -584,7 +625,7 @@ a:hover {
   <span class="post-tags-list mt-2">
     
     
-    <a class="post-tags-list-item" href='/tags/Vue3-fp/'>#&nbsp;Vue3-fp</a>
+    <a class="post-tags-list-item" href='/tags/Vue/'>#&nbsp;Vue</a>
     
   </span>
   
@@ -595,18 +636,18 @@ a:hover {
 		<!-- Prev Nav -->
 		
 		<li class="page-item page-prev">
-			<a href="/ramda/cookbook/ap-seq/">
+			<a href="/vue3/general/overview/">
 				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">ap() 與 seq() 之比較</div>
+				<div class="page-item-subtitle">Vue 3 初體驗</div>
 			</a>
 		</li>
 		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/ramda/logic/cond/">
+			<a href="/vue3-fp/effect/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 cond() 實現 Switch Case</div>
+				<div class="page-item-subtitle">使用 effect() 寫入 Model</div>
 			</a>
 		</li>
 		
