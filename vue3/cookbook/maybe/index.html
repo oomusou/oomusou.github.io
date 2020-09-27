@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>在 Vue 3 使用 Maybe Monad | 點燈坊</title>
+<title>Composition API 使用 Maybe Monad | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -53,7 +53,7 @@
 <!-- Description -->
 <meta name="description" content="由於 Vue 3 的 Composition API，不只 Function Pipeline 與 Point-free 得以實現，如 FP 慣用的 Maybe Monad 在 Vue 3 裡也得以發揮。">
 <!-- Keywords -->
-<meta name="keywords" content=", Vue">
+<meta name="keywords" content=", Vue, Maybe">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
 <meta http-equiv="Cache-Control" content="no-transform">
 <meta http-equiv="Cache-Control" content="no-siteapp">
@@ -165,7 +165,7 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="在 Vue 3 使用 Maybe Monad | 點燈坊">
+	<meta property="og:title" content="Composition API 使用 Maybe Monad | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
 <meta property="og:url" content="https://fpjs.fun/vue3/cookbook/maybe/">
@@ -174,10 +174,10 @@ a:hover {
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-09-20T01:55:33.000Z">
-<meta property="article:modified_time" content="2020-09-20T01:55:33.000Z">
+<meta property="article:published_time" content="2020-09-27T12:34:47.000Z">
+<meta property="article:modified_time" content="2020-09-27T12:34:47.000Z">
 <meta property="article:author" content="Sam Xiao">
-<meta property="og:article:tag" content=", Vue">
+<meta property="og:article:tag" content=", Vue, Maybe">
 
 
 	<!-- ### Analytics ### -->
@@ -202,15 +202,15 @@ a:hover {
         "@type": "WebPage",
         "@id": "https://fpjs.fun/vue3/cookbook/maybe/"
     },
-    "headline": "在 Vue 3 使用 Maybe Monad | 點燈坊",
+    "headline": "Composition API 使用 Maybe Monad | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2020-09-20T01:55:33.000Z",
-    "dateModified": "2020-09-25T14:27:04.998Z",
+    "datePublished": "2020-09-27T12:34:47.000Z",
+    "dateModified": "2020-09-27T12:36:40.387Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -235,7 +235,7 @@ a:hover {
         "query-input": "required name=search_term_string"
     },
     
-    "keywords": ", Vue",
+    "keywords": ", Vue, Maybe",
     "description": "由於 Vue 3 的 Composition API，不只 Function Pipeline 與 Point-free 得以實現，如 FP 慣用的 Maybe Monad 在 Vue 3 裡也得以發揮。"
 }
 </script>
@@ -428,13 +428,13 @@ a:hover {
 			<div class="card-inner-cell">
 				<div class="card-header">
 					
-<h1 class="card-title h3 mb-2">在 Vue 3 使用 Maybe Monad</h1>
+<h1 class="card-title h3 mb-2">Composition API 使用 Maybe Monad</h1>
 
 
 <div class="post-header-info">
 	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
 		alt="Sam Xiao's Avatar">
-	<span>2020-09-20</span>
+	<span>2020-09-27</span>
 </div>
 				</div>
 				<div class="card-body">
@@ -503,7 +503,7 @@ a:hover {
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> <span class="token punctuation">{</span> ref<span class="token punctuation">,</span> watchEffect <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> effect<span class="token punctuation">,</span> unwrap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> read<span class="token punctuation">,</span> write <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> propEq <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
@@ -522,11 +522,11 @@ a:hover {
 
 <span class="token comment" spellcheck="true">// searchTitle :: () -> ()</span>
 <span class="token keyword">let</span> searchTitle <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">unwrap</span><span class="token punctuation">(</span>searchQuery<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">read</span><span class="token punctuation">(</span>searchQuery<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">propEq</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">flip</span><span class="token punctuation">(</span>find<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">maybe</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">effect</span><span class="token punctuation">(</span>searchResult<span class="token punctuation">)</span>
+  <span class="token function">write</span><span class="token punctuation">(</span>searchResult<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
 <span class="token function">watchEffect</span><span class="token punctuation">(</span>searchTitle<span class="token punctuation">)</span>
@@ -535,20 +535,20 @@ a:hover {
 <p>25 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// searchTitle :: () -> ()</span>
 <span class="token keyword">let</span> searchTitle <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">unwrap</span><span class="token punctuation">(</span>searchQuery<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">read</span><span class="token punctuation">(</span>searchQuery<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">propEq</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">flip</span><span class="token punctuation">(</span>find<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">maybe</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">effect</span><span class="token punctuation">(</span>searchResult<span class="token punctuation">)</span>
+  <span class="token function">write</span><span class="token punctuation">(</span>searchResult<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
-<li>使用 <code>unwrap()</code> 讀取 <code>searchQuery</code> reactive reference</li>
+<li>使用 <code>read()</code> 讀取 <code>searchQuery</code> reactive reference</li>
 <li>使用 <code>propEq()</code> 組合 <code>find()</code> 所需要的 callback</li>
 <li>使用 Sanctuary 的 <code>find()</code>，與 <code>Array.prototype.find()</code> 的差異是無論找不找得到都會傳 Maybe Monad，因此不用擔心 <code>undefined</code> 問題</li>
 <li>使用 <code>flip()</code> 對 <code>find()</code> 的 argument 作翻轉，原本 <code>find()</code> 是先 predicate，然後才是 data，為了要配合 Function Pipeline，特別 <code>flip()</code> 先接上 data，然後才是接 <code>propEq()</code> 傳來的 predicate</li>
 <li>使用 <code>maybe()</code> 從 Maybe Monad 取得內部值，若 Nothing 則傳回 empty string，若 Just 則讀取其 <code>price</code> property</li>
-<li>最後使用 <code>effect()</code> 寫入 <code>searchResult</code> reactive reference</li>
+<li>最後使用 <code>write()</code> 寫入 <code>searchResult</code> reactive reference</li>
 </ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>當使用 Sanctuary 的 <code>find()</code> 時，若要搭配 <code>flip()</code>，記得要使用 Sanctuary 的 <code>flip()</code>，而不能使用 Ramda 的 <code>flip()</code>，否則無法真正確翻轉 <code>find()</code> 的 argument</li>
@@ -565,6 +565,8 @@ a:hover {
     
     <a class="post-tags-list-item" href='/tags/Vue/'>#&nbsp;Vue</a>
     
+    <a class="post-tags-list-item" href='/tags/Maybe/'>#&nbsp;Maybe</a>
+    
   </span>
   
 </p>
@@ -573,19 +575,12 @@ a:hover {
 	<ul class="pagination">
 		<!-- Prev Nav -->
 		
-		<li class="page-item page-prev">
-			<a href="/css/layout/float/">
-				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 float 設定文繞圖</div>
-			</a>
-		</li>
-		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/ramda/array/sortbydate/">
+			<a href="/vue3/composition/event/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 sort() 根據日期排序</div>
+				<div class="page-item-subtitle">使用 Event 從 Component 內傳出 Data</div>
 			</a>
 		</li>
 		
