@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-10-18T07:05:08.000Z",
-    "dateModified": "2020-10-18T07:09:47.381Z",
+    "dateModified": "2020-10-18T11:57:25.749Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -441,7 +441,7 @@ a:hover {
 					<article id="post-content">
 						<p>Tailwind 的 Utility 其實就是一堆預先定義好的 CSS Class，若要能根據 State 動態改變 Utility 使其 Reactive，就要使用 Vue 的 Class Binding。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 2.6.11<br>Tailwind 1.6.0</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 2.6.11<br>Tailwind 1.9.0</p>
 <h2 id="String"><a href="#String" class="headerlink" title="String"></a>String</h2><p><img src="/images/vue/css/class-binding/class000.png" alt="class000"></p>
 <p><code>Tailwind Rocks</code> 使用 Tailwind 的 <code>text-red-600</code> utility 成為紅色。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
@@ -465,7 +465,7 @@ a:hover {
   fontColor<span class="token punctuation">:</span> <span class="token string">'text-red-600'</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>將 <code>fontColor</code> 指定為 <code>text-red-600</code>。</p>
+<p>將 <code>fontColor</code> state 指定為 <code>text-red-600</code>。</p>
 <h2 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h2><p><img src="/images/vue/css/class-binding/class000.png" alt="class000"></p>
 <p>也可將 <code>class</code> 綁定到 Object。</p>
 <h3 id="Static-Binding"><a href="#Static-Binding" class="headerlink" title="Static Binding"></a>Static Binding</h3><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
@@ -656,6 +656,32 @@ a:hover {
 <span class="token punctuation">]</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>只要該 computed 回傳 Array 即可。</p>
+<h3 id="Point-free-1"><a href="#Point-free-1" class="headerlink" title="Point-free"></a>Point-free</h3><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">:class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>changeFontStyle<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Tailwind Rocks<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> always<span class="token punctuation">,</span> split <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> changeFontStyle <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'text-3xl, text-red-600'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">split</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  computed<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    changeFontStyle
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 8 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> changeFontStyle <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'text-3xl, text-red-600'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">split</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>既然 <code>changeFontColor</code> 為 function，就可使用 Ramda 組合使其 point-free。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>CSS binding 可使用 Object 或 Array，亦可使用 computed，只要能回傳 Object 或 Array 即可</li>
 <li>若要套用多 utility，除了使用 Array 外，也能使用 Object Array</li>
@@ -680,6 +706,13 @@ a:hover {
 				<div class="post-nav px-2 bg-gray">
 	<ul class="pagination">
 		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/vue3/css/class-binding/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">Tailwind CSS 與 Class Binding</div>
+			</a>
+		</li>
 		
 		<!-- Next Nav -->
 		
