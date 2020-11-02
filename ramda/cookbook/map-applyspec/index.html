@@ -51,7 +51,7 @@
 
 <meta name="format-detection" content="telephone=no">
 <!-- Description -->
-<meta name="description" content="從 API 取得 Object Array 時，常會遇到 Package 雖然也接受 Object Array，但 Property 與 API 回傳不同，此時可使用 map() + evolve() 加以改變 Property。">
+<meta name="description" content="從 API 取得 Object Array 時，常會遇到 Package 雖然也接受 Object Array，但 Property 與 API 回傳不同，此時可使用 map() + applySpec() 加以改變 Property。">
 <!-- Keywords -->
 <meta name="keywords" content=", Ramda">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
@@ -168,14 +168,14 @@ a:hover {
 	<meta property="og:title" content="如何將 Object Array 改變 Property ? | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://fpjs.fun/ramda/cookbook/map-evolve/">
+<meta property="og:url" content="https://fpjs.fun/ramda/cookbook/map-applyspec/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
-<meta property="og:description" content="從 API 取得 Object Array 時，常會遇到 Package 雖然也接受 Object Array，但 Property 與 API 回傳不同，此時可使用 map() + evolve() 加以改變 Property。">
+<meta property="og:description" content="從 API 取得 Object Array 時，常會遇到 Package 雖然也接受 Object Array，但 Property 與 API 回傳不同，此時可使用 map() + applySpec() 加以改變 Property。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-11-02T07:40:22.000Z">
-<meta property="article:modified_time" content="2020-11-02T07:40:22.000Z">
+<meta property="article:published_time" content="2020-11-02T10:57:32.000Z">
+<meta property="article:modified_time" content="2020-11-02T10:57:32.000Z">
 <meta property="article:author" content="Sam Xiao">
 <meta property="og:article:tag" content=", Ramda">
 
@@ -188,19 +188,19 @@ a:hover {
 
 
 	<!-- ### Canonical link ### -->
-	<link rel="canonical" href="https://fpjs.fun/ramda/cookbook/map-evolve/">
+	<link rel="canonical" href="https://fpjs.fun/ramda/cookbook/map-applyspec/">
 	<!-- ### Structured Data ### -->
 	
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://fpjs.fun/ramda/cookbook/map-evolve/",
+    "url": "https://fpjs.fun/ramda/cookbook/map-applyspec/",
     "@type": "BlogPosting",
     "logo": "https://fpjs.fun/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://fpjs.fun/ramda/cookbook/map-evolve/"
+        "@id": "https://fpjs.fun/ramda/cookbook/map-applyspec/"
     },
     "headline": "如何將 Object Array 改變 Property ? | 點燈坊",
     
@@ -209,8 +209,8 @@ a:hover {
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2020-11-02T07:40:22.000Z",
-    "dateModified": "2020-11-02T08:02:46.097Z",
+    "datePublished": "2020-11-02T10:57:32.000Z",
+    "dateModified": "2020-11-02T10:59:29.196Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -236,7 +236,7 @@ a:hover {
     },
     
     "keywords": ", Ramda",
-    "description": "從 API 取得 Object Array 時，常會遇到 Package 雖然也接受 Object Array，但 Property 與 API 回傳不同，此時可使用 map() + evolve() 加以改變 Property。"
+    "description": "從 API 取得 Object Array 時，常會遇到 Package 雖然也接受 Object Array，但 Property 與 API 回傳不同，此時可使用 map() + applySpec() 加以改變 Property。"
 }
 </script>
 
@@ -439,7 +439,7 @@ a:hover {
 				</div>
 				<div class="card-body">
 					<article id="post-content">
-						<p>從 API 取得 Object Array 時，常會遇到 Package 雖然也接受 Object Array，但 Property 與 API 回傳不同，此時可使用 <code>map()</code> + <code>evolve()</code> 加以改變 Property。</p>
+						<p>從 API 取得 Object Array 時，常會遇到 Package 雖然也接受 Object Array，但 Property 與 API 回傳不同，此時可使用 <code>map()</code> + <code>applySpec()</code> 加以改變 Property。</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
 <h2 id="Array-prototype-map"><a href="#Array-prototype-map" class="headerlink" title="Array.prototype.map()"></a>Array.prototype.map()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
@@ -453,7 +453,7 @@ a:hover {
 <span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>最直覺是使用 ECMAScript 自帶的 <code>map()</code>，先從 argument 中 destructure 出 property，並直接新 property 組合新 Object 回傳。</p>
-<p><img src="/images/ramda/cookbook/map-evolve/map000.png" alt="map000"></p>
+<p><img src="/images/ramda/cookbook/map-applyspec/map000.png" alt="map000"></p>
 <h2 id="map"><a href="#map" class="headerlink" title="map()"></a>map()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
@@ -467,8 +467,8 @@ a:hover {
 <span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可使用 Ramda 的 <code>map()</code>，如此 <code>f()</code> 可 Point-free，唯 <code>map()</code> 的 callback 還沒有 Point-free。</p>
-<p><img src="/images/ramda/cookbook/map-evolve/map001.png" alt="map001"></p>
-<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> evolve<span class="token punctuation">,</span> prop <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<p><img src="/images/ramda/cookbook/map-applyspec/map001.png" alt="map001"></p>
+<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> applySpec<span class="token punctuation">,</span> prop <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">'Sam'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
@@ -476,19 +476,19 @@ a:hover {
   <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> name<span class="token punctuation">:</span> <span class="token string">'Kevin'</span> <span class="token punctuation">}</span>
 <span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">evolve</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  key<span class="token punctuation">:</span> <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  value<span class="token punctuation">:</span> <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">applySpec</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  <span class="token string">'key'</span><span class="token punctuation">:</span> <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token string">'value'</span><span class="token punctuation">:</span> <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 <span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>map()</code> 的 callback 可使用 <code>evolve()</code> 組合，transformation function 可使用 <code>prop()</code> 取代 object destructure。</p>
-<p><img src="/images/ramda/cookbook/map-evolve/map002.png" alt="map002"></p>
+<p><code>map()</code> 的 callback 可使用 <code>applySpec()</code> 組合，transformation function 可使用 <code>prop()</code> 取代 object destructure。</p>
+<p><img src="/images/ramda/cookbook/map-applyspec/map002.png" alt="map002"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>在 Object Array 改變 property 在實務上經常遇到，使用 <code>map()</code> + <code>evolve()</code> 可使 function 都 Point-free</li>
+<li>在 Object Array 改變 property 在實務上經常遇到，使用 <code>map()</code> + <code>applySpec()</code> 可使 function 全部 Point-free</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#map" target="_blank" rel="noopener">map()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#evolve" target="_blank" rel="noopener">evolve()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#prop" target="_blank" rel="noopener">prop()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#map" target="_blank" rel="noopener">map()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#applySpec" target="_blank" rel="noopener">applySpec()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#prop" target="_blank" rel="noopener">prop()</a></p>
 
 					</article>
 					<p class="post-footer-info mb-0 pt-2">
