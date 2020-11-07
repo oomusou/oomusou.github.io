@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-11-07T04:04:44.000Z",
-    "dateModified": "2020-11-07T08:22:30.901Z",
+    "dateModified": "2020-11-07T13:20:33.645Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -514,6 +514,67 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於 <code>div()</code> 回傳 Either Monad，這使得 Function Pipeline 得以繼續，只要使用 <code>map()</code> 繼需接 <code>add(1)</code> 即可。</p>
 <p><img src="/images/sanctuary/either/overview/either001.png" alt="either001"></p>
+<h2 id="Either-Chain"><a href="#Either-Chain" class="headerlink" title="Either Chain"></a>Either Chain</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+
+<span class="token keyword">let</span> <span class="token punctuation">{</span> Left<span class="token punctuation">,</span> Right<span class="token punctuation">,</span> map<span class="token punctuation">,</span> add<span class="token punctuation">,</span> mult<span class="token punctuation">:</span> mul <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> div <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> y <span class="token operator">=</span><span class="token operator">></span> 
+  y <span class="token operator">===</span> <span class="token number">0</span> <span class="token operator">?</span> 
+  <span class="token function">Left</span><span class="token punctuation">(</span><span class="token string">'Can not divide by zero'</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> 
+  <span class="token function">Right</span><span class="token punctuation">(</span>x <span class="token operator">/</span> y<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">div</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">mul</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Either Monad 的價值在於後續處理。</p>
+<p>若你想在 <code>add()</code> 之後繼續在 Number 使用 <code>mul()</code>，可繼續 <code>map()</code> <code>mul()</code> ，而不用擔心過程中出現 Exception，反正過程中只要出現 Exception 就會回傳 Left 並終止後續 <code>map()</code> 處理。</p>
+<p>反之若你提早 <code>either()</code> 成一般值，後面的運算就必須自行承擔 Exception 風險。</p>
+<p>所以我們都會希望 function 能回傳 Either Monad，只有在最後要顯示時才用 <code>either()</code> 從 Either Monad 內取出，這與處理 Promise 原則相同。</p>
+<p><img src="/images/sanctuary/either/overview/either004.png" alt="either004"></p>
+<h2 id="Associative-Law"><a href="#Associative-Law" class="headerlink" title="Associative Law"></a>Associative Law</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+
+<span class="token keyword">let</span> <span class="token punctuation">{</span> Left<span class="token punctuation">,</span> Right<span class="token punctuation">,</span> map<span class="token punctuation">,</span> add<span class="token punctuation">,</span> mult<span class="token punctuation">:</span> mul <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> div <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> y <span class="token operator">=</span><span class="token operator">></span> 
+  y <span class="token operator">===</span> <span class="token number">0</span> <span class="token operator">?</span> 
+  <span class="token function">Left</span><span class="token punctuation">(</span><span class="token string">'Can not divide by zero'</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> 
+  <span class="token function">Right</span><span class="token punctuation">(</span>x <span class="token operator">/</span> y<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> transform <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">mul</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>  
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">div</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span>transform<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>11 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> transform <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">mul</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>  
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">div</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span>transform<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Either Monad 必須使用 <code>map()</code> 才能改變其內部值，這與 Promise 需使用 <code>then()</code> 一樣，因此可能發現一堆 <code>map()</code>。</p>
+<p>Either Monad 與 Promise 都支援 associative law，可將 pure function 先使用 <code>pipe()</code> 組合起來，一次傳給 <code>map()</code> 即可。</p>
+<p><img src="/images/sanctuary/either/overview/either005.png" alt="either005"></p>
 <h2 id="either"><a href="#either" class="headerlink" title="either()"></a>either()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
@@ -584,76 +645,9 @@ a:hover {
 <p><code>Either a b</code>：data 為 Either Monad</p>
 <p><code>b</code>：回傳 Either Monad 內部值</p>
 <p><img src="/images/sanctuary/either/overview/either003.png" alt="either003"></p>
-<h2 id="Either-Chain"><a href="#Either-Chain" class="headerlink" title="Either Chain"></a>Either Chain</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
-
-<span class="token keyword">let</span> <span class="token punctuation">{</span> Left<span class="token punctuation">,</span> Right<span class="token punctuation">,</span> map<span class="token punctuation">,</span> add<span class="token punctuation">,</span> mult<span class="token punctuation">:</span> mul<span class="token punctuation">,</span> either<span class="token punctuation">,</span> show<span class="token punctuation">,</span> I <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> div <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> y <span class="token operator">=</span><span class="token operator">></span> 
-  y <span class="token operator">===</span> <span class="token number">0</span> <span class="token operator">?</span> 
-  <span class="token function">Left</span><span class="token punctuation">(</span><span class="token string">'Can not divide by zero'</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> 
-  <span class="token function">Right</span><span class="token punctuation">(</span>x <span class="token operator">/</span> y<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">div</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">mul</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">either</span><span class="token punctuation">(</span>show<span class="token punctuation">)</span><span class="token punctuation">(</span>I<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<blockquote>
-<p>Q：回傳 Either Monad 好麻煩喔，最後還要用 <code>either()</code> 才能取出值！！</p>
-</blockquote>
-<p>其實回傳 Either Monad 的價值在於後續的處理。</p>
-<p>若你想在 <code>add()</code> 之後繼續在 Number 使用 <code>mul()</code>，可繼續 <code>map()</code> <code>mul()</code> ，而不用擔心過程中出現 <code>exception</code>，反正過程中只要出現 Exception 就會回傳 Left 並終止後續 <code>map()</code> 處理。</p>
-<p>反之若你提早 <code>either()</code> 成一般值，後面的運算就必須自行承擔 Exception 風險。</p>
-<p>所以我們都會希望 function 能回傳 Either Monad，只有在最後要顯示時才用 <code>either()</code> 從 Either Monad 內取出，這與處理 Promise 的原則相同。</p>
-<p><img src="/images/sanctuary/either/overview/either004.png" alt="either004"></p>
-<h2 id="Associative-Law"><a href="#Associative-Law" class="headerlink" title="Associative Law"></a>Associative Law</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
-
-<span class="token keyword">let</span> <span class="token punctuation">{</span> Left<span class="token punctuation">,</span> Right<span class="token punctuation">,</span> map<span class="token punctuation">,</span> add<span class="token punctuation">,</span> mult<span class="token punctuation">:</span> mul<span class="token punctuation">,</span> either<span class="token punctuation">,</span> show<span class="token punctuation">,</span> I <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> div <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> y <span class="token operator">=</span><span class="token operator">></span> 
-  y <span class="token operator">===</span> <span class="token number">0</span> <span class="token operator">?</span> 
-  <span class="token function">Left</span><span class="token punctuation">(</span><span class="token string">'Can not divide by zero'</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> 
-  <span class="token function">Right</span><span class="token punctuation">(</span>x <span class="token operator">/</span> y<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> transform <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">mul</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>  
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">div</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span>transform<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">either</span><span class="token punctuation">(</span>show<span class="token punctuation">)</span><span class="token punctuation">(</span>I<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>11 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> transform <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">mul</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>  
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">div</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span>transform<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">either</span><span class="token punctuation">(</span>show<span class="token punctuation">)</span><span class="token punctuation">(</span>I<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Either Monad 必須使用 <code>map()</code> 才能改變其內部值，這與 Promise 需使用 <code>then()</code> 一樣，因此可能發現一堆 <code>map()</code>。</p>
-<p>Either Monad 與 Promise 都支援 associative law，可將 pure function 先使用 <code>pipe()</code> 組合起來，一次傳給 <code>map()</code> 即可。</p>
-<p><img src="/images/sanctuary/either/overview/either005.png" alt="either005"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>FP 使用 Either Monad 處理 Exception 為大勢所趨，因為 <code>try catch</code> 無法在 Function Pipeline 下處理</li>
-<li>Either 將 exception 包在 Monad Monad 內，使得 Function Pipeline 得以繼續，重點是我們還能如 Maybe 與 Promise 一樣繼續在 Either 內處理，直到最後再以 <code>either()</code> 或 <code>fromEither()</code> 從 Either 內取出結果即可</li>
+<li>FP 必須使用 Either Monad 處理 Exception，因為 <code>try catch</code> 無法在 Function Pipeline 下使用</li>
+<li>Either 將 Exception 包在 Monad Monad 內，使得 Function Pipeline 得以繼續，重點是我們還能如 Maybe 與 Promise 一樣繼續在 Either 內處理，直到最後再以 <code>either()</code> 或 <code>fromEither()</code> 從 Either 內取出結果即可</li>
 <li>Either Monad 支援 associative law，可將 pure function 先抽出來，避免一堆 <code>map()</code> 出現</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://sanctuary.js.org" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://sanctuary.js.org/#section:either" target="_blank" rel="noopener">Either</a><br><a href="https://blog.logrocket.com" target="_blank" rel="noopener">LogRocket</a>, <a href="https://blog.logrocket.com/elegant-error-handling-with-the-javascript-either-monad-76c7ae4924a1/" target="_blank" rel="noopener">Elegant Error Handling with the JavaScript Either Monad</a><br><a href="https://www.hackdoor.io/authors/3nxYO2ek/michele-riva" target="_blank" rel="noopener">Michele Riva</a>, <a href="https://www.hackdoor.io/articles/zOpqRQD1/handling-exceptions-using-the-either-monad-in-javascript?source=gama" target="_blank" rel="noopener">Handling Exception Using the Either Monad in JavaScript</a></p>
