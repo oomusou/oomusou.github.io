@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2020-11-17T00:52:56.000Z",
-    "dateModified": "2020-11-17T00:54:27.859Z",
+    "dateModified": "2020-11-17T01:33:32.563Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -441,7 +441,7 @@ a:hover {
 						<p>Functor 是 Monadic Programming 中最基本 Container，透過自行實作 Functor 可更清楚了解 Functor 本質。</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>ECMAScript 2015</p>
-<h2 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">class</span> <span class="token class-name">Functor</span> <span class="token punctuation">{</span>
   <span class="token function">constructor</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
@@ -454,7 +454,7 @@ a:hover {
 <span class="token punctuation">}</span>
 
 <span class="token keyword">let</span> functor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Functor</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
-<span class="token function">map</span><span class="token punctuation">(</span>inc<span class="token punctuation">,</span> functor<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+functor<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>inc<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用 class 實現 container。</p>
 <p>第 4 行</p>
@@ -472,18 +472,14 @@ a:hover {
 <p>將 container 內部 <code>_x</code> 透過傳入 <code>f()</code> 運算後，重新使用 <code>Functor.of()</code> 包成 Functor 回傳。</p>
 <p>13 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> functor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Functor</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
-<span class="token function">map</span><span class="token punctuation">(</span>inc<span class="token punctuation">,</span> functor<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+functor<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>inc<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>由 <code>new Functor</code> 建立 functor，因為符合 Functor 規定，因此可使用 Ramda 的 <code>map()</code>。</p>
-<blockquote>
-<p><strong>map()</strong><br>Functor f =&gt; (a → b) → f a → f b</p>
-</blockquote>
-<p>Ramda 的 <code>map()</code> 規定 <code>f a</code> container 的 <code>f</code> 為 Functor。</p>
-<blockquote>
-<p>可發現只要符合 Functor 定義的 container，就可使用 Ramda 的 <code>map()</code></p>
-</blockquote>
+<p>由 <code>new Functor</code> 建立 functor，將 <code>inc()</code> 傳入剛建立的 <code>map()</code>。</p>
+<p>根據 Fantasy Land 定義：</p>
+<p><code>fantasy-land/map :: Functor f =&gt; f a ~&gt; (a → b) → f a → f b</code></p>
+<p>Functor 必須有 <code>map()</code> method 才是 Functor。</p>
 <p><img src="/images/monadic/functor/my-functor/functor001.png" alt="functor001"></p>
-<h2 id="Prototype"><a href="#Prototype" class="headerlink" title="Prototype"></a>Prototype</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Prototype"><a href="#Prototype" class="headerlink" title="Prototype"></a>Prototype</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> Functor <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">this</span><span class="token punctuation">.</span>_x <span class="token operator">=</span> x
@@ -494,9 +490,9 @@ Functor<span class="token punctuation">.</span>prototype<span class="token punct
 <span class="token punctuation">}</span>
 
 <span class="token keyword">let</span> functor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Functor</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
-<span class="token function">map</span><span class="token punctuation">(</span>inc<span class="token punctuation">,</span> functor<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+functor<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>inc<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>也可使用 prototype 實現 container。</p>
+<p>也可使用 prototype 實現 Functor。</p>
 <p>第 3 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> Functor <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">this</span><span class="token punctuation">.</span>_x <span class="token operator">=</span> x
@@ -510,8 +506,8 @@ Functor<span class="token punctuation">.</span>prototype<span class="token punct
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>直接在 prototype 建立 <code>map()</code> instance method。</p>
 <p>13 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> functor <span class="token operator">=</span> Functor<span class="token punctuation">.</span><span class="token keyword">of</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
-<span class="token function">map</span><span class="token punctuation">(</span>inc<span class="token punctuation">,</span> functor<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> functor <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Functor</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+functor<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>inc<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>用法完全不變。</p>
 <p><img src="/images/monadic/functor/my-functor/functor000.png" alt="functor000"></p>
