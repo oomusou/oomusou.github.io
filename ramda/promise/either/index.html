@@ -168,14 +168,14 @@ a:hover {
 	<meta property="og:title" content="使用 Promise 實現 Either Monad | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://fpjs.fun/ramda/promise/either/overview/">
+<meta property="og:url" content="https://fpjs.fun/ramda/promise/either/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
 <meta property="og:description" content="Promise 傳統都用來處理 Asynchronous 代表 未來值，但由於其具有 Rejected 與 Fulfilled，很類似 Either 的 Left 與 Right，且 then() 又兼具 map() 與 chain() 特性，因此可藉由 Promise 實現 Either 處理 Exception。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-11-07T14:12:42.000Z">
-<meta property="article:modified_time" content="2020-11-07T14:12:42.000Z">
+<meta property="article:published_time" content="2020-12-15T23:34:13.000Z">
+<meta property="article:modified_time" content="2020-12-15T23:34:13.000Z">
 <meta property="article:author" content="Sam Xiao">
 <meta property="og:article:tag" content=", Ramda, Promise, Either">
 
@@ -188,19 +188,19 @@ a:hover {
 
 
 	<!-- ### Canonical link ### -->
-	<link rel="canonical" href="https://fpjs.fun/ramda/promise/either/overview/">
+	<link rel="canonical" href="https://fpjs.fun/ramda/promise/either/">
 	<!-- ### Structured Data ### -->
 	
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://fpjs.fun/ramda/promise/either/overview/",
+    "url": "https://fpjs.fun/ramda/promise/either/",
     "@type": "BlogPosting",
     "logo": "https://fpjs.fun/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://fpjs.fun/ramda/promise/either/overview/"
+        "@id": "https://fpjs.fun/ramda/promise/either/"
     },
     "headline": "使用 Promise 實現 Either Monad | 點燈坊",
     
@@ -209,8 +209,8 @@ a:hover {
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2020-11-07T14:12:42.000Z",
-    "dateModified": "2020-12-11T00:48:35.867Z",
+    "datePublished": "2020-12-15T23:34:13.000Z",
+    "dateModified": "2020-12-15T23:38:22.335Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -433,7 +433,7 @@ a:hover {
 <div class="post-header-info">
 	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
 		alt="Sam Xiao's Avatar">
-	<span>2020-11-07</span>
+	<span>2020-12-16</span>
 </div>
                 </div>
                 <div class="card-body">
@@ -464,7 +464,7 @@ a:hover {
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>throw</code> 最大問題是與 Function Pipeline 格格不入，我們無法在 Function Pipeline 內使用 <code>try catch</code>處理 Exception。</p>
-<p><img src="/images/ramda/promise/either/overview/overview000.png" alt="overview000"></p>
+<p><img src="/images/ramda/promise/either/overview000.png" alt="overview000"></p>
 <h2 id="Promise-as-Either"><a href="#Promise-as-Either" class="headerlink" title="Promise as Either"></a>Promise as Either</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> otherwise<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> resolve<span class="token punctuation">,</span> reject <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
@@ -501,7 +501,7 @@ a:hover {
 <blockquote>
 <p>此處 <code>then()</code> 相當於 Either Monad 的 <code>map()</code></p>
 </blockquote>
-<p><img src="/images/ramda/promise/either/overview/overview001.png" alt="overview001"></p>
+<p><img src="/images/ramda/promise/either/overview001.png" alt="overview001"></p>
 <p>可發現當 <code>y</code> 傳入 <code>0</code> 時，將回傳 <code>Can not divide by zero</code> Rejected Promise，類似 Either 的 <code>Left</code>。</p>
 <h2 id="Promise-Chain"><a href="#Promise-Chain" class="headerlink" title="Promise Chain"></a>Promise Chain</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> otherwise<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> resolve<span class="token punctuation">,</span> reject <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
@@ -545,8 +545,8 @@ a:hover {
 <blockquote>
 <p>因為 Promise 的 <code>then()</code> 兼具 <code>map()</code> 與 <code>chain()</code> 特性，因此不論使用普通 function，或者回傳 Either 的 function，皆統一使用 <code>then()</code> 即可</p>
 </blockquote>
-<p><img src="/images/ramda/promise/either/overview/overview002.png" alt="overview002"></p>
-<h2 id="Associative-Law"><a href="#Associative-Law" class="headerlink" title="Associative Law"></a>Associative Law</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> otherwise<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<p><img src="/images/ramda/promise/either/overview002.png" alt="overview002"></p>
+<h2 id="Composition-Law"><a href="#Composition-Law" class="headerlink" title="Composition Law"></a>Composition Law</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> otherwise<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> resolve<span class="token punctuation">,</span> reject <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
 <span class="token keyword">let</span> div <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> y <span class="token operator">=</span><span class="token operator">></span> 
@@ -585,8 +585,8 @@ a:hover {
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Promise 必須使用 <code>then()</code> 才能改變其內部值，因此可能發現一堆 <code>then()</code>。</p>
-<p>Promise 支援 associative law，可將 pure function 先使用 <code>pipe()</code> 組合起來，一次傳給 <code>then()</code> 即可。</p>
-<p><img src="/images/ramda/promise/either/overview/overview003.png" alt="overview003"></p>
+<p>Promise 支援 composition law，可將 pure function 先使用 <code>pipe()</code> 組合起來，一次傳給 <code>then()</code> 即可。</p>
+<p><img src="/images/ramda/promise/either/overview003.png" alt="overview003"></p>
 <h2 id="then-otherwise"><a href="#then-otherwise" class="headerlink" title="then() / otherwise()"></a>then() / otherwise()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> otherwise<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> resolve<span class="token punctuation">,</span> reject<span class="token punctuation">,</span> log<span class="token punctuation">,</span> error <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
@@ -641,19 +641,12 @@ a:hover {
 	<ul class="pagination">
 		<!-- Prev Nav -->
 		
-		<li class="page-item page-prev">
-			<a href="/sanctuary/maybe/frommaybe_/">
-				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 fromMaybe_() 支援 Nothing 提供 Thunk</div>
-			</a>
-		</li>
-		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/sanctuary/either/compose/">
+			<a href="/sanctuary/maybe/overview/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 chain() 組合回傳 Either 的 Function</div>
+				<div class="page-item-subtitle">Maybe Monad 初體驗</div>
 			</a>
 		</li>
 		
