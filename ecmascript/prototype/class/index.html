@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>深入探討 Class 與 Prototype | 點燈坊</title>
+<title>深入探討 Class 與 Prototype Chain | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -165,7 +165,7 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="深入探討 Class 與 Prototype | 點燈坊">
+	<meta property="og:title" content="深入探討 Class 與 Prototype Chain | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
 <meta property="og:url" content="https://fpjs.fun/ecmascript/prototype/class/">
@@ -174,8 +174,8 @@ a:hover {
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2021-01-02T12:08:21.000Z">
-<meta property="article:modified_time" content="2021-01-02T12:08:21.000Z">
+<meta property="article:published_time" content="2021-01-03T07:00:39.000Z">
+<meta property="article:modified_time" content="2021-01-03T07:00:39.000Z">
 <meta property="article:author" content="Sam Xiao">
 <meta property="og:article:tag" content=", ECMAScript">
 
@@ -202,15 +202,15 @@ a:hover {
         "@type": "WebPage",
         "@id": "https://fpjs.fun/ecmascript/prototype/class/"
     },
-    "headline": "深入探討 Class 與 Prototype | 點燈坊",
+    "headline": "深入探討 Class 與 Prototype Chain | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2021-01-02T12:08:21.000Z",
-    "dateModified": "2021-01-02T13:20:01.353Z",
+    "datePublished": "2021-01-03T07:00:39.000Z",
+    "dateModified": "2021-01-03T07:02:27.459Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -427,13 +427,13 @@ a:hover {
             <div class="card-inner-cell">
                 <div class="card-header">
                     
-<h1 class="card-title h3 mb-2">深入探討 Class 與 Prototype</h1>
+<h1 class="card-title h3 mb-2">深入探討 Class 與 Prototype Chain</h1>
 
 
 <div class="post-header-info">
 	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
 		alt="Sam Xiao's Avatar">
-	<span>2021-01-02</span>
+	<span>2021-01-03</span>
 </div>
                 </div>
                 <div class="card-body">
@@ -441,60 +441,6 @@ a:hover {
                         <p>ECMAScript 2015 雖然支援了 <code>class</code> 語法，但本質上仍是使用 Prototype 實作，本文深入探討其背後黑魔法。</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>ECMAScript 2015</p>
-<h2 id="Factory-Function"><a href="#Factory-Function" class="headerlink" title="Factory Function"></a>Factory Function</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> createBook <span class="token operator">=</span> <span class="token punctuation">(</span>title<span class="token punctuation">,</span> price<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
-  title<span class="token punctuation">,</span>
-  price<span class="token punctuation">,</span>    
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> book <span class="token operator">=</span> <span class="token function">createBook</span><span class="token punctuation">(</span><span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> _book <span class="token operator">=</span> <span class="token punctuation">{</span>
-  showDescription<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>title<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> : </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>price<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-Object<span class="token punctuation">.</span><span class="token function">setPrototypeOf</span><span class="token punctuation">(</span>book<span class="token punctuation">,</span> _book<span class="token punctuation">)</span>
-
-book<span class="token punctuation">.</span>__proto__ <span class="token comment" spellcheck="true">// ?</span>
-book<span class="token punctuation">.</span><span class="token function">showDescription</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>我們知道若將 method 放在 Object，當建立多個 Object 時，會不斷建立新的 method，較浪費記憶體，比較好的方式是將 property 建立在 Object 內，而將 method 建立在 Object 的 prototype。</p>
-<p>第 1 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> createBook <span class="token operator">=</span> <span class="token punctuation">(</span>title<span class="token punctuation">,</span> price<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
-  title<span class="token punctuation">,</span>
-  price<span class="token punctuation">,</span>    
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> book <span class="token operator">=</span> <span class="token function">createBook</span><span class="token punctuation">(</span><span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>建立 <code>createBook()</code> factory function，只負責建立 Object 的 property 即可。</p>
-<p>第 8 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> _book <span class="token operator">=</span> <span class="token punctuation">{</span>
-  showDescription<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>title<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> : </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>price<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-Object<span class="token punctuation">.</span><span class="token function">setPrototypeOf</span><span class="token punctuation">(</span>book<span class="token punctuation">,</span> _book<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>使用 object literal 直接建立 <code>_book</code> 為 prototype object。</p>
-<p>使用 <code>Object.setPrototypeOf()</code> 動態將 <code>_book</code> 成為 <code>book</code> 的 prototype。</p>
-<blockquote>
-<p><code>Object.setPropertyOf()</code> 為 ES6 所新增</p>
-</blockquote>
-<p>16 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">book<span class="token punctuation">.</span>__proto__ <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>使用 <code>book.__proto__</code> 觀察其 prototype 為 <code>_book</code> Object。</p>
-<blockquote>
-<p><code>__proto__</code> 為 ES6 所新增</p>
-</blockquote>
-<p>17 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">book<span class="token punctuation">.</span><span class="token function">showDescription</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><code>book</code> Object 可使用其 prototype 的 <code>showDescription()</code>。</p>
-<p><img src="/images/ecmascript/prototype/class/prototype000.png" alt="prototype000"></p>
 <h2 id="Constructor-Function"><a href="#Constructor-Function" class="headerlink" title="Constructor Function"></a>Constructor Function</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> Book <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>title<span class="token punctuation">,</span> price<span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">this</span><span class="token punctuation">.</span>title <span class="token operator">=</span> title
   <span class="token keyword">this</span><span class="token punctuation">.</span>price <span class="token operator">=</span> price
@@ -504,112 +450,42 @@ Book<span class="token punctuation">.</span>prototype<span class="token punctuat
   <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>title<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> / </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>price<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
 <span class="token punctuation">}</span>
 
-<span class="token keyword">let</span> book <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Book</span><span class="token punctuation">(</span><span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
-book<span class="token punctuation">.</span>__proto__ <span class="token operator">===</span> Book<span class="token punctuation">.</span>prototype <span class="token comment" spellcheck="true">// ?</span>
-book<span class="token punctuation">.</span><span class="token function">showDescription</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>自己使用 factory function 實踐 prototype 雖然可行，但程式碼稍嫌冗長，ECMAScript 另外提供了 constructor function，讓我們以更精簡的方式使用 prototype。</p>
+<span class="token keyword">new</span> <span class="token class-name">Book</span><span class="token punctuation">(</span><span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>ES5 雖然支援 <code>new</code>，卻沒有支援 <code>class</code>，而是搭配 constructor function。</p>
 <p>第 1 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> Book <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>title<span class="token punctuation">,</span> price<span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">this</span><span class="token punctuation">.</span>title <span class="token operator">=</span> title
   <span class="token keyword">this</span><span class="token punctuation">.</span>price <span class="token operator">=</span> price
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>類似 factory function 傳入 <code>title</code> 與 <code>price</code>，只負責建立 object 的 property 即可。</p>
-<p>其中 <code>this</code> 為稍後 <code>new</code> 所建立的 object，因此可以直接使用 <code>this.title</code> 新增 property。</p>
+<p><code>Book()</code> 傳入 <code>title</code> 與 <code>price</code>，只負責建立 object 的 property。</p>
+<p>其中 <code>this</code> 為稍後 <code>new</code> 所建立的 Object，因此可以直接使用 <code>this.title</code> 新增 property。</p>
 <blockquote>
-<p>Constructor function 習慣會使用 PascalCase，有別於一般 function 使用 camelCase</p>
+<p>Constructor function 習慣使用 PascalCase，有別於一般 function 使用 camelCase</p>
 </blockquote>
 <p>第 6 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript">Book<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>showDescription <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
   <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>title<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> / </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>price<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>Constructor function 本質還是 function，而 function 自帶 <code>prototype</code> property 為 <code>{}</code>，直接對 <code>{}</code> 動態加上 <code>fullName()</code> method。</p>
-<blockquote>
-<p>是否覺得這裡好像哪裡怪怪的 ? 稍後會說明</p>
-</blockquote>
-<p><img src="/images/ecmascript/prototype/class/prototype004.png" alt="prototype004"></p>
-<p><code>prototype</code> 為 function 專屬 property，就真的只是 property 而已，並不代表 function 的 prototype 是 <code>{}</code>。</p>
-<p>可發現 <code>Book</code> 的 <code>prototype</code> 與 <code>__proto__</code> 並不相同。</p>
+<p>Constructor function 本質還是 function，而 function 自帶 <code>prototype</code> property 為 <code>{}</code>，因此直接對 <code>{}</code> 動態加上 <code>showDescription()</code> method。</p>
+<p><code>prototype</code> 為 function 專屬 property，就真的只是 property 而已，並不代表 function 的 Prototype 是 <code>{}</code>，function 的 prototype 是由 <code>__proto__</code> 指向 <code>Function.prototype</code>。</p>
+<p>此外，<code>Book.prototype.constructor</code> 會指向 <code>Book()</code>，所以將來 <code>book.constructor</code> 也會指向 <code>Book()</code>，稍後 <code>book.__proto__</code> 會使用 <code>book.constructor</code> 找到其 Prototype Object。</p>
 <p>第 10 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> book <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Book</span><span class="token punctuation">(</span><span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>當 function 搭配 <code>new</code> 時，就搖身一變成為 constructor function，<code>this</code> 為所建立的 Object。</p>
-<p>11 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">book<span class="token punctuation">.</span>__proto__ <span class="token operator">===</span> Book<span class="token punctuation">.</span>prototype <span class="token comment" spellcheck="true">// ?</span>
-book<span class="token punctuation">.</span><span class="token function">showDescription</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>我們可發現一個很有趣的現象：<code>book.__proto</code> 與 <code>Book.prototype</code> 竟然指向相同 Object，稍後會詳細說明。</p>
-<p><img src="/images/ecmascript/prototype/class/prototype001.png" alt="prototype001"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> Book <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>title<span class="token punctuation">,</span> price<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>title <span class="token operator">=</span> title
-  <span class="token keyword">this</span><span class="token punctuation">.</span>price <span class="token operator">=</span> price
-<span class="token punctuation">}</span>
-
-Book<span class="token punctuation">.</span>prototype <span class="token operator">=</span> <span class="token punctuation">{</span>
-  constructor<span class="token punctuation">:</span> Book<span class="token punctuation">,</span>
-  showDescription<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>title<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> / </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>price<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> book <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Book</span><span class="token punctuation">(</span><span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
-book<span class="token punctuation">.</span>__proto__ <span class="token operator">===</span> Book<span class="token punctuation">.</span>prototype <span class="token comment" spellcheck="true">// ?</span>
-book<span class="token punctuation">.</span><span class="token function">showDescription</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>第 6 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">Book<span class="token punctuation">.</span>prototype <span class="token operator">=</span> <span class="token punctuation">{</span>
-  constructor<span class="token punctuation">:</span> Book<span class="token punctuation">,</span>
-  showDescription<span class="token punctuation">:</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>title<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> / </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>price<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若 method 多時，其實有另外一種寫法：直接使用 object literal 方式定義 Object，然後指定給 <code>prototype</code>。</p>
-<p>不過這種寫法有個地方要小心，之前 <code>Book.prototype.showDescription</code> 是對 <code>{}</code> 動態新增 method，原本 <code>{}</code> 的 property 都還留著，其中一個最重要就是 <code>constructor</code> property 指向 <code>Book()</code> constructor function。</p>
-<p>但若將整個 object literal 指定給 <code>Book.prototype</code> 時，別忘了要自行補上 <code>constructor: Book</code>，這才符合原本 <code>Book.prototype.constructor</code> 要指向 constructor function 要求。</p>
-<p><img src="/images/ecmascript/prototype/class/prototype002.png" alt="prototype002"></p>
+<p><img src="/images/ecmascript/prototype/class/prototype000.png" alt="prototype000"></p>
+<p>可發現 <code>showDescription</code> 不屬於 <code>book</code> Object，而是在其 Prototype Object，因此在 <code>__proto__</code> 下。</p>
 <blockquote>
-<p>我在學習 prototype 時，最大卡關是觀念上明明應該對 object 的 prototype 新增 method，為什麼到最後是對 constructor function 的 <code>prototype</code> property 新增 method 呢 ?</p>
+<p>我在學習 Prototype 時，最大卡關是觀念上明明應該對 Object 的 Prototype Objecy 新增 method，為什麼到最後是對 constructor function 的 <code>prototype</code> property 新增 method 呢 ?</p>
 </blockquote>
-<p>其實剛剛有發現一個有趣的現象：</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">book<span class="token punctuation">.</span>__proto__ <span class="token operator">===</span> Book<span class="token punctuation">.</span>prototype <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p><code>book.__proto__</code> 與 <code>Book.prototype</code> 竟然指向同一個 Object !!</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> Book <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>title<span class="token punctuation">,</span> price<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>title <span class="token operator">=</span> title
-  <span class="token keyword">this</span><span class="token punctuation">.</span>price <span class="token operator">=</span> price
-<span class="token punctuation">}</span>
-
-Book<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>showDescription <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>title<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> / </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>price<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> book <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
-Book<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>book<span class="token punctuation">,</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
-book<span class="token punctuation">.</span>__proto__ <span class="token operator">=</span> Book<span class="token punctuation">.</span>prototype
-
-book<span class="token punctuation">.</span><span class="token function">showDescription</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>10 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> book <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
-Book<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>book<span class="token punctuation">,</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
-book<span class="token punctuation">.</span>__proto__ <span class="token operator">=</span> Book<span class="token punctuation">.</span>prototype
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p><code>new</code> 的黑魔法就是這 3 行，除了將 <code>book</code> 傳進 <code>Book.call()</code> 外，還將 <code>Book.prototype</code> 的記憶體位置複製給 <code>book.__proto__</code>，兩者指向相同 Object。 </p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> book <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
-Book<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>book<span class="token punctuation">,</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
-Object<span class="token punctuation">.</span><span class="token function">setPrototypeOf</span><span class="token punctuation">(</span>book<span class="token punctuation">,</span> Book<span class="token punctuation">.</span>prototype<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>或者改用 ES6 的 <code>Object.setPrototypeOf()</code> 亦可。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">Book<span class="token punctuation">.</span>prototype<span class="token punctuation">.</span>showDescription <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>title<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> / </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span><span class="token keyword">this</span><span class="token punctuation">.</span>price<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>也因此我們直接對 <code>Book.prototype</code> 新增 <code>showDescription()</code>，就相當於對 <code>book.__proto__</code>，也就是對 <code>book</code> 的 prototype 新增 <code>showDescription()</code>，因為兩者根本指向相同 object。</p>
-<p><img src="/images/ecmascript/prototype/class/prototype005.svg" alt="prototype005"></p>
-<p>由上圖可發現 <code>Book()</code> 的 <code>prototype</code> property 與 <code>book</code> 的 <code>__proto__</code> property 都指向相同的 <code>Book.prototype</code>，也因此我們可藉由動態新增 <code>Book.prototype</code> 的 method 成為 <code>book</code> 的 <code>__proto__</code> 的 method，也可發現 <code>book</code> 的 <code>[[prototype]]</code> 就是指向 <code>Book.prototype</code>。</p>
+<p>當執行 <code>showDescription()</code> 時，會發現 <code>book</code> Object 沒有 <code>showDescription()</code>，此時會由 <code>__proto__</code> 往其 Prototype Object 尋找 <code>showDescription()</code>.。</p>
+<p>由於 <code>Book.prototype.constructor()</code> 指向 <code>Book()</code>，所以 <code>book.constructor()</code> 亦指向 <code>Book()</code>，<code>__proto__</code> 可藉由 <code>book.constructor</code> property 找到 constructor function，再又其 <code>prototype</code> property 找到 Prototype Object，如此就可藉由 Prototype Chain 找到 <code>showDescription()</code>。</p>
+<p>可見 <code>Book.prototype.constructor = Book</code> 是 <code>__proto__</code> 能找到 Prototype Object 的線索。</p>
+<p><img src="/images/ecmascript/prototype/class/prototype002.svg" alt="prototype005"></p>
+<p>由上圖可發現 <code>Book()</code> 的 <code>prototype</code> property 與 <code>book</code> Object 的 <code>__proto__</code> property 都指向相同的 <code>Book.prototype</code>，也因此我們可藉由動態新增 <code>Book.prototype</code> 的 method 成為 <code>book</code> 的 <code>__proto__</code> 的 method，其關鍵就是 <code>book</code> Object 的 <code>constructor</code> property 指向 constructor function，而 constructor function 的 <code>prototype</code> property 指向 <code>Book.prototype</code>。</p>
 <h2 id="Class"><a href="#Class" class="headerlink" title="Class"></a>Class</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Book</span> <span class="token punctuation">{</span>
   <span class="token function">constructor</span><span class="token punctuation">(</span>title<span class="token punctuation">,</span> price<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">this</span><span class="token punctuation">.</span>title <span class="token operator">=</span> title
@@ -621,20 +497,18 @@ Object<span class="token punctuation">.</span><span class="token function">setPr
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
-<span class="token keyword">let</span> book <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Book</span><span class="token punctuation">(</span><span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
-book<span class="token punctuation">.</span>__proto__ <span class="token operator">===</span> Book<span class="token punctuation">.</span>prototype <span class="token comment" spellcheck="true">// ?</span>
-book<span class="token punctuation">.</span><span class="token function">showDescription</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>ES6 支援 <code>class</code> 後，語法又更簡單了，連 prototype 字眼都完全沒看見。</p>
-<p>但仍然可看見 <code>book.__proto__</code> 與 <code>Book.prototype</code> 指向相同 Object，再次證明 <code>class</code> 只是 syntatic sugar，ES 依然是 prototype-based，而非 class-based。</p>
-<p><img src="/images/ecmascript/prototype/class-prototype/prototype003.png" alt="prototype003"></p>
+<span class="token keyword">new</span> <span class="token class-name">Book</span><span class="token punctuation">(</span><span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>ES6 支援 <code>class</code> 後，語法又更簡單了，連 prototype 字眼完全沒看見。</p>
+<p><img src="/images/ecmascript/prototype/class/prototype001.png" alt="prototype003"></p>
+<p>但可發現 <code>showDescription</code> 不屬於 <code>book</code> Object，而是在其 Prototype Object，因此在 <code>__proto__</code> 下。</p>
+<p>這也再次證明 <code>class</code> 只是 syntatic sugar，ECMAScript 依然是 Prototype-based，而非 Class-based。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>隨著時代的進步，ES 寫法不斷精簡，只是黑魔法越來越大，但 ECMAScript 的 prototype-based 本質不變</li>
-<li>ES6 的 class 寫法雖然完全看不到 prototype，但本質仍是將 method 放在 prototype，是道地的 syntatic sugar</li>
-<li>Function 自帶 <code>prototype</code> property 且預設為 <code>{}</code>，並不代表 function 的 prototype 為 <code>{}</code>，而是透過 <code>new</code> 之後，將 funciton 的 <code>prototype</code> property 的記憶體位址複製給 object 的 <code>__proto__</code>，使得 object 的 prototype  也是指向 function 的 <code>prototype</code> property 所指向的 object，因此對 function 的 <code>prototype</code> property 動態新增 method，也相當於對 object 的 prototype 新增 method</li>
-<li>雖然名義上是針對 constructor function 的 <code>prototype</code> 指定 prototype object，但也相當於是對 <code>__proto__</code> 指定</li>
+<li><code>__proto__</code> 只所以能找到其 Prototype Object，關鍵在 <code>constructor</code> property 指向 constructor function，再由 constructor function 的 <code>prototype</code> property 找到 Prototype Object，這就是 Prototype Chain 的黑魔法</li>
+<li>隨著時代的進步， ECMAScript 寫法不斷精簡，只是黑魔法越來越大，但其 Prototype-based 本質不變</li>
+<li>ES6 的 class 寫法雖然完全看不到 Prototype，但本質仍是將 method 放在 Prototype Object，是道地的 syntatic sugar</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor" target="_blank" rel="noopener">Object.prototype.constructor</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object_prototypes" target="_blank" rel="noopener">Object prototypes</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create" target="_blank" rel="noopener">Object.create()</a><br><a href="https://twitter.com/jeresig" target="_blank" rel="noopener">John Resig</a>, <a href="https://www.manning.com/books/secrets-of-the-javascript-ninja" target="_blank" rel="noopener">Secret of the JavaScript Ninja, First Edition</a><br>許國政, <a href="https://www.tenlong.com.tw/products/9789864344130" target="_blank" rel="noopener">008 天重新認識 JavaScript</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/constructor" target="_blank" rel="noopener">Object.prototype.constructor</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Objects/Object_prototypes" target="_blank" rel="noopener">Object prototypes</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/create" target="_blank" rel="noopener">Object.create()</a></p>
 
                     </article>
                     <p class="post-footer-info mb-0 pt-2">
@@ -652,13 +526,6 @@ book<span class="token punctuation">.</span><span class="token function">showDes
                 <div class="post-nav px-2 bg-gray">
 	<ul class="pagination">
 		<!-- Prev Nav -->
-		
-		<li class="page-item page-prev">
-			<a href="/ecmascript/prototype/create/">
-				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">自行實作 Object.create()</div>
-			</a>
-		</li>
 		
 		<!-- Next Nav -->
 		
