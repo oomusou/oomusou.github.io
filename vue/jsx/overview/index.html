@@ -210,7 +210,7 @@ a:hover {
     },
     
     "datePublished": "2021-01-05T13:40:36.000Z",
-    "dateModified": "2021-01-05T22:47:52.257Z",
+    "dateModified": "2021-01-06T02:08:27.944Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -441,7 +441,7 @@ a:hover {
                         <p>Vue 傳統都會以 Template 處理 HTML，Script 處理 JavaScript，事實上 Vue 有另外一種寫法：在 <code>redner()</code> 以 JSX 完全在 JavaScript 處理 HTML。</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 2.6.11</p>
-<h2 id="Install-Package"><a href="#Install-Package" class="headerlink" title="Install Package"></a>Install Package</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add @vue/babel-preset-jsx @vue/babel-helper-vue-jsx-merge-props
+<h2 id="Setup"><a href="#Setup" class="headerlink" title="Setup"></a>Setup</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add @vue/babel-preset-jsx @vue/babel-helper-vue-jsx-merge-props --dev
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>Vue CLI 目前還沒有支援 JSX，需要自行安裝以上 package。</p>
 <p><strong>babel.config.js</strong></p>
@@ -452,6 +452,30 @@ a:hover {
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>修改 <code>babel.config.js</code> 的 <code>presets</code>。</p>
+<p><strong>.eslintrc.js</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  root<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  env<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    node<span class="token punctuation">:</span> <span class="token boolean">true</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">'extends'</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    <span class="token string">'plugin:vue/essential'</span><span class="token punctuation">,</span>
+    <span class="token string">'eslint:recommended'</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  parserOptions<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    parser<span class="token punctuation">:</span> <span class="token string">'babel-eslint'</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  rules<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    <span class="token string">'no-console'</span><span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">===</span> <span class="token string">'production'</span> <span class="token operator">?</span> <span class="token string">'warn'</span> <span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+    <span class="token string">'no-debugger'</span><span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">===</span> <span class="token string">'production'</span> <span class="token operator">?</span> <span class="token string">'warn'</span> <span class="token punctuation">:</span> <span class="token string">'off'</span><span class="token punctuation">,</span>
+    <span class="token string">'no-unused-vars'</span><span class="token punctuation">:</span> <span class="token string">'off'</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>16 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token string">'no-unused-vars'</span><span class="token punctuation">:</span> <span class="token string">'off'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>加上 <code>no-unused-vars&#39;: &#39;off&#39;</code>，因為 <code>render(h)</code> 的 <code>h</code> 為必要，但 ESLint 會檢查而導致編譯失敗。</p>
 <h2 id="JSX"><a href="#JSX" class="headerlink" title="JSX"></a>JSX</h2><p><img src="/images/vue/jsx/overview/jsx000.png" alt="jsx000"></p>
 <p>以 JSX 實現 Hello World。</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> render <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span> <span class="token punctuation">{</span>
