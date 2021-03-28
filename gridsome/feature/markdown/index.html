@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>安裝 Plugin 讀取 Markdown | 點燈坊</title>
+<title>使用 Page 列出所有 Markdown | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -163,7 +163,7 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="安裝 Plugin 讀取 Markdown | 點燈坊">
+	<meta property="og:title" content="使用 Page 列出所有 Markdown | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
 <meta property="og:url" content="https://fpjs.fun/gridsome/feature/markdown/">
@@ -200,7 +200,7 @@ a:hover {
         "@type": "WebPage",
         "@id": "https://fpjs.fun/gridsome/feature/markdown/"
     },
-    "headline": "安裝 Plugin 讀取 Markdown | 點燈坊",
+    "headline": "使用 Page 列出所有 Markdown | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-03-28T04:11:23.000Z",
-    "dateModified": "2021-03-28T08:12:56.025Z",
+    "dateModified": "2021-03-28T15:43:59.689Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -425,7 +425,7 @@ a:hover {
             <div class="card-inner-cell">
                 <div class="card-header">
                     
-<h1 class="card-title h3 mb-2">安裝 Plugin 讀取 Markdown</h1>
+<h1 class="card-title h3 mb-2">使用 Page 列出所有 Markdown</h1>
 
 
 <div class="post-header-info">
@@ -440,8 +440,7 @@ a:hover {
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Gridsome 0.7.23</p>
 <h2 id="Markdown"><a href="#Markdown" class="headerlink" title="Markdown"></a>Markdown</h2><p><img src="/images/gridsome/feature/markdown/markdown000.png" alt="markdown000"></p>
-<p>Blog 首頁列出了所有 ｍarkdown 內容。</p>
-<p>Gridsome 該如何讀取 <code>*.markdown</code> 呢 ?</p>
+<p>Blog 首頁列出了所有 ｍarkdown 的 <code>title</code>、<code>date</code> 與 <code>tag</code>。</p>
 <h2 id="Install-Plugin"><a href="#Install-Plugin" class="headerlink" title="Install Plugin"></a>Install Plugin</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add @gridsome/source-filesystem @gridsome/transformer-remark
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>使用 Yarn 安裝以上兩個 plugin，這些都是 Gridsome 官方維護的：</p>
@@ -488,22 +487,38 @@ a:hover {
 <blockquote>
 <p><code>Blog</code> 的 property 雖然稱為 <code>typeName</code>，但在 Gridsome 正式名稱為 Collection，GraphQL 將以 Collection 名稱定義 Type，在 <code>templates</code> folder 下以會以 Collection 名稱定義 component</p>
 </blockquote>
-<h2 id="Markdown-1"><a href="#Markdown-1" class="headerlink" title="Markdown"></a>Markdown</h2><p><strong>content/blog/ramda/first-post.md</strong></p>
-<pre class="line-numbers highlight language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> First Post</span>
+<h2 id="Frontmatter"><a href="#Frontmatter" class="headerlink" title="Frontmatter"></a>Frontmatter</h2><p><strong>content/blog/ramda/first-post.md</strong></p>
+<pre class="line-numbers highlight language-markdown"><code class="language-markdown"><span class="token hr punctuation">---</span>
+title: First Post
+date: 2020-01-08 04:04:04
+<span class="token title important">tags: ['JavaScript', 'Ramda']
+<span class="token punctuation">---</span></span>
+<span class="token title important"><span class="token punctuation">#</span> First Post</span>
 
 This is <span class="token code keyword">`first post`</span> content
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p><strong>content/blog/ramda/second-post.md</strong></p>
-<pre class="line-numbers highlight language-markdown"><code class="language-markdown"><span class="token title important"><span class="token punctuation">#</span> Second Post</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 Markdown 最上方以 <code>---</code> 所框住的部分為 frontmatter，為 markdown 自帶的資料，可自行新增 property。</p>
+<ul>
+<li><code>title</code>：blog 的標題</li>
+<li><code>date</code>：blog 的日期</li>
+<li><code>tags</code>：blog 的 tag，可多個 tag 故為 Array</li>
+</ul>
+<p><strong>content/blog/tailwind/second-post.md</strong></p>
+<pre class="line-numbers highlight language-markdown"><code class="language-markdown"><span class="token hr punctuation">---</span>
+title: Second Post
+date: 2020-02-08 04:04:04
+<span class="token title important">tags: ['CSS', 'Tailwind']
+<span class="token punctuation">---</span></span>
+<span class="token title important"><span class="token punctuation">#</span> Second Post</span>
 
 This is <span class="token code keyword">`second post`</span> content
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>在 <code>content/blog/ramda</code> 目錄下建立兩個 markdown 檔案。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 <code>content/blog</code> 目錄下建立兩個 markdown 檔案。</p>
 <p>重新 <code>yarn serv</code> 執行 dev server。</p>
 <blockquote>
 <p>Gridsome 習慣將 markdown 放在 <code>content</code> 目錄下，將來將以其下目錄與檔案名稱為 route</p>
 </blockquote>
-<h2 id="GraphQL-Playground"><a href="#GraphQL-Playground" class="headerlink" title="GraphQL Playground"></a>GraphQL Playground</h2><p><img src="/images/gridsome/feature/markdown/markdown001.png" alt="markdown001"></p>
+<h2 id="allBlog-Query"><a href="#allBlog-Query" class="headerlink" title="allBlog Query"></a>allBlog Query</h2><p><img src="/images/gridsome/feature/markdown/markdown001.png" alt="markdown001"></p>
 <p>Gridsome 根據 <code>gridsome.config.js</code> 所設定的 <code>Blog</code> type 新增了兩個 GraphQL query：</p>
 <ul>
 <li><code>blog</code>：回傳單一 blog</li>
@@ -513,28 +528,37 @@ This is <span class="token code keyword">`second post`</span> content
   allBlog <span class="token punctuation">{</span>
     edges <span class="token punctuation">{</span>
       node <span class="token punctuation">{</span>
-        content
+        title
+        date <span class="token punctuation">(</span><span class="token attr-name">format</span><span class="token punctuation">:</span> <span class="token string">"MMM.DD, YYYY"</span><span class="token punctuation">)</span>
+        tags
+        path
       <span class="token punctuation">}</span>
     <span class="token punctuation">}</span>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>透過 <code>allBlog</code> query 可取得所有 markdown 內容。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>透過 <code>allBlog</code> query 可取得所有 markdown 內 frontmatter 所有資料。</p>
 <p><img src="/images/gridsome/feature/markdown/markdown002.png" alt="markdown002"></p>
-<p>透過 <code>@gridsome/transformer-remark</code> 協助，回傳內容已經不是 markdown，而是 HTML。</p>
-<h2 id="Gridsome-Page"><a href="#Gridsome-Page" class="headerlink" title="Gridsome Page"></a>Gridsome Page</h2><p><strong>src/pages/BlogList.vue</strong></p>
+<h2 id="Gridsome-Page"><a href="#Gridsome-Page" class="headerlink" title="Gridsome Page"></a>Gridsome Page</h2><p><strong>src/pages/Blogs.vue</strong></p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>Layout</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>layout</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h1</span><span class="token punctuation">></span></span>Blog List<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h1</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>article</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>({ node: { content }}, i) in $static.allBlog.edges<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">v-html</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>content<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>article</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>({ node: { title, date, tags, path }}, i) in $static.allBlog.edges<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>{{ title }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>Posted: {{ date }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tag in tags<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tag<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        #{{ tag }}
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>
+        <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>g-link</span> <span class="token attr-name">:to</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>path<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>More<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>g-link</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
     <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>article</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>Layout</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>layout</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
-  name<span class="token punctuation">:</span><span class="token string">"BlogList"</span>
+  name<span class="token punctuation">:</span><span class="token string">'Blogs'</span>
 <span class="token punctuation">}</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
 
@@ -544,42 +568,54 @@ query {
   allBlog {
     edges {
       node {
-        content
+        title
+        date (format: "MMM.DD, YYYY")
+        tags
+        path
       }
     }
   }
 }
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>static-query</span><span class="token punctuation">></span></span>
 @formatter:on
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>16 行</p>
-<pre class="line-numbers highlight language-html"><code class="language-html">@formatter:off
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>static-query</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>24 行</p>
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>static-query</span><span class="token punctuation">></span></span>
 query {
   allBlog {
     edges {
       node {
-        content
+        title
+        date (format: "MMM.DD, YYYY")
+        tags
+        path
       }
     }
   }
 }
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>static-query</span><span class="token punctuation">></span></span>
-@formatter:on
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>建立 <code>&lt;static-query/&gt;</code>，將 GraphQL Playground 的 <code>allBlog</code> query 複製貼上。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>因為在 page 中，故使用 <code>&lt;static-query&gt;</code>。</p>
+<p>將 GraphQL Playground 的 <code>allBlog</code> query 貼過來。</p>
 <p>第 4 行</p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>article</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>({ node: { content }}, i) in $static.allBlog.edges<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">v-html</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>content<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>article</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>({ node: { title, date, tags, path }}, i) in $static.allBlog.edges<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h2</span><span class="token punctuation">></span></span>{{ title }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h2</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>Posted: {{ date }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tag in tags<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>tag<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    #{{ tag }}
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>p</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>g-link</span> <span class="token attr-name">:to</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>path<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>More<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>g-link</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>p</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>article</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>由於 <code>edges</code> 為 Array，因此使用 <code>&lt;article/&gt;</code> 配合 <code>v-for</code> 將其展開，直接在 <code>v-for</code> 直接 destructure 出 <code>content</code>。</p>
-<p><code>content</code> 已經是 HTML，為了保持 HTML 內容，特別使用 <code>v-html</code>，而不能直接使用 <code>content</code>。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由於 <code>edges</code> 為 Array，因此使用 <code>&lt;article/&gt;</code> 配合 <code>v-for</code> 將其展開，直接在 <code>v-for</code> 直接 destructure 出 <code>title</code>、<code>date</code> 與 <code>tags</code>。</p>
+<p>由於 <code>tags</code> 是 array，可再使用 <code>v-for</code> 展開。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>藉由 Gridsome 官方提供的 <code>@gridsome/source-filesystem</code> 與 <code>@gridsome/transformer-remark</code>，使我們能透過 GraphQL 讀取 markdown，並將 markdown 轉成 HTML</li>
-<li>在 page 內我們可使用 GraphQL 讀取 markdown，並顯示在 HTML template 內</li>
+<li>藉由 Gridsome 官方提供的 <code>@gridsome/source-filesystem</code> 與 <code>@gridsome/transformer-remark</code>，使我們能透過 GraphQL 讀取 markdown</li>
+<li>Frotmatter 亦為各 JAMStack 必備格式，Gridsome 可透過 GraphQL 加以讀取，非常方便</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.udemy.com/user/reed-barger/" target="_blank" rel="noopener">Reed Barger</a>, <a href="https://www.udemy.com/course/blazing-fast-vue-and-graphql-with-gridsome/learn/lecture/14843718#overview" target="_blank" rel="noopener">Intro to Plugins, Source and Transformer Plugins</a><br><a href="https://www.udemy.com/user/reed-barger/" target="_blank" rel="noopener">Reed Barger</a>, <a href="https://www.udemy.com/course/blazing-fast-vue-and-graphql-with-gridsome/learn/lecture/14844146#overview" target="_blank" rel="noopener">Add Blog Page, Render Posts with Static Query</a><br><a href="https://gridsome.org" target="_blank" rel="noopener">Gridsome</a>, <a href="https://gridsome.org/plugins/@gridsome/source-filesystem" target="_blank" rel="noopener">@gridsome/source-filesystem</a><br><a href="https://gridsome.org" target="_blank" rel="noopener">Gridsome</a>, <a href="https://gridsome.org/plugins/@gridsome/transformer-remark" target="_blank" rel="noopener">@gridsome/transformer-remark</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.udemy.com/user/reed-barger/" target="_blank" rel="noopener">Reed Barger</a>, <a href="https://www.udemy.com/course/blazing-fast-vue-and-graphql-with-gridsome/learn/lecture/14843718#overview" target="_blank" rel="noopener">Intro to Plugins, Source and Transformer Plugins</a><br><a href="https://www.udemy.com/user/reed-barger/" target="_blank" rel="noopener">Reed Barger</a>, <a href="https://www.udemy.com/course/blazing-fast-vue-and-graphql-with-gridsome/learn/lecture/14844146#overview" target="_blank" rel="noopener">Add Blog Page, Render Posts with Static Query</a><br><a href="https://www.udemy.com/user/reed-barger/" target="_blank" rel="noopener">Reed Barger</a>, <a href="https://www.udemy.com/course/blazing-fast-vue-and-graphql-with-gridsome/learn/lecture/14844860#content" target="_blank" rel="noopener">Frontmatter for Blog Posts</a><br><a href="https://gridsome.org" target="_blank" rel="noopener">Gridsome</a>, <a href="https://gridsome.org/plugins/@gridsome/source-filesystem" target="_blank" rel="noopener">@gridsome/source-filesystem</a><br><a href="https://gridsome.org" target="_blank" rel="noopener">Gridsome</a>, <a href="https://gridsome.org/plugins/@gridsome/transformer-remark" target="_blank" rel="noopener">@gridsome/transformer-remark</a></p>
 
                     </article>
                     <p class="post-footer-info mb-0 pt-2">
