@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2021-04-02T06:36:25.027Z</updated>
+  <updated>2021-04-02T07:09:33.119Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用 Docker-compose 測試 Build 過的 Vue</title>
+    <link href="https://fpjs.fun/docker/vue/docker-compose/"/>
+    <id>https://fpjs.fun/docker/vue/docker-compose/</id>
+    <published>2021-04-02T07:06:28.000Z</published>
+    <updated>2021-04-02T07:09:33.119Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>yarn serve</code> 只能測試 <code>src</code> 目錄下的 Vue，可使用 <code>docker-compose</code> 配合 Nginx 快速測試 <code>dist</code> 目錄下的 Vue。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 2.6.11<br>Docker Desktop 3.2.2</p><p><strong>docker-compose.yml</strong></p><pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3"</span><span class="token key atrule">services</span><span class="token punctuation">:</span>  <span class="token key atrule">vue</span><span class="token punctuation">:</span>    <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span>alpine    <span class="token key atrule">restart</span><span class="token punctuation">:</span> always    <span class="token key atrule">ports</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> <span class="token string">"8080:80"</span>    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> ./dist<span class="token punctuation">:</span>/usr/share/nginx/html<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>在 project 根目錄下建立 <code>docker-compose.yml</code>：</p><ul><li><code>image: nginx:alpine</code>：使用 Nginx</li><li><code>ports</code>：設定對外為 port <code>8080</code>，對內為 port <code>80</code></li><li><code>volumns</code>：將 <code>dist</code> 目錄對應用 container 內部的 <code>/usr/share/nginx/html</code></li></ul><h2 id="NPM-Script"><a href="#NPM-Script" class="headerlink" title="NPM Script"></a>NPM Script</h2><p><strong>package.json</strong></p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>    <span class="token property">"docker"</span><span class="token operator">:</span> <span class="token string">"yarn build &amp;&amp; docker-compose up -d"</span>  <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>先執行 <code>docker build</code>，執行完後再執行 <code>docker-compose up -d</code></li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>不必另外安裝任何 package，只要一個 <code>docker-compose.yml</code> 就可在本機以 Nginx 執行 <code>dist</code> 目錄下的 Vue</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;&lt;code&gt;yarn serve&lt;/code&gt; 只能測試 &lt;code&gt;src&lt;/code&gt; 目錄下的 Vue，可使用 &lt;code&gt;docker-compose&lt;/code&gt; 配合 Nginx 快速測試 &lt;code&gt;dist&lt;/code&gt; 目錄下的 Vue。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Vue" scheme="https://fpjs.fun/tags/Vue/"/>
+    
+      <category term="Docker" scheme="https://fpjs.fun/tags/Docker/"/>
+    
+  </entry>
   
   <entry>
     <title>使用 serve 測試 Build 過的 Vue</title>
@@ -395,26 +417,6 @@
     
     
       <category term="CSS" scheme="https://fpjs.fun/tags/CSS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用 g-image 取代 img</title>
-    <link href="https://fpjs.fun/gridsome/feature/g-image/"/>
-    <id>https://fpjs.fun/gridsome/feature/g-image/</id>
-    <published>2021-03-28T23:31:11.000Z</published>
-    <updated>2021-03-28T23:33:42.987Z</updated>
-    
-    <content type="html"><![CDATA[<p>Gridsome 特別提供 <code>&lt;g-image&gt;</code> 支援 Image Processing 增進效率，實務上建議使用 <code>&lt;g-image&gt;</code> 取代 <code>&lt;img&gt;</code>。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Gridsome 0.7.23</p><h2 id="img-vs-g-image"><a href="#img-vs-g-image" class="headerlink" title="img vs. g-image"></a>img vs. g-image</h2><p><img src="/images/gridsome/feature/g-image/g-image011.png" alt="g-image011"></p><p>Gridsome 的 image 就是使用 <code>&lt;g-image&gt;</code> 產生。</p><p>HTML 已經自帶 <code>&lt;img&gt;</code>，與 Gridsome 所提供的 <code>&lt;g-image&gt;</code> 有什麼不同呢 ?</p><ul><li><code>&lt;img&gt;</code> 會將圖片完整下載下來；而 <code>&lt;g-image&gt;</code> 會自動根據 device 不同下載不同解析度圖片</li><li><code>&lt;img&gt;</code> 雖然有帶 <code>width</code> 與 <code>height</code> attribute，但卻是將完整圖片下載後才調整，因此浪費下載時間；而 <code>&lt;g-image&gt;</code> 是將圖片先調整過 width 與 height 才下載，size 會變小因此節省下載時間，user 體驗較佳</li><li><code>&lt;img&gt;</code> 會等圖片全部下載成功才顯示；而 <code>&lt;g-image&gt;</code> 會先下載 <code>低解析度</code> 版本圖片，等 <code>高解析度</code> 版本圖片下載成功後再顯示，user 體驗較佳</li><li><code>gridsome-transformer-remark</code> 會自動將 markdown 內的圖片轉成 <code>&lt;g-image&gt;</code></li></ul><h2 id="Crop-Image-by-Default"><a href="#Crop-Image-by-Default" class="headerlink" title="Crop Image by Default"></a>Crop Image by Default</h2><p><strong>pages/Index.vue</strong></p><p><img src="/images/gridsome/feature/g-image/g-image001.png" alt="g-image001"></p><p>在 <code>pages/Index.vue</code> 就有使用 <code>&lt;g-image&gt;</code>。</p><p><img src="/images/gridsome/feature/g-image/g-image000.png" alt="g-image000"></p><p>可發現其原始圖片為 <code>245</code> x <code>245</code>。</p><p><img src="/images/gridsome/feature/g-image/g-image003.png" alt="g-image003"></p><p>明確指定 <code>width</code> 與 <code>height</code>。</p><p><img src="/images/gridsome/feature/g-image/g-image002.png" alt="g-image002"></p><p>會發現實際下載圖片為 <code>200</code> x <code>200</code>，且 <code>src</code> 也自帶 <code>width</code> 與 <code>height</code>。</p><h2 id="Fit"><a href="#Fit" class="headerlink" title="Fit"></a>Fit</h2><h3 id="Cover"><a href="#Cover" class="headerlink" title="Cover"></a>Cover</h3><p><img src="/images/gridsome/feature/g-image/g-image004.png" alt="g-image004"></p><p><code>fit</code> attribute 預設為 <code>cover</code>，表示會自動 crop 符合 <code>width</code> 與 <code>height</code>。</p><blockquote><p>由於指定 <code>width</code> 與 <code>height</code> 與原始比例相同，因此 <code>fit=&quot;cover&quot;</code> 無感</p></blockquote><p><img src="/images/gridsome/feature/g-image/g-image007.png" alt="g-image007"></p><p>若將 <code>width</code> 加以改變，可明顯看出圖片會以 crop 處理。</p><p><img src="/images/gridsome/feature/g-image/g-image008.png" alt="g-image008"></p><h3 id="Contain"><a href="#Contain" class="headerlink" title="Contain"></a>Contain</h3><p><img src="/images/gridsome/feature/g-image/g-image005.png" alt="g-image005"></p><p>當 <code>fit</code> 設定為 <code>contain</code> 時，則原始圖片會 <code>包含</code> 在指定 <code>width</code> 與 <code>height</code> 內。</p><p><img src="/images/gridsome/feature/g-image/g-image006.png" alt="g-image005"></p><h3 id="Fill"><a href="#Fill" class="headerlink" title="Fill"></a>Fill</h3><p><img src="/images/gridsome/feature/g-image/g-image009.png" alt="g-image009"></p><p>當 <code>fit</code> 設定為 <code>fill</code> 時，則原始圖片會破壞比例延伸滿足 <code>width</code> 與 <code>height</code>。</p><p><img src="/images/gridsome/feature/g-image/g-image010.png" alt="g-image010"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>若 <code>width</code> 與 <code>height</code> 與原比例相同，則 <code>fit=&quot;cover&quot;</code> 可省略</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.udemy.com/user/reed-barger/" target="_blank" rel="noopener">Reed Barger</a>, <a href="https://www.udemy.com/course/blazing-fast-vue-and-graphql-with-gridsome/learn/lecture/14862465#overview" target="_blank" rel="noopener">G-image for Performant Image Loading</a><br><a href="https://gridsome.org" target="_blank" rel="noopener">Gridsome</a>, <a href="https://gridsome.org/docs/images/" target="_blank" rel="noopener">Image processing</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;Gridsome 特別提供 &lt;code&gt;&amp;lt;g-image&amp;gt;&lt;/code&gt; 支援 Image Processing 增進效率，實務上建議使用 &lt;code&gt;&amp;lt;g-image&amp;gt;&lt;/code&gt; 取代 &lt;code&gt;&amp;lt;img&amp;gt;&lt;/code&gt;。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Gridsome" scheme="https://fpjs.fun/tags/Gridsome/"/>
     
   </entry>
   
