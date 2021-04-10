@@ -172,8 +172,8 @@ a:hover {
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2021-04-07T14:49:35.000Z">
-<meta property="article:modified_time" content="2021-04-07T14:49:35.000Z">
+<meta property="article:published_time" content="2021-04-10T02:12:21.000Z">
+<meta property="article:modified_time" content="2021-04-10T02:12:21.000Z">
 <meta property="article:author" content="Sam Xiao">
 <meta property="og:article:tag" content=", Vue">
 
@@ -207,8 +207,8 @@ a:hover {
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2021-04-07T14:49:35.000Z",
-    "dateModified": "2021-04-07T14:54:58.207Z",
+    "datePublished": "2021-04-10T02:12:21.000Z",
+    "dateModified": "2021-04-10T02:14:06.540Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -431,7 +431,7 @@ a:hover {
 <div class="post-header-info">
 	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
 		alt="Sam Xiao's Avatar">
-	<span>2021-04-07</span>
+	<span>2021-04-10</span>
 </div>
                 </div>
                 <div class="card-body">
@@ -478,41 +478,26 @@ a:hover {
 <blockquote>
 <p>以上為 Vue 3 Composition API 標準寫法，既然 Vue 3 有其 Functional 特性，可進一步 Function Pipeline 與 Point-free。</p>
 </blockquote>
-<h2 id="Function-Pipeline"><a href="#Function-Pipeline" class="headerlink" title="Function Pipeline"></a>Function Pipeline</h2><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+<h2 id="Ref-Sugar"><a href="#Ref-Sugar" class="headerlink" title="Ref Sugar"></a>Ref Sugar</h2><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
   {{ count }}
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+ref<span class="token punctuation">:</span> count <span class="token operator">=</span> <span class="token number">0</span>
 
-<span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token punctuation">.</span>value<span class="token punctuation">,</span>
-  inc<span class="token punctuation">,</span>
-  x <span class="token operator">=</span><span class="token operator">></span> count<span class="token punctuation">.</span>value <span class="token operator">=</span> x
-<span class="token punctuation">)</span>
+<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token operator">++</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>12 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token punctuation">.</span>value<span class="token punctuation">,</span>
-  inc<span class="token punctuation">,</span>
-  x <span class="token operator">=</span><span class="token operator">></span> count<span class="token punctuation">.</span>value <span class="token operator">=</span> x
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>onClick()</code> 本質是 function，由於不再使用 <code>this</code> 讀取 state，理論上可使用 Ramda 的 <code>pipe()</code> 以 pure function 組合出 <code>onClick()</code>。</p>
-<ul>
-<li><code>pipe()</code> 要求都是 pure function，因此將 <code>count.value</code> 改成 <code>() =&gt; count.value</code></li>
-<li>使用 <code>inc()</code> 對 <code>count</code> 加 <code>1</code></li>
-<li>將結果寫入 <code>count</code></li>
-</ul>
-<blockquote>
-<p>這種風格與 Promise Chain 很像，每個 <code>then()</code> 都是 function，且不斷將值傳到下一個 function。</p>
-</blockquote>
-<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 7 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">ref<span class="token punctuation">:</span> count <span class="token operator">=</span> <span class="token number">0</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>ref</code> label 宣告 <code>count</code> state，此時 <code>count</code> 為 Object 的內部值，因此不需 <code>.value</code>。</p>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token operator">++</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>可直接對 <code>count</code> state 處理，不需 <code>.value</code>。</p>
+<h2 id="Function-Pipeline"><a href="#Function-Pipeline" class="headerlink" title="Function Pipeline"></a>Function Pipeline</h2><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
   {{ count }}
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
@@ -538,14 +523,19 @@ a:hover {
   <span class="token function">write</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>onClick()</code> 本質是 function，由於不再使用 <code>this</code> 讀取 state，理論上可使用 Ramda 的 <code>pipe()</code> 以 pure function 組合出 <code>onClick()</code>：</p>
 <ul>
 <li><code>read()</code>：使用 <code>read()</code> 讀取 <code>count</code> state</li>
 <li><code>inc()</code>：使用 <code>inc()</code> 遞增</li>
 <li><code>write()</code>：使用 <code>write()</code> 寫入 <code>count</code> state</li>
 </ul>
+<blockquote>
+<p>這種風格與 Promise Chain 很像，每個 <code>then()</code> 都是傳入 function，且不斷將值傳到下一個 function。</p>
+</blockquote>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>由經典的 counter 可發現 Vue 3 的最大改變在於 <code>this</code> 不見了，且 <code>data</code> 的初始值也由 <code>ref()</code> 建立，method 不再需要靠 <code>this</code> 存取 state，有助於 Extract Function、Function Pipeline 與 Point-free</li>
 <li>由於 <code>onClick</code> method 本質是 function，在沒有 <code>this</code> 牽絆下，可由 Function Pipeline 以 pure function 組合出 method，這也是為什麼 Vue 3 稱其為 Composition API，因為非常適合以 Higher Order Function 組合</li>
+<li>Ref sugar 較適合 Imperative 風格，可解決到處都是 <code>.value</code>；Point-free 則適合原本 <code>ref()</code> 寫法，因為 <code>read()</code> 與 <code>write()</code> 會處理 <code>.value</code></li>
 </ul>
 
                     </article>
@@ -565,19 +555,12 @@ a:hover {
 	<ul class="pagination">
 		<!-- Prev Nav -->
 		
-		<li class="page-item page-prev">
-			<a href="/vite/vue-router/">
-				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 Vite 安裝 Vue Router</div>
-			</a>
-		</li>
-		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/tailwind/cookbook/layout/horizontal-center/">
+			<a href="/vue3/css/transition/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">如何水平置中 ?</div>
+				<div class="page-item-subtitle">使用 Transition 讓 v-if 逐漸變化</div>
 			</a>
 		</li>
 		
