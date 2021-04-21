@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-20T16:04:12.000Z",
-    "dateModified": "2021-04-21T00:55:24.614Z",
+    "dateModified": "2021-04-21T13:19:52.295Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -480,7 +480,7 @@ a:hover {
   <span class="token function">Left</span><span class="token punctuation">(</span><span class="token string">'Can not divide by zero'</span><span class="token punctuation">)</span> <span class="token punctuation">:</span>
   <span class="token function">Right</span><span class="token punctuation">(</span>x <span class="token operator">/</span> y<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>自行實作 <code>div()</code>，當 <code>/0</code> 時回傳 Left，正常結果則回傳 Right。</p>
+<p>自行實作 <code>div()</code>，當 <code>/0</code> 時回傳 Left，正常結果則回傳 Right 。</p>
 <p>23 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">read</span><span class="token punctuation">(</span>num<span class="token punctuation">)</span><span class="token punctuation">,</span>
@@ -492,11 +492,11 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>組合出 <code>onClick()</code>：</p>
 <ul>
-<li><code>read()</code>：讀取 <code>num</code> state</li>
-<li><code>div()</code>：計算除法</li>
+<li><code>read(num)</code>：讀取 <code>num</code> state</li>
+<li><code>div(2)</code>：計算除法</li>
 <li><code>map(add(1))</code>：使用 <code>add()</code> 計算加法，因為 <code>div()</code> 回傳 Either，所以 <code>add()</code> 須在 <code>map()</code> 內</li>
 <li><code>either(I)(I)</code>：使用 <code>either(I)(I)</code> 取出 Either 內部值</li>
-<li><code>write()</code>：寫入 <code>result</code> state</li>
+<li><code>write(result)</code>：寫入 <code>result</code> state</li>
 </ul>
 <blockquote>
 <p>可發現 <code>div()</code> 雖然可能發出 Exception，但不會因此中斷 Function Pipeline，且後續計算都可維持在 Either Monad 內，只要最後從 Either 內部取出值即可</p>
@@ -550,8 +550,8 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>組合出 <code>onClick()</code>：</p>
 <ul>
-<li><code>read()</code>：讀取 <code>num</code> state</li>
-<li><code>div()</code>：計算除法</li>
+<li><code>read(num)</code>：讀取 <code>num</code> state</li>
+<li><code>div(2)</code>：計算除法</li>
 <li><code>then(div(1))</code>：使用 <code>add()</code> 計算加法，因為 <code>div()</code> 回傳 Promise，所以 <code>add()</code> 須在 <code>then()</code> 內</li>
 <li><code>then(write(result))</code>：取出 Fulfilled Promise 並寫入 <code>result</code> state</li>
 <li><code>otherwise(write(result))</code>：取出 Rejected Promise 並寫入 <code>result</code> state</li>

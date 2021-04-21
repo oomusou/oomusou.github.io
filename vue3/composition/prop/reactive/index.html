@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-14T09:36:05.000Z",
-    "dateModified": "2021-04-14T09:37:56.044Z",
+    "dateModified": "2021-04-21T14:55:45.673Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -438,7 +438,6 @@ a:hover {
                     <article id="post-content">
                         <p>若 Prop 只用來對 Component 傳入初始值設定，只要在 <code>mounted</code> hook 接受並寫入 <code>data</code> 即可；但若日後還會將改變 Data 傳入 Prop，且希望 Component 能 Reactive 根據 Prop 改變，則要搭配 Computed 或 Watch。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.5</p>
 <h2 id="Computed"><a href="#Computed" class="headerlink" title="Computed"></a>Computed</h2><p><img src="/images/vue3/composition/prop/reactive/prop000.png" alt="prop000"></p>
 <p><code>+</code> 不斷遞增 component 外部的 state，並以 prop 傳入 component 並 reactive 顯示。</p>
 <h3 id="Composition-API"><a href="#Composition-API" class="headerlink" title="Composition API"></a>Composition API</h3><p><strong>App.vue</strong></p>
@@ -534,9 +533,9 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>組合出 <code>onClick()</code>：</p>
 <ul>
-<li><code>read()</code>：讀取 <code>count</code> state</li>
-<li><code>inc()</code>：對值遞增</li>
-<li><code>write()</code>：寫入 <code>count</code> state</li>
+<li><code>read(count)</code>：讀取 <code>count</code> state</li>
+<li><code>inc</code>：對值遞增</li>
+<li><code>write(count)</code>：寫入 <code>count</code> state</li>
 </ul>
 <p><strong>MyCounter.vue</strong></p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
@@ -561,7 +560,7 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>組合出 <code>count</code> computed：</p>
 <ul>
-<li><code>mark()</code>：讀取 <code>startCount</code> prop</li>
+<li><code>mark(&#39;startCount&#39;, props)</code>：讀取 <code>startCount</code> prop</li>
 <li><code>calculated()</code>：建立 <code>count</code> computed</li>
 </ul>
 <blockquote>
@@ -667,8 +666,8 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>組合出 IIFE：</p>
 <ul>
-<li><code>mark()</code>：讀取 <code>startCount</code> prop</li>
-<li><code>write()</code>：寫入 <code>count</code> state</li>
+<li><code>mark(&#39;startCount&#39;, props)</code>：讀取 <code>startCount</code> prop</li>
+<li><code>write(count)</code>：寫入 <code>count</code> state</li>
 </ul>
 <p>19 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">watch</span><span class="token punctuation">(</span>
@@ -678,8 +677,8 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>組合出 <code>startCount</code> prop 的 watch：</p>
 <ul>
-<li><code>mark()</code>：讀取 <code>startCount</code> prop</li>
-<li><code>write()</code>：寫入 <code>count</code> state</li>
+<li><code>mark(&#39;startCount&#39;, props)</code>：讀取 <code>startCount</code> prop</li>
+<li><code>write(count)</code>：寫入 <code>count</code> state</li>
 </ul>
 <blockquote>
 <p>若要使用 state，則要先將 prop 初始值給 data，再對 prop 進行 watch</p>
@@ -779,8 +778,8 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>組合出 <code>startCount</code> prop 的 watch：</p>
 <ul>
-<li><code>mark()</code>：讀取 <code>startCount</code> prop</li>
-<li><code>write()</code>：寫入 <code>count</code> state</li>
+<li><code>mark(&#39;startCount&#39;, props)</code>：讀取 <code>startCount</code> prop</li>
+<li><code>write(count)</code>：寫入 <code>count</code> state</li>
 <li>在 <code>watch()</code> 最後一個 argument 傳入 <code>{ immediate: true }</code> 直接定義 <code>count</code> state 初始值</li>
 </ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>

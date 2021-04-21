@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-21T13:08:02.000Z",
-    "dateModified": "2021-04-21T13:14:49.999Z",
+    "dateModified": "2021-04-21T13:40:11.695Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -580,7 +580,7 @@ ref<span class="token punctuation">:</span> msg <span class="token operator">=</
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>組合出 <code>onClick()</code>：</p>
 <ul>
-<li><code>read()</code>：讀取 <code>password1</code> state</li>
+<li><code>read(password1)</code>：讀取 <code>password1</code> state</li>
 <li><code>chkEmpty(&#39;Password1&#39;)</code>：檢查 <code>password1</code> state 是否為空值，無論結果如何都會回傳 Either，避免為空值時繼續後續運算</li>
 <li><code>map(read(password2))</code>：繼續讀取 <code>password2</code> state，由於前一個 function 回傳 Either，因此 <code>read()</code> 必須包在 <code>map()</code> 內</li>
 <li><code>chain(chkEmpty(&#39;Password2&#39;))</code>：繼續檢查 <code>password2</code> state 是否為空值，無論結果如何都會回傳 Either，但因為已經在 Either 內，<code>chkEmpty()</code> 再回傳 Either 會造成兩層 Either，因此使用 <code>chain()</code> 攤平成為一層 Either</li>
@@ -599,9 +599,9 @@ ref<span class="token punctuation">:</span> msg <span class="token operator">=</
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>組合出 <code>chkEmpty()</code> ：</p>
 <ul>
-<li><code>isEmpty()</code>：檢查是否為空值</li>
+<li><code>isEmpty</code>：檢查是否為空值</li>
 <li><code>thunkify(Left)()</code>：若為空值則回傳 Left</li>
-<li><code>Right()</code>：若不是空值則回傳 Right</li>
+<li><code>Right</code>：若不是空值則回傳 Right</li>
 </ul>
 <p>34 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> chkIdentical <span class="token operator">=</span> <span class="token function">ifElse</span><span class="token punctuation">(</span>
@@ -613,8 +613,8 @@ ref<span class="token punctuation">:</span> msg <span class="token operator">=</
 <p>組合出 <code>chkIdentical()</code>：</p>
 <ul>
 <li><code>x =&gt; unref(password2) === x</code>：檢查是否相等</li>
-<li><code>Right()</code>：若相等則回傳 Right</li>
-<li><code>thunkify(Left)()</code>：若不相等則回傳 Left</li>
+<li><code>Right</code>：若相等則回傳 Right</li>
+<li><code>thunkify(Left)(&#39;Password is not identical&#39;)</code>：若不相等則回傳 Left</li>
 </ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>可發現若只有一個檢查條件回傳 Either，則後續的運算都要包在 <code>map()</code> 內；但若有多個條件都回傳 Either，則後續的運算先使用 <code>chain()</code> 攤平成一層 Either，然後才能使用 <code>map()</code> 套用其他 function</li>
