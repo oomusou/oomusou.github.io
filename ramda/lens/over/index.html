@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>使用 assoc() 對 Object 新增修改 Property | 點燈坊</title>
+<title>使用 over() 藉由 Lens 新增修改 Property | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -49,7 +49,7 @@
 
 <meta name="format-detection" content="telephone=no">
 <!-- Description -->
-<meta name="description" content="若想對 Object 新增 Property 或修改 Property，Ramda 提供了 assoc()。">
+<meta name="description" content="et() 與 over() 都可使用 Lens 新增修改 Property，唯 set() 是傳入值，而 over() 是傳入 Function。">
 <!-- Keywords -->
 <meta name="keywords" content=", Ramda">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
@@ -163,17 +163,17 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="使用 assoc() 對 Object 新增修改 Property | 點燈坊">
+	<meta property="og:title" content="使用 over() 藉由 Lens 新增修改 Property | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://fpjs.fun/ramda/object/assoc/">
+<meta property="og:url" content="https://fpjs.fun/ramda/lens/over/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
-<meta property="og:description" content="若想對 Object 新增 Property 或修改 Property，Ramda 提供了 assoc()。">
+<meta property="og:description" content="et() 與 over() 都可使用 Lens 新增修改 Property，唯 set() 是傳入值，而 over() 是傳入 Function。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2021-04-22T13:59:59.000Z">
-<meta property="article:modified_time" content="2021-04-22T13:59:59.000Z">
+<meta property="article:published_time" content="2021-04-22T15:42:16.000Z">
+<meta property="article:modified_time" content="2021-04-22T15:42:16.000Z">
 <meta property="article:author" content="Sam Xiao">
 <meta property="og:article:tag" content=", Ramda">
 
@@ -186,29 +186,29 @@ a:hover {
 
 
 	<!-- ### Canonical link ### -->
-	<link rel="canonical" href="https://fpjs.fun/ramda/object/assoc/">
+	<link rel="canonical" href="https://fpjs.fun/ramda/lens/over/">
 	<!-- ### Structured Data ### -->
 	
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://fpjs.fun/ramda/object/assoc/",
+    "url": "https://fpjs.fun/ramda/lens/over/",
     "@type": "BlogPosting",
     "logo": "https://fpjs.fun/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://fpjs.fun/ramda/object/assoc/"
+        "@id": "https://fpjs.fun/ramda/lens/over/"
     },
-    "headline": "使用 assoc() 對 Object 新增修改 Property | 點燈坊",
+    "headline": "使用 over() 藉由 Lens 新增修改 Property | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2021-04-22T13:59:59.000Z",
-    "dateModified": "2021-04-22T14:02:00.729Z",
+    "datePublished": "2021-04-22T15:42:16.000Z",
+    "dateModified": "2021-04-22T15:43:31.026Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -234,7 +234,7 @@ a:hover {
     },
     
     "keywords": ", Ramda",
-    "description": "若想對 Object 新增 Property 或修改 Property，Ramda 提供了 assoc()。"
+    "description": "et() 與 over() 都可使用 Lens 新增修改 Property，唯 set() 是傳入值，而 over() 是傳入 Function。"
 }
 </script>
 
@@ -425,7 +425,7 @@ a:hover {
             <div class="card-inner-cell">
                 <div class="card-header">
                     
-<h1 class="card-title h3 mb-2">使用 assoc() 對 Object 新增修改 Property</h1>
+<h1 class="card-title h3 mb-2">使用 over() 藉由 Lens 新增修改 Property</h1>
 
 
 <div class="post-header-info">
@@ -436,41 +436,69 @@ a:hover {
                 </div>
                 <div class="card-body">
                     <article id="post-content">
-                        <p>若想對 Object 新增 Property 或修改 Property，Ramda 提供了 <code>assoc()</code>。</p>
+                        <p><code>set()</code> 與 <code>over()</code> 都可使用 Lens 新增修改 Property，唯 <code>set()</code> 是傳入值，而 <code>over()</code> 是傳入 Function。</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
-<h2 id="Add-Property"><a href="#Add-Property" class="headerlink" title="Add Property"></a>Add Property</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> assoc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="over"><a href="#over" class="headerlink" title="over()"></a>over()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ifElse<span class="token punctuation">,</span> has<span class="token punctuation">,</span> over<span class="token punctuation">,</span> lensProp<span class="token punctuation">,</span> inc<span class="token punctuation">,</span> <span class="token keyword">set</span> <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
-  title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span>
-<span class="token punctuation">}</span>
+<span class="token keyword">let</span> incCount <span class="token operator">=</span> <span class="token function">ifElse</span><span class="token punctuation">(</span>
+  <span class="token function">has</span><span class="token punctuation">(</span><span class="token string">'count'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">over</span><span class="token punctuation">(</span><span class="token function">lensProp</span><span class="token punctuation">(</span><span class="token string">'count'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> inc<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token keyword">set</span><span class="token punctuation">(</span><span class="token function">lensProp</span><span class="token punctuation">(</span><span class="token string">'count'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
 
-<span class="token function">assoc</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Ramda 已內建 <code>assoc()</code> 可直接使用。</p>
-<blockquote>
-<p><strong>assoc()</strong><br><code>String -&gt; a -&gt; {k: v} -&gt; {k: v}</code><br>對 Object 新增 property，並回傳全新 Object</p>
-</blockquote>
-<p><code>String</code> : 新 property 的 key</p>
-<p><code>a</code>：新 property 的 value</p>
-<p><code>{k: v}</code>：data 為 Object</p>
-<p><code>{k: v}</code> ：回傳新 Object</p>
-<p><img src="/images/ramda/object/assoc/assoc000.png" alt="assoc000"></p>
-<h2 id="Modify-Property"><a href="#Modify-Property" class="headerlink" title="Modify Property"></a>Modify Property</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> assoc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
-  title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span>
-<span class="token punctuation">}</span>
-
-<span class="token function">assoc</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">,</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若 property 已存在，則相當於修改既有 property。</p>
-<p><img src="/images/ramda/object/assoc/assoc001.png" alt="assoc001"></p>
-<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li><code>assoc()</code> 一個 function 可同時支援新增 property 或修改 property</li>
-<li><code>assoc()</code> 與 <code>set()</code> 功能相同，唯 <code>set()</code> 必須搭配 lens</li>
+<span class="token function">incCount</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?          </span>
+<span class="token function">incCount</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ? </span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>若傳入 Object 有 <code>count</code> property 則修改其值遞增，若無則建立 <code>count</code> property 並設定初始值為 <code>1</code>。</p>
+<p>第 3 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> incCount <span class="token operator">=</span> <span class="token function">ifElse</span><span class="token punctuation">(</span>
+  <span class="token function">has</span><span class="token punctuation">(</span><span class="token string">'count'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">over</span><span class="token punctuation">(</span><span class="token function">lensProp</span><span class="token punctuation">(</span><span class="token string">'count'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> inc<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token keyword">set</span><span class="token punctuation">(</span><span class="token function">lensProp</span><span class="token punctuation">(</span><span class="token string">'count'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用 <code>ifElse()</code> 組合出 <code>incCount()</code>：</p>
+<ul>
+<li><code>has(&#39;count&#39;)</code>：判斷是否有 <code>count</code> property</li>
+<li><code>over(lensProp(&#39;count&#39;), inc)</code>：若有則透過 Lens 修改 property，注意第二個 argument 是 <code>inc()</code> 而非定值</li>
+<li><code>set(lensProp(&#39;count&#39;), 1)</code>：若無則透過 Lens 新增 property，注意第二個 argument 是定值而非 function</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#assoc" target="_blank" rel="noopener">assoc()</a></p>
+<blockquote>
+<p><strong>over()</strong><br><code>Lens s a → (a → a) → s → s</code><br>透過 function 使用 lens 新增修改 object 指定 property</p>
+</blockquote>
+<ul>
+<li><code>Lens s a</code>：傳入 property 的 Lens</li>
+<li><code>(a -&gt; a)</code>：傳入改變 property 的 function</li>
+<li><code>s</code>：傳入 Object</li>
+<li><code>s</code>：回傳新 Object</li>
+</ul>
+<p><img src="/images/ramda/lens/over/over000.png" alt="over000"></p>
+<h2 id="assoc"><a href="#assoc" class="headerlink" title="assoc()"></a>assoc()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ifElse<span class="token punctuation">,</span> has<span class="token punctuation">,</span> over<span class="token punctuation">,</span> lensProp<span class="token punctuation">,</span> inc<span class="token punctuation">,</span> assoc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> incCount <span class="token operator">=</span> <span class="token function">ifElse</span><span class="token punctuation">(</span>
+  <span class="token function">has</span><span class="token punctuation">(</span><span class="token string">'count'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">over</span><span class="token punctuation">(</span><span class="token function">lensProp</span><span class="token punctuation">(</span><span class="token string">'count'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> inc<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">assoc</span><span class="token punctuation">(</span><span class="token string">'count'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token function">incCount</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?          </span>
+<span class="token function">incCount</span><span class="token punctuation">(</span><span class="token punctuation">{</span> count<span class="token punctuation">:</span> <span class="token number">1</span> <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ? </span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 3 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> incCount <span class="token operator">=</span> <span class="token function">ifElse</span><span class="token punctuation">(</span>
+  <span class="token function">has</span><span class="token punctuation">(</span><span class="token string">'count'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">over</span><span class="token punctuation">(</span><span class="token function">lensProp</span><span class="token punctuation">(</span><span class="token string">'count'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> inc<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">assoc</span><span class="token punctuation">(</span><span class="token string">'count'</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>若改變 property 不要求 function，其實 <code>set()</code> 與 <code>assoc()</code> 功能相同。</p>
+<p><img src="/images/ramda/lens/over/over001.png" alt="over001"></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li><code>set()</code> 與 <code>assoc()</code> 功能相同，唯 <code>set()</code> 必須搭配 Lens</li>
+<li><code>set()</code> 與 <code>over()</code> 都能藉由 Lens 新增修改 property，唯 <code>set()</code> 傳入定值，而 <code>over()</code> 可傳入 function</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#concat" target="_blank" rel="noopener">concat()</a></p>
 
                     </article>
                     <p class="post-footer-info mb-0 pt-2">
@@ -489,19 +517,12 @@ a:hover {
 	<ul class="pagination">
 		<!-- Prev Nav -->
 		
-		<li class="page-item page-prev">
-			<a href="/ramda/lens/over/">
-				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 over() 藉由 Lens 新增修改 Property</div>
-			</a>
-		</li>
-		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/vue3/cookbook/binary-function/">
+			<a href="/ramda/object/assoc/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">如何將 Binary Function 結合 Function Pipeline ?</div>
+				<div class="page-item-subtitle">使用 assoc() 對 Object 新增修改 Property</div>
 			</a>
 		</li>
 		
