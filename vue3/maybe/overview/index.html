@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-20T22:46:35.000Z",
-    "dateModified": "2021-04-21T14:18:09.537Z",
+    "dateModified": "2021-04-24T13:56:30.296Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -493,14 +493,14 @@ ref<span class="token punctuation">:</span> searchResult <span class="token oper
 <h2 id="Maybe-Monad"><a href="#Maybe-Monad" class="headerlink" title="Maybe Monad"></a>Maybe Monad</h2><p><img src="/images/vue3/maybe/overview/maybe000.png" alt="maybe000"></p>
 <p>結果不變，但使用 Maybe Monad 改寫。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">v-model</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>searchQuery<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-  {{ searchResult }}
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">v-model</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>query<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  {{ result }}
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> <span class="token punctuation">{</span> ref<span class="token punctuation">,</span> watchEffect <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> read<span class="token punctuation">,</span> write <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> compose<span class="token punctuation">,</span> propEq<span class="token punctuation">,</span> map<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> propEq<span class="token punctuation">,</span> map<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> <span class="token punctuation">{</span> find<span class="token punctuation">,</span> fromMaybe_<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> flip <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
@@ -511,39 +511,39 @@ ref<span class="token punctuation">:</span> searchResult <span class="token oper
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
 <span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> searchQuery <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> searchResult <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> query <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> searchTitle <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">read</span><span class="token punctuation">(</span>searchQuery<span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token keyword">let</span> queryPrice <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">read</span><span class="token punctuation">(</span>query<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">propEq</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">flip</span><span class="token punctuation">(</span>find<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>searchResult<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">fromMaybe_</span><span class="token punctuation">(</span><span class="token function">compose</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>searchResult<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">fromMaybe_</span><span class="token punctuation">(</span><span class="token function">pipe</span><span class="token punctuation">(</span><span class="token function">always</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">write</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
-<span class="token function">watchEffect</span><span class="token punctuation">(</span>searchTitle<span class="token punctuation">)</span>
+<span class="token function">watchEffect</span><span class="token punctuation">(</span>queryPrice<span class="token punctuation">)</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>23 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> searchTitle <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">read</span><span class="token punctuation">(</span>searchQuery<span class="token punctuation">)</span><span class="token punctuation">,</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> queryPrice <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">read</span><span class="token punctuation">(</span>query<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">propEq</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">flip</span><span class="token punctuation">(</span>find<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>searchResult<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">fromMaybe_</span><span class="token punctuation">(</span><span class="token function">compose</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>searchResult<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">fromMaybe_</span><span class="token punctuation">(</span><span class="token function">pipe</span><span class="token punctuation">(</span><span class="token function">always</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">write</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>組合出 <code>searchTitle()</code>：</p>
+<p>組合出 <code>queryPrice()</code>：</p>
 <ul>
-<li><code>read(searchQuery)</code>：讀取 <code>searchQuery</code> state</li>
+<li><code>read(query)</code>：讀取 <code>query</code> state</li>
 <li><code>propEq(&#39;title&#39;)</code> ：組合 <code>find()</code> 所需要的 callback</li>
 <li><code>flip(find)(data)</code>：與 <code>Array.prototype.find()</code> 的差異是無論找不找得到都會傳 Maybe，因此不用擔心 <code>undefined</code> 問題</li>
 <li><code>map(prop(&#39;price&#39;))</code>：在 Maybe 內讀取出 <code>price</code> property</li>
-<li><code>map(write(searchResult))</code>：在 Maybe 內寫入 <code>searchResult</code> state，以上為 happy path</li>
-<li><code>fromMaybe_(compose(write(searchResult), always(&#39;&#39;)))</code>：處理 Nothing，若是 Nothing 則寫入 Empty String 進 <code>searchResult</code> state</li>
+<li><code>map(write(result))</code>：在 Maybe 內寫入 <code>result</code> state，以上為 happy path</li>
+<li><code>fromMaybe_(pipe(always(&#39;&#39;), write(result)))</code>：處理 Nothing，若是 Nothing 則寫入 Empty String 進 <code>result</code> state</li>
 </ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>當使用 Sanctuary 的 <code>find()</code> 時，若要搭配 <code>flip()</code>，記得要使用 Sanctuary 的 <code>flip()</code>，而不能使用 Ramda 的 <code>flip()</code>，否則無法真正確翻轉 <code>find()</code> 的 argument</li>
