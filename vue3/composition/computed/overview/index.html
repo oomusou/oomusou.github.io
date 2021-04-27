@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-15T14:00:23.000Z",
-    "dateModified": "2021-04-21T14:29:39.395Z",
+    "dateModified": "2021-04-26T23:45:51.927Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -465,13 +465,8 @@ ref<span class="token punctuation">:</span> name <span class="token operator">=<
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> greeting <span class="token operator">=</span> <span class="token function">computed</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`Hello </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>Computed 本質為 function，先由 arrow function 建立，再由 <code>computed()</code> higher order function 將 arrow function 轉為 computed。</p>
-<blockquote>
-<p><strong>computed()</strong><br><code>(() -&gt; a) -&gt; Computed a</code><br>將 arrow function 轉成 computed</p>
-</blockquote>
-<p><code>() -&gt; a</code>：輸入為沒有任何 argument 的 arrow function</p>
-<p><code>Computed a</code>：回傳 computed</p>
-<h2 id="Function-Pipeline"><a href="#Function-Pipeline" class="headerlink" title="Function Pipeline"></a>Function Pipeline</h2><p><img src="/images/vue3/composition/computed/overview/computed000.png" alt="computed000"></p>
-<p>功能不變，但使用 Function Pipeline 改寫。</p>
+<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><p><img src="/images/vue3/composition/computed/overview/computed000.png" alt="computed000"></p>
+<p>功能不變，但使用 Point-free 改寫。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   {{ greeting }}
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
@@ -495,16 +490,15 @@ ref<span class="token punctuation">:</span> name <span class="token operator">=<
   <span class="token function">concat</span><span class="token punctuation">(</span><span class="token string">'Hello '</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>組合出 <code>greeting</code> computed：</p>
+<p>使用 <code>calculated()</code> 組合出 <code>greeting</code> computed：</p>
 <ul>
-<li><code>calculated()</code>：組合 function 成為 computed</li>
 <li><code>read(name)</code>：讀取 <code>name</code> state</li>
 <li><code>concat(&#39;Hello &#39;)</code>：將 String 相加</li>
 </ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>Vue 2 並非完全不能使用 Function Pipeline 組合 computed，只有在 computed 搭配 Vuex 的 state 才能使用，但因為 Vue 3 完全不使用 <code>this</code>，可完全使用 <code>pipe()</code> 組合 pure function</li>
+<li>Vue 2 並非完全不能使用 Point-free 組合 computed，只有在 computed 搭配 Vuex 的 state 才能使用，但因為 Vue 3 完全不使用 <code>this</code>，可完全使用 <code>pipe()</code> 組合 pure function</li>
 <li>Computed 本質是 function，由於 Vue 3 不使用 <code>this</code>，可先使用 arrow function 實現 presentation logic，再使用新的 <code>computed()</code> 將 arrow function 轉成 computed</li>
-<li><code>computed()</code> 由於接收 function 不太適合 Point-free，因此使用 Vue3-fp 的 <code>calculated()</code> 方便使用 Point-free 組合 function</li>
+<li><code>computed()</code> 由於接收 function 不太適合 Point-free，因此使用 Vue3-fp 的 <code>calculated()</code> 組合 function</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://v3.vuejs.org" target="_blank" rel="noopener">Vue</a>, <a href="https://v3.vuejs.org/api/computed-watch-api.html#computed" target="_blank" rel="noopener">computed()</a></p>
 

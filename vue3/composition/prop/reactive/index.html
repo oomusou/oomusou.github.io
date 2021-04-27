@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-14T09:36:05.000Z",
-    "dateModified": "2021-04-21T14:55:45.673Z",
+    "dateModified": "2021-04-27T00:01:19.664Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -438,6 +438,7 @@ a:hover {
                     <article id="post-content">
                         <p>若 Prop 只用來對 Component 傳入初始值設定，只要在 <code>mounted</code> hook 接受並寫入 <code>data</code> 即可；但若日後還會將改變 Data 傳入 Prop，且希望 Component 能 Reactive 根據 Prop 改變，則要搭配 Computed 或 Watch。</p>
 <a id="more"></a>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.5</p>
 <h2 id="Computed"><a href="#Computed" class="headerlink" title="Computed"></a>Computed</h2><p><img src="/images/vue3/composition/prop/reactive/prop000.png" alt="prop000"></p>
 <p><code>+</code> 不斷遞增 component 外部的 state，並以 prop 傳入 component 並 reactive 顯示。</p>
 <h3 id="Composition-API"><a href="#Composition-API" class="headerlink" title="Composition API"></a>Composition API</h3><p><strong>App.vue</strong></p>
@@ -499,7 +500,7 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">computed</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> props<span class="token punctuation">.</span>startCount<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>使用 <code>computed()</code> 根據 <code>startCount</code> prop 定義 <code>count</code> computed。</p>
-<h3 id="Function-Pipeline"><a href="#Function-Pipeline" class="headerlink" title="Function Pipeline"></a>Function Pipeline</h3><p><strong>App.vue</strong></p>
+<h3 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h3><p><strong>App.vue</strong></p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>MyCounter</span> <span class="token attr-name">:startCount</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>count<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
@@ -523,7 +524,7 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
 <p>12 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>使用 <code>ref()</code> 定義 <code>count</code> state 對 Function Pipeline 較方便。</p>
+<p>使用 <code>ref()</code> 定義 <code>count</code> state 對 Point-free 較方便。</p>
 <p>14 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">read</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">,</span>
@@ -531,7 +532,7 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
   <span class="token function">write</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>組合出 <code>onClick()</code>：</p>
+<p>使用  <code>pipe()</code> 組合出 <code>onClick()</code>：</p>
 <ul>
 <li><code>read(count)</code>：讀取 <code>count</code> state</li>
 <li><code>inc</code>：對值遞增</li>
@@ -558,7 +559,7 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
   <span class="token function">mark</span><span class="token punctuation">(</span><span class="token string">'startCount'</span><span class="token punctuation">,</span> props<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>組合出 <code>count</code> computed：</p>
+<p>使用 <code>calculated()</code> 組合出 <code>count</code> computed：</p>
 <ul>
 <li><code>mark(&#39;startCount&#39;, props)</code>：讀取 <code>startCount</code> prop</li>
 <li><code>calculated()</code>：建立 <code>count</code> computed</li>
@@ -607,7 +608,7 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">watch</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> props<span class="token punctuation">.</span>startCount<span class="token punctuation">,</span> x <span class="token operator">=</span><span class="token operator">></span> count <span class="token operator">=</span> x<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>使用 <code>watch()</code> 定義 <code>startCount</code> prop 的 watch，一旦日後 prop 改變，將寫入 <code>count</code> state。</p>
-<h3 id="Function-Pipeline-1"><a href="#Function-Pipeline-1" class="headerlink" title="Function Pipeline"></a>Function Pipeline</h3><p><strong>App.vue</strong></p>
+<h3 id="Point-free-1"><a href="#Point-free-1" class="headerlink" title="Point-free"></a>Point-free</h3><p><strong>App.vue</strong></p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>MyCounter</span> <span class="token attr-name">:startCount</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>count<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
@@ -664,7 +665,7 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
   <span class="token function">write</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>組合出 IIFE：</p>
+<p>使用 <code>pipe()</code> 組合出 IIFE：</p>
 <ul>
 <li><code>mark(&#39;startCount&#39;, props)</code>：讀取 <code>startCount</code> prop</li>
 <li><code>write(count)</code>：寫入 <code>count</code> state</li>
@@ -675,7 +676,7 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
   <span class="token function">write</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>組合出 <code>startCount</code> prop 的 watch：</p>
+<p>使用 <code>watch()</code> 組合出 <code>startCount</code> prop 的 watch：</p>
 <ul>
 <li><code>mark(&#39;startCount&#39;, props)</code>：讀取 <code>startCount</code> prop</li>
 <li><code>write(count)</code>：寫入 <code>count</code> state</li>
@@ -727,7 +728,7 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若覺得要先由 prop 定義 <code>count</code> state 初始值麻煩，也可以在 watch 的最後一個 argument 直接傳入 <code>immediate</code> 為 <code>true</code>，如此會一併定義 <code>count</code> state 初始值。</p>
-<h3 id="Function-Pipeline-2"><a href="#Function-Pipeline-2" class="headerlink" title="Function Pipeline"></a>Function Pipeline</h3><p><strong>App.vue</strong></p>
+<h3 id="Point-free-2"><a href="#Point-free-2" class="headerlink" title="Point-free"></a>Point-free</h3><p><strong>App.vue</strong></p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>MyCounter</span> <span class="token attr-name">:startCount</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>count<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
@@ -776,7 +777,7 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
   <span class="token punctuation">{</span> immediate<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>組合出 <code>startCount</code> prop 的 watch：</p>
+<p>使用 <code>watch()</code> 組合出 <code>startCount</code> prop 的 watch：</p>
 <ul>
 <li><code>mark(&#39;startCount&#39;, props)</code>：讀取 <code>startCount</code> prop</li>
 <li><code>write(count)</code>：寫入 <code>count</code> state</li>
