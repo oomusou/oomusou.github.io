@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-01-29T00:01:13.000Z",
-    "dateModified": "2021-01-30T11:34:03.360Z",
+    "dateModified": "2021-04-27T01:08:28.466Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -438,7 +438,7 @@ a:hover {
                     <article id="post-content">
                         <p>將資料以 CSV 下載為實務上常見功能，事實上並不需要套件幫助就可實現。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.0</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.5</p>
 <h2 id="Download-CSV"><a href="#Download-CSV" class="headerlink" title="Download CSV"></a>Download CSV</h2><p><img src="/images/vue3/cookbook/download-csv/cvs000.png" alt="cvs000"></p>
 <p>自動下載 CSV。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
@@ -505,7 +505,7 @@ a:hover {
   <span class="token function">concat</span><span class="token punctuation">(</span>__<span class="token punctuation">,</span> <span class="token string">'\n'</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>首先處理 CSV 的 header 部分：</p>
+<p>使用 <code>pipe()</code> 組合出處理 CSV 的 header 部分：</p>
 <ul>
 <li><code>head()</code>：取得 Array 第一筆資料處理 header，為 Object</li>
 <li><code>keys()</code>：將 Object 的 key 取出回傳 Array</li>
@@ -518,7 +518,7 @@ a:hover {
   <span class="token function">join</span><span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>處理 CSV 的 body 部分：</p>
+<p>使用 <code>pipe()</code> 組合出處理 CSV 的 body 部分：</p>
 <ul>
 <li><code>map(objToStr)</code>：將每筆資料 Object 轉成 String</li>
 <li><code>join(&#39;\n&#39;)</code>：將 Array 轉成 String，並以 <code>\n</code> 分隔</li>
@@ -529,7 +529,7 @@ a:hover {
   <span class="token function">join</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>將 Object 轉成以 <code>,</code> 分隔的 String，這也是最關鍵部分：</p>
+<p>使用 <code>pipe()</code> 組合出將 Object 轉成以 <code>,</code> 分隔的 String，這也是最關鍵部分：</p>
 <ul>
 <li><code>values()</code>：將 Object 的 value 取出回傳 Array</li>
 <li><code>join(&#39;,&#39;)</code>：將 Array 轉成 String，並以 <code>,</code> 分隔</li>
@@ -539,10 +539,9 @@ a:hover {
   concat<span class="token punctuation">,</span> <span class="token punctuation">[</span>header<span class="token punctuation">,</span> body<span class="token punctuation">]</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>將 header 與 body 整合成完整 CSV：</p>
+<p>使用 <code>converge()</code> 組合出將 header 與 body 整合成完整 CSV：</p>
 <ul>
 <li><code>concat()</code>：將 <code>header</code> 與 <code>body</code> 合併</li>
-<li><code>converge()</code>：整合 <code>concat()</code>、<code>header()</code> 與 <code>body()</code></li>
 </ul>
 <p>36 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> mount <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
@@ -561,7 +560,7 @@ a:hover {
 <li>動態建立 <code>&lt;a&gt;</code> 自動下載 CSV</li>
 </ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>Object Array 轉成 CSV 本質上就是一連串的轉換過程，特別適合使用 Ramda 實現</li>
+<li>Object Array 轉成 CSV 本質上就是一連串的轉換過程，特別適合使用 Function Pipeline 實現</li>
 <li>自動下載可動態建立 <code>&lt;a&gt;</code> 並以 JavaScript 加以 <code>click()</code></li>
 </ul>
 

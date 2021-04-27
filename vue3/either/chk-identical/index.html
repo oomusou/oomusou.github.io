@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-21T13:08:02.000Z",
-    "dateModified": "2021-04-21T13:40:11.695Z",
+    "dateModified": "2021-04-27T00:59:21.397Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -512,7 +512,7 @@ ref<span class="token punctuation">:</span> msg <span class="token operator">=</
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Imperative 會使用 Guard Clause，也就是每個 <code>if</code> 檢查若失敗則提早 <code>return</code>，避免使用 <code>else</code>。</p>
 <h2 id="Either-Monad"><a href="#Either-Monad" class="headerlink" title="Either Monad"></a>Either Monad</h2><p><img src="/images/vue3/either/chk-identical/identical000.png" alt="identical000"></p>
-<p>結果不變，但使用 Function Pipeline 改寫。</p>
+<p>結果不變，但使用 Either Monad 改寫。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
     Password1: <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">v-model</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>password1<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
@@ -578,7 +578,7 @@ ref<span class="token punctuation">:</span> msg <span class="token operator">=</
   <span class="token function">either</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>msg<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">(</span>I<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>組合出 <code>onClick()</code>：</p>
+<p>使用 <code>pipe()</code> 組合出 <code>onClick()</code>：</p>
 <ul>
 <li><code>read(password1)</code>：讀取 <code>password1</code> state</li>
 <li><code>chkEmpty(&#39;Password1&#39;)</code>：檢查 <code>password1</code> state 是否為空值，無論結果如何都會回傳 Either，避免為空值時繼續後續運算</li>
@@ -597,7 +597,7 @@ ref<span class="token punctuation">:</span> msg <span class="token operator">=</
   Right
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>組合出 <code>chkEmpty()</code> ：</p>
+<p>使用  <code>ifElse()</code> 組合出 <code>chkEmpty()</code> ：</p>
 <ul>
 <li><code>isEmpty</code>：檢查是否為空值</li>
 <li><code>thunkify(Left)()</code>：若為空值則回傳 Left</li>
@@ -610,7 +610,7 @@ ref<span class="token punctuation">:</span> msg <span class="token operator">=</
   <span class="token function">thunkify</span><span class="token punctuation">(</span>Left<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'Password is not identical'</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>組合出 <code>chkIdentical()</code>：</p>
+<p>使用 <code>ifElse()</code> 組合出 <code>chkIdentical()</code>：</p>
 <ul>
 <li><code>x =&gt; unref(password2) === x</code>：檢查是否相等</li>
 <li><code>Right</code>：若相等則回傳 Right</li>
