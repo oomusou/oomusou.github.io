@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-27T12:12:47.000Z",
-    "dateModified": "2021-04-27T12:14:52.740Z",
+    "dateModified": "2021-04-28T01:32:57.138Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -478,7 +478,7 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> <span class="token punctuation">{</span> ref<span class="token punctuation">,</span> watchEffect <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> read<span class="token punctuation">,</span> write <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> inc<span class="token punctuation">,</span> thunkify <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> inc<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> log<span class="token punctuation">,</span> interval <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
 <span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
@@ -495,9 +495,9 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
 <span class="token punctuation">)</span>
 
 <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">thunkify</span><span class="token punctuation">(</span>incCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">always</span><span class="token punctuation">(</span>incCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">interval</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">thunkify</span><span class="token punctuation">(</span>logCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">always</span><span class="token punctuation">(</span>logCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
   watchEffect
 <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
@@ -528,17 +528,17 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
 </ul>
 <p>24 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">thunkify</span><span class="token punctuation">(</span>incCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">always</span><span class="token punctuation">(</span>incCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">interval</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">thunkify</span><span class="token punctuation">(</span>logCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">always</span><span class="token punctuation">(</span>logCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
   watchEffect
 <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用 <code>pipe()</code> 組合 IIFE：</p>
 <ul>
-<li><code>thunkify(incCount)</code>：準備 <code>incCount()</code> 傳入 <code>interval(1000)</code></li>
+<li><code>always(incCount)</code>：準備 <code>incCount()</code> 傳入 <code>interval(1000)</code></li>
 <li><code>interval(1000)</code>：每一秒鐘執行 <code>incCount()</code></li>
-<li><code>thunkify(logCount)</code>：準備 <code>logCount()</code> 傳入 <code>watchEffect()</code></li>
+<li><code>always(logCount)</code>：準備 <code>logCount()</code> 傳入 <code>watchEffect()</code></li>
 <li><code>watchEffect</code>：觀察 <code>logCount()</code> 的 dependency 改變而自動執行</li>
 </ul>
 <blockquote>
@@ -569,7 +569,7 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
 		<!-- Prev Nav -->
 		
 		<li class="page-item page-prev">
-			<a href="/vue3/composition/watch/state/">
+			<a href="/vue3/composition/watch/overview/">
 				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
 				<div class="page-item-subtitle">使用 watch() 監視 State</div>
 			</a>

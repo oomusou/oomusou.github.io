@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-27T11:11:45.000Z",
-    "dateModified": "2021-04-27T12:00:50.374Z",
+    "dateModified": "2021-04-28T01:29:35.807Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -474,7 +474,7 @@ ref<span class="token punctuation">:</span> name <span class="token operator">=<
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> <span class="token punctuation">{</span> ref<span class="token punctuation">,</span> computed <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> read <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> concat<span class="token punctuation">,</span> thunkify <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> concat<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> name <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'Sam'</span><span class="token punctuation">)</span>
 
@@ -484,7 +484,7 @@ ref<span class="token punctuation">:</span> name <span class="token operator">=<
 <span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> hello <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">thunkify</span><span class="token punctuation">(</span>greeting<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">always</span><span class="token punctuation">(</span>greeting<span class="token punctuation">)</span><span class="token punctuation">,</span>
   computed
 <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
@@ -502,19 +502,19 @@ ref<span class="token punctuation">:</span> name <span class="token operator">=<
 </ul>
 <p>17 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> hello <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">thunkify</span><span class="token punctuation">(</span>greeting<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">always</span><span class="token punctuation">(</span>greeting<span class="token punctuation">)</span><span class="token punctuation">,</span>
   computed
 <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用 <code>pipe()</code> 組合出 IIFE 建立 <code>hello</code> computed：</p>
 <ul>
-<li><code>thunkify(greeting)</code>：準備 <code>greeting()</code> 傳入 <code>computed()</code></li>
-<li><code>computed</code>：將 function 轉成 computed</li>
+<li><code>always(greeting)</code>：準備 <code>greeting()</code> 傳入 <code>computed()</code></li>
+<li><code>computed</code>：將 <code>greeting()</code> 轉成 computed</li>
 </ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Vue 2 並非完全不能使用 Point-free 組合 computed，只有在 computed 搭配 Vuex 的 state 才能使用，但因為 Vue 3 完全不使用 <code>this</code>，可完全使用 <code>pipe()</code> 組合 pure function</li>
 <li>Computed 本質是 function，由於 Vue 3 不使用 <code>this</code>，可先使用 arrow function 實現 presentation logic，再使用新的 <code>computed()</code> 將 arrow function 轉成 computed</li>
-<li><code>onMounted()</code> 與 <code>computed()</code> 雖然都是傳入 function，且靠 <code>thunkify()</code> 與 IIFE 執行，但因為 <code>computed()</code> 會回傳值，故左側要加上 <code>=</code></li>
+<li><code>onMounted()</code> 與 <code>computed()</code> 雖然都是傳入 function，且靠 <code>always()</code> 與 IIFE 執行，但因為 <code>computed()</code> 會回傳值，故左側要加上 <code>=</code></li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://v3.vuejs.org" target="_blank" rel="noopener">Vue</a>, <a href="https://v3.vuejs.org/api/computed-watch-api.html#computed" target="_blank" rel="noopener">computed()</a></p>
 
