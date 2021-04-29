@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-29T01:12:26.000Z",
-    "dateModified": "2021-04-29T01:15:43.793Z",
+    "dateModified": "2021-04-29T09:57:50.153Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -438,6 +438,7 @@ a:hover {
                     <article id="post-content">
                         <p>Vue 3 希望我們使用 <code>.value</code> 讀取 State，但這種方式不方便 Point-free，Vue3-fp 提供了 Curry Function 版本的 <code>read()</code>。</p>
 <a id="more"></a>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.5<br>Vue-fp 0.0.5</p>
 <h2 id="Composition-API"><a href="#Composition-API" class="headerlink" title="Composition API"></a>Composition API</h2><p><img src="/images/vue3-fp/read/read000.png" alt="unwrap000"></p>
 <p>讀取 state 並使用 <code>console.log()</code> 印出。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
@@ -445,23 +446,21 @@ a:hover {
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> ref<span class="token punctuation">,</span> onMounted <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 
 <span class="token keyword">let</span> name <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'Sam'</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> mount <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>name<span class="token punctuation">.</span>value<span class="token punctuation">)</span>
-
-<span class="token function">onMounted</span><span class="token punctuation">(</span>mount<span class="token punctuation">)</span>
+console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>name<span class="token punctuation">.</span>value<span class="token punctuation">)</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 8 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> name <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'Sam'</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>使用 <code>ref()</code> 定義 <code>name</code> state。</p>
 <p>10 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> mount <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>name<span class="token punctuation">.</span>value<span class="token punctuation">)</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>name<span class="token punctuation">.</span>value<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>在 <code>mount()</code> 使用 <code>console.log()</code> 印出，並使用 <code>.value</code> 讀取 <code>name</code> state 內部值。</p>
+<p>使用 <code>console.log()</code> 印出 <code>name</code> state，需使用 <code>.value</code> 讀取 <code>name</code> state 內部值。</p>
 <h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><p><img src="/images/vue3-fp/read/read000.png" alt="unwrap000"></p>
 <p>結果不變，但使用 Point-free 改寫。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
@@ -469,46 +468,34 @@ a:hover {
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> onMounted<span class="token punctuation">,</span> ref<span class="token punctuation">,</span> unref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>  
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> thunkify<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ref<span class="token punctuation">,</span> unref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> thunkify <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
 <span class="token keyword">let</span> read <span class="token operator">=</span> <span class="token function">thunkify</span><span class="token punctuation">(</span>unref<span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> name <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'Sam'</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> mount <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+<span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">read</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">,</span>
   log
-<span class="token punctuation">)</span>
-
-<span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">always</span><span class="token punctuation">(</span>mount<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  onMounted
 <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>10 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> read <span class="token operator">=</span> <span class="token function">thunkify</span><span class="token punctuation">(</span>unref<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>將 <code>unref()</code> 加以 thunkify 方便 Point-free。</p>
 <p>14 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> mount <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">read</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">,</span>
   log
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>mount()</code> 使用 <code>read()</code> 讀取 <code>name</code> state，並且由 <code>log()</code> 印出。</p>
-<p>19 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">always</span><span class="token punctuation">(</span>mount<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  onMounted
 <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用 <code>pipe()</code> 組合 IIFE：</p>
 <ul>
-<li><code>always(mount)</code>：準備 <code>mount()</code> 傳入 <code>onMounted()</code></li>
-<li><code>onMounted</code>：將 <code>mount()</code> 掛上 <code>mounted</code> hook</li>
+<li><code>read(name)</code>：讀取 <code>name</code> state</li>
+<li><code>log</code>：印出結果</li>
 </ul>
 <h2 id="Vue3-fp"><a href="#Vue3-fp" class="headerlink" title="Vue3-fp"></a>Vue3-fp</h2><p><img src="/images/vue3-fp/read/read000.png" alt="unwrap000"></p>
 <p>結果不變，但使用 Wink-fp 改寫。</p>
@@ -517,24 +504,19 @@ a:hover {
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> onMounted<span class="token punctuation">,</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> read <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
 <span class="token keyword">let</span> name <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">'Sam'</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> mount <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+<span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">read</span><span class="token punctuation">(</span>name<span class="token punctuation">)</span><span class="token punctuation">,</span>
   log
-<span class="token punctuation">)</span>
-
-<span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">always</span><span class="token punctuation">(</span>mount<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  onMounted
 <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 9 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> read <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
