@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-26T00:57:58.000Z",
-    "dateModified": "2021-04-26T01:03:31.126Z",
+    "dateModified": "2021-05-03T22:36:25.395Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -438,7 +438,7 @@ a:hover {
                     <article id="post-content">
                         <p>對於重複 HTML 部分，我們可抽出 Component；對於重複 JavaScript 部分，我們可抽出 Module。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.5</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.11</p>
 <h2 id="Counter"><a href="#Counter" class="headerlink" title="Counter"></a>Counter</h2><p><img src="/images/vue3/module/overview/module000.png" alt="overview000"></p>
 <p>以最經典的 counter 來看看 Vue 3 如何抽出重複 JavaScript。</p>
 <p><strong>App.vue</strong></p>
@@ -472,7 +472,7 @@ a:hover {
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
   <span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
 
-  <span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token keyword">let</span> incCount <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
     <span class="token function">read</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">,</span>
     inc<span class="token punctuation">,</span>
     <span class="token function">write</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span>
@@ -480,7 +480,7 @@ a:hover {
 
   <span class="token keyword">return</span> <span class="token punctuation">{</span>
     count<span class="token punctuation">,</span>
-    onClick
+    incCount
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
@@ -503,22 +503,22 @@ a:hover {
 <p>第 6 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+<span class="token keyword">let</span> incCount <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">read</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">,</span>
   inc<span class="token punctuation">,</span>
   <span class="token function">write</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>將原本 component 內重複的 JavaScript 複製貼上，完全不用修改。</p>
+<p>將原本 component 內重複的 JavaScript 複製貼上，將 <code>onClick()</code> 改成 <code>incCoun()</code>。</p>
 <p>14 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">return</span> <span class="token punctuation">{</span>
   count<span class="token punctuation">,</span>
-  onClick
+  incCount
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>將要給 component 使用的 variable 與 function return 回去。</p>
+<p>將要給 component 使用的 state 與 function 回傳。</p>
 <blockquote>
-<p>因為可能建立不少 variable 與小 function 內部使用，可藉由 Module Pattern 將 variable 與 function 封裝在 function 內</p>
+<p>因為可能建立不少 state 與小 function 內部使用，可藉由 Module Pattern 將 state 與 function 封裝在 module 內</p>
 </blockquote>
 <p><strong>App.vue</strong></p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
@@ -529,17 +529,23 @@ a:hover {
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> useCounter <span class="token keyword">from</span> <span class="token string">'/src/modules/useCounter'</span>
 
-<span class="token keyword">let</span> <span class="token punctuation">{</span> count<span class="token punctuation">,</span> onClick <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">useCounter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> <span class="token punctuation">{</span> count<span class="token punctuation">,</span> incCount <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">useCounter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> onClick <span class="token operator">=</span> incCount
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 7 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> useCounter <span class="token keyword">from</span> <span class="token string">'/src/modules/useCounter'</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>從 <code>useCounter</code> module 引用 <code>useCounter()</code>。</p>
 <p>第 9 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> count<span class="token punctuation">,</span> onClick <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">useCounter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> count<span class="token punctuation">,</span> incCount <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">useCounter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>執行 <code>useCounter()</code>，並從回傳 Object 解構出 <code>count</code> state 與 <code>onClick()</code>。</p>
+<p>執行 <code>useCounter()</code>，並從回傳 Object 解構出 <code>count</code> state 與 <code>incCount()</code>。</p>
+<p>11 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> incCount
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將 <code>incCount()</code> 指定給 <code>onClick()</code>。</p>
 <h2 id="Component"><a href="#Component" class="headerlink" title="Component"></a>Component</h2><p><img src="/images/vue3/module/overview/module001.png" alt="module001"></p>
 <p>同時使用兩個 <code>&lt;MyCounter&gt;</code> component，可發現 <code>count</code> state 各自爲政，不會互相影響。</p>
 <p><strong>MyCounter.vue</strong></p>
@@ -551,9 +557,11 @@ a:hover {
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> useCounter <span class="token keyword">from</span> <span class="token string">'/src/modules/useCounter'</span>
 
-<span class="token keyword">let</span> <span class="token punctuation">{</span> count<span class="token punctuation">,</span> onClick <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">useCounter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> <span class="token punctuation">{</span> count<span class="token punctuation">,</span> incCount <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">useCounter</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> onClick <span class="token operator">=</span> incCount
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>建立 <code>&lt;MyCounter&gt;</code> component，其內的 <code>count</code> state 與 <code>onClick()</code> 都來自於 <code>useCounter</code> module。</p>
 <p><strong>App.vue</strong></p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
@@ -579,7 +587,7 @@ a:hover {
 <span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
 
 <span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token keyword">let</span> incCount <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
     <span class="token function">read</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">,</span>
     inc<span class="token punctuation">,</span>
     <span class="token function">write</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span>
@@ -587,7 +595,7 @@ a:hover {
 
   <span class="token keyword">return</span> <span class="token punctuation">{</span>
     count<span class="token punctuation">,</span>
-    onClick
+    incCount
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
