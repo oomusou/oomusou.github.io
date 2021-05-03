@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>使用 Ref Sugar 取代 .value | 點燈坊</title>
+<title>使用 ref() 實現 Reactivity | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -49,7 +49,7 @@
 
 <meta name="format-detection" content="telephone=no">
 <!-- Description -->
-<meta name="description" content="Vue 提供了 Composition API 後，雖然抽取 Function 很方便，但衍生出 .value 滿天飛問題，Vue 因此提出了使用 Ref Sugar 取代 .value 。">
+<meta name="description" content="Reactivity 為 Vue 最重要部分，Vue 3 使用 ref() 將 Value 包起來即可，但會造成 .value 充斥問題，因此有了後續各種改進寫法。">
 <!-- Keywords -->
 <meta name="keywords" content=", Vue">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
@@ -163,17 +163,17 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="使用 Ref Sugar 取代 .value | 點燈坊">
+	<meta property="og:title" content="使用 ref() 實現 Reactivity | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://fpjs.fun/vue3/composition/ref-sugar/">
+<meta property="og:url" content="https://fpjs.fun/vue3/reactivity/ref/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
-<meta property="og:description" content="Vue 提供了 Composition API 後，雖然抽取 Function 很方便，但衍生出 .value 滿天飛問題，Vue 因此提出了使用 Ref Sugar 取代 .value 。">
+<meta property="og:description" content="Reactivity 為 Vue 最重要部分，Vue 3 使用 ref() 將 Value 包起來即可，但會造成 .value 充斥問題，因此有了後續各種改進寫法。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2021-04-12T09:50:18.000Z">
-<meta property="article:modified_time" content="2021-04-12T09:50:18.000Z">
+<meta property="article:published_time" content="2021-05-03T13:25:02.000Z">
+<meta property="article:modified_time" content="2021-05-03T13:25:02.000Z">
 <meta property="article:author" content="Sam Xiao">
 <meta property="og:article:tag" content=", Vue">
 
@@ -186,29 +186,29 @@ a:hover {
 
 
 	<!-- ### Canonical link ### -->
-	<link rel="canonical" href="https://fpjs.fun/vue3/composition/ref-sugar/">
+	<link rel="canonical" href="https://fpjs.fun/vue3/reactivity/ref/">
 	<!-- ### Structured Data ### -->
 	
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://fpjs.fun/vue3/composition/ref-sugar/",
+    "url": "https://fpjs.fun/vue3/reactivity/ref/",
     "@type": "BlogPosting",
     "logo": "https://fpjs.fun/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://fpjs.fun/vue3/composition/ref-sugar/"
+        "@id": "https://fpjs.fun/vue3/reactivity/ref/"
     },
-    "headline": "使用 Ref Sugar 取代 .value | 點燈坊",
+    "headline": "使用 ref() 實現 Reactivity | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2021-04-12T09:50:18.000Z",
-    "dateModified": "2021-04-12T09:51:32.452Z",
+    "datePublished": "2021-05-03T13:25:02.000Z",
+    "dateModified": "2021-05-03T14:26:27.102Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -234,7 +234,7 @@ a:hover {
     },
     
     "keywords": ", Vue",
-    "description": "Vue 提供了 Composition API 後，雖然抽取 Function 很方便，但衍生出 .value 滿天飛問題，Vue 因此提出了使用 Ref Sugar 取代 .value 。"
+    "description": "Reactivity 為 Vue 最重要部分，Vue 3 使用 ref() 將 Value 包起來即可，但會造成 .value 充斥問題，因此有了後續各種改進寫法。"
 }
 </script>
 
@@ -425,22 +425,22 @@ a:hover {
             <div class="card-inner-cell">
                 <div class="card-header">
                     
-<h1 class="card-title h3 mb-2">使用 Ref Sugar 取代 .value</h1>
+<h1 class="card-title h3 mb-2">使用 ref() 實現 Reactivity</h1>
 
 
 <div class="post-header-info">
 	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
 		alt="Sam Xiao's Avatar">
-	<span>2021-04-12</span>
+	<span>2021-05-03</span>
 </div>
                 </div>
                 <div class="card-body">
                     <article id="post-content">
-                        <p>Vue 提供了 Composition API 後，雖然抽取 Function 很方便，但衍生出 <code>.value</code> 滿天飛問題，Vue 因此提出了使用 Ref Sugar 取代 <code>.value</code> 。</p>
+                        <p>Reactivity 為 Vue 最重要部分，Vue 3 使用 <code>ref()</code> 將 Value 包起來即可，但會造成 <code>.value</code> 充斥問題，因此有了後續各種改進寫法。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.5</p>
-<h2 id="setup"><a href="#setup" class="headerlink" title="setup"></a>setup</h2><p><img src="/images/vue3/composition/ref-sugar/ref000.png" alt="ref000"></p>
-<p>由經典的 counter 來看 Vue 寫法的改變。</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.11</p>
+<h2 id="Primitive"><a href="#Primitive" class="headerlink" title="Primitive"></a>Primitive</h2><p><img src="/images/vue3/reactivity/ref/ref000.png" alt="ref000"></p>
+<p>隨著 <code>+</code> 遞增 <code>count</code> state，HTML 也會自動更新。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
   {{ count }}
@@ -453,14 +453,17 @@ a:hover {
 <span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token punctuation">.</span>value<span class="token operator">++</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>使用 <code>setup</code> attribute 簡化 <code>setup()</code>：</p>
-<ul>
-<li>讀取與寫入 state 需使用 <code>.value</code></li>
-</ul>
-<blockquote>
-<p>由 Vue 2 的 <code>this</code> 滿天飛變成 Vue 3 的 <code>.value</code> 滿天飛</p>
-</blockquote>
-<h2 id="Ref-Sugar"><a href="#Ref-Sugar" class="headerlink" title="Ref Sugar"></a>Ref Sugar</h2><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>ref()</code> 定義 <code>count</code> state，並定義其初始值為 <code>0</code>。</p>
+<p>第 10 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token punctuation">.</span>value<span class="token operator">++</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>唯必須以 <code>.value</code> 取出 <code>count</code> state 才能遞增，最後再以 <code>count.state</code> 寫入 <code>count</code> state。</p>
+<h2 id="Ref-Sugar"><a href="#Ref-Sugar" class="headerlink" title="Ref Sugar"></a>Ref Sugar</h2><p><img src="/images/vue3/reactivity/ref/ref000.png" alt="ref000"></p>
+<p>為了避免 <code>.value</code> 滿天飛，Vue 3 另外提出了 ref sugar。</p>
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
   <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
   {{ count }}
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
@@ -470,18 +473,80 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
 <span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token operator">++</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>為了解決在 Composition API 內 <code>.value</code> 問題，Vue 提出了 ref sugar：</p>
+<p>第 7 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">ref<span class="token punctuation">:</span> count <span class="token operator">=</span> <span class="token number">0</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>以 <code>ref</code> label 宣告 <code>count</code> state，則不必再使用 <code>ref()</code>。</p>
+<p>第 8 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token operator">++</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>直接以 <code>count</code> 讀取 <code>count</code> state，也直接以 <code>count</code> 寫入 <code>count</code> state。</p>
+<h2 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h2><p><img src="/images/vue3/reactivity/ref/ref000.png" alt="ref000"></p>
+<p>若不想到處的 <code>.value</code>，使用 <code>reactive()</code> 搭配 Object 也是一種方法。</p>
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+  {{ count.data }}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> reactive <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
+
+<span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">reactive</span><span class="token punctuation">(</span><span class="token punctuation">{</span> data<span class="token punctuation">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token punctuation">.</span>data<span class="token operator">++</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">reactive</span><span class="token punctuation">(</span><span class="token punctuation">{</span> data<span class="token punctuation">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將 <code>count</code> state 包在 Object 的 <code>data</code> 內，唯必須從 <code>ref()</code> 改成 <code>reactive()</code>。</p>
+<p>第 10 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token punctuation">.</span>data<span class="token operator">++</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>直接從 <code>count</code> Object 的 <code>data</code> 取出與寫入，不必再透過 <code>.value</code>。</p>
+<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><p><img src="/images/vue3/reactivity/ref/ref000.png" alt="ref000"></p>
+<p>以 Point-free 方式處理 state，也不必處理 <code>.value</code>。</p>
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+  {{ count }}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> read<span class="token punctuation">,</span> write <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">read</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  inc<span class="token punctuation">,</span>
+  <span class="token function">write</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>11 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>一樣使用 <code>ref()</code> 定義 <code>count</code> state。</p>
+<p>13 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">read</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  inc<span class="token punctuation">,</span>
+  <span class="token function">write</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用 <code>pipe()</code> 組合 <code>onClick()</code>：</p>
 <ul>
-<li>讀取與寫入 state 均不需 <code>.value</code></li>
-<li>不需 import <code>ref()</code></li>
+<li><code>read(count)</code>：使用 <code>read()</code> 讀取 <code>count</code> state</li>
+<li><code>inc()</code>：使值遞增</li>
+<li><code>write(count)</code>：使用 <code>write()</code> 讀取 <code>write</code> state</li>
 </ul>
-<blockquote>
-<p>Codebase 更為精簡，以 <code>ref</code> label 取代 <code>.value</code>，且 label 為合法 ECMAScript</p>
-</blockquote>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>Vue 持續提供更精簡 syntax sugar，尤其 ref sugar 出現後，解決了 <code>.value</code> 滿天飛問題</li>
+<li>Vue 3 一開始的 <code>ref()</code> 設計會導致到處充斥 <code>.value</code>，因此有了後續改進寫法</li>
+<li>Ref sugar 讓我們能以一般方式使用 state，是很棒的設計</li>
+<li>改用 Object 與 <code>reactive()</code> 亦是令一種解法，不過 <code>reative()</code> 又會導致其他問題</li>
+<li>Point-free 寫法也不必考慮 <code>.value</code>，<code>read()</code> 與 <code>write()</code> higher order function 再內部會幫我們解決 <code>.value</code></li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/vuejs" target="_blank" rel="noopener">Vue</a>, <a href="https://github.com/vuejs/rfcs/blob/script-setup/active-rfcs/0000-script-setup.md" target="_blank" rel="noopener">ref sugar</a><br><a href="https://github.com/antfu" target="_blank" rel="noopener">antfu</a>, <a href="https://github.com/antfu/vite-starter-ref-sugar" target="_blank" rel="noopener">vite-starter-ref-sugar</a></p>
 
                     </article>
                     <p class="post-footer-info mb-0 pt-2">
@@ -501,18 +566,18 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
 		<!-- Prev Nav -->
 		
 		<li class="page-item page-prev">
-			<a href="/css/selector/type/">
+			<a href="/vue3/reactivity/ref-sugar/">
 				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">CSS 之 Type Selector</div>
+				<div class="page-item-subtitle">使用 Ref Sugar 取代 .value</div>
 			</a>
 		</li>
 		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/vue3/composition/refs/">
+			<a href="/vue3-fp/init/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 Template Refs 取得 DOM Element</div>
+				<div class="page-item-subtitle">使用 init() 建立 onMounted Hook</div>
 			</a>
 		</li>
 		
