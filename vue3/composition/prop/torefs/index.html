@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-14T09:09:26.000Z",
-    "dateModified": "2021-05-04T00:26:36.574Z",
+    "dateModified": "2021-05-08T08:13:58.809Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -438,38 +438,39 @@ a:hover {
                     <article id="post-content">
                         <p>由於 Prop 是以 Object 形式呈現，會直覺想用 Object Destructuring 將其解構，但這會使得 Prop 喪失 Reactivity，必須透過 <code>toRefs()</code> 再 Destructure。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.5</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.11</p>
 <h2 id="Destructure-Prop"><a href="#Destructure-Prop" class="headerlink" title="Destructure Prop"></a>Destructure Prop</h2><p><img src="/images/vue3/composition/prop/torefs/torefs000.png" alt="torefs000"></p>
 <p>一開始 <code>3</code> 以 prop 傳入 component，按下 <code>display()</code> 可顯示。</p>
 <p><img src="/images/vue3/composition/prop/torefs/torefs001.png" alt="torefs001"></p>
 <p>當外層按下 <code>+</code> 改變 statel 到 <code>7</code> 時，再按下 <code>display</code> 卻不能同步更新 prop 所傳入資料。</p>
 <p><strong>App.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span> {{ count }}
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>MyCounter</span> <span class="token attr-name">:startCount</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>count<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
+button(@click='onClick') +
+span {{ count }}
+MyCounter(:startCount='count')
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> MyCounter <span class="token keyword">from</span> <span class="token string">'/src/components/MyCounter.vue'</span>
 
 ref<span class="token punctuation">:</span> count <span class="token operator">=</span> <span class="token number">3</span>
-
 <span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token operator">++</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>第 7 行</p>
+<p>第 8 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> MyCounter <span class="token keyword">from</span> <span class="token string">'/src/components/MyCounter.vue'</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>使用 <code>import</code> 引用 <code>MyCounter</code> component。</p>
 <p>第 2 行</p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span> {{ count }}
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>MyCounter</span> <span class="token attr-name">:startCount</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>count<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<pre class="line-numbers highlight language-jade"><code class="language-jade"><span class="token tag">button<span class="token attributes"><span class="token punctuation">(</span>@<span class="token attr-name">click</span><span class="token punctuation">=</span><span class="token attr-value"><span class="token string">'onClick'</span></span><span class="token punctuation">)</span></span></span> <span class="token plain-text">+</span>
+<span class="token tag">span</span> <span class="token plain-text">{{ count }}</span>
+<span class="token tag">MyCounter<span class="token attributes"><span class="token punctuation">(</span>:<span class="token attr-name">startCount</span><span class="token punctuation">=</span><span class="token attr-value"><span class="token string">'count'</span></span><span class="token punctuation">)</span></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <ul>
-<li><code>&lt;button&gt;</code> 負責對 <code>count</code> state 改變</li>
-<li>將 <code>count</code> 傳入 <code>&lt;MyCounter&gt;</code> 的 <code>startCount</code> prop。</li>
+<li><code>button</code> 負責對 <code>count</code> state 改變</li>
+<li>將 <code>count</code> 傳入 <code>MyCounter</code> 的 <code>startCount</code> prop。</li>
 </ul>
-<p>第 9 行</p>
+<p>10 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript">ref<span class="token punctuation">:</span> count <span class="token operator">=</span> <span class="token number">3</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>定義 <code>count</code> state 且初始值為 <code>3</code>。</p>
@@ -478,12 +479,13 @@ ref<span class="token punctuation">:</span> count <span class="token operator">=
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>在 <code>onClick()</code> 對 <code>count</code> state 遞增。</p>
 <p><strong>MyCounter.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>display<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span> {{ count }}
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
+button(@click='onClick') display
+span {{ count }}
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> defineProps<span class="token punctuation">,</span> toRefs <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> defineProps <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 
 <span class="token keyword">let</span> props <span class="token operator">=</span> <span class="token function">defineProps</span><span class="token punctuation">(</span><span class="token punctuation">{</span> startCount<span class="token punctuation">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
@@ -492,8 +494,8 @@ ref<span class="token punctuation">:</span> <span class="token punctuation">(</s
 
 <span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count <span class="token operator">=</span> startCount
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>第 8 行</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 9 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> props <span class="token operator">=</span> <span class="token function">defineProps</span><span class="token punctuation">(</span><span class="token punctuation">{</span> startCount<span class="token punctuation">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>使用 <code>defineProps()</code> 定義 prop 且定義其預設值。</p>
@@ -507,23 +509,24 @@ ref<span class="token punctuation">:</span> <span class="token punctuation">(</s
 <h2 id="toRefs"><a href="#toRefs" class="headerlink" title="toRefs()"></a>toRefs()</h2><p><img src="/images/vue3/composition/prop/torefs/torefs002.png" alt="torefs002"></p>
 <p>當外層按下 <code>+</code> 改變 statel 到 <code>7</code> 時，再按下 <code>display</code> 能同步更新 prop 所傳入資料。</p>
 <p><strong>App.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span> {{ count }}
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>MyCounter</span> <span class="token attr-name">:startCount</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>count<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
+button(@click='onClick') +
+span {{ count }}
+MyCounter(:startCount='count')
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> MyCounter <span class="token keyword">from</span> <span class="token string">'/src/components/MyCounter.vue'</span>
 
 ref<span class="token punctuation">:</span> count <span class="token operator">=</span> <span class="token number">3</span>
-
 <span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token operator">++</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>App.vue</code> 寫法完全不變。</p>
 <p><strong>MyCounter.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>display<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span> {{ count }}
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
+button(@click='onClick') display
+span {{ count }}
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
@@ -536,8 +539,8 @@ ref<span class="token punctuation">:</span> <span class="token punctuation">(</s
 
 <span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count <span class="token operator">=</span> startCount
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>11 行</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>12 行</p>
 <pre class="line-numbers highlight language-javascrpit"><code class="language-javascrpit">ref: ({ startCount } = toRefs(props))
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p><code>defineProps()</code> 所回傳的是 Reactive Object，因此若要對其使用 object destructure，必須先使用 <code>toRefs()</code> 將 Reactive Object 轉成 Plain Object 後，才能繼續使用 object destructure。</p>
