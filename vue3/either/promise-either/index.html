@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>處理 Promise Either | 點燈坊</title>
+<title>當 Either 遇見 Promise | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -163,7 +163,7 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="處理 Promise Either | 點燈坊">
+	<meta property="og:title" content="當 Either 遇見 Promise | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
 <meta property="og:url" content="https://fpjs.fun/vue3/either/promise-either/">
@@ -200,7 +200,7 @@ a:hover {
         "@type": "WebPage",
         "@id": "https://fpjs.fun/vue3/either/promise-either/"
     },
-    "headline": "處理 Promise Either | 點燈坊",
+    "headline": "當 Either 遇見 Promise | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-25T08:32:48.000Z",
-    "dateModified": "2021-04-25T13:00:35.491Z",
+    "dateModified": "2021-05-12T14:15:57.623Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -425,7 +425,7 @@ a:hover {
             <div class="card-inner-cell">
                 <div class="card-header">
                     
-<h1 class="card-title h3 mb-2">處理 Promise Either</h1>
+<h1 class="card-title h3 mb-2">當 Either 遇見 Promise</h1>
 
 
 <div class="post-header-info">
@@ -438,15 +438,15 @@ a:hover {
                     <article id="post-content">
                         <p>當有 Function 回傳 Either Moand，而後續的 Function 都在 Either Monad 內執行時，卻又有 Function 回傳 Promise Monad，這就造成 Either 內有 Promise 的窘境，實務上該如何處理這種兩層 Monad 呢 ?</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.5<br>Ramda 0.27.1<br>Sanctuary 3.1.0</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.11<br>Sanctuary 3.1.0</p>
 <h2 id="Promise-Either"><a href="#Promise-Either" class="headerlink" title="Promise Either"></a>Promise Either</h2><p><img src="/images/vue3/either/promise-either/either000.png" alt="either000"></p>
 <p>當沒有輸入任何書名時，不會繼續呼叫 API 查詢價錢。</p>
 <p><img src="/images/vue3/either/promise-either/either001.png" alt="either001"></p>
 <p>當輸入書名時，就會繼續呼叫 API 查詢價錢。</p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">v-model</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>title<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Submit<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
-  {{ price }}
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
+input(v-model='title')
+button(@click='onClick') Submit
+span {{ price }}
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
@@ -549,12 +549,12 @@ a:hover {
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>30 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">run</span><span class="token punctuation">(</span><span class="token function">path</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token function">run</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>price<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">feed</span><span class="token punctuation">(</span><span class="token function">path</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token function">feed</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>price<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>若覺得在 Promise Either 之後每次都要寫 <code>map(then)</code> 很囉唆，可改用 Wink-fp 的 <code>feed()</code> 取代，如此將維持在 Either 內執行時都只要一個 function 傳統。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>Promise Either 乍聽很嚇人，其實只要把握用 <code>map()</code> 或 <code>chain()</code> 處理 Either ＭMonad，用 <code>then()</code> 處理 Promise Monad，然後將所有 function 處理都寫在 <code>map(then)</code> 內即可</li>
+<li>Promise Either 乍聽很嚇人，其實只要把握用 <code>map()</code> 或 <code>chain()</code> 處理 Either Monad，用 <code>then()</code> 處理 Promise Monad，然後將所有 function 處理都寫在 <code>map(then)</code> 內即可</li>
 <li><code>map(then)</code> 因為實務上太常使用，可改用 Wink-fp 的 <code>feed()</code> 取代</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://sanctuary.js.org/" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://sanctuary.js.org/#section:either" target="_blank" rel="noopener">Either</a></p>
@@ -592,7 +592,7 @@ a:hover {
 		<li class="page-item page-next">
 			<a href="/vue3/maybe/promise-maybe/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">處理 Promise Maybe</div>
+				<div class="page-item-subtitle">當 Maybe 遇見 Promise</div>
 			</a>
 		</li>
 		

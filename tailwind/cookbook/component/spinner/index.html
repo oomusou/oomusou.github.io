@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-05-12T08:39:02.000Z",
-    "dateModified": "2021-05-12T08:42:08.613Z",
+    "dateModified": "2021-05-12T23:41:28.340Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -527,34 +527,63 @@ div
 <span class="token keyword">let</span> isShowSpinner <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span>
 <span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+<span class="token keyword">let</span> showSpinner <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   T<span class="token punctuation">,</span>
-  <span class="token function">write</span><span class="token punctuation">(</span>isShowSpinner<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">write</span><span class="token punctuation">(</span>isShowSpinner<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> hideSpinner <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  F<span class="token punctuation">,</span> 
+  <span class="token function">write</span><span class="token punctuation">(</span>isShowSpinner<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  showSpinner<span class="token punctuation">,</span>
   getBooks<span class="token punctuation">,</span>
-  <span class="token function">tap</span><span class="token punctuation">(</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token function">pipe</span><span class="token punctuation">(</span>F<span class="token punctuation">,</span> <span class="token function">write</span><span class="token punctuation">(</span>isShowSpinner<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">tap</span><span class="token punctuation">(</span><span class="token function">then</span><span class="token punctuation">(</span>hideSpinner<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>books<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>21 行</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>31 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  T<span class="token punctuation">,</span>
-  <span class="token function">write</span><span class="token punctuation">(</span>isShowSpinner<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  showSpinner<span class="token punctuation">,</span>
   getBooks<span class="token punctuation">,</span>
-  <span class="token function">tap</span><span class="token punctuation">(</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token function">pipe</span><span class="token punctuation">(</span>F<span class="token punctuation">,</span> <span class="token function">write</span><span class="token punctuation">(</span>isShowSpinner<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">tap</span><span class="token punctuation">(</span><span class="token function">then</span><span class="token punctuation">(</span>hideSpinner<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>books<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用 <code>pipe()</code> 組合 <code>onClick()</code>：</p>
 <ul>
-<li><code>T</code>：準備 <code>true</code></li>
-<li><code>write(isShowSpinner)</code>：寫入 <code>isShowSpinner</code> 顯示 spinner</li>
+<li><code>showSpinner</code>：顯示 spinner</li>
 <li><code>getBooks</code>：呼叫 API</li>
-<li><code>tap(then(pipe(F, write(isShowSpinner))))</code>：回傳成功則將 <code>false</code> 寫入 <code>isShowSpinner</code> 隱藏 spinner</li>
+<li><code>tap(then(hideSpinner))</code>：回傳成功則顯示 spinner</li>
 <li><code>then(prop(&#39;data&#39;))</code>：只取 <code>data</code> property</li>
 <li><code>then(write(books))</code>：將結果寫入 <code>books</code> state</li>
+</ul>
+<p>21 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> showSpinner <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  T<span class="token punctuation">,</span>
+  <span class="token function">write</span><span class="token punctuation">(</span>isShowSpinner<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用 <code>pipe()</code> 組合 <code>showSpinner()</code>：</p>
+<ul>
+<li><code>T</code>：準備 <code>true</code></li>
+<li><code>write(isShowSpinner)</code>：寫入 <code>isShowSpinner</code> state</li>
+</ul>
+<p>26 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> hideSpinner <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  F<span class="token punctuation">,</span> 
+  <span class="token function">write</span><span class="token punctuation">(</span>isShowSpinner<span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用 <code>pipe()</code> 組合 <code>hideSpinner()</code>：</p>
+<ul>
+<li><code>F</code>：準備 <code>false</code></li>
+<li><code>write(isShowSpinner)</code>：寫入 <code>isShowSpinner</code> state</li>
 </ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Tailwind CSS 的 <code>animate-spin</code> 是關鍵，他使得靜態 svg 能旋轉達到動態效果，再搭配 <code>isShowSpinner</code> state 就能控制是否顯示 spinner</li>
