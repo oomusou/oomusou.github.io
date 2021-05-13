@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2019-07-05T23:55:04.000Z",
-    "dateModified": "2020-07-19T15:37:05.014Z",
+    "dateModified": "2021-05-13T14:19:13.292Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -438,81 +438,61 @@ a:hover {
                     <article id="post-content">
                         <p>在 Array，我們有 <code>map()</code> 能在 Length 不變前提下，改變其 Element；若要在 Object 的 Key 不變前提下，根據其 Key 改變 Value，Ramda 提供了 <code>mapObjIndexed()</code>。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.14.5<br>VS Code 1.35.1<br>Quokka 1.0.227<br>Ramda 0.26.1</p>
-<h2 id="Change-Value-by-Key"><a href="#Change-Value-by-Key" class="headerlink" title="Change Value by Key"></a>Change Value by Key</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> mapObjIndexed <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
+<h2 id="Change-Value-by-Key"><a href="#Change-Value-by-Key" class="headerlink" title="Change Value by Key"></a>Change Value by Key</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> mapObjIndexed <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
   <span class="token string">'FP in JavaScript'</span><span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
-  <span class="token string">'RxJS in Action'</span><span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+  <span class="token string">'Programming Haskell'</span><span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
   <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">:</span> <span class="token number">300</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-<span class="token comment" spellcheck="true">// fn :: {a} -> {a}</span>
-<span class="token keyword">let</span> fn <span class="token operator">=</span> <span class="token function">mapObjIndexed</span><span class="token punctuation">(</span><span class="token punctuation">(</span>val<span class="token punctuation">,</span> key<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`Price of </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>key<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> is </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>val<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>data</code> 為 object，我們希望在 key 不變前提下，將 value 改成類似 <code>Price of FP in JavaScript is 100</code> 格式，其中 value 改變還牽涉到 key，此時就很適合使用 <code>mapObjIndexed()</code>。</p>
+<span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">mapObjIndexed</span><span class="token punctuation">(</span><span class="token punctuation">(</span>val<span class="token punctuation">,</span> key<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`Price of </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>key<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> is </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>val<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>data</code> 為 Object，我們希望在 key 不變前提下，將 value 改成類似 <code>Price of FP in JavaScript is 100</code> 格式，其中 value 改變還牽涉到 key，此時就很適合使用 <code>mapObjIndexed()</code>。</p>
 <blockquote>
-<p><strong>mapObjIndexed()</strong><br><code>((*, String, Object) → *) → Object → Object</code></p>
-<p>Object 版的 <code>map()</code>，提供 value 與 key 給 callback 使用</p>
+<p><strong>mapObjIndexed()</strong><br><code>((*, String, Object) → *) → Object → Object</code><br>Object 版的 <code>map()</code>，提供 value 與 key 給 callback 使用</p>
 </blockquote>
-<p><code>(*, String, Object) -&gt; *</code>：callback，其中 <code>*</code> 為 value，<code>String</code> 為 key，<code>Object</code> 原本的 object。</p>
-<p><code>Object</code>：data 為 object</p>
-<p><code>Object</code>：回傳 map 後的 object</p>
+<p><code>(*, String, Object) -&gt; *</code>：callback，其中 <code>*</code> 為 value，<code>String</code> 為 key，<code>Object</code> 原本的 Object。</p>
+<p><code>Object</code>：data 為 Object</p>
+<p><code>Object</code>：回傳 map 後的 Object</p>
 <p><img src="/images/ramda/object/mapobjindexed/map000.png" alt="map000"></p>
-<h2 id="Only-Change-by-Value"><a href="#Only-Change-by-Value" class="headerlink" title="Only Change by Value"></a>Only Change by Value</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> mapObjIndexed <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
+<h2 id="Only-Change-by-Value"><a href="#Only-Change-by-Value" class="headerlink" title="Only Change by Value"></a>Only Change by Value</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> mapObjIndexed <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
   <span class="token string">'FP in JavaScript'</span><span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
-  <span class="token string">'RxJS in Action'</span><span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+  <span class="token string">'Programming Haskell'</span><span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
   <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">:</span> <span class="token number">300</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-<span class="token comment" spellcheck="true">// fn :: {a} -> {a}</span>
-<span class="token keyword">let</span> fn <span class="token operator">=</span> <span class="token function">mapObjIndexed</span><span class="token punctuation">(</span>val <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`Price is </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>val<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">mapObjIndexed</span><span class="token punctuation">(</span>val <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`Price is </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>val<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若 value 改變不牽涉到 key，只與 value 有關，則 callback 可以不用傳入 key，只傳入 value 即可。</p>
 <p><img src="/images/ramda/object/mapobjindexed/map001.png" alt="map001"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
   <span class="token string">'FP in JavaScript'</span><span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
-  <span class="token string">'RxJS in Action'</span><span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+  <span class="token string">'Programming Haskell'</span><span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
   <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">:</span> <span class="token number">300</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
 
-<span class="token comment" spellcheck="true">// fn :: {a} -> {a}</span>
-<span class="token keyword">let</span> fn <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>val <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`Price is </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>val<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">map</span><span class="token punctuation">(</span>val <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`Price is </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>val<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>事實上若 value 改變不牽涉到 key，只與 value 有關，其實使用 <code>map()</code> 亦可。</p>
 <p><img src="/images/ramda/object/mapobjindexed/map002.png" alt="map002"></p>
-<h2 id="Change-Value-by-Index"><a href="#Change-Value-by-Index" class="headerlink" title="Change Value by Index"></a>Change Value by Index</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> addIndex <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
-  <span class="token string">'FP in JavaScript'</span><span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
-  <span class="token string">'RxJS in Action'</span><span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
-  <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">:</span> <span class="token number">300</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">// fn :: {a} -> {a}</span>
-<span class="token keyword">let</span> fn <span class="token operator">=</span> <span class="token function">addIndex</span><span class="token punctuation">(</span>map<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">(</span>val<span class="token punctuation">,</span> idx<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`Price </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>idx<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string"> is </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>val<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若 value 改變不牽涉到 key，而是與 index 有關，則要用 <code>addIndex()</code> 與 <code>map()</code> 組合的新 function，其 callback 的第二個參數為 index。</p>
-<p><img src="/images/ramda/object/mapobjindexed/map003.png" alt="map003"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li><code>mapObjIndexed()</code> 算比較少用的 function，若 object 的 key 也需要參與運算，才會使用到 <code>mapObjIndexed()</code></li>
-<li>Callback 的第三個參數雖然是 object，但實務上較少使用</li>
+<li>Callback 的第三個參數雖然是 Object，但實務上較少使用</li>
 <li>若 value 改變只牽涉到 value，不牽涉到 key，其實可用 <code>map()</code> 亦可</li>
-<li>若 value 改變還牽涉到 index，則要使用 <code>addIndex()</code> 與 <code>map()</code> 組合的新 function</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#mapObjIndexed" target="_blank" rel="noopener">mapObjIndexed()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#map" target="_blank" rel="noopener">map()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#addIndex" target="_blank" rel="noopener">addIndex()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#mapObjIndexed" target="_blank" rel="noopener">mapObjIndexed()</a></p>
 
                     </article>
                     <p class="post-footer-info mb-0 pt-2">
