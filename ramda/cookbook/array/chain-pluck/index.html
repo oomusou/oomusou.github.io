@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>使用 chain() 取得 Nested Array 內所有 Element | 點燈坊</title>
+<title>如何取得 Nested Array 內所有 Element ? | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -163,17 +163,17 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="使用 chain() 取得 Nested Array 內所有 Element | 點燈坊">
+	<meta property="og:title" content="如何取得 Nested Array 內所有 Element ? | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://fpjs.fun/ramda/array/chain/pluck/">
+<meta property="og:url" content="https://fpjs.fun/ramda/cookbook/array/chain-pluck/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
 <meta property="og:description" content="實務上常常用到 chain()，只是一時看不出來而已，可先用已知 Higher Order Function 拆解，最後再重構成 chain()。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2020-12-17T01:29:12.000Z">
-<meta property="article:modified_time" content="2020-12-17T01:29:12.000Z">
+<meta property="article:published_time" content="2021-05-25T13:37:15.000Z">
+<meta property="article:modified_time" content="2021-05-25T13:37:15.000Z">
 <meta property="article:author" content="Sam Xiao">
 <meta property="og:article:tag" content=", Ramda">
 
@@ -186,29 +186,29 @@ a:hover {
 
 
 	<!-- ### Canonical link ### -->
-	<link rel="canonical" href="https://fpjs.fun/ramda/array/chain/pluck/">
+	<link rel="canonical" href="https://fpjs.fun/ramda/cookbook/array/chain-pluck/">
 	<!-- ### Structured Data ### -->
 	
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://fpjs.fun/ramda/array/chain/pluck/",
+    "url": "https://fpjs.fun/ramda/cookbook/array/chain-pluck/",
     "@type": "BlogPosting",
     "logo": "https://fpjs.fun/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://fpjs.fun/ramda/array/chain/pluck/"
+        "@id": "https://fpjs.fun/ramda/cookbook/array/chain-pluck/"
     },
-    "headline": "使用 chain() 取得 Nested Array 內所有 Element | 點燈坊",
+    "headline": "如何取得 Nested Array 內所有 Element ? | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2020-12-17T01:29:12.000Z",
-    "dateModified": "2021-05-22T13:52:23.736Z",
+    "datePublished": "2021-05-25T13:37:15.000Z",
+    "dateModified": "2021-05-25T13:38:44.025Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -425,13 +425,13 @@ a:hover {
             <div class="card-inner-cell">
                 <div class="card-header">
                     
-<h1 class="card-title h3 mb-2">使用 chain() 取得 Nested Array 內所有 Element</h1>
+<h1 class="card-title h3 mb-2">如何取得 Nested Array 內所有 Element ?</h1>
 
 
 <div class="post-header-info">
 	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
 		alt="Sam Xiao's Avatar">
-	<span>2020-12-17</span>
+	<span>2021-05-25</span>
 </div>
                 </div>
                 <div class="card-body">
@@ -479,35 +479,7 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於是多層 Array，直覺會先用 <code>prop(&#39;books&#39;)</code> 抓到資料，再使用兩次 <code>map()</code>。</p>
 <p>但結果是兩層 Array，跟我們預期的一層不同。</p>
-<p><img src="/images/ramda/array/chain/pluck/unnest000.png" alt="unnest000"></p>
-<h2 id="unnest"><a href="#unnest" class="headerlink" title="unnest()"></a>unnest()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> map<span class="token punctuation">,</span> pluck<span class="token punctuation">,</span> unnest <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
-  books<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-    <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Secrets of the JavaScript Ninja'</span><span class="token punctuation">,</span>
-      authors<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'John Resig'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Bear Bibeault'</span> <span class="token punctuation">}</span>
-      <span class="token punctuation">]</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span>
-    <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span>
-      authors<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-        <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Paul P.Daniels'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Luis Atencio'</span> <span class="token punctuation">}</span>
-      <span class="token punctuation">]</span>
-    <span class="token punctuation">}</span>
-  <span class="token punctuation">]</span>
-<span class="token punctuation">}</span>
-
-<span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'authors'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  unnest<span class="token punctuation">,</span>
-  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>可先使用 <code>unnest()</code> 攤平一層 Array，再使用 <code>pluck()</code>，如此最後只剩下一層 Array，這正是我們要的結果。</p>
-<p><img src="/images/ramda/array/chain/pluck/unnest001.png" alt="unnest001"></p>
+<p><img src="/images/ramda/cookbook/array/chain-pluck/pluck000.png" alt="unnest000"></p>
 <h2 id="flatten"><a href="#flatten" class="headerlink" title="flatten()"></a>flatten()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> map<span class="token punctuation">,</span> pluck<span class="token punctuation">,</span> flatten <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
@@ -534,8 +506,8 @@ a:hover {
   <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>也可以使用 <code>flatten()</code> 將 Array 攤平。</p>
-<p><img src="/images/ramda/array/chain/pluck/unnest003.png" alt="unnest003"></p>
+<p>可先使用 <code>flatten()</code> 攤平一層 Array，再使用 <code>pluck()</code>，如此最後只剩下一層 Array，這正是我們要的結果。</p>
+<p><img src="/images/ramda/cookbook/array/chain-pluck/pluck002.png" alt="unnest003"></p>
 <h2 id="chain"><a href="#chain" class="headerlink" title="chain()"></a>chain()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> pluck<span class="token punctuation">,</span> chain <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
@@ -568,9 +540,9 @@ a:hover {
 <p><code>(a -&gt; b)</code>：相當於 map function</p>
 <p><code>[a]</code>：data 為 Array</p>
 <p><code>[b]</code>：回傳攤平後的 Array</p>
-<p><img src="/images/ramda/array/chain/pluck/unnest002.png" alt="unnest002"></p>
+<p><img src="/images/ramda/cookbook/array/chain-pluck/pluck001.png" alt="unnest002"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>只要是多層 Array，使用 <code>chain()</code> 的機會就很高，若一時看不出來，可先使用 <code>map()</code>，發現多了一層，再使用 <code>unnest()</code> 或 <code>flatten()</code>，當看到 <code>pipe(map, unnest)</code> 或 <code>pipe(map, flatten)</code> 時，就會聯想到使用 <code>chain()</code> 重構</li>
+<li>只要是多層 Array，使用 <code>chain()</code> 的機會就很高，若一時看不出來，可先使用 <code>map()</code>，發現多了一層，再使用 <code>flatten()</code> 攤平，當看到 <code>pipe(map, flatten)</code> 時，就會聯想到使用 <code>chain()</code> 重構</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#chain" target="_blank" rel="noopener">chain()</a></p>
 
@@ -591,19 +563,12 @@ a:hover {
 	<ul class="pagination">
 		<!-- Prev Nav -->
 		
-		<li class="page-item page-prev">
-			<a href="/ramda/array/chain/overview/">
-				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 chain() 實現 flatMap()</div>
-			</a>
-		</li>
-		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/ramda/cookbook/array/chain-split/">
+			<a href="/vue3/restful/dependent-api/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">如何將 Array 中的 String 轉成一層 Array ?</div>
+				<div class="page-item-subtitle">處理相依性 API</div>
 			</a>
 		</li>
 		

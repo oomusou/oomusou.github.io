@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2020-08-18T23:34:31.000Z",
-    "dateModified": "2020-08-18T23:36:56.175Z",
+    "dateModified": "2021-05-26T02:37:33.940Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -438,14 +438,16 @@ a:hover {
                     <article id="post-content">
                         <p>若要對兩個 Array 相減，且想自己提供比較條件，Ramda 提供了 <code>differenceWith()</code>， 尤其對 Object 比較的是 Value 而不是 Reference。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>Ramda 0.27.0</p>
-<h2 id="Primitive"><a href="#Primitive" class="headerlink" title="Primitive"></a>Primitive</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> differenceWith <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
+<h2 id="Primitive"><a href="#Primitive" class="headerlink" title="Primitive"></a>Primitive</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> differenceWith <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 <span class="token keyword">let</span> b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span>
 
-<span class="token function">differenceWith</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">===</span> y<span class="token punctuation">)</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">differenceWith</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">===</span> y<span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>difference()</code> 提供的是內定的比較方式，而 <code>differenceWith()</code> 可提供自訂 predicate。</p>
 <blockquote>
 <p><strong>differenceWith()</strong><br><code>((a, a) → Boolean) → [a] → [a] → [a]</code><br>提供 predicate 對兩個 Array 相減</p>
@@ -455,43 +457,61 @@ a:hover {
 <p><code>[a]</code>：第二個 array</p>
 <p><code>[a]</code>：回傳相減結果</p>
 <p><img src="/images/ramda/array/differencewith/diff001.png" alt="diff001"></p>
-<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> differenceWith<span class="token punctuation">,</span> equals <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> differenceWith<span class="token punctuation">,</span> equals <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 <span class="token keyword">let</span> b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">]</span>
 
-<span class="token function">differenceWith</span><span class="token punctuation">(</span>equals<span class="token punctuation">)</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">differenceWith</span><span class="token punctuation">(</span>equals<span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>differnceWith()</code> 的 predicate 也可以使用 <code>equals()</code> 使其 point-free。</p>
 <blockquote>
 <p>事實上 <code>differenceWith(equals)</code> 相當於 <code>difference()</code></p>
 </blockquote>
-<p><img src="/images/ramda/array/differencewith/diff002.png" alt="diff003"></p>
-<h2 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> differenceWith <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<p><img src="/images/ramda/array/differencewith/diff002.png" alt="diff002"></p>
+<h2 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> differenceWith <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
-<span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Sam'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Kevin'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Jimmy'</span> <span class="token punctuation">}</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Sam'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> 
+  <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Kevin'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> 
+  <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Jimmy'</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Kevin'</span> <span class="token punctuation">}</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> b <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Kevin'</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
 
-<span class="token function">differenceWith</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>name <span class="token operator">===</span> y<span class="token punctuation">.</span>name<span class="token punctuation">)</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">differenceWith</span><span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>name <span class="token operator">===</span> y<span class="token punctuation">.</span>name<span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p> <code>differenceWith()</code> 可使用自己的 predicate 判斷 Object。</p>
 <p><img src="/images/ramda/array/differencewith/diff003.png" alt="diff003"></p>
-<h2 id="Point-free-1"><a href="#Point-free-1" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> differenceWith<span class="token punctuation">,</span> eqProps <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Point-free-1"><a href="#Point-free-1" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> differenceWith<span class="token punctuation">,</span> eqProps <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
-<span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Sam'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Kevin'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Jimmy'</span> <span class="token punctuation">}</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Sam'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> 
+  <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Kevin'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span> 
+  <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Jimmy'</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Kevin'</span> <span class="token punctuation">}</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> b <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Kevin'</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
 
-<span class="token function">differenceWith</span><span class="token punctuation">(</span><span class="token function">eqProps</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">differenceWith</span><span class="token punctuation">(</span><span class="token function">eqProps</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> a<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可使用 <code>eqProps()</code> 產生 predicate 使 <code>differenceWith()</code> 能 point-free。</p>
 <p><img src="/images/ramda/array/differencewith/diff004.png" alt="diff004"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li><code>differenceWith()</code> 可輕易對兩 Array 相減，尤其對於 Object 是比較其 value equality，而不是 reference equality，非常實用</li>
-<li><code>differenceWith()</code> 對於 Object，可使用 <code>allPass()</code> 或 <code>eqProps()</code> 使其 point-free，非常經典</li>
+<li><code>differenceWith()</code> 對於 Object，可使用 <code>allPass()</code> 或 <code>eqProps()</code> 使其 Point-free，非常經典</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#differenceWith" target="_blank" rel="noopener">differenceWith()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#equals" target="_blank" rel="noopener">equals()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#eqProps" target="_blank" rel="noopener">eqProps()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#differenceWith" target="_blank" rel="noopener">differenceWith()</a></p>
 
                     </article>
                     <p class="post-footer-info mb-0 pt-2">

@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2020-12-30T14:11:55.000Z",
-    "dateModified": "2021-05-25T01:52:27.723Z",
+    "dateModified": "2021-05-26T01:19:00.028Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -439,7 +439,17 @@ a:hover {
                         <p>實務上我們常需判斷 Array 是否 <code>全部</code> 符合某條件，若存在則傳回 <code>true</code>，若不存在則傳回 <code>false</code>，Ramda 提供了 <code>all()</code> 可判斷。</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
-<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> all <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Array-prototype-every"><a href="#Array-prototype-every" class="headerlink" title="Array.prototype.every()"></a>Array.prototype.every()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Elm in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+data<span class="token punctuation">.</span><span class="token function">every</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>price <span class="token operator">>=</span> <span class="token number">100</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>想得知是否 <code>所有</code> price 都大於等於 <code>100</code>，若存在則回傳 <code>true</code>，否則回傳 <code>false</code>，ECMAScript 已經提供 <code>every()</code> 可直接使用。</p>
+<p><img src="/images/ramda/array/all/all003.png" alt="all003"></p>
+<h2 id="all"><a href="#all" class="headerlink" title="all()"></a>all()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> all <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
@@ -451,7 +461,7 @@ a:hover {
   <span class="token function">all</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>price <span class="token operator">>=</span> <span class="token number">100</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>想得知是否 <code>所有</code> price 都大於等於 <code>100</code>，若存在則回傳 <code>true</code>，否則回傳 <code>false</code>，Ramda 已經提供 <code>all()</code> 可直接使用。</p>
+<p>Ramda 則提供 curry 版本的 <code>all()</code>。</p>
 <blockquote>
 <p><strong>all()</strong><br><code>(a → Boolean) → [a] → Boolean</code><br>判斷 Array 中資料是否全部資料符合條件</p>
 </blockquote>
@@ -473,7 +483,7 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>all()</code> 的 callback 也可改用 <code>where()</code> 與 <code>gte()</code> 產生使其 Point-free。</p>
 <p><img src="/images/ramda/array/all/all001.png" alt="all002"></p>
-<h2 id="Wink-fp"><a href="#Wink-fp" class="headerlink" title="Wink-fp"></a>Wink-fp</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> all <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="propGte"><a href="#propGte" class="headerlink" title="propGte()"></a>propGte()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> all <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> propGte <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>

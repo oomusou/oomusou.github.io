@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2019-07-06T02:46:53.000Z",
-    "dateModified": "2020-07-19T15:37:04.967Z",
+    "dateModified": "2021-05-26T01:49:39.093Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -438,76 +438,34 @@ a:hover {
                     <article id="post-content">
                         <p>實務上常遇到將 2 個 Array 合併成單一 Array，Ramda 提供了 <code>concat()</code>。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.14.5<br>VS Code 1.35.1<br>Quokka 1.0.227<br>Ramda 0.26.1</p>
-<h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> first <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
+<h2 id="Array-prototype-concat"><a href="#Array-prototype-concat" class="headerlink" title="Array.prototype.concat()"></a>Array.prototype.concat()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> second <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">// concat :: [a] -> [a] -> [a]</span>
-<span class="token keyword">let</span> concat <span class="token operator">=</span> arr1 <span class="token operator">=</span><span class="token operator">></span> arr2 <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-  <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> elem <span class="token keyword">of</span> arr1<span class="token punctuation">)</span>
-    result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token operator">...</span>result<span class="token punctuation">,</span> elem<span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-  <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> elem <span class="token keyword">of</span> arr2<span class="token punctuation">)</span>
-    result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token operator">...</span>result<span class="token punctuation">,</span> elem<span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-  <span class="token keyword">return</span> result<span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-
-<span class="token function">concat</span><span class="token punctuation">(</span>first<span class="token punctuation">)</span><span class="token punctuation">(</span>second<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>建立 <code>concat()</code>，imperative 會使用 <code>for</code> loop 將 <code>arr1</code> 與 <code>arr2</code> 一一新增至 <code>result</code>，最後回傳 <code>result</code>。</p>
-<p><img src="/images/ramda/array/concat/concat004.png" alt="concat004"></p>
-<h2 id="Array-prototype-concat"><a href="#Array-prototype-concat" class="headerlink" title="Array.prototype.concat()"></a>Array.prototype.concat()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> first <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> second <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">// concat :: [a] -> [a] -> [a]</span>
-<span class="token keyword">let</span> concat <span class="token operator">=</span> arr1 <span class="token operator">=</span><span class="token operator">></span> arr2 <span class="token operator">=</span><span class="token operator">></span> arr1<span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>arr2<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token function">concat</span><span class="token punctuation">(</span>first<span class="token punctuation">)</span><span class="token punctuation">(</span>second<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>Array.prototype</code> 內建 <code>concat()</code>，直接傳入 data 即可。</p>
-<blockquote>
-<p>就功能而言兩者都一樣，但 <code>Array.prototype.concat()</code> 屬 OOP 風格，為 data 的 ｍethod，而 <code>concat()</code> 為 FP 風格，data 以 argument 傳入 function，且為最後一個 argument，方便 point-free</p>
-</blockquote>
-<p><img src="/images/ramda/array/concat/concat005.png" alt="concat005"></p>
-<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> concat <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> first <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> second <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-<span class="token function">concat</span><span class="token punctuation">(</span>first<span class="token punctuation">)</span><span class="token punctuation">(</span>second<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>事實上 Ramda 已經內建 <code>concat()</code>，可直接使用。</p>
-<blockquote>
-<p><strong>concat()</strong><br><code>[a] → [a] → [a]</code><br>將兩個相同結構的 array 合併成單一 array</p>
-</blockquote>
-<p><code>[a]</code>：第一個 array</p>
-<p><code>[a]</code>：第二個 array</p>
-<p><code>[a]</code>：回傳合併後的 array</p>
-<p><img src="/images/ramda/array/concat/concat006.png" alt="concat006"></p>
-<h2 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> concat <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> first <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> second <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">concat</span><span class="token punctuation">(</span>first<span class="token punctuation">)</span><span class="token punctuation">(</span>second<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若 element 為 object 亦適用。</p>
+a<span class="token punctuation">.</span><span class="token function">concat</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>Array.prototype</code> 內建 <code>concat()</code>，可直接將兩個 Array 合併。</p>
 <p><img src="/images/ramda/array/concat/concat000.png" alt="concat000"></p>
+<h2 id="concat"><a href="#concat" class="headerlink" title="concat()"></a>concat()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> concat <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> a <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> b <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">5</span><span class="token punctuation">,</span> <span class="token number">6</span><span class="token punctuation">]</span>
+
+<span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">concat</span><span class="token punctuation">(</span>a<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">(</span>b<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>事實上 Ramda 已經內建 <code>concat()</code> 可直接使用。</p>
+<blockquote>
+<p><strong>concat()</strong><br><code>[a] → [a] → [a]</code><br>將兩個相同結構的 array 合併成單一 Array</p>
+</blockquote>
+<p><code>[a]</code>：第一個 Array</p>
+<p><code>[a]</code>：第二個 Array</p>
+<p><code>[a]</code>：回傳合併後的 Array</p>
+<p><img src="/images/ramda/array/concat/concat001.png" alt="concat001"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li><code>concat()</code> 不只能用在 array，也能用在 string</li>
-<li>Ramda 的 <code>concat()</code> 其實很簡單，且 array 與 string 都能用，也展現了 function 與 data 分離後，不再只是單一型別的 method，可套用在不同型別上</li>
+<li><code>concat()</code> 不只能用在 Array，也能用在 String</li>
+<li>Ramda 的 <code>concat()</code> 其實很簡單，且 Array 與 String 都能用，也展現了 function 與 data 分離後，不再只是單一型別的 method，可套用在不同型別上</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/concat" target="_blank" rel="noopener">concat()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#concat" target="_blank" rel="noopener">concat()</a></p>
 
