@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-05-15T00:47:27.000Z",
-    "dateModified": "2021-05-22T13:52:23.962Z",
+    "dateModified": "2021-05-27T14:11:09.324Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -449,7 +449,8 @@ ul
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> write <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> map<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> tap<span class="token punctuation">,</span> pluck <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> otherwise<span class="token punctuation">,</span> map<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> tap<span class="token punctuation">,</span> pluck <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> error <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 <span class="token keyword">import</span> getBooks <span class="token keyword">from</span> <span class="token string">'/src/api/getBooks'</span>
 <span class="token keyword">import</span> getPrice <span class="token keyword">from</span> <span class="token string">'/src/api/getPrice'</span>
 
@@ -474,10 +475,11 @@ ul
   getBooks<span class="token punctuation">,</span>
   <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">tap</span><span class="token punctuation">(</span><span class="token function">then</span><span class="token punctuation">(</span>writeTitles<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">then</span><span class="token punctuation">(</span>writePrices<span class="token punctuation">)</span>
+  <span class="token function">then</span><span class="token punctuation">(</span>writePrices<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">otherwise</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 2 行</p>
 <pre class="line-numbers highlight language-jade"><code class="language-jade"><span class="token tag">ul</span>
   <span class="token tag">li<span class="token attributes"><span class="token punctuation">(</span><span class="token attr-name">v-for</span><span class="token punctuation">=</span><span class="token attr-value">'<span class="token punctuation">(</span>x</span><span class="token punctuation">,</span> <span class="token attr-name">i</span><span class="token punctuation">)</span></span></span> <span class="token plain-text">in titles') {{ x }} / {{ prices[i] }}</span>
@@ -486,22 +488,24 @@ ul
 <li>實際上是來自於 <code>titles</code> 與 <code>prices</code> 兩個 Array</li>
 <li>因為 <code>v-for</code> 只能同時使用一個 Array，因此另外一個 Array 只能透過 index 存取</li>
 </ul>
-<p>30 行</p>
+<p>31 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">pipe</span><span class="token punctuation">(</span>
   getBooks<span class="token punctuation">,</span>
   <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">tap</span><span class="token punctuation">(</span><span class="token function">then</span><span class="token punctuation">(</span>writeTitles<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">then</span><span class="token punctuation">(</span>writePrices<span class="token punctuation">)</span>
+  <span class="token function">then</span><span class="token punctuation">(</span>writePrices<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">otherwise</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用 <code>pipe()</code> 組合 IIFE：</p>
 <ul>
 <li><code>getBooks</code>：呼叫 API 取得所有 <code>title</code>，回傳 Promise</li>
 <li><code>then(prop(&#39;data&#39;))</code>：在 Promise 內取得 <code>data</code> prop</li>
 <li><code>tap(then(writeTitles))</code>：將資料先寫入 <code>titles</code> state</li>
 <li><code>then(writePrices)</code>：將資料寫入 <code>prices</code> state</li>
+<li><code>otherwise(error)</code>：處理 Rejected Promise</li>
 </ul>
-<p>16 行</p>
+<p>17 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> writeTitles <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">write</span><span class="token punctuation">(</span>titles<span class="token punctuation">)</span>
@@ -512,7 +516,7 @@ ul
 <li><code>pluck(&#39;title&#39;)</code>：從 Object Array 取得 <code>title</code> prop</li>
 <li><code>write(titles)</code>：寫入 <code>titles</code> prop</li>
 </ul>
-<p>21 行</p>
+<p>22 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> writePrices <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span>getPrice<span class="token punctuation">)</span><span class="token punctuation">,</span>
@@ -541,8 +545,8 @@ ul
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> write <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> map<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> tap<span class="token punctuation">,</span> pluck <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> all <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> otherwise<span class="token punctuation">,</span> map<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> tap<span class="token punctuation">,</span> pluck <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> all<span class="token punctuation">,</span> error <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 <span class="token keyword">import</span> getBooks <span class="token keyword">from</span> <span class="token string">'/src/api/getBooks'</span>
 <span class="token keyword">import</span> getPrice <span class="token keyword">from</span> <span class="token string">'/src/api/getPrice'</span>
 
@@ -568,9 +572,10 @@ ul
   <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">tap</span><span class="token punctuation">(</span><span class="token function">then</span><span class="token punctuation">(</span>writeTitles<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">then</span><span class="token punctuation">(</span>writePrices<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">otherwise</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>22 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> writePrices <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
@@ -594,8 +599,8 @@ ul
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> write <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> map<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> pluck <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> all<span class="token punctuation">,</span> seq <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> otherwise<span class="token punctuation">,</span> map<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> pluck <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> all<span class="token punctuation">,</span> seq<span class="token punctuation">,</span> error <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 <span class="token keyword">import</span> getBooks <span class="token keyword">from</span> <span class="token string">'/src/api/getBooks'</span>
 <span class="token keyword">import</span> getPrice <span class="token keyword">from</span> <span class="token string">'/src/api/getPrice'</span>
 
@@ -620,16 +625,18 @@ ul
   getBooks<span class="token punctuation">,</span>
   <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">seq</span><span class="token punctuation">(</span>writeTitles<span class="token punctuation">,</span> writePrices<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">otherwise</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>31 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">pipe</span><span class="token punctuation">(</span>
   getBooks<span class="token punctuation">,</span>
   <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">seq</span><span class="token punctuation">(</span>writeTitles<span class="token punctuation">,</span> writePrices<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">otherwise</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span>
 <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li><code>then(seq(writeTitles, writePrices))</code>：<code>writeTitles()</code> 與 <code>writePrices()</code> 兩個 side effect 其實各不相關，可平行執行，可改用 Wink-fp 的 <code>seq()</code> 可讀性更高</li>
 </ul>
