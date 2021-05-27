@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>使用 dropLastWhile() 根據自訂條件刪除 Array 最後幾筆資料 | 點燈坊</title>
+<title>使用 dropLastWhile() 刪除 Array 最後幾筆資料 | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -163,7 +163,7 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="使用 dropLastWhile() 根據自訂條件刪除 Array 最後幾筆資料 | 點燈坊">
+	<meta property="og:title" content="使用 dropLastWhile() 刪除 Array 最後幾筆資料 | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
 <meta property="og:url" content="https://fpjs.fun/ramda/array/droplastwhile/">
@@ -200,7 +200,7 @@ a:hover {
         "@type": "WebPage",
         "@id": "https://fpjs.fun/ramda/array/droplastwhile/"
     },
-    "headline": "使用 dropLastWhile() 根據自訂條件刪除 Array 最後幾筆資料 | 點燈坊",
+    "headline": "使用 dropLastWhile() 刪除 Array 最後幾筆資料 | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2019-07-29T02:05:41.000Z",
-    "dateModified": "2020-07-19T15:37:04.968Z",
+    "dateModified": "2021-05-27T13:33:30.652Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -425,7 +425,7 @@ a:hover {
             <div class="card-inner-cell">
                 <div class="card-header">
                     
-<h1 class="card-title h3 mb-2">使用 dropLastWhile() 根據自訂條件刪除 Array 最後幾筆資料</h1>
+<h1 class="card-title h3 mb-2">使用 dropLastWhile() 刪除 Array 最後幾筆資料</h1>
 
 
 <div class="post-header-info">
@@ -438,121 +438,69 @@ a:hover {
                     <article id="post-content">
                         <p><code>dropLast()</code> 只能刪除 Array 固定最後幾筆資料，若想自行提供自訂條件 Predicate，就得使用 <code>dropLastWhile()</code>。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.14.5<br>VS Code 1.36.1<br>Quokka 1.0.238<br>Ramda 0.26.1</p>
-<h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
+<h2 id="Primitive"><a href="#Primitive" class="headerlink" title="Primitive"></a>Primitive</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> dropLastWhile <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
-<span class="token comment" spellcheck="true">// dropLastWhile :: (a -> Boolean) -> [a] -> [a]</span>
-<span class="token keyword">let</span> dropLastWhile <span class="token operator">=</span> pred <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> i <span class="token operator">=</span> arr<span class="token punctuation">.</span>length <span class="token operator">-</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span>
 
-  <span class="token keyword">while</span><span class="token punctuation">(</span>i <span class="token operator">></span> <span class="token number">0</span> <span class="token operator">&amp;&amp;</span> <span class="token function">pred</span><span class="token punctuation">(</span>arr<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-    i<span class="token operator">--</span><span class="token punctuation">;</span>
-
-  <span class="token keyword">return</span> arr<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> i <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-
-<span class="token function">dropLastWhile</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">&lt;=</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>dropLastWhile()</code> 意義為當 predicate 為 <code>true</code> 時從最後刪除 element，直到 <code>false</code> 時停止刪除。</p>
-<p>建立 <code>dropLastWhile()</code>，imperative 會先由 length 建立 <code>i</code>，使用 <code>while</code> loop，當 <code>i</code> 大於 <code>0</code> 且 predicate 為 <code>true</code> 時 <code>i</code> 減少 <code>1</code> ，最後使用 <code>slice()</code> 回傳剩餘 array。</p>
-<p><img src="/images/ramda/array/droplastwhile/droplastwhile000.png" alt="droplastwhile000"></p>
-<h2 id="Functional"><a href="#Functional" class="headerlink" title="Functional"></a>Functional</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> reverse<span class="token punctuation">,</span> dropWhile <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">// dropLastWhile :: (a -> Boolean) -> [a] -> [a]</span>
-<span class="token keyword">let</span> dropLastWhile <span class="token operator">=</span> pred <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  reverse<span class="token punctuation">,</span>
-  <span class="token function">dropWhile</span><span class="token punctuation">(</span>pred<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  reverse
-<span class="token punctuation">)</span><span class="token punctuation">(</span>arr<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token function">dropLastWhile</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">&lt;=</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若不知道 Ramda 已經提供 <code>dropLastWhile()</code> 也沒關係，可透過 <code>drop()</code> 與 <code>reverse()</code> 組合出。</p>
-<ul>
-<li>使用 <code>reverse()</code> 將 array 反轉</li>
-<li>使用 <code>dropWhile()</code> 將 array 前幾筆資料刪除</li>
-<li>使用 <code>reverse()</code> 再將 array 反轉</li>
-</ul>
-<p>最後使用 <code>pipe()</code> 組合所有 function，非常清楚。</p>
-<p><img src="/images/ramda/array/droplastwhile/droplastwhile001.png" alt="droplastwhile001"></p>
-<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> reverse<span class="token punctuation">,</span> dropWhile <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">// dropLastWhile :: (a -> Boolean) -> [a] -> [a]</span>
-<span class="token keyword">let</span> dropLastWhile <span class="token operator">=</span> pred <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  reverse<span class="token punctuation">,</span>
-  <span class="token function">dropWhile</span><span class="token punctuation">(</span>pred<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  reverse
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token function">dropLastWhile</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">&lt;=</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>dropLastWhile()</code> 最後一個 data argument 也可    省略成為 point-free。</p>
-<p><img src="/images/ramda/array/droplastwhile/droplastwhile002.png" alt="droplastwhile002"></p>
-<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> dropLastWhile <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-<span class="token function">dropLastWhile</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">&lt;=</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>事實上 Ramda 已經內建 <code>dropLastWhile()</code>，可直接使用。</p>
+<span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">dropLastWhile</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">&lt;=</span> <span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Ramda 已經內建 <code>dropLastWhile()</code> 可直接使用。</p>
 <blockquote>
-<p><strong>dropLastWhile()</strong><br><code>(a -&gt; Boolean) → [a] → [a]</code><br>根據自訂條件刪除 array 最後幾筆資料</p>
+<p><strong>dropLastWhile()</strong><br><code>(a -&gt; Boolean) → [a] → [a]</code><br>根據 predicate 刪除 Array 最後幾筆資料</p>
 </blockquote>
 <p><code>(a -&gt; Boolean)</code>：自訂條件 predicate</p>
-<p><code>[a]</code>：data 為 array</p>
-<p><code>[a]</code>：回傳刪除 array 最後幾筆資料後的剩餘 array</p>
-<p><img src="/images/ramda/array/droplastwhile/droplastwhile003.png" alt="droplastwhile003"></p>
-<h2 id="Point-free-1"><a href="#Point-free-1" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> dropLastWhile<span class="token punctuation">,</span> gte <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
+<p><code>[a]</code>：data 為 Array</p>
+<p><code>[a]</code>：回傳刪除 Array 最後幾筆資料後的剩餘 Array</p>
+<p><img src="/images/ramda/array/droplastwhile/droplastwhile000.png" alt="droplastwhile000"></p>
+<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> dropLastWhile<span class="token punctuation">,</span> gte <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">]</span>
 
-<span class="token function">dropLastWhile</span><span class="token punctuation">(</span><span class="token function">gte</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>也可將 <code>x =&gt; x &lt;= 2</code> 進一步使用 <code>gte(2)</code> 使之 point-free。</p>
-<p><img src="/images/ramda/array/droplastwhile/droplastwhile004.png" alt="droplastwhile004"></p>
-<h2 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> dropLastWhile <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">101</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">203</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">dropLastWhile</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>price <span class="token operator">></span> <span class="token number">250</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>dropLastWhile()</code> 也能用在 object。</p>
-<p><img src="/images/ramda/array/droplastwhile/droplastwhile005.png" alt="droplastwhile005"></p>
-<h2 id="Point-free-2"><a href="#Point-free-2" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> dropLastWhile<span class="token punctuation">,</span> lt<span class="token punctuation">,</span> compose<span class="token punctuation">,</span> prop <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
+<span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">dropLastWhile</span><span class="token punctuation">(</span><span class="token function">gte</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>也可將 <code>x =&gt; x &lt;= 2</code> 進一步使用 <code>gte(2)</code> 使之 Point-free。</p>
+<p><img src="/images/ramda/array/droplastwhile/droplastwhile001.png" alt="droplastwhile001"></p>
+<h2 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> dropLastWhile <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">101</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">203</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> pred <span class="token operator">=</span> <span class="token function">compose</span><span class="token punctuation">(</span>
-  <span class="token function">lt</span><span class="token punctuation">(</span><span class="token number">250</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">dropLastWhile</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>price <span class="token operator">></span> <span class="token number">250</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>dropLastWhile()</code> 也能用在 Object。</p>
+<p><img src="/images/ramda/array/droplastwhile/droplastwhile002.png" alt="droplastwhile002"></p>
+<h2 id="Point-free-1"><a href="#Point-free-1" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> dropLastWhile<span class="token punctuation">,</span> where<span class="token punctuation">,</span> lte <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">dropLastWhile</span><span class="token punctuation">(</span>pred<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>也可將 <code>x =&gt; x.price &gt; 250</code> 進一步 point-free。</p>
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">101</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">203</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+
+<span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">dropLastWhile</span><span class="token punctuation">(</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token punctuation">{</span> price<span class="token punctuation">:</span> <span class="token function">lte</span><span class="token punctuation">(</span><span class="token number">250</span><span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>也可將 <code>x =&gt; x.price &gt; 250</code> 進一步 Point-free：</p>
 <ul>
-<li>使用 <code>prop(&#39;price&#39;)</code> 取得 property 值，相當於 <code>x.price</code></li>
-<li>使用 <code>lt(250)</code> 判斷小於，相當於 <code>&gt; 250</code></li>
+<li><code>where({ price: lte(250) })</code>：對 <code>price</code> property 使用 <code>lte(250)</code> 判斷</li>
 </ul>
-<p>最後使用 <code>compose()</code> 組合所有 function，非常清楚。</p>
-<p><img src="/images/ramda/array/droplastwhile/droplastwhile006.png" alt="droplastwhile006"></p>
+<p><img src="/images/ramda/array/droplastwhile/droplastwhile003.png" alt="droplastwhile003"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li><code>dropWhle()</code> 與 <code>dropLastWhile()</code> 用法很類似，但 <code>dropWhile()</code> 是刪除符合條件前 n 筆資料，而 <code>dropLastWhile()</code> 是刪除符合條件最後 n 筆資料</li>
-<li><code>dropWhile()</code> 除了用在 array，也能用在 string</li>
+<li><code>dropWhile()</code> 除了用在 Array，也能用在 String</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#dropLastWhile" target="_blank" rel="noopener">dropLastWhile()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#dropWhile" target="_blank" rel="noopener">dropWhile()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#pipe" target="_blank" rel="noopener">pipe()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#reverse" target="_blank" rel="noopener">reverse()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#gte" target="_blank" rel="noopener">gte()</a><br><a href="https://ramdajs.com/docs/#prop" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#compose" target="_blank" rel="noopener">compose()</a><br><a href="https://ramdajs.com/docs/#prop" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#lt" target="_blank" rel="noopener">lt()</a><br><a href="https://ramdajs.com/docs/#prop" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#prop" target="_blank" rel="noopener">prop()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#dropLastWhile" target="_blank" rel="noopener">dropLastWhile()</a></p>
 
                     </article>
                     <p class="post-footer-info mb-0 pt-2">
