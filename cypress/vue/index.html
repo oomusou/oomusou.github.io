@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-02T11:21:51.000Z",
-    "dateModified": "2021-05-22T13:52:23.668Z",
+    "dateModified": "2021-05-28T11:45:21.072Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -438,8 +438,11 @@ a:hover {
                     <article id="post-content">
                         <p>Cypress 雖然不是為 Vue 量身定做，但因為其與 Framework 無關，因此也能將 Cypress  整合進 Vue CLI，讓我們在開發階段也能使用 Cypress 測試 Vue。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 2.6.11<br>Cypress 6.8.0</p>
-<h2 id="Install-Cypress"><a href="#Install-Cypress" class="headerlink" title="Install Cypress"></a>Install Cypress</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add cypress --dev
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.11<br>Cypress 7.4.0</p>
+<h2 id="Vue-Project"><a href="#Vue-Project" class="headerlink" title="Vue Project"></a>Vue Project</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn create @vitejs/app vue3-cypress --template vue
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 Vite 直接建立 Vue。</p>
+<h2 id="Install-Cypress"><a href="#Install-Cypress" class="headerlink" title="Install Cypress"></a>Install Cypress</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add --dev cypress
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>使用 Yarn 安裝 Cypress。</p>
 <h2 id="Test-Runner"><a href="#Test-Runner" class="headerlink" title="Test Runner"></a>Test Runner</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn run cypress open
@@ -448,21 +451,18 @@ a:hover {
 <blockquote>
 <p>第一次執行 test runner 將在根目錄建立 <code>cypress</code> 目錄以及其他子目錄</p>
 </blockquote>
-<h2 id="Integration-Test"><a href="#Integration-Test" class="headerlink" title="Integration Test"></a>Integration Test</h2><p><strong>hello.spec.js</strong></p>
+<h2 id="Integration-Test"><a href="#Integration-Test" class="headerlink" title="Integration Test"></a>Integration Test</h2><p><strong>cypress/integration/hello.spec.js</strong></p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">describe</span><span class="token punctuation">(</span><span class="token string">'Hello'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
   <span class="token function">it</span><span class="token punctuation">(</span><span class="token string">'Welcome'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-    <span class="token comment" spellcheck="true">// ACT</span>
     cy<span class="token punctuation">.</span><span class="token function">visit</span><span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">)</span>
-
-    <span class="token comment" spellcheck="true">// ASSERT</span>
-    cy<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'.hello'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span><span class="token string">'Welcome to Your Vue.js App'</span><span class="token punctuation">)</span>
+    cy<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'#app h1'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span><span class="token string">'Hello Vue 3 + Vite'</span><span class="token punctuation">)</span>
   <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>建立 <code>hello.spec.js</code> 測試 Vue 專案預設頁面。</p>
 <h2 id="Cypress-Config"><a href="#Cypress-Config" class="headerlink" title="Cypress Config"></a>Cypress Config</h2><p><strong>cypress.json</strong></p>
 <pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
-  <span class="token property">"baseUrl"</span><span class="token operator">:</span> <span class="token string">"http://localhost:8080"</span>
+  <span class="token property">"baseUrl"</span><span class="token operator">:</span> <span class="token string">"http://localhost:3000"</span>
 <span class="token punctuation">}</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>在根目錄下的 <code>cypress.json</code> 設定 <code>baseUrl</code> 變數。</p>
@@ -478,12 +478,17 @@ a:hover {
 <li><code>test:gui</code>：以 GUI 的 test runner 執行 Cypress</li>
 <li><code>test:cli</code>：以 CLI 的 headless 執行 Cypress</li>
 </ul>
+<h2 id="Dev-Server"><a href="#Dev-Server" class="headerlink" title="Dev Server"></a>Dev Server</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn dev
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>啟動 Dev Server。</p>
+<p><img src="/images/cypress/vue/vue002.png" alt="vue002"></p>
 <h2 id="Test-Runner-1"><a href="#Test-Runner-1" class="headerlink" title="Test Runner"></a>Test Runner</h2><p><img src="/images/cypress/vue/vue000.png" alt="vue000"></p>
 <p>以 GUI 的 test runner 執行 Cypress。</p>
 <h2 id="Headless"><a href="#Headless" class="headerlink" title="Headless"></a>Headless</h2><p><img src="/images/cypress/vue/vue001.png" alt="vue001"></p>
 <p>以 CLI 的 headless 執行 Cypress。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Cypress 基於 Node 生態系，只要使用 Yarn 安裝 Cypress，就能無縫接軌測試 Vue</li>
+<li>Cypress 無法單獨執行，必須同時啟動 Dev Server</li>
 </ul>
 
                     </article>
