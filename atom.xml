@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2021-06-01T01:35:30.025Z</updated>
+  <updated>2021-06-01T07:50:33.542Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,28 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用 Docker Compose 測試含 PublicPath 的 Vue</title>
+    <link href="https://fpjs.fun/docker/vue/docker-compose-publicpath/"/>
+    <id>https://fpjs.fun/docker/vue/docker-compose-publicpath/</id>
+    <published>2021-06-01T07:40:15.000Z</published>
+    <updated>2021-06-01T07:50:33.542Z</updated>
+    
+    <content type="html"><![CDATA[<p>實務上 Vue 不見得都放在 Domain 的 Root-path，而是放在 Sub-path，在 Vue CLI、Nginx 與 <code>docker-compose.yml</code> 都必須特別設定。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 2.6.11<br>Docker Desktop 3.3.3</p><h2 id="PublicPath"><a href="#PublicPath" class="headerlink" title="PublicPath"></a>PublicPath</h2><p><img src="/images/docker/vue/docker-compose-publicpath/public000.png" alt="public000"></p><p>Vue router 使用 hash mode 啟動在 Dev Server 於 <code>http://localhost:8080/portal/#/</code>。</p><p><img src="/images/docker/vue/docker-compose-publicpath/public001.png" alt="public001"></p><p>Vue router 使用 hash mode 啟動在 <code>docker compose</code> 的 Nginx 於 <code>http://localhost:8080/portal/#/</code>。</p><h2 id="Vue-Config"><a href="#Vue-Config" class="headerlink" title="Vue Config"></a>Vue Config</h2><p><strong>vue.config.js</strong></p><pre class="line-numbers highlight language-javascript"><code class="language-javascript">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>  publicPath<span class="token punctuation">:</span> <span class="token string">'/portal/'</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>新增 <code>vue.config.js</code>，在 <code>module.exports</code> 內：</p><ul><li><code>publicPath</code>：設定 <code>portal</code> 為 <code>sub-path</code></li></ul><h2 id="Nginx-Config"><a href="#Nginx-Config" class="headerlink" title="Nginx Config"></a>Nginx Config</h2><p><strong>default.conf</strong></p><pre class="line-numbers highlight language-json"><code class="language-json">server <span class="token punctuation">{</span>  listen       <span class="token number">80</span><span class="token punctuation">;</span>  server_name  localhost<span class="token punctuation">;</span>  location  /portal/ <span class="token punctuation">{</span>      root   /usr/share/nginx/html<span class="token punctuation">;</span>      index  index.html index.htm<span class="token punctuation">;</span>      try_files $uri $uri/ /index.html<span class="token punctuation">;</span>  <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>在 project 根目錄下建立 <code>default.conf</code>：</p><ul><li>新增 <code>location /portal/</code> 設定 <code>sub-path</code></li></ul><h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><p><strong>docker-compose.yml</strong></p><pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3"</span><span class="token key atrule">services</span><span class="token punctuation">:</span>  <span class="token key atrule">vue</span><span class="token punctuation">:</span>    <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span>alpine    <span class="token key atrule">restart</span><span class="token punctuation">:</span> always    <span class="token key atrule">ports</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> <span class="token string">"7979:80"</span>    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>      <span class="token punctuation">-</span> ./dist<span class="token punctuation">:</span>/usr/share/nginx/html/portal      <span class="token punctuation">-</span> ./default.conf<span class="token punctuation">:</span>/etc/nginx/conf.d/default.conf<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>在 project 根目錄下建立 <code>docker-compose.yml</code>：</p><ul><li><code>image: nginx:alpine</code>：使用 Nginx</li><li><code>ports</code>：<ul><li><code>7979:80</code>：設定對外為 port <code>7979</code>，對內為 port <code>80</code></li></ul></li><li><code>volumns</code>：<ul><li><code>./dist:/usr/share/nginx/html/portal</code>：將 Vue 的 <code>dist</code> 目錄對應到 Nginx 的 <code>portal</code> 目錄</li><li><code>./default.conf:/etc/nginx/conf.d/default.conf</code>：將 <code>default.conf</code> 對應到 Nginx 內部</li></ul></li></ul><h2 id="NPM-Script"><a href="#NPM-Script" class="headerlink" title="NPM Script"></a>NPM Script</h2><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>  <span class="token property">"docker"</span><span class="token operator">:</span> <span class="token string">"yarn build &amp;&amp; docker compose up -d"</span><span class="token punctuation">}</span><span class="token punctuation">,</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><ul><li><code>docker</code>：先執行 <code>docker build</code>，執行完後再執行 <code>docker compose up -d</code></li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>若要設定 sub-path，則 <code>vue.config.js</code>、<code>default.conf</code>、<code>docker-compose.yml</code> 三者都要設定</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://cli.vuejs.org/" target="_blank" rel="noopener">Vue CLI</a>, <a href="https://cli.vuejs.org/config/#publicpath" target="_blank" rel="noopener">publicPath</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;實務上 Vue 不見得都放在 Domain 的 Root-path，而是放在 Sub-path，在 Vue CLI、Nginx 與 &lt;code&gt;docker-compose.yml&lt;/code&gt; 都必須特別設定。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Vue" scheme="https://fpjs.fun/tags/Vue/"/>
+    
+      <category term="Docker" scheme="https://fpjs.fun/tags/Docker/"/>
+    
+  </entry>
   
   <entry>
     <title>如何實現後台常見 Layout ?</title>
@@ -409,26 +431,6 @@
     
     
       <category term="Ramda" scheme="https://fpjs.fun/tags/Ramda/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用 Object.entries()  將 Key / Value 轉成 Array</title>
-    <link href="https://fpjs.fun/ecmascript/object/entries/"/>
-    <id>https://fpjs.fun/ecmascript/object/entries/</id>
-    <published>2021-05-23T01:05:22.000Z</published>
-    <updated>2021-05-23T01:11:28.142Z</updated>
-    
-    <content type="html"><![CDATA[<p>若要將 Object 的所有 Key 與 Value 轉成 Array，可使用 <code>Object.entries()</code>。  </p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>ECMAScript 2017</p><h2 id="Object-entries"><a href="#Object-entries" class="headerlink" title="Object.entries()"></a>Object.entries()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>  a<span class="token punctuation">:</span> <span class="token string">'test1'</span><span class="token punctuation">,</span>  b<span class="token punctuation">:</span> <span class="token string">'test2'</span><span class="token punctuation">,</span>  c<span class="token punctuation">:</span> <span class="token string">'test3'</span><span class="token punctuation">}</span>Object  <span class="token punctuation">.</span><span class="token function">entries</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>  <span class="token punctuation">.</span><span class="token function">flat</span><span class="token punctuation">(</span><span class="token punctuation">)</span>  <span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><code>data</code> 為 Object，我們希望 Object 的所有 key 與 value 能串起來成為以 <code>,</code> 分隔的單一 String。</p><ul><li><code>Object.entries()</code>：由於同時需要 key 與 value，因次適合使用 <code>Object.entries()</code> 將 Object 轉成 Array</li><li><code>Array.prototype.flat()</code>：<code>Object.entries()</code> 回傳為 Nested Array，需攤平後才能繼續使用</li><li><code>Array.prototype.join(&#39;,&#39;)</code>：將 Array 轉成以 <code>,</code> 分隔 String</li></ul><blockquote><p><strong>Object.entries()</strong><br><code>{k: v} -&gt; [[k, v]...]</code><br>將 Object 轉成 key / value 所構成的 Nested Array</p></blockquote><p><img src="/images/ecmascript/object/entries/entries000.png" alt="entries000"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li><code>Object.entries()</code> 為 ES2017 較新的 method，不過目前 Babel 與 Node 都已經支援，可安心使用</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/entries" target="_blank" rel="noopener">Object.entries()</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;若要將 Object 的所有 Key 與 Value 轉成 Array，可使用 &lt;code&gt;Object.entries()&lt;/code&gt;。  &lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="ECMAScript" scheme="https://fpjs.fun/tags/ECMAScript/"/>
     
   </entry>
   
