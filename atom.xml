@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2021-05-31T14:34:36.484Z</updated>
+  <updated>2021-06-01T01:35:30.025Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何實現後台常見 Layout ?</title>
+    <link href="https://fpjs.fun/css/cookbook/layout/admin/"/>
+    <id>https://fpjs.fun/css/cookbook/layout/admin/</id>
+    <published>2021-06-01T01:34:13.000Z</published>
+    <updated>2021-06-01T01:35:30.025Z</updated>
+    
+    <content type="html"><![CDATA[<p>上下有 <code>header</code> 與 <code>footer</code>，左側有 <code>nav</code>，右側有 <code>content</code> 是實務上後台常見 Layout，可用 Grid 簡單實現。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>CSS 3</p><h2 id="Grid"><a href="#Grid" class="headerlink" title="Grid"></a>Grid</h2><p><img src="/images/css/cookbook/layout/admin/admin000.png" alt="admin000"></p><p>使用 Grid 實現後台常見 layout。</p><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>section  header header  nav navigation  main content  footer footer<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>style</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>sass<span class="token punctuation">'</span></span> <span class="token attr-name">scoped</span><span class="token punctuation">></span></span><span class="token style language-css">section  <span class="token property">display</span><span class="token punctuation">:</span> grid  <span class="token property">height</span><span class="token punctuation">:</span> <span class="token number">97</span>vh  <span class="token property">grid-template-columns</span><span class="token punctuation">:</span> <span class="token number">150</span>px <span class="token number">1</span>fr  <span class="token property">grid-template-rows</span><span class="token punctuation">:</span> <span class="token number">100</span>px <span class="token number">1</span>fr <span class="token number">50</span>px  <span class="token property">grid-template-areas</span><span class="token punctuation">:</span> <span class="token string">'header header'</span> <span class="token string">'nav main'</span> <span class="token string">'footer footer'</span>header  <span class="token property">grid-area</span><span class="token punctuation">:</span> headernav  <span class="token property">grid-area</span><span class="token punctuation">:</span> navmain  <span class="token property">grid-area</span><span class="token punctuation">:</span> mainfooter  <span class="token property">grid-area</span><span class="token punctuation">:</span> footer</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>style</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>第 2 行</p><pre class="line-numbers highlight language-jade"><code class="language-jade"><span class="token tag">section</span>  <span class="token tag">header</span> <span class="token plain-text">header</span>  <span class="token tag">nav</span> <span class="token plain-text">navigation</span>  <span class="token tag">main</span> <span class="token plain-text">content</span>  <span class="token tag">footer</span> <span class="token plain-text">footer</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>分別使用 <code>header</code>、<code>nav</code>、<code>main</code> 與 <code>footer</code> 建構 layout。</p><p>17 行</p><pre class="line-numbers highlight language-scss"><code class="language-scss">header  <span class="token property">grid-area</span><span class="token punctuation">:</span> headernav  <span class="token property">grid-area</span><span class="token punctuation">:</span> navmain  <span class="token property">grid-area</span><span class="token punctuation">:</span> mainfooter  <span class="token property">grid-area</span><span class="token punctuation">:</span> footer<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>將 <code>header</code>、<code>nav</code>、<code>main</code> 與 <code>footer</code> 都使用 <code>grid-area</code> 加上名稱。</p><p>10 行</p><pre class="line-numbers highlight language-scss"><code class="language-scss">section  <span class="token property">display</span><span class="token punctuation">:</span> grid  <span class="token property">height</span><span class="token punctuation">:</span> <span class="token number">97</span>vh  <span class="token property">grid-template-columns</span><span class="token punctuation">:</span> <span class="token number">150</span>px <span class="token number">1</span>fr  <span class="token property">grid-template-rows</span><span class="token punctuation">:</span> <span class="token number">100</span>px <span class="token number">1</span>fr <span class="token number">50</span>px  <span class="token property">grid-template-areas</span><span class="token punctuation">:</span> <span class="token string">'header header'</span> <span class="token string">'nav main'</span> <span class="token string">'footer footer'</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>設定父層 <code>section</code> style：</p><ul><li><code>display: grid</code>：設定子層使用 Grid</li><li><code>height: 97vh</code>：設定父層高度</li><li><code>grid-template-columns: 150px 1fr</code>：設定兩個 column<ul><li><code>150px</code> ： <code>nav</code> 寬度</li><li><code>1fr</code> ：<code>main</code> 寬度，剛好佔據所有剩餘寬度</li></ul></li><li><code>grid-template-rows: 100px 1fr 50px</code>：設定兩個 row<ul><li><code>100px</code>：<code>header</code> 高度</li><li><code>1fr</code>：<code>main</code> 高度，剛好佔據所有剩餘高度</li><li><code>50px</code>：<code>footer</code> 高度</li></ul></li><li><code>grid-template-areas: &#39;header header&#39; &#39;nav main&#39; &#39;footer footer</code>：設定 area 所對應名稱，每個 String 剛好為一個 row<ul><li><code>header header</code>：第一 row 設定 <code>header</code> 橫跨兩個 column</li><li><code>nav main</code>：第二 row 設定為 <code>nav</code> 與 <code>main</code> 兩個 column</li><li><code>footer footer</code>：第三 row 設定 <code>footer</code> 橫跨兩個 column</li></ul></li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>由於 Grid 特性，所有設定都在父層完成，子層只需使用 <code>grid-area</code> 設定名稱即可</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;上下有 &lt;code&gt;header&lt;/code&gt; 與 &lt;code&gt;footer&lt;/code&gt;，左側有 &lt;code&gt;nav&lt;/code&gt;，右側有 &lt;code&gt;content&lt;/code&gt; 是實務上後台常見 Layout，可用 Grid 簡單實現。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="CSS" scheme="https://fpjs.fun/tags/CSS/"/>
+    
+  </entry>
   
   <entry>
     <title>Gridsome 安裝 Pug</title>
@@ -409,26 +429,6 @@
     
     
       <category term="ECMAScript" scheme="https://fpjs.fun/tags/ECMAScript/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用 values() 將 Object 所有 Value 轉成 Array</title>
-    <link href="https://fpjs.fun/ramda/object/values/"/>
-    <id>https://fpjs.fun/ramda/object/values/</id>
-    <published>2021-05-22T14:51:35.000Z</published>
-    <updated>2021-05-22T14:54:09.660Z</updated>
-    
-    <content type="html"><![CDATA[<p>若要將 Object 的所有 Value 轉成 Array，可使用 <code>values()</code>。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p><h2 id="Simple-Object"><a href="#Simple-Object" class="headerlink" title="Simple Object"></a>Simple Object</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> values <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>  <span class="token number">0</span><span class="token punctuation">:</span> <span class="token string">'a'</span><span class="token punctuation">,</span>  <span class="token number">1</span><span class="token punctuation">:</span> <span class="token string">'b'</span><span class="token punctuation">,</span>  <span class="token number">2</span><span class="token punctuation">:</span> <span class="token string">'c'</span><span class="token punctuation">,</span><span class="token punctuation">}</span><span class="token function">pipe</span><span class="token punctuation">(</span>  values<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><code>data</code> 為一般 Object，可使用 <code>values()</code> 取得所有 value。</p><blockquote><p><strong>values()</strong><br><code>{k: v} → [v]</code><br>將 Object 的 value 部分轉成 Array</p></blockquote><p><code>{k: v}</code>：data 為 Object</p><p><code>[v]</code>：回傳以 value 所構成 Array</p><p><img src="/images/ramda/object/values/values000.png" alt="values000"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>當 data 為 Object，而我們期望為 Array 時，可先用 <code>values()</code> 轉成 Array，再用 <code>map()</code> 轉成我們要的格式</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#values" target="_blank" rel="noopener">values()</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;若要將 Object 的所有 Value 轉成 Array，可使用 &lt;code&gt;values()&lt;/code&gt;。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Ramda" scheme="https://fpjs.fun/tags/Ramda/"/>
     
   </entry>
   
