@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-24T14:27:19.000Z",
-    "dateModified": "2021-05-29T01:54:58.778Z",
+    "dateModified": "2021-06-02T13:43:48.895Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -452,25 +452,21 @@ span {{ price }}
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> read<span class="token punctuation">,</span> write <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> propEq<span class="token punctuation">,</span> map<span class="token punctuation">,</span> always<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> path <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> propEq<span class="token punctuation">,</span> map<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> path <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> flip<span class="token punctuation">,</span> find <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> resolve <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 <span class="token keyword">import</span> getPrice <span class="token keyword">from</span> <span class="token string">'/src/api/getPrice'</span>
 
-<span class="token keyword">let</span> <span class="token punctuation">{</span> find<span class="token punctuation">,</span> fromMaybe_<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> flip <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> <span class="token punctuation">{</span> fromMaybe <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'Elm in Action'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span> <span class="token punctuation">}</span>
 <span class="token punctuation">]</span>
 
 <span class="token keyword">let</span> title <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
 <span class="token keyword">let</span> price <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> emptyPrice <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
-  <span class="token function">write</span><span class="token punctuation">(</span>price<span class="token punctuation">)</span>
-<span class="token punctuation">)</span> 
 
 <span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">read</span><span class="token punctuation">(</span>title<span class="token punctuation">)</span><span class="token punctuation">,</span>
@@ -479,27 +475,25 @@ span {{ price }}
   <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span>getPrice<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token function">path</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>price<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">fromMaybe_</span><span class="token punctuation">(</span>emptyPrice<span class="token punctuation">)</span>
+  <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>price<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>16 行</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>17 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'Elm in Action'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
   <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span> <span class="token punctuation">}</span>
 <span class="token punctuation">]</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
-<li><p>使用 <code>find()</code> 查詢 <code>title</code> ，無論是否存在都會回傳 Maybe</p>
-</li>
-<li><p>後續的處理也都會在 Maybe 內，包含呼叫 API 也會在 Maybe 內</p>
-</li>
+<li>使用 <code>find()</code> 查詢 <code>title</code> ，無論是否存在都會回傳 Maybe</li>
+<li>後續的處理也都會在 Maybe 內，包含呼叫 API 也會在 Maybe 內</li>
 <li>API 會回傳 Promise，這就造成 Promise 在 Maybe 內，也就是 Promise Maybe</li>
 </ul>
 <p>該如何處理 Promise Maybe 這種兩層 Monad 呢 ?</p>
-<p>30 行</p>
+<p>26 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">read</span><span class="token punctuation">(</span>title<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">propEq</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
@@ -507,8 +501,8 @@ span {{ price }}
   <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span>getPrice<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token function">path</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>price<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">fromMaybe_</span><span class="token punctuation">(</span>emptyPrice<span class="token punctuation">)</span>
+  <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>price<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用 <code>pipe()</code> 組合 <code>onClick()</code>：</p>
@@ -519,72 +513,11 @@ span {{ price }}
 <li><code>map(prop(&#39;id&#39;))</code>：：在 Maybe 內讀取出 <code>id</code> property</li>
 <li><code>map(getPrice)</code>：呼叫 <code>getPrice()</code> 從 API 查詢 price，會回傳 Promise</li>
 <li><code>map(then(path([&#39;data&#39;, &#39;price&#39;])))</code>：關鍵在此行，Promise 在 Maybe 內，因此只能 <code>map()</code> 先拆第一層 Maybe，再用 <code>then()</code> 拆第二層 Promise，所有的 function 都在 <code>map(then)</code> 內</li>
-<li><code>map(then(write(price)))</code>：寫入 <code>price</code> state，後續的處理都要在 <code>map(then)</code> 內，以上為 happy path</li>
-<li><code>fromMaybe_(emptyPrice)</code>：處理 Nothing，若是 Nothing 則執行 <code>emptyPrice()</code></li>
+<li><code>fromMaybe(resolve(&#39;&#39;))</code>：處理 Nothing，若是 Nothing 則回傳 Empty String</li>
+<li><code>then(write(price))</code>：最後寫入 <code>price</code> state</li>
 </ul>
-<p>25 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> emptyPrice <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
-  <span class="token function">write</span><span class="token punctuation">(</span>price<span class="token punctuation">)</span>
-<span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>使用 <code>pipe()</code> 組合 <code>emptyPrice()</code>：</p>
-<ul>
-<li><code>always(&#39;&#39;)</code>：準備 empty string</li>
-<li><code>write(price)</code>：寫入 <code>price</code> state</li>
-</ul>
-<h2 id="feed"><a href="#feed" class="headerlink" title="feed()"></a>feed()</h2><p><img src="/images/vue3/maybe/promise-maybe/maybe000.png" alt="maybe000"></p>
-<p>結果不變，但使用 Wink-fp 簡化。</p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
-input(v-model='title')
-button(@click='onClick') Submit
-span {{ price }}
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
-
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> read<span class="token punctuation">,</span> write <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> propEq<span class="token punctuation">,</span> map<span class="token punctuation">,</span> always<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> path <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> feed <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
-<span class="token keyword">import</span> getPrice <span class="token keyword">from</span> <span class="token string">'/src/api/getPrice'</span>
-
-<span class="token keyword">let</span> <span class="token punctuation">{</span> find<span class="token punctuation">,</span> fromMaybe_<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> flip <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> title <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> price <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> emptyPrice <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">,</span> 
-  <span class="token function">write</span><span class="token punctuation">(</span>price<span class="token punctuation">)</span>
-<span class="token punctuation">)</span> 
-
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">read</span><span class="token punctuation">(</span>title<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">propEq</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">flip</span><span class="token punctuation">(</span>find<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span>getPrice<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">feed</span><span class="token punctuation">(</span><span class="token function">path</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">feed</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>price<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">fromMaybe_</span><span class="token punctuation">(</span>emptyPrice<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>37 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">feed</span><span class="token punctuation">(</span><span class="token function">path</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token function">feed</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>price<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
-<p>若覺得在 Promise Maybe 之後每次都要寫 <code>map(then)</code> 很囉唆，可改用 Wink-fp 的 <code>feed()</code> 取代，如此將維持在 Maybe 內執行時都只要一個 function 風格。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>Promise Maybe 乍聽很嚇人，其實只要把握用 <code>map()</code> 或 <code>chain()</code> 處理 Maybe Monad，用 <code>then()</code> 處理 Promise Monad，然後將所有 function 處理都寫在 <code>map(then)</code> 內即可</li>
-<li><code>map(then)</code> 因為實務上太常使用，可改用 Wink-fp 的 <code>feed()</code> 取代</li>
+<li>Promise Maybe 乍聽很嚇人，其實只要把握用 <code>map()</code> 或 <code>chain()</code> 處理 Maybe，用 <code>then()</code> 處理 Promise，然後將所有 function 處理都寫在 <code>map(then)</code> 內即可</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://sanctuary.js.org/" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://sanctuary.js.org/#find" target="_blank" rel="noopener">find()</a><br><a href="https://sanctuary.js.org/" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://sanctuary.js.org/#section:maybe" target="_blank" rel="noopener">Maybe</a></p>
 
