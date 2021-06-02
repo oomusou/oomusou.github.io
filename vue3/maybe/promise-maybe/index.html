@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-24T14:27:19.000Z",
-    "dateModified": "2021-06-02T13:43:48.895Z",
+    "dateModified": "2021-06-02T15:59:48.396Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -440,7 +440,7 @@ a:hover {
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.11<br>Sanctuary 3.1.0</p>
 <h2 id="Promise-Maybe"><a href="#Promise-Maybe" class="headerlink" title="Promise Maybe"></a>Promise Maybe</h2><p><img src="/images/vue3/maybe/promise-maybe/maybe000.png" alt="maybe000"></p>
-<p>當輸入的書名找不到時，不會繼續呼叫 API 查詢價錢。</p>
+<p>當輸入的書名找不到時，會顯示 <code>N/A</code>。</p>
 <p><img src="/images/vue3/maybe/promise-maybe/maybe001.png" alt="maybe001"></p>
 <p>當找到書名時，就會繼續呼叫 API 查詢價錢。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
@@ -475,7 +475,7 @@ span {{ price }}
   <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span>getPrice<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token function">path</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'N/A'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>price<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
@@ -488,8 +488,10 @@ span {{ price }}
 <span class="token punctuation">]</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
-<li>使用 <code>find()</code> 查詢 <code>title</code> ，無論是否存在都會回傳 Maybe</li>
-<li>後續的處理也都會在 Maybe 內，包含呼叫 API 也會在 Maybe 內</li>
+<li><p>使用 <code>find()</code> 查詢 <code>title</code> ，無論是否存在都會回傳 Maybe</p>
+</li>
+<li><p>後續的處理也都會在 Maybe 內，包含呼叫 API 也會在 Maybe 內</p>
+</li>
 <li>API 會回傳 Promise，這就造成 Promise 在 Maybe 內，也就是 Promise Maybe</li>
 </ul>
 <p>該如何處理 Promise Maybe 這種兩層 Monad 呢 ?</p>
@@ -501,7 +503,7 @@ span {{ price }}
   <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'id'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span>getPrice<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token function">path</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'price'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">fromMaybe</span><span class="token punctuation">(</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'N/A'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>price<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
@@ -513,8 +515,8 @@ span {{ price }}
 <li><code>map(prop(&#39;id&#39;))</code>：：在 Maybe 內讀取出 <code>id</code> property</li>
 <li><code>map(getPrice)</code>：呼叫 <code>getPrice()</code> 從 API 查詢 price，會回傳 Promise</li>
 <li><code>map(then(path([&#39;data&#39;, &#39;price&#39;])))</code>：關鍵在此行，Promise 在 Maybe 內，因此只能 <code>map()</code> 先拆第一層 Maybe，再用 <code>then()</code> 拆第二層 Promise，所有的 function 都在 <code>map(then)</code> 內</li>
-<li><code>fromMaybe(resolve(&#39;&#39;))</code>：處理 Nothing，若是 Nothing 則回傳 Empty String</li>
-<li><code>then(write(price))</code>：最後寫入 <code>price</code> state</li>
+<li><code>fromMaybe(resolve(&#39;N/A&#39;))</code>：處理 Maybe，若是 Nothing 則回傳 <code>N/A</code></li>
+<li><code>then(write(price))</code>：處理 Promise，最後寫入 <code>price</code> state</li>
 </ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Promise Maybe 乍聽很嚇人，其實只要把握用 <code>map()</code> 或 <code>chain()</code> 處理 Maybe，用 <code>then()</code> 處理 Promise，然後將所有 function 處理都寫在 <code>map(then)</code> 內即可</li>
