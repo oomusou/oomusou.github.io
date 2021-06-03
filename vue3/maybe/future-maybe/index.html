@@ -49,9 +49,9 @@
 
 <meta name="format-detection" content="telephone=no">
 <!-- Description -->
-<meta name="description" content="當有 Function 回傳 Maybe，而後續的 Function 都在 Maybe 內執行時，卻又有 Function 回傳 Future，這就造成 Maybe 內有 Future 的窘境，實務上該如何處理這種兩層 Monad 呢 ?">
+<meta name="description" content="當有 Function 回傳 Maybe，而後續的 Function 都在 Maybe 內執行時，卻又有 Function 回傳 Future，這就造成 Maybe 內有 Future 窘境，實務上該如何處理這種兩層 Monad 呢 ?">
 <!-- Keywords -->
-<meta name="keywords" content=", Vue">
+<meta name="keywords" content=", Vue, Sanctuary, Maybe, Future">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
 <meta http-equiv="Cache-Control" content="no-transform">
 <meta http-equiv="Cache-Control" content="no-siteapp">
@@ -168,14 +168,14 @@ a:hover {
 
 <meta property="og:url" content="https://fpjs.fun/vue3/maybe/future-maybe/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
-<meta property="og:description" content="當有 Function 回傳 Maybe，而後續的 Function 都在 Maybe 內執行時，卻又有 Function 回傳 Future，這就造成 Maybe 內有 Future 的窘境，實務上該如何處理這種兩層 Monad 呢 ?">
+<meta property="og:description" content="當有 Function 回傳 Maybe，而後續的 Function 都在 Maybe 內執行時，卻又有 Function 回傳 Future，這就造成 Maybe 內有 Future 窘境，實務上該如何處理這種兩層 Monad 呢 ?">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
 <meta property="article:published_time" content="2021-06-02T15:48:48.000Z">
 <meta property="article:modified_time" content="2021-06-02T15:48:48.000Z">
 <meta property="article:author" content="Sam Xiao">
-<meta property="og:article:tag" content=", Vue">
+<meta property="og:article:tag" content=", Vue, Sanctuary, Maybe, Future">
 
 
 	<!-- ### Analytics ### -->
@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-06-02T15:48:48.000Z",
-    "dateModified": "2021-06-02T15:51:00.422Z",
+    "dateModified": "2021-06-03T14:38:53.338Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -233,8 +233,8 @@ a:hover {
         "query-input": "required name=search_term_string"
     },
     
-    "keywords": ", Vue",
-    "description": "當有 Function 回傳 Maybe，而後續的 Function 都在 Maybe 內執行時，卻又有 Function 回傳 Future，這就造成 Maybe 內有 Future 的窘境，實務上該如何處理這種兩層 Monad 呢 ?"
+    "keywords": ", Vue, Sanctuary, Maybe, Future",
+    "description": "當有 Function 回傳 Maybe，而後續的 Function 都在 Maybe 內執行時，卻又有 Function 回傳 Future，這就造成 Maybe 內有 Future 窘境，實務上該如何處理這種兩層 Monad 呢 ?"
 }
 </script>
 
@@ -436,11 +436,11 @@ a:hover {
                 </div>
                 <div class="card-body">
                     <article id="post-content">
-                        <p>當有 Function 回傳 Maybe，而後續的 Function 都在 Maybe 內執行時，卻又有 Function 回傳 Future，這就造成 Maybe 內有 Future 的窘境，實務上該如何處理這種兩層 Monad 呢 ?</p>
+                        <p>當有 Function 回傳 Maybe，而後續的 Function 都在 Maybe 內執行時，卻又有 Function 回傳 Future，這就造成 Maybe 內有 Future 窘境，實務上該如何處理這種兩層 Monad 呢 ?</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.11<br>Sanctuary 3.1.0<br>Fluture 14.0.0</p>
 <h2 id="Future-Maybe"><a href="#Future-Maybe" class="headerlink" title="Future Maybe"></a>Future Maybe</h2><p><img src="/images/vue3/maybe/future-maybe/future000.png" alt="future000"></p>
-<p>當輸入的書名找不到時，會顯示 <code>N/A</code>。</p>
+<p>當輸入書名找不到時，會顯示 <code>N/A</code>。</p>
 <p><img src="/images/vue3/maybe/future-maybe/future001.png" alt="future001"></p>
 <p>當找到書名時，就會繼續呼叫 API 查詢價錢。</p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
@@ -514,10 +514,10 @@ span {{ price }}
 <li><code>propEq(&#39;title&#39;)</code>：組合 <code>find()</code> 所需要的 callback</li>
 <li><code>flip(find)(data)</code>：與 <code>Array.prototype.find()</code> 的差異是無論找不找得到都會傳 Maybe，因此不用擔心 <code>undefined</code> 問題</li>
 <li><code>map(prop(&#39;id&#39;))</code>：：在 Maybe 內讀取出 <code>id</code> property</li>
-<li><code>map(getPrice)</code>：呼叫 <code>getPrice()</code> 從 API 查詢 price，會回傳 Future</li>
+<li><code>map(getPrice)</code>：呼叫 <code>getPrice()</code> 從 API 查詢 price 並會回傳 Future</li>
 <li><code>map(map(path([&#39;data&#39;, &#39;price&#39;])))</code>：關鍵在此行，Future 在 Maybe 內，因此只能 <code>map()</code> 先拆第一層 Maybe，再用 <code>map()</code> 拆第二層 Future，所有的 function 都在 <code>map(map())</code> 內</li>
-<li><code>maybe(resolve(&#39;N/A&#39;))(I)</code>：處理 Maybe，若是 Nothing 則回傳 <code>N/A</code></li>
-<li><code>fork(error)(write(price))</code>：處理 Future，最後寫入 <code>price</code> state</li>
+<li><code>maybe(resolve(&#39;N/A&#39;))(I)</code>：處理 Nothing Maybe，將 <code>N/A</code> 包成 Future 回傳</li>
+<li><code>fork(error)(write(price))</code>：從 Future 內取出資料寫入 <code>price</code> state 並處理 Rejected Future</li>
 </ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Future Maybe 乍聽很嚇人，其實 Maybe 與 Future 都是 Monad，只要把握使用 <code>map()</code> 與 <code>chain()</code> 一層一層處理 Maybe 與 Future，最後先使用 <code>maybe()</code> 處理 Maybe，再使用 <code>fork()</code> 處理 Future 即可</li>
@@ -532,6 +532,12 @@ span {{ price }}
     
     <a class="post-tags-list-item" href='/tags/Vue/'>#&nbsp;Vue</a>
     
+    <a class="post-tags-list-item" href='/tags/Sanctuary/'>#&nbsp;Sanctuary</a>
+    
+    <a class="post-tags-list-item" href='/tags/Maybe/'>#&nbsp;Maybe</a>
+    
+    <a class="post-tags-list-item" href='/tags/Future/'>#&nbsp;Future</a>
+    
   </span>
   
 </p>
@@ -539,6 +545,13 @@ span {{ price }}
                 <div class="post-nav px-2 bg-gray">
 	<ul class="pagination">
 		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/vue3/either/future-either/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">當 Either 遇見 Future</div>
+			</a>
+		</li>
 		
 		<!-- Next Nav -->
 		
