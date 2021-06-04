@@ -166,7 +166,7 @@ a:hover {
 	<meta property="og:title" content="使用 chain() 組合回傳 Either 的 Function | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://fpjs.fun/sanctuary/either/compose/">
+<meta property="og:url" content="https://fpjs.fun/sanctuary/either/chain/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
 <meta property="og:description" content="Either 適合 Function Pipeline，可提早結束讓後續 Pure Function 不執行，但若 Pure Function 也回傳 Either，則會產生 Nested Either，如此必須使用 chain() 取代 map()。">
 <meta name="twitter:card" content="summary">
@@ -186,19 +186,19 @@ a:hover {
 
 
 	<!-- ### Canonical link ### -->
-	<link rel="canonical" href="https://fpjs.fun/sanctuary/either/compose/">
+	<link rel="canonical" href="https://fpjs.fun/sanctuary/either/chain/">
 	<!-- ### Structured Data ### -->
 	
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://fpjs.fun/sanctuary/either/compose/",
+    "url": "https://fpjs.fun/sanctuary/either/chain/",
     "@type": "BlogPosting",
     "logo": "https://fpjs.fun/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://fpjs.fun/sanctuary/either/compose/"
+        "@id": "https://fpjs.fun/sanctuary/either/chain/"
     },
     "headline": "使用 chain() 組合回傳 Either 的 Function | 點燈坊",
     
@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2020-11-07T08:36:50.000Z",
-    "dateModified": "2021-05-22T13:52:23.775Z",
+    "dateModified": "2021-06-04T15:42:39.139Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -439,7 +439,7 @@ a:hover {
                         <p>Either 適合 Function Pipeline，可提早結束讓後續 Pure Function 不執行，但若 Pure Function 也回傳 Either，則會產生 Nested Either，如此必須使用 <code>chain()</code> 取代 <code>map()</code>。</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Sanctuary 3.1.0</p>
-<h2 id="Normal-add"><a href="#Normal-add" class="headerlink" title="Normal add()"></a>Normal add()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="add"><a href="#add" class="headerlink" title="add()"></a>add()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> <span class="token punctuation">{</span> Left<span class="token punctuation">,</span> Right<span class="token punctuation">,</span> map<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
@@ -465,11 +465,9 @@ a:hover {
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>div()</code> 回傳 Either，但 <code>add()</code> 只是回傳 Number，此時簡單使用 <code>map()</code> 組合 <code>add()</code> 即可。</p>
-<p><img src="/images/sanctuary/either/compose/compose000.png" alt="compose000"></p>
-<h2 id="Either-add"><a href="#Either-add" class="headerlink" title="Either add()"></a>Either add()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
-
-<span class="token keyword">let</span> <span class="token punctuation">{</span> Left<span class="token punctuation">,</span> Right<span class="token punctuation">,</span> map <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<p><img src="/images/sanctuary/either/chain/chain000.png" alt="chain000"></p>
+<h2 id="Either"><a href="#Either" class="headerlink" title="Either"></a>Either</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Left<span class="token punctuation">,</span> Right<span class="token punctuation">,</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> div <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> y <span class="token operator">=</span><span class="token operator">></span> 
   y <span class="token operator">===</span> <span class="token number">0</span> <span class="token operator">?</span> 
@@ -489,8 +487,8 @@ a:hover {
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>11 行</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 9 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> add <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> y <span class="token operator">=</span><span class="token operator">></span>
   y <span class="token operator">===</span> <span class="token number">2</span> <span class="token operator">?</span>
   <span class="token function">Left</span><span class="token punctuation">(</span><span class="token string">'Can not add by 2'</span><span class="token punctuation">)</span> <span class="token punctuation">:</span>
@@ -498,19 +496,17 @@ a:hover {
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>沒有使用 Sanctuary 提供的 <code>add()</code>，自行實作回傳 Either 的 <code>add()</code>。</p>
 <p>此特殊版本的 <code>add()</code> 無法處理 <code>+2</code> 會發出 Exception，因此改回傳 Either。</p>
-<p>16 行</p>
+<p>14 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">div</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>一樣使用 <code>map()</code> 組合 <code>add()</code>。</p>
-<p><img src="/images/sanctuary/either/compose/compose001.png" alt="compose001"></p>
+<p><img src="/images/sanctuary/either/chain/chain001.png" alt="chain001"></p>
 <p>當改用回傳 Either 的 <code>add()</code> 時，會發現結果出現 Nested Either，這並不是我們想要的。</p>
 <h2 id="chain"><a href="#chain" class="headerlink" title="chain()"></a>chain()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
-
-<span class="token keyword">let</span> <span class="token punctuation">{</span> Left<span class="token punctuation">,</span> Right<span class="token punctuation">,</span> map<span class="token punctuation">,</span> chain <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Left<span class="token punctuation">,</span> Right<span class="token punctuation">,</span> map<span class="token punctuation">,</span> chain <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> div <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> y <span class="token operator">=</span><span class="token operator">></span> 
   y <span class="token operator">===</span> <span class="token number">0</span> <span class="token operator">?</span> 
@@ -530,20 +526,18 @@ a:hover {
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>16 行</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>14 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">div</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">chain</span><span class="token punctuation">(</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由 <code>map()</code> 改成 <code>chain()</code>。</p>
-<p><img src="/images/sanctuary/either/compose/compose002.png" alt="compose002"></p>
+<p><img src="/images/sanctuary/either/chain/chain002.png" alt="chain002"></p>
 <p>由 <code>map()</code> 改成 <code>chain()</code> 後，就不會出現 Nested Either。</p>
 <h2 id="Either-Chain"><a href="#Either-Chain" class="headerlink" title="Either Chain"></a>Either Chain</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
-
-<span class="token keyword">let</span> <span class="token punctuation">{</span> Left<span class="token punctuation">,</span> Right<span class="token punctuation">,</span> map<span class="token punctuation">,</span> chain <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Left<span class="token punctuation">,</span> Right<span class="token punctuation">,</span> map<span class="token punctuation">,</span> chain <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> div <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> y <span class="token operator">=</span><span class="token operator">></span> 
   y <span class="token operator">===</span> <span class="token number">0</span> <span class="token operator">?</span> 
@@ -570,8 +564,8 @@ a:hover {
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span class="token function">f</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>16 行</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>14 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> mul <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> y <span class="token operator">=</span><span class="token operator">></span>
   y <span class="token operator">===</span> <span class="token number">4</span> <span class="token operator">?</span>
   <span class="token function">Left</span><span class="token punctuation">(</span><span class="token string">'Can not multiply by 4'</span><span class="token punctuation">)</span> <span class="token punctuation">:</span>
@@ -586,7 +580,7 @@ a:hover {
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>遇到會回傳的 Either 的 function，只要由 <code>map()</code> 改用 <code>chain()</code> 即可。</p>
-<p><img src="/images/sanctuary/either/compose/compose003.png" alt="compose003"></p>
+<p><img src="/images/sanctuary/either/chain/chain003.png" alt="chain003"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>若要組合一般 function，使用 <code>map()</code> 即可；若要組合回傳 Either 的 function，則要使用 <code>chain()</code></li>
 </ul>
