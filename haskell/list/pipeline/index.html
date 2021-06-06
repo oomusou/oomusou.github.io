@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-06-06T12:01:41.000Z",
-    "dateModified": "2021-06-06T13:04:27.916Z",
+    "dateModified": "2021-06-06T14:07:53.819Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -439,64 +439,43 @@ a:hover {
                         <p>Haskell 提供多種 Operator 組合 Function，可視需求與可讀性選擇使用。</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Haskell for Mac 1.8.2</p>
-<h2 id="map"><a href="#map" class="headerlink" title="map()"></a>map()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> Data<span class="token punctuation">.</span>List
-
-list <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-
-f x <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> x<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="map"><a href="#map" class="headerlink" title="map()"></a>map()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript">f x <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token function">map</span><span class="token punctuation">(</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> x<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>若要使 List 的每個 element 先 <code>+1</code>，最後再加 <code>*2</code>，可直接搭配兩次 <code>map()</code> 完成。</p>
 <p><img src="/images/haskell/list/pipeline/pipe000.png" alt="pipe000"></p>
-<h2 id><a href="#" class="headerlink" title="$"></a>$</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token import_statement"><span class="token keyword">import</span> Data.List</span>
-
-<span class="token hvariable">list</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-
-<span class="token hvariable">f</span> <span class="token hvariable">x</span> <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">$</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token hvariable">x</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>傳統 function composition 會造成 <code>()</code> 爆炸，Haskell 提供了 <code>$</code>，則無論多少層 <code>f(x)</code> 都只有一層 <code>$</code>。</p>
+<h2 id><a href="#" class="headerlink" title="$"></a>$</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token hvariable">f</span> <span class="token hvariable">x</span> <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token operator">$</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token hvariable">x</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>傳統 Function Composition 會造成 <code>()</code> 爆炸，Haskell 提供了 <code>$</code>，則無論多少層 <code>f(x)</code> 都只有一層 <code>$</code>。</p>
 <p><img src="/images/haskell/list/pipeline/pipe001.png" alt="pipe001"></p>
-<h2 id="amp"><a href="#amp" class="headerlink" title="&amp;"></a>&amp;</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token import_statement"><span class="token keyword">import</span> Data.List</span><span class="token import_statement">
-<span class="token keyword">import</span> Data.Function</span>
-
-<span class="token hvariable">list</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<h2 id="amp"><a href="#amp" class="headerlink" title="&amp;"></a>&amp;</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token import_statement"><span class="token keyword">import</span> Data.Function</span>
 
 <span class="token hvariable">f</span> <span class="token hvariable">x</span> <span class="token operator">=</span> <span class="token hvariable">x</span> <span class="token operator">&amp;</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">&amp;</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>若你覺得 <code>$</code> 的 <code>由右至左</code> 不易閱讀，而想 <code>由左至右</code>，可改用 <code>Data.Function</code> 的 <code>&amp;</code>。</p>
 <p><img src="/images/haskell/list/pipeline/pipe002.png" alt="pipe002"></p>
-<h2 id="-1"><a href="#-1" class="headerlink" title="."></a>.</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token import_statement"><span class="token keyword">import</span> Data.List</span>
-
-<span class="token hvariable">list</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-
-<span class="token hvariable">f</span> <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token operator"> . </span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="-1"><a href="#-1" class="headerlink" title="."></a>.</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token hvariable">f</span> <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token operator"> . </span><span class="token builtin">map</span><span class="token punctuation">(</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>若想使 <code>f()</code> 能 Point-free，可使用 <code>.</code> 將 <code>map(+1)</code> 與 <code>map(*2)</code> 加以組合，唯 <code>.</code> 為 <code>由右至左</code>。</p>
 <p><img src="/images/haskell/list/pipeline/pipe003.png" alt="pipe003"></p>
-<h2 id="gt-gt-gt"><a href="#gt-gt-gt" class="headerlink" title="&gt;&gt;&gt;"></a>&gt;&gt;&gt;</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token import_statement"><span class="token keyword">import</span> Data.List</span><span class="token import_statement">
-<span class="token keyword">import</span> Control.Category</span>
-
-<span class="token hvariable">list</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<h2 id="gt-gt-gt"><a href="#gt-gt-gt" class="headerlink" title="&gt;&gt;&gt;"></a>&gt;&gt;&gt;</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token import_statement"><span class="token keyword">import</span> Control.Category</span>
 
 <span class="token hvariable">f</span> <span class="token operator">=</span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">>>></span> <span class="token builtin">map</span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>若你覺得 <code>.</code> 的 <code>由右至左</code> 不易閱讀，而想 <code>由左至右</code>，可改用 <code>Control.Category</code> 的 <code>&gt;&gt;&gt;</code>。</p>
 <p><img src="/images/haskell/list/pipeline/pipe004.png" alt="pipe004"></p>
-<h2 id="Composition-Law"><a href="#Composition-Law" class="headerlink" title="Composition Law"></a>Composition Law</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token import_statement"><span class="token keyword">import</span> Data.List</span><span class="token import_statement">
-<span class="token keyword">import</span> Control.Category</span>
-
-<span class="token hvariable">list</span> <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<h2 id="Composition-Law"><a href="#Composition-Law" class="headerlink" title="Composition Law"></a>Composition Law</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token import_statement"><span class="token keyword">import</span> Control.Category</span>
 
 <span class="token hvariable">transform</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">>>></span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
 
 <span class="token hvariable">f</span> <span class="token operator">=</span> <span class="token builtin">map</span> <span class="token hvariable">transform</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>List 是 Functor，因此遵循 composition law：</p>
 <p><code>fmap f . fmap g = fmap (f . g)</code></p>
-<p>第 6 行</p>
+<p>第 3 行</p>
 <pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token hvariable">transform</span> <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token operator">>>></span> <span class="token punctuation">(</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>因此可將 <code>(*2)</code> 與 <code>(+1)</code> 使用 <code>&gt;&gt;&gt;</code> 組合起來成 <code>transform()</code>。</p>
-<p>第 8 行</p>
+<p>第 5 行</p>
 <pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token hvariable">f</span> <span class="token operator">=</span> <span class="token builtin">map</span> <span class="token hvariable">transform</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>最後只要使用一次 <code>map()</code> 即可。</p>

@@ -28,7 +28,7 @@
 <meta name="renderer" content="webkit">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>Haskell 之自訂排序 | 點燈坊</title>
+<title>Haskell 之 List 排序 | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -163,10 +163,10 @@ a:hover {
 <!-- Open Search -->
 
 	<!-- ### The Open Graph & Twitter Card Protocol ### -->
-	<meta property="og:title" content="Haskell 之自訂排序 | 點燈坊">
+	<meta property="og:title" content="Haskell 之 List 排序 | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://fpjs.fun/haskell/function/sortby/">
+<meta property="og:url" content="https://fpjs.fun/haskell/list/sort/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
 <meta property="og:description" content="ortBy() 也是代表性 Higher Order Function，可自行傳入 Comparator Function 明確指定該如何比較與排序。">
 <meta name="twitter:card" content="summary">
@@ -186,21 +186,21 @@ a:hover {
 
 
 	<!-- ### Canonical link ### -->
-	<link rel="canonical" href="https://fpjs.fun/haskell/function/sortby/">
+	<link rel="canonical" href="https://fpjs.fun/haskell/list/sort/">
 	<!-- ### Structured Data ### -->
 	
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://fpjs.fun/haskell/function/sortby/",
+    "url": "https://fpjs.fun/haskell/list/sort/",
     "@type": "BlogPosting",
     "logo": "https://fpjs.fun/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://fpjs.fun/haskell/function/sortby/"
+        "@id": "https://fpjs.fun/haskell/list/sort/"
     },
-    "headline": "Haskell 之自訂排序 | 點燈坊",
+    "headline": "Haskell 之 List 排序 | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2020-02-05T07:53:54.000Z",
-    "dateModified": "2021-06-06T12:51:59.063Z",
+    "dateModified": "2021-06-06T14:22:35.570Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -425,7 +425,7 @@ a:hover {
             <div class="card-inner-cell">
                 <div class="card-header">
                     
-<h1 class="card-title h3 mb-2">Haskell 之自訂排序</h1>
+<h1 class="card-title h3 mb-2">Haskell 之 List 排序</h1>
 
 
 <div class="post-header-info">
@@ -441,25 +441,15 @@ a:hover {
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Haskell for Mac 1.8.2</p>
 <h2 id="sort"><a href="#sort" class="headerlink" title="sort()"></a>sort()</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token import_statement"><span class="token keyword">import</span> Data.List</span>
 
-<span class="token hvariable">books</span> <span class="token operator">=</span> <span class="token punctuation">[</span>
-    <span class="token punctuation">(</span><span class="token string">"FP in JavaScript"</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token string">"Elm in Action"</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token string">"Speaking JavaScript"</span><span class="token punctuation">,</span> <span class="token number">300</span><span class="token punctuation">)</span>
-  <span class="token punctuation">]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token hvariable">f</span> <span class="token operator">=</span> <span class="token builtin">sort</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p><code>books</code> 為 list 內放 tuple，若要對 <code>books</code> 排序，首先需 import <code>Data.List</code>，然後才能使用 <code>sort()</code>。</p>
 <blockquote>
 <p>Haskell 的 tuple 使用 <code>()</code></p>
 </blockquote>
-<p><img src="/images/haskell/function/sortby/sort000.png" alt="sort000"></p>
+<p><img src="/images/haskell/list/sort/sort000.png" alt="sort000"></p>
 <p>不過 <code>sort()</code> 預設只對 tuple 第一個 element 做排序，若想對第二個 element 做排序，則必須改用 <code>sortBy()</code>。</p>
 <h2 id="sortBy"><a href="#sortBy" class="headerlink" title="sortBy()"></a>sortBy()</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token import_statement"><span class="token keyword">import</span> Data.List</span>
-
-<span class="token hvariable">books</span> <span class="token operator">=</span> <span class="token punctuation">[</span>
-    <span class="token punctuation">(</span><span class="token string">"FP in JavaScript"</span><span class="token punctuation">,</span> <span class="token number">100</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token string">"Elm in Action"</span><span class="token punctuation">,</span> <span class="token number">200</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">(</span><span class="token string">"Speaking JavaScript"</span><span class="token punctuation">,</span> <span class="token number">300</span><span class="token punctuation">)</span>
-  <span class="token punctuation">]</span>
 
 <span class="token hvariable">price</span> <span class="token hvariable">book1</span> <span class="token hvariable">book2</span> <span class="token operator">=</span> 
   <span class="token keyword">let</span> 
@@ -471,8 +461,10 @@ a:hover {
     <span class="token keyword">else</span> <span class="token keyword">if</span> <span class="token hvariable">price1</span> <span class="token operator">&lt;</span> <span class="token hvariable">price2</span>
     <span class="token keyword">then</span> <span class="token constant">LT</span>
     <span class="token keyword">else</span> <span class="token constant">EQ</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>第 9 行</p>
+
+<span class="token hvariable">f</span> <span class="token operator">=</span> <span class="token hvariable">sortBy</span> <span class="token hvariable">price</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 3 行</p>
 <pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token hvariable">price</span> <span class="token hvariable">book1</span> <span class="token hvariable">book2</span> <span class="token operator">=</span> 
   <span class="token keyword">let</span> 
     <span class="token hvariable">price1</span> <span class="token operator">=</span> <span class="token builtin">snd</span> <span class="token hvariable">book1</span>
@@ -490,7 +482,11 @@ a:hover {
 <li>若 <code>price1 &lt; price2</code> 則回傳值 <code>LT</code>，相當於 <code>less than</code></li>
 <li>否則回傳值 <code>EQ</code>，相當於 <code>equal</code></li>
 </ul>
-<p><img src="/images/haskell/function/sortby/sort001.png" alt="sort001"></p>
+<p>14 行</p>
+<pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token hvariable">f</span> <span class="token operator">=</span> <span class="token hvariable">sortBy</span> <span class="token hvariable">price</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將 <code>price()</code> 傳給 <code>sortBy()</code> 以 Point-free 形式組合 <code>f()</code>。</p>
+<p><img src="/images/haskell/list/sort/sort001.png" alt="sort001"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Haskell 的 <code>sortBy()</code> 與 Ramda 的 <code>sort()</code> 觀念類似，需自行提供 comparator function</li>
 </ul>
