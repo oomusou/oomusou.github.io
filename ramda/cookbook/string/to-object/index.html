@@ -49,7 +49,7 @@
 
 <meta name="format-detection" content="telephone=no">
 <!-- Description -->
-<meta name="description" content="實務上很多資訊都來自於 String，但 API 要求的 Body 卻是 Object，所以由 String 成 Object 需求常常遇到，這該如何使用 Ramda 實現呢 ?">
+<meta name="description" content="實務上很多資訊都來自於 String，但 API 要求的 Body 卻是 Object，所以由 String 轉成 Object 需求常常遇到，這該如何實現呢 ?">
 <!-- Keywords -->
 <meta name="keywords" content=", Ramda">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
@@ -166,9 +166,9 @@ a:hover {
 	<meta property="og:title" content="如何將 String 轉成 API 所需 Object ? | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://fpjs.fun/ramda/cookbook/string-to-object/">
+<meta property="og:url" content="https://fpjs.fun/ramda/cookbook/string/to-object/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
-<meta property="og:description" content="實務上很多資訊都來自於 String，但 API 要求的 Body 卻是 Object，所以由 String 成 Object 需求常常遇到，這該如何使用 Ramda 實現呢 ?">
+<meta property="og:description" content="實務上很多資訊都來自於 String，但 API 要求的 Body 卻是 Object，所以由 String 轉成 Object 需求常常遇到，這該如何實現呢 ?">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
@@ -186,19 +186,19 @@ a:hover {
 
 
 	<!-- ### Canonical link ### -->
-	<link rel="canonical" href="https://fpjs.fun/ramda/cookbook/string-to-object/">
+	<link rel="canonical" href="https://fpjs.fun/ramda/cookbook/string/to-object/">
 	<!-- ### Structured Data ### -->
 	
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://fpjs.fun/ramda/cookbook/string-to-object/",
+    "url": "https://fpjs.fun/ramda/cookbook/string/to-object/",
     "@type": "BlogPosting",
     "logo": "https://fpjs.fun/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://fpjs.fun/ramda/cookbook/string-to-object/"
+        "@id": "https://fpjs.fun/ramda/cookbook/string/to-object/"
     },
     "headline": "如何將 String 轉成 API 所需 Object ? | 點燈坊",
     
@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2020-07-25T11:41:57.000Z",
-    "dateModified": "2020-07-25T11:50:45.325Z",
+    "dateModified": "2021-06-08T12:34:00.464Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -234,7 +234,7 @@ a:hover {
     },
     
     "keywords": ", Ramda",
-    "description": "實務上很多資訊都來自於 String，但 API 要求的 Body 卻是 Object，所以由 String 成 Object 需求常常遇到，這該如何使用 Ramda 實現呢 ?"
+    "description": "實務上很多資訊都來自於 String，但 API 要求的 Body 卻是 Object，所以由 String 轉成 Object 需求常常遇到，這該如何實現呢 ?"
 }
 </script>
 
@@ -436,9 +436,9 @@ a:hover {
                 </div>
                 <div class="card-body">
                     <article id="post-content">
-                        <p>實務上很多資訊都來自於 String，但 API 要求的 Body 卻是 Object，所以由 String 成 Object 需求常常遇到，這該如何使用 Ramda 實現呢 ?</p>
+                        <p>實務上很多資訊都來自於 String，但 API 要求的 Body 卻是 Object，所以由 String 轉成 Object 需求常常遇到，這該如何實現呢 ?</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>VS Code 1.47.2<br>Quokka 1.0.309<br>Ramda 0.27.0</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
 <h2 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token string">'831669-Jacky-07-14.jpg'</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>String 包含 <code>id</code>、<code>name</code> 與 <code>birthday</code> 三項資訊。</p>
@@ -450,20 +450,21 @@ a:hover {
 <p>但 API 僅需 Object 有 <code>id</code> 與 <code>name</code>。</p>
 <h2 id="zipObj"><a href="#zipObj" class="headerlink" title="zipObj()"></a>zipObj()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> split<span class="token punctuation">,</span> take<span class="token punctuation">,</span> zipObj <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
-<span class="token keyword">let</span> filename <span class="token operator">=</span> <span class="token string">'831669-Jacky-07-14.jpg'</span>
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'831669-Jacky-07-14.jpg'</span>
 
 <span class="token function">pipe</span><span class="token punctuation">(</span>
   <span class="token function">split</span><span class="token punctuation">(</span><span class="token string">'-'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">take</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   <span class="token function">zipObj</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token string">'name'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">(</span>filename<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用 <code>pipe()</code> 組合 IIFE：</p>
 <ul>
 <li><strong>split()</strong>：將 String 依 <code>-</code> 拆分成 Array</li>
 <li><strong>take()</strong>：由於 Object 只需 <code>id</code> 與 <code>name</code>，因此只需取前兩筆即可</li>
 <li><strong>zipObj()</strong>：將兩 Array 合併成 Object，第一個 argument 為 key Array</li>
 </ul>
-<p><img src="/images/ramda/cookbook/string-to-object/zipobj000.png" alt="zipobj000"></p>
+<p><img src="/images/ramda/cookbook/string/to-object/zipobj000.png" alt="zipobj000"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>由 String 組合成 Object 看似很難，但只要能先組成 Array，可用的 function 就很多，最後再透過 <code>zipObj()</code> 將兩 Array 組合成 Object</li>
 </ul>
