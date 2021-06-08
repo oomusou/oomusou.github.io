@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2020-08-24T08:46:05.000Z",
-    "dateModified": "2020-08-24T12:54:19.898Z",
+    "dateModified": "2021-06-08T11:48:57.611Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -438,53 +438,39 @@ a:hover {
                     <article id="post-content">
                         <p>將 String 字首變大寫為常見功能，FP 有其特殊實現方式，由於經常使用，已經收錄在 Wink-fp。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>Ramda 0.27.0<br>Wink-fp 1.20.86</p>
-<h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'sam'</span>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Wink-fp 1.27.9</p>
+<h2 id="capitalize"><a href="#capitalize" class="headerlink" title="capitalize()"></a>capitalize()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> head<span class="token punctuation">,</span> toUpper<span class="token punctuation">,</span> tail<span class="token punctuation">,</span> toLower<span class="token punctuation">,</span> converge<span class="token punctuation">,</span> concat <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
-<span class="token keyword">let</span> capitalize <span class="token operator">=</span> s <span class="token operator">=</span><span class="token operator">></span> s<span class="token punctuation">.</span><span class="token function">charAt</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> s<span class="token punctuation">.</span><span class="token function">slice</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-
-<span class="token function">capitalize</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<ul>
-<li>使用 <code>charAt(0)</code> 取得字首，然後 <code>toUpperCase()</code> 轉成大寫</li>
-<li>使用 <code>slice(1)</code> 取得除了字首外其餘 String</li>
-<li>使用 <code>+</code> 將字首與其餘 String 合併</li>
-</ul>
-<p><img src="/images/wink-fp/string/capitalize/capitalize000.png" alt="capitalize000"></p>
-<h2 id="Functional"><a href="#Functional" class="headerlink" title="Functional"></a>Functional</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> toUpper<span class="token punctuation">,</span> join<span class="token punctuation">,</span> adjust <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'sam'</span>
-
-<span class="token keyword">let</span> capitalize <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">adjust</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> toUpper<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">join</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> capitalize <span class="token operator">=</span> <span class="token function">converge</span><span class="token punctuation">(</span>
+  concat<span class="token punctuation">,</span> <span class="token punctuation">[</span>
+    <span class="token function">compose</span><span class="token punctuation">(</span>toUpper<span class="token punctuation">,</span> head<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">compose</span><span class="token punctuation">(</span>toLower<span class="token punctuation">,</span> tail<span class="token punctuation">)</span>
+  <span class="token punctuation">]</span>
 <span class="token punctuation">)</span>
 
-<span class="token function">capitalize</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">capitalize</span><span class="token punctuation">(</span><span class="token string">'sAm'</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用 <code>converge()</code> 組合 <code>capitalize()</code>：</p>
 <ul>
-<li>String 可視為 Char Array，使用 <code>adjust(0)</code> 取得字首，再使用 <code>toUpper()</code> 轉成大寫</li>
-<li>使用 <code>join(&#39;&#39;)</code> 將 Char Array 轉成 String</li>
+<li><code>concat</code>：將兩 String 合併</li>
+<li><code>compose(toUpper, head)</code>：先取出首字，然後轉成大寫</li>
+<li><code>compose(toLower, tail)</code>：先取出首字以外 String，然後轉成小寫 </li>
 </ul>
-<p><img src="/images/wink-fp/string/capitalize/capitalize001.png" alt="capitalize001"></p>
+<p><img src="/images/wink-fp/string/capitalize/capitalize000.png" alt="capitalize000"></p>
 <h2 id="Wink-fp"><a href="#Wink-fp" class="headerlink" title="Wink-fp"></a>Wink-fp</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> capitalize <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'sam'</span>
-
-<span class="token function">capitalize</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token function">capitalize</span><span class="token punctuation">(</span><span class="token string">'sAm'</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>Wink-fp 已經內建 <code>capitalize()</code> 可直接使用。</p>
 <blockquote>
-<p><strong>capitalize()</strong><br>String -&gt; String<br>將 String 字首變大寫</p>
+<p><strong>capitalize()</strong><br><code>String -&gt; String</code><br>將 String 字首變大寫</p>
 </blockquote>
 <p><code>String</code>：data 為 String</p>
 <p><code>String</code>：將 String 字首變大寫回傳</p>
-<p><img src="/images/wink-fp/string/capitalize/capitalize002.png" alt="capitalize002"></p>
+<p><img src="/images/wink-fp/string/capitalize/capitalize001.png" alt="capitalize001"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>由於 String 可視為 Char Array，因此 Ramda 的 Array function 都可使用，只要最後用 <code>join()</code> 轉回 String 即可</li>
-<li>因為要將字首變大寫會使用 <code>toUpper()</code>，因此特別適合使用 <code>adjust()</code> 而非 <code>update()</code></li>
+<li>String 可視為 Char Array，<code>head()</code> 與 <code>tail()</code> 為 FP 常見處理 Array 技巧，最後再使用 <code>concat()</code> 合併</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://medium.com/@kyletilman" target="_blank" rel="noopener">Kyle Tilman</a>, <a href="https://medium.com/@kyletilman/ramda-r-adjust-b69a575274fa" target="_blank" rel="noopener">Ramda – R.adjust</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#adjust" target="_blank" rel="noopener">adjust()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#join" target="_blank" rel="noopener">join()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#update" target="_blank" rel="noopener">update()</a></p>
 
                     </article>
                     <p class="post-footer-info mb-0 pt-2">
