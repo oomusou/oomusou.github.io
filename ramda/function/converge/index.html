@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2020-04-10T22:15:44.000Z",
-    "dateModified": "2020-07-19T15:37:04.990Z",
+    "dateModified": "2021-06-12T08:31:52.380Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -438,11 +438,11 @@ a:hover {
                     <article id="post-content">
                         <p><code>converge()</code> 與 <code>useWith()</code> 非常類似，<code>useWith()</code> 是新 Function 的 Arity 與 Array 的 Length 相等；而 <code>converge()</code> 是 Array 中所有 Function 的最大 Arity 決定。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.4<br>VS Code 1.43.2<br>Quokka 1.0.285<br>Ramda 0.27.0</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
 <h2 id="converge"><a href="#converge" class="headerlink" title="converge()"></a>converge()</h2><blockquote>
 <p><strong>converge()</strong><br><code>((x1, x2, …) → z) → [((a, b, …) → x1), ((a, b, …) → x2), …] → (a → b → … → z)</code><br>建立一個新 funtion，其 arity 由 array 內所有 function 的最大 arity 決定<br>會先經過 branching function 運算，再將結果傳給 converging function 執行</p>
 </blockquote>
-<p><code>((x1, x2, …) → z)</code>：converging function，最後要收斂執行的 function</p>
+<p><code>((x1, x2, …) → z)</code>：converging function，最後要收斂的 function</p>
 <p><code>[((a, b, …) → x1), ((a, b, …) → x2), …]</code>：為一 array，其中 <code>((a, b, …) → x1)</code> 稱為 branching function，converging function 的 arity 會與 array 內 branching function 數量相等，新 function 的所有參數會先經過各 branching function 執行，結果才會傳給 converging function 執行</p>
 <p><code>(a → b → … → z)</code>：回傳新的 curried function，其 arity 由 branching function 中最大 arity 決定</p>
 <h2 id="Single-Argument"><a href="#Single-Argument" class="headerlink" title="Single Argument"></a>Single Argument</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
@@ -453,11 +453,11 @@ a:hover {
 
 <span class="token keyword">let</span> f <span class="token operator">=</span> o <span class="token operator">=</span><span class="token operator">></span> o<span class="token punctuation">.</span>price <span class="token operator">-</span> o<span class="token punctuation">.</span>discount
 
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
+<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>當只有一個 argument (通常為 object)，接下來要做的就是要讀取其 property，正常會使用 <code>.</code>，但 <code>.</code> 必須搭配 argument，儘管是最後一個 argument 也無法 point-free。</p>
+<p>當只有一個 argument (通常為 Object)，接下來要做的就是要讀取其 property，正常會使用 <code>.</code>，但 <code>.</code> 必須搭配 argument，儘管是最後一個 argument 也無法 Point-free。</p>
 <p><img src="/images/ramda/function/converge/converge000.png" alt="converge000"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
+<h2 id="Object-Destructuring"><a href="#Object-Destructuring" class="headerlink" title="Object Destructuring"></a>Object Destructuring</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
   name<span class="token punctuation">:</span> <span class="token string">'iPhone'</span><span class="token punctuation">,</span>
   price<span class="token punctuation">:</span> <span class="token number">10000</span><span class="token punctuation">,</span>
   discount<span class="token punctuation">:</span> <span class="token number">0.9</span><span class="token punctuation">,</span>
@@ -467,9 +467,9 @@ a:hover {
 
 <span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>ES6 雖有 object destructuring 可直接在 parameter 將 object 分解，但仍無法 point-free。</p>
-<p><img src="/images/ramda/function/converge/converge006.png" alt="converge006"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> converge<span class="token punctuation">,</span> subtract<span class="token punctuation">,</span> prop <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<p>ES6 雖有 object destructuring 可直接在 parameter 將 object 分解，但仍無法 Point-free。</p>
+<p><img src="/images/ramda/function/converge/converge002.png" alt="converge002"></p>
+<h2 id="converge-1"><a href="#converge-1" class="headerlink" title="converge()"></a>converge()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> converge<span class="token punctuation">,</span> subtract<span class="token punctuation">,</span> prop <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
   name<span class="token punctuation">:</span> <span class="token string">'iPhone'</span><span class="token punctuation">,</span>
@@ -477,88 +477,27 @@ a:hover {
   discount<span class="token punctuation">:</span> <span class="token number">0.9</span><span class="token punctuation">,</span>
 <span class="token punctuation">}</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">converge</span><span class="token punctuation">(</span>
+<span class="token function">converge</span><span class="token punctuation">(</span>
   subtract<span class="token punctuation">,</span><span class="token punctuation">[</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'discount'</span><span class="token punctuation">)</span><span class="token punctuation">]</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>從另外一個角度觀察，我們發現最終要執行 <code>-</code>，且 <code>data.price</code> 與 <code>data.discount</code> 都要讀取 property，且為單一 argument ，符合 <code>converge()</code> 格式要求。</p>
 <ul>
 <li>使用 <code>subtract()</code> 取代 <code>-</code></li>
 <li>使用 <code>prop()</code> 取代 <code>.</code></li>
 </ul>
 <p>若改用 <code>converge()</code>，可先透過 branching function <code>prop()</code> 得到 property 資料，在各自傳給 <code>subtract()</code> 的第一個與第二個 argument。</p>
-<p>由於 <code>converge()</code> 會回傳以 <code>subtract()</code> 回傳值為 argument 的 function，因此可將原本 <code>o</code> argument 給 point-free 。</p>
+<p>由於 <code>converge()</code> 會回傳以 <code>subtract()</code> 回傳值為 argument 的 function，因此可將原本 <code>o</code> argument 給 Point-free 。</p>
 <blockquote>
 <p>argument 為 object 是 <code>converge()</code> 最常見用法，可視為 pattern 使用</p>
 </blockquote>
 <p><img src="/images/ramda/function/converge/converge003.svg" alt="converge003"></p>
 <p><img src="/images/ramda/function/converge/converge001.png" alt="converge001"></p>
-<h2 id="Multiple-Argument"><a href="#Multiple-Argument" class="headerlink" title="Multiple Argument"></a>Multiple Argument</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> length <span class="token operator">=</span> <span class="token punctuation">(</span>p1<span class="token punctuation">,</span> p2<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> x2 <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>p1<span class="token punctuation">.</span>x <span class="token operator">-</span> p2<span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
-  <span class="token keyword">let</span> y2 <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>p1<span class="token punctuation">.</span>y <span class="token operator">-</span> p2<span class="token punctuation">.</span>y<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
-  <span class="token keyword">let</span> sum <span class="token operator">=</span> x2 <span class="token operator">+</span> y2
-
-  <span class="token keyword">return</span> Math<span class="token punctuation">.</span><span class="token function">sqrt</span><span class="token punctuation">(</span>sum<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span> y<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> p1 <span class="token operator">=</span> <span class="token punctuation">{</span>x<span class="token punctuation">:</span> x <span class="token operator">-</span> <span class="token number">5</span><span class="token punctuation">,</span> y<span class="token punctuation">:</span> y <span class="token operator">-</span> <span class="token number">5</span><span class="token punctuation">}</span>
-  <span class="token keyword">let</span> p2 <span class="token operator">=</span> <span class="token punctuation">{</span>x<span class="token punctuation">:</span> x <span class="token operator">+</span> <span class="token number">5</span><span class="token punctuation">,</span> y<span class="token punctuation">:</span> y <span class="token operator">+</span> <span class="token number">5</span><span class="token punctuation">}</span>
-
-  <span class="token keyword">return</span> <span class="token function">length</span><span class="token punctuation">(</span>p1<span class="token punctuation">,</span> p2<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>length()</code> 主要計算兩點之間的距離，用的是數學先平方和再開根號，但 <code>lenght()</code> 不是重點。</p>
-<p>重點是 <code>f()</code> 會先將傳入的 <code>(x, y)</code> 的 x、 y 各 <code>-5</code> 為 <code>p1</code>，再各 <code>+5</code> 為 <code>p2</code>，最後再將 <code>p1</code> 與 <code>p2</code> 傳進 <code>length()</code>。</p>
-<p><code>f()</code> 明顯需要參數 <code>(x, y)</code>，所以沒有 point-free。</p>
-<p><img src="/images/ramda/function/converge/converge002.png" alt="converge002"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> add<span class="token punctuation">,</span> applySpec<span class="token punctuation">,</span> converge <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-
-<span class="token keyword">let</span> length <span class="token operator">=</span> <span class="token punctuation">(</span>p1<span class="token punctuation">,</span> p2<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> x2 <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>p1<span class="token punctuation">.</span>x <span class="token operator">-</span> p2<span class="token punctuation">.</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
-  <span class="token keyword">let</span> y2 <span class="token operator">=</span> Math<span class="token punctuation">.</span><span class="token function">pow</span><span class="token punctuation">(</span>Math<span class="token punctuation">.</span><span class="token function">abs</span><span class="token punctuation">(</span>p1<span class="token punctuation">.</span>y <span class="token operator">-</span> p2<span class="token punctuation">.</span>y<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span>
-  <span class="token keyword">let</span> sum <span class="token operator">=</span> x2 <span class="token operator">+</span> y2
-
-  <span class="token keyword">return</span> Math<span class="token punctuation">.</span><span class="token function">sqrt</span><span class="token punctuation">(</span>sum<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> shift <span class="token operator">=</span> v <span class="token operator">=</span><span class="token operator">></span> <span class="token function">applySpec</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  x<span class="token punctuation">:</span> <span class="token function">add</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  y<span class="token punctuation">:</span> <span class="token function">add</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">converge</span><span class="token punctuation">(</span>
-  length<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token function">shift</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">shift</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>從另外一個角度觀察，我們發現最終要執行 <code>length()</code>，且 <code>(x, y)</code> 要先運算成為 <code>p1</code> 與 <code>p2</code>，才將結果傳給 <code>length()</code>，而 <code>(x, y)</code> 是 <code>一組 argument</code> 同時產生 <code>p1</code> 與 <code>p2</code>，符合 <code>converge()</code> 格式需求。</p>
-<p>11 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> shift <span class="token operator">=</span> v <span class="token operator">=</span><span class="token operator">></span> <span class="token function">applySpec</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  x<span class="token punctuation">:</span> <span class="token function">add</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  y<span class="token punctuation">:</span> <span class="token function">add</span><span class="token punctuation">(</span>v<span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>由於 <code>(x, y)</code> 要先運算成為 <code>p1</code> 與 <code>p2</code>，先將其抽成 <code>shift()</code>，由於回傳為 object，適合使用 <code>applySpec()</code>。</p>
-<p>16 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">converge</span><span class="token punctuation">(</span>
-  length<span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token function">shift</span><span class="token punctuation">(</span><span class="token operator">-</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">shift</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>如此就可使用 <code>converge()</code> 將 converging function 設定為 <code>length()</code>，branching function 則分別為 <code>shift(-5)</code> 與 <code>shift(5)</code>。</p>
-<p>至於 <code>f()</code> 的 arity 呢 ? 由於 <code>applySpec()</code> 的 spec object 有兩個 property，因此 <code>f()</code> 的 arity 是 2，也就是一樣是 <code>(x, y)</code>。</p>
-<p><img src="/images/ramda/function/converge/converge004.svg" alt="Converge004"></p>
-<p><img src="/images/ramda/function/converge/converge005.png" alt="Converge005"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li><code>converge()</code> 看似複雜，而其使用時機是當 <code>一個 argument</code> 或 <code>一組 argument</code> 同時被數個 function 使用，最後再將結果交給同一個 function 執行時，可使用 <code>converge()</code> 整合這些 function，並將最後執行的 function 成為 converging function，而使用 argument 的數個 function 成為 branching function</li>
+<li><code>converge()</code> 看似複雜，而其使用時機是當 <code>一個 argument</code> 同時被數個 function 使用，最後再將結果交給同一個 function 執行時，可使用 <code>converge()</code> 整合這些 function，並將最後執行的 function 成為 converging function，而使用 argument 的數個 function 成為 branching function</li>
 <li><code>converge()</code> 與 <code>useWith()</code> 看似相似，但 <code>converge()</code> 是每個 branching function 處理所有 argument，而 <code>useWith()</code> 是每個 function 各自處理 argument</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#converge" target="_blank" rel="noopener">converge()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#applySpec" target="_blank" rel="noopener">applySpec()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#subtract" target="_blank" rel="noopener">subtract()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#prop" target="_blank" rel="noopener">prop()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#converge" target="_blank" rel="noopener">converge()</a></p>
 
                     </article>
                     <p class="post-footer-info mb-0 pt-2">
