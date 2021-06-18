@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2021-06-18T13:58:09.016Z</updated>
+  <updated>2021-06-18T15:57:53.513Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何不選擇子目錄的檔案 ?</title>
+    <link href="https://fpjs.fun/vue3/cookbook/only-root-dir/"/>
+    <id>https://fpjs.fun/vue3/cookbook/only-root-dir/</id>
+    <published>2021-06-18T15:56:07.000Z</published>
+    <updated>2021-06-18T15:57:53.513Z</updated>
+    
+    <content type="html"><![CDATA[<p>當使用 <code>input(type=&#39;file&#39;, webkitdirectory)</code> 選取目錄下的檔案時，預設會連子目錄下的檔案一起選取，該如何不選取子目錄下的檔案呢 ?</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.11</p><h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>input(@input='onInput', ref='fileUpload', type='file', webkitdirectory)<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span><span class="token keyword">import</span> <span class="token punctuation">{</span> read <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> filter<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> split<span class="token punctuation">,</span> length<span class="token punctuation">,</span> ifElse<span class="token punctuation">,</span> equals<span class="token punctuation">,</span> T<span class="token punctuation">,</span> F <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token keyword">import</span> <span class="token punctuation">{</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token keyword">let</span> fileUpload <span class="token operator">=</span> ref <span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span><span class="token keyword">let</span> onlyRootDir <span class="token operator">=</span> pipe <span class="token punctuation">(</span>  prop <span class="token punctuation">(</span><span class="token string">'webkitRelativePath'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  split <span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  length<span class="token punctuation">,</span>  ifElse <span class="token punctuation">(</span>equals <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>T<span class="token punctuation">)</span> <span class="token punctuation">(</span>F<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token keyword">let</span> onInput <span class="token operator">=</span> pipe <span class="token punctuation">(</span>  read <span class="token punctuation">(</span>fileUpload<span class="token punctuation">)</span><span class="token punctuation">,</span>  prop <span class="token punctuation">(</span><span class="token string">'files'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  filter <span class="token punctuation">(</span>onlyRootDir<span class="token punctuation">)</span><span class="token punctuation">,</span>  log<span class="token punctuation">)</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>第 2 行</p><pre class="line-numbers highlight language-jade"><code class="language-jade"><span class="token tag">input<span class="token attributes"><span class="token punctuation">(</span>@<span class="token attr-name">input</span><span class="token punctuation">=</span><span class="token attr-value"><span class="token string">'onInput'</span></span><span class="token punctuation">,</span> <span class="token attr-name">ref</span><span class="token punctuation">=</span><span class="token attr-value"><span class="token string">'fileUpload'</span></span><span class="token punctuation">,</span> <span class="token attr-name">type</span><span class="token punctuation">=</span><span class="token attr-value"><span class="token string">'file'</span></span><span class="token punctuation">,</span> <span class="token attr-name">webkitdirectory</span><span class="token punctuation">)</span></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>當要選擇目錄下，要使用 <code>webkitdirectory</code>。</p><p>20 行</p><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onInput <span class="token operator">=</span> pipe <span class="token punctuation">(</span>  read <span class="token punctuation">(</span>fileUpload<span class="token punctuation">)</span><span class="token punctuation">,</span>  prop <span class="token punctuation">(</span><span class="token string">'files'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  filter <span class="token punctuation">(</span>onlyRootDir<span class="token punctuation">)</span><span class="token punctuation">,</span>  log<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>使用 <code>pipe()</code> 組合 <code>onInput()</code>：</p><ul><li><code>read (fileUpload)</code>：讀取 <code>fileUpload</code> ref</li><li><code>prop (&#39;files&#39;)</code>：讀取 <code>files</code> prop</li><li><code>filter (onlyRootDir)</code>：過濾不選擇子目錄檔案</li><li><code>log</code>：寫入 <code>console.log()</code></li></ul><p>13 行</p><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onlyRootDir <span class="token operator">=</span> pipe <span class="token punctuation">(</span>  prop <span class="token punctuation">(</span><span class="token string">'webkitRelativePath'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  split <span class="token punctuation">(</span><span class="token string">'/'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>  length<span class="token punctuation">,</span>  ifElse <span class="token punctuation">(</span>equals <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>T<span class="token punctuation">)</span> <span class="token punctuation">(</span>F<span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>使用 <code>pipe()</code> 組合 <code>onlyRootDir()</code>：</p><ul><li><code>prop (&#39;webkitRelativePath&#39;)</code>：讀取 <code>webkitRelative</code> prop</li><li><code>split (&#39;/&#39;)</code>：由 <code>/</code> 分割成 Array</li><li><code>length</code>：取得 Array 的 length</li><li><code>ifElse (equals (2)) (T) (F)</code>：若 length 只有 <code>2</code>，表示只有根目錄，否則為子目錄</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>HTML 並沒有 attribute 可設定不取得子目錄檔案，但可由判斷 <code>/</code> 個數確認是否為子目錄檔案</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;當使用 &lt;code&gt;input(type=&amp;#39;file&amp;#39;, webkitdirectory)&lt;/code&gt; 選取目錄下的檔案時，預設會連子目錄下的檔案一起選取，該如何不選取子目錄下的檔案呢 ?&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Vue" scheme="https://fpjs.fun/tags/Vue/"/>
+    
+  </entry>
   
   <entry>
     <title>VitePress 初體驗</title>
@@ -393,26 +413,6 @@
     
     
       <category term="Ramda" scheme="https://fpjs.fun/tags/Ramda/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>使用 elem 判斷 Value 是否在 List 內</title>
-    <link href="https://fpjs.fun/haskell/list/elem/"/>
-    <id>https://fpjs.fun/haskell/list/elem/</id>
-    <published>2021-06-11T14:36:04.000Z</published>
-    <updated>2021-06-13T15:42:08.919Z</updated>
-    
-    <content type="html"><![CDATA[<p>若想判斷 Value 是否在 List 內，可直接使用 <code>elem</code> 判斷。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Haskell for Mac 1.8.2</p><h2 id="elem"><a href="#elem" class="headerlink" title="elem"></a>elem</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token hvariable">f</span> <span class="token operator">=</span> <span class="token builtin">elem</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p><code>elem</code> 除了能在 List 判斷 value，也可用於 String 判斷 Char。</p><p><img src="/images/haskell/list/elem/elem000.png" alt="elem000"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li><code>elem</code> 為內建 function，可直接使用</li></ul>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;若想判斷 Value 是否在 List 內，可直接使用 &lt;code&gt;elem&lt;/code&gt; 判斷。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Haskell" scheme="https://fpjs.fun/tags/Haskell/"/>
     
   </entry>
   
