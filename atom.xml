@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2021-06-20T17:11:10.856Z</updated>
+  <updated>2021-06-21T15:14:05.147Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -15,6 +15,26 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>Sanctuary 不做型別檢查</title>
+    <link href="https://fpjs.fun/sanctuary/general/uncheck-type/"/>
+    <id>https://fpjs.fun/sanctuary/general/uncheck-type/</id>
+    <published>2021-06-21T14:49:02.000Z</published>
+    <updated>2021-06-21T15:14:05.147Z</updated>
+    
+    <content type="html"><![CDATA[<p>型別檢查是 Sanctuary 的一大特色，但有些時候型別檢查反而會造成使用上不便，可視需求暫時不使用型別檢查。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Sanctuary 3.1.0</p><h2 id="zip"><a href="#zip" class="headerlink" title="zip()"></a>zip()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript">mport <span class="token punctuation">{</span> zip <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span><span class="token keyword">let</span> data1 <span class="token operator">=</span> <span class="token string">'dog'</span><span class="token keyword">let</span> data2 <span class="token operator">=</span> <span class="token string">'rabbit'</span><span class="token keyword">let</span> f <span class="token operator">=</span> zipf <span class="token punctuation">(</span>data1<span class="token punctuation">)</span> <span class="token punctuation">(</span>data2<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><code>zip()</code> 在 Ramda 與 Haskell 都可用於 String，但由於 Sanctuary 的 <code>zip()</code> 的 type signature 限定在 Array a，因此無法用在 String。</p><p><img src="/images/sanctuary/general/uncheck-type/type000.png" alt="type000"></p><h2 id="create"><a href="#create" class="headerlink" title="create()"></a>create()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span><span class="token keyword">let</span> <span class="token punctuation">{</span> zip <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token keyword">let</span> data1 <span class="token operator">=</span> <span class="token string">'dog'</span><span class="token keyword">let</span> data2 <span class="token operator">=</span> <span class="token string">'rabbit'</span><span class="token keyword">let</span> f <span class="token operator">=</span> zipf <span class="token punctuation">(</span>data1<span class="token punctuation">)</span> <span class="token punctuation">(</span>data2<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Sanctuary 提供以 <code>create()</code> 根據 <code>checkTypes</code> 動態產生 function 方式：</p><ul><li><code>false</code>：回傳無型別檢查版本的 function</li><li><code>true</code>：回傳有型別檢查版本的 function，如同直接從 <code>sanctuary</code> import 一樣</li></ul><p><img src="/images/sanctuary/general/uncheck-type/type001.png" alt="type001"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>實務上建議優先使用有型別檢查的 Sanctuary function，若有些檢查過於嚴格導致使用上不變，才使用 <code>create()</code> 產生無型別檢查版本</li></ul>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;型別檢查是 Sanctuary 的一大特色，但有些時候型別檢查反而會造成使用上不便，可視需求暫時不使用型別檢查。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Sanctuary" scheme="https://fpjs.fun/tags/Sanctuary/"/>
+    
+  </entry>
   
   <entry>
     <title>使用 zip() 將兩個 Array 合併成 Array Pair</title>
@@ -390,26 +410,6 @@
     <summary type="html">
     
       &lt;p&gt;若不想設定 Grid 的 Column 寬度，可使用 &lt;code&gt;grid-flow-col&lt;/code&gt; 自動產生 Column。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Tailwind" scheme="https://fpjs.fun/tags/Tailwind/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Grid 使用 auto-cols-size 設定 Column 寬度</title>
-    <link href="https://fpjs.fun/tailwind/grid/auto-cols-size/"/>
-    <id>https://fpjs.fun/tailwind/grid/auto-cols-size/</id>
-    <published>2021-06-12T15:19:49.000Z</published>
-    <updated>2021-06-12T15:21:09.858Z</updated>
-    
-    <content type="html"><![CDATA[<p>若想設定 Grid 的每個 Column 相同寬度，可使用 <code>auto-cols-</code> 直接加上寬度。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Tailwind CSS 2.1.4</p><h2 id="auto-cols-size"><a href="#auto-cols-size" class="headerlink" title="auto-cols-size"></a>auto-cols-size</h2><p><img src="/images/tailwind/grid/auto-cols-size/size000.png" alt="size000"></p><p>每個 column 的寬度都是 <code>100px</code>。</p><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>pug<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>section(class='auto-cols-[100px]').grid.grid-flow-col  div 1  div 2  div 3  div 4  div 5  div 6<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>第 2 行</p><pre class="line-numbers highlight language-jade"><code class="language-jade"><span class="token tag">section<span class="token attributes"><span class="token punctuation">(</span><span class="token attr-name">class</span><span class="token punctuation">=</span><span class="token attr-value"><span class="token string">'auto-cols-[100px]'</span></span><span class="token punctuation">)</span></span></span><span class="token tag">.grid.grid-flow-col</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>設定 <code>section</code> style：</p><ul><li><code>grid</code>：設定子層使用 Grid</li><li><code>grid-flow-col</code>：設定子層以橫向 column 排列</li><li><code>auto-cols-[100px]</code>：設定每個 column 的寬度為 <code>100px</code></li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li><code>grid-cols-n</code> 可設定水平均分 column，若想自行設定寬度則要使用 <code>auto-cols-size</code></li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://tailwindcss.com" target="_blank" rel="noopener">Tailwind CSS</a>, <a href="https://tailwindcss.com/docs/grid-auto-flow" target="_blank" rel="noopener">Grid Auto Flow</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;若想設定 Grid 的每個 Column 相同寬度，可使用 &lt;code&gt;auto-cols-&lt;/code&gt; 直接加上寬度。&lt;/p&gt;
     
     </summary>
     

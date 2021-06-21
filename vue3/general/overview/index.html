@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-04-13T02:18:27.000Z",
-    "dateModified": "2021-05-22T13:52:23.953Z",
+    "dateModified": "2021-06-21T14:30:18.731Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -438,6 +438,7 @@ a:hover {
                     <article id="post-content">
                         <p>Vue 3 招牌是其新的 Composition API，這徹底解決了 Vue 2 的 <code>this</code> 老問題，使得 Extract Function 與 Point-free 變得很容易，也更容易與其他 FP Library 整合。</p>
 <a id="more"></a>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.11</p>
 <h2 id="Vue-3"><a href="#Vue-3" class="headerlink" title="Vue 3"></a>Vue 3</h2><p><img src="/images/vue3/general/overview/overview001.jpg" alt="overview001"></p>
 <p>歷史性的一刻，在 Sep.18, 2020 正式發行 3.0.0 版。</p>
 <h2 id="Compositon-API"><a href="#Compositon-API" class="headerlink" title="Compositon API"></a>Compositon API</h2><p><img src="/images/vue3/general/overview/overview000.png" alt="overview000"></p>
@@ -486,30 +487,30 @@ span {{ count }}
 <span class="token keyword">import</span> <span class="token punctuation">{</span> read<span class="token punctuation">,</span> write <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
-<span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> count <span class="token operator">=</span> ref <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">read</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token keyword">let</span> onClick <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
+  read <span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">,</span>
   inc<span class="token punctuation">,</span>
-  <span class="token function">write</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span>
+  write <span class="token punctuation">(</span>count<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>13 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">read</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">,</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
+  read <span class="token punctuation">(</span>count<span class="token punctuation">)</span><span class="token punctuation">,</span>
   inc<span class="token punctuation">,</span>
-  <span class="token function">write</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span>
+  write <span class="token punctuation">(</span>count<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>onClick()</code> 本質是 function，由於不再使用 <code>this</code> 讀取 state，理論上可使用 Ramda 的 <code>pipe()</code> 以 pure function 組合出 <code>onClick()</code>：</p>
 <ul>
-<li><code>read()</code>：讀取 <code>count</code> state</li>
-<li><code>inc()</code>：對值遞增</li>
-<li><code>write()</code>：寫入 <code>count</code> state</li>
+<li><code>read (count)</code>：讀取 <code>count</code> state</li>
+<li><code>inc</code>：對值遞增</li>
+<li><code>write (count)</code>：寫入 <code>count</code> state</li>
 </ul>
 <blockquote>
-<p>這種風格與 Promise Chain 很像，每個 <code>then()</code> 都是傳入 function，且不斷將值傳到下一個 function。</p>
+<p>這種風格與 Promise Chain 很像，每個 <code>then()</code> 都是傳入 function，且不斷將值傳到下一個 function</p>
 </blockquote>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>由經典的 counter 可發現 Vue 3 的最大改變在於 <code>this</code> 不見了，且 <code>data</code> 的初始值也由 <code>ref()</code> 建立，method 不再需要靠 <code>this</code> 存取 state，有助於 Extract Function、Function Pipeline 與 Point-free</li>
