@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2020-05-10T13:17:26.000Z",
-    "dateModified": "2021-06-04T15:53:59.161Z",
+    "dateModified": "2021-06-25T15:25:05.296Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -447,14 +447,16 @@ a:hover {
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> inStock<span class="token punctuation">:</span> <span class="token boolean">false</span> <span class="token punctuation">}</span>
 <span class="token punctuation">]</span>
 
-<span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'inStock'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">?</span> <span class="token string">'Avaliable'</span> <span class="token punctuation">:</span> <span class="token string">'Sold Out'</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
+  pluck <span class="token punctuation">(</span><span class="token string">'inStock'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  map <span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">?</span> <span class="token string">'Avaliable'</span> <span class="token punctuation">:</span> <span class="token string">'Sold Out'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若 <code>inStock</code> 為 <code>true</code> 則顯示 <code>Avaliable</code>，<code>false</code> 則顯示 <code>Sold Out</code>，我們會在 <code>map()</code> 的 callback 內使用 <code>?:</code> ternary operator。</p>
 <p><img src="/images/sanctuary/logic/boolean/boolean000.png" alt="boolean000"></p>
-<h2 id="ifElse"><a href="#ifElse" class="headerlink" title="ifElse()"></a>ifElse()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> pluck<span class="token punctuation">,</span> map<span class="token punctuation">,</span> ifElse<span class="token punctuation">,</span> identity<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="ifElse"><a href="#ifElse" class="headerlink" title="ifElse()"></a>ifElse()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> pluck<span class="token punctuation">,</span> map<span class="token punctuation">,</span> ifElse<span class="token punctuation">,</span> identity <span class="token keyword">as</span> I<span class="token punctuation">,</span> always <span class="token keyword">as</span> K <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> inStock<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
@@ -462,16 +464,14 @@ a:hover {
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> inStock<span class="token punctuation">:</span> <span class="token boolean">false</span> <span class="token punctuation">}</span>
 <span class="token punctuation">]</span>
 
-<span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'inStock'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">ifElse</span><span class="token punctuation">(</span>
-    identity<span class="token punctuation">,</span>
-    <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'Avaliable'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'Sold Out'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若想將 <code>map()</code> 的 callback 也 point-free，Ramda 需使用 <code>ifElse()</code> 實現 <code>?:</code>，但因為 3 個 argument 都是 function，因此還必須搭配 <code>identity()</code> 與 <code>always()</code>。</p>
+<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
+  pluck <span class="token punctuation">(</span><span class="token string">'inStock'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  map <span class="token punctuation">(</span>ifElse <span class="token punctuation">(</span>I<span class="token punctuation">)</span> <span class="token punctuation">(</span>K <span class="token punctuation">(</span><span class="token string">'Avaliable'</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>K <span class="token punctuation">(</span><span class="token string">'Sold Out'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>若想將 <code>map()</code> 的 callback 也 Point-free，Ramda 需使用 <code>ifElse()</code> 實現 <code>?:</code>，但因為 3 個 argument 都是 function，因此還必須搭配 <code>I()</code> 與 <code>K()</code>。</p>
 <p><img src="/images/sanctuary/logic/boolean/boolean001.png" alt="boolean001"></p>
 <h2 id="boolean"><a href="#boolean" class="headerlink" title="boolean()"></a>boolean()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> prop <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> boolean <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
@@ -482,11 +482,13 @@ a:hover {
   <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> inStock<span class="token punctuation">:</span> <span class="token boolean">false</span> <span class="token punctuation">}</span>
 <span class="token punctuation">]</span>
 
-<span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'inStock'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">boolean</span><span class="token punctuation">(</span><span class="token string">'Sold Out'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'Avaliable'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
+  map <span class="token punctuation">(</span> prop <span class="token punctuation">(</span><span class="token string">'inStock'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  map <span class="token punctuation">(</span> boolean <span class="token punctuation">(</span><span class="token string">'Sold Out'</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token string">'Avaliable'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Sanctury 雖然也提供 <code>ifElse()</code>，其 signature 與 Ramda 完全相同，但 <code>boolean()</code> 更為好用，只需直接提供 <code>false</code> 與 <code>true</code> 所回傳 value 即可，可讀性更高也更精簡。</p>
 <blockquote>
 <p><strong>boolean()</strong><br><code>a -&gt; a -&gt; Boolean -&gt; a</code><br><code>?:</code> ternary operator 的 function 版本</p>

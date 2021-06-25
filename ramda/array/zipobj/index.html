@@ -49,7 +49,7 @@
 
 <meta name="format-detection" content="telephone=no">
 <!-- Description -->
-<meta name="description" content="若 Key 與 Value 都放在不同 Array，最後想合併成單一 Object，就要使用 Ramda 的 zipObj()。">
+<meta name="description" content="實務上常遇到在 Function Pipeline 中處理 Array，但結果卻是 Object，此時可用 zipObj() 加以轉換。">
 <!-- Keywords -->
 <meta name="keywords" content=", Ramda">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
@@ -168,7 +168,7 @@ a:hover {
 
 <meta property="og:url" content="https://fpjs.fun/ramda/array/zipobj/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
-<meta property="og:description" content="若 Key 與 Value 都放在不同 Array，最後想合併成單一 Object，就要使用 Ramda 的 zipObj()。">
+<meta property="og:description" content="實務上常遇到在 Function Pipeline 中處理 Array，但結果卻是 Object，此時可用 zipObj() 加以轉換。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2020-07-25T09:17:36.000Z",
-    "dateModified": "2020-07-25T09:19:13.282Z",
+    "dateModified": "2021-06-22T15:31:29.221Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -234,7 +234,7 @@ a:hover {
     },
     
     "keywords": ", Ramda",
-    "description": "若 Key 與 Value 都放在不同 Array，最後想合併成單一 Object，就要使用 Ramda 的 zipObj()。"
+    "description": "實務上常遇到在 Function Pipeline 中處理 Array，但結果卻是 Object，此時可用 zipObj() 加以轉換。"
 }
 </script>
 
@@ -436,67 +436,30 @@ a:hover {
                 </div>
                 <div class="card-body">
                     <article id="post-content">
-                        <p>若 Key 與 Value 都放在不同 Array，最後想合併成單一 Object，就要使用 Ramda 的 <code>zipObj()</code>。</p>
+                        <p>實務上常遇到在 Function Pipeline 中處理 Array，但結果卻是 Object，此時可用 <code>zipObj()</code> 加以轉換。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>VS Code 1.47.2<br>Quokka 1.0.309<br>Ramda 0.27.0</p>
-<h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> girls <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'Mary'</span><span class="token punctuation">,</span> <span class="token string">'Jessie'</span><span class="token punctuation">]</span>
-<span class="token keyword">let</span> cars <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'BMW'</span><span class="token punctuation">,</span> <span class="token string">'TOYOTA'</span><span class="token punctuation">,</span> <span class="token string">'Benz'</span><span class="token punctuation">]</span>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
+<h2 id="zipObj"><a href="#zipObj" class="headerlink" title="zipObj()"></a>zipObj()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> zipObj <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
-<span class="token keyword">let</span> zipObj <span class="token operator">=</span> k <span class="token operator">=</span><span class="token operator">></span> v <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
+<span class="token keyword">let</span> data1 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">]</span>
+<span class="token keyword">let</span> data2 <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
-  <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> i <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span> i <span class="token operator">&lt;</span> k<span class="token punctuation">.</span>length<span class="token punctuation">;</span> i<span class="token operator">++</span><span class="token punctuation">)</span>
-    result<span class="token punctuation">[</span>k<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">]</span> <span class="token operator">=</span> v<span class="token punctuation">[</span>i<span class="token punctuation">]</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> zipObj
 
-  <span class="token keyword">return</span> result
-<span class="token punctuation">}</span>
-
-<span class="token function">zipObj</span><span class="token punctuation">(</span>girls<span class="token punctuation">)</span><span class="token punctuation">(</span>cars<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Imperative 會以 <code>k</code> array 做 <code>for</code> loop，動態將建立 <code>result</code> Object 的 property。</p>
-<p><img src="/images/ramda/array/zipobj/zipobj002.png" alt="zipobj002"></p>
-<h2 id="reduce"><a href="#reduce" class="headerlink" title="reduce()"></a>reduce()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> girls <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'Mary'</span><span class="token punctuation">,</span> <span class="token string">'Jessie'</span><span class="token punctuation">]</span>
-<span class="token keyword">let</span> cars <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'BMW'</span><span class="token punctuation">,</span> <span class="token string">'TOYOTA'</span><span class="token punctuation">,</span> <span class="token string">'Benz'</span><span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> zipObj <span class="token operator">=</span> k <span class="token operator">=</span><span class="token operator">></span> v <span class="token operator">=</span><span class="token operator">></span> k<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span>a<span class="token punctuation">,</span> <span class="token operator">...</span><span class="token punctuation">{</span><span class="token punctuation">[</span>x<span class="token punctuation">]</span><span class="token punctuation">:</span> v<span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-<span class="token function">zipObj</span><span class="token punctuation">(</span>girls<span class="token punctuation">)</span><span class="token punctuation">(</span>cars<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>結果為單一 Object，故適合使用 <code>reduce()</code> 建立 Object，唯初始值為 <code>{}</code>。</p>
-<p><img src="/images/ramda/array/zipobj/zipobj003.png" alt="zipobj003"></p>
-<h2 id="Functional"><a href="#Functional" class="headerlink" title="Functional"></a>Functional</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> zip<span class="token punctuation">,</span> fromPairs<span class="token punctuation">,</span> compose<span class="token punctuation">,</span> curry <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-
-<span class="token keyword">let</span> girls <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'Mary'</span><span class="token punctuation">,</span> <span class="token string">'Jessie'</span><span class="token punctuation">]</span>
-<span class="token keyword">let</span> cars <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'BMW'</span><span class="token punctuation">,</span> <span class="token string">'TOYOTA'</span><span class="token punctuation">,</span> <span class="token string">'Benz'</span><span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> zipObj <span class="token operator">=</span> <span class="token function">curry</span><span class="token punctuation">(</span><span class="token function">compose</span><span class="token punctuation">(</span>
-  fromPairs<span class="token punctuation">,</span>
-  zip
-<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-<span class="token function">zipObj</span><span class="token punctuation">(</span>girls<span class="token punctuation">)</span><span class="token punctuation">(</span>cars<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Functional  會將 <code>zip()</code> 與 <code>fromParis()</code> 組合成 <code>zipObj()</code>。</p>
-<p><img src="/images/ramda/array/zipobj/zipobj000.png" alt="zipobj000"></p>
-<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> zipObj <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-
-<span class="token keyword">let</span> girls <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'Mary'</span><span class="token punctuation">,</span> <span class="token string">'Jessie'</span><span class="token punctuation">]</span>
-<span class="token keyword">let</span> boys <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'BMW'</span><span class="token punctuation">,</span> <span class="token string">'TOYOTA'</span><span class="token punctuation">,</span> <span class="token string">'Benz'</span><span class="token punctuation">]</span>
-
-<span class="token function">zipObj</span><span class="token punctuation">(</span>girls<span class="token punctuation">)</span><span class="token punctuation">(</span>boys<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Ramda 已經提供 <code>zipObj()</code>，可直接使用。</p>
+f <span class="token punctuation">(</span>data1<span class="token punctuation">)</span> <span class="token punctuation">(</span>data2<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>若想兩個 Array 合併成 Object，可使用 <code>zipObj()</code> 合併。</p>
 <blockquote>
-<p><strong>zipObj()</strong><br><code>[String] → [*] → {String: *}</code><br>將兩個 Array 配對合併成單一 Object</p>
+<p><strong>zipObj()</strong><br><code>[String] → [*] → {String: *}</code><br>將兩個 Array 合併成單一 Object</p>
 </blockquote>
 <p><code>[String]</code>：提供 key 的 Array</p>
 <p><code>[*]</code>：提供 value 的 Array</p>
-<p><code>{String: *}</code>：配對合併成單一 Object</p>
-<p><img src="/images/ramda/array/zipobj/zipobj001.png" alt="zipobj001"></p>
+<p><code>{String: *}</code>：合併成單一 Object</p>
+<p><img src="/images/ramda/array/zipobj/zipobj000.png" alt="zipobj000"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>實務上常會遇到 key 與 value 來自不同 Array，最後要合併成單一 Object，此時 <code>zipObj()</code> 就非常好用</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#zipObj" target="_blank" rel="noopener">zipObj()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#zip" target="_blank" rel="noopener">zip()</a><br><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#fromPairs" target="_blank" rel="noopener">fromPairs()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#zipObj" target="_blank" rel="noopener">zipObj()</a></p>
 
                     </article>
                     <p class="post-footer-info mb-0 pt-2">
