@@ -51,7 +51,7 @@
 <!-- Description -->
 <meta name="description" content="處理 RESTful API 的 GET 回傳 Primitive 在實務上一定會碰到，傳統會使用 Promise 處理，事實上 Future 更適合 Point-free。">
 <!-- Keywords -->
-<meta name="keywords" content=", Vue, Fluture, Future">
+<meta name="keywords" content=", Vue, Fluture">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
 <meta http-equiv="Cache-Control" content="no-transform">
 <meta http-equiv="Cache-Control" content="no-siteapp">
@@ -175,7 +175,7 @@ a:hover {
 <meta property="article:published_time" content="2021-05-29T10:12:49.000Z">
 <meta property="article:modified_time" content="2021-05-29T10:12:49.000Z">
 <meta property="article:author" content="Sam Xiao">
-<meta property="og:article:tag" content=", Vue, Fluture, Future">
+<meta property="og:article:tag" content=", Vue, Fluture">
 
 
 	<!-- ### Analytics ### -->
@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-05-29T10:12:49.000Z",
-    "dateModified": "2021-06-26T08:55:34.657Z",
+    "dateModified": "2021-06-27T16:05:28.870Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -233,7 +233,7 @@ a:hover {
         "query-input": "required name=search_term_string"
     },
     
-    "keywords": ", Vue, Fluture, Future",
+    "keywords": ", Vue, Fluture",
     "description": "處理 RESTful API 的 GET 回傳 Primitive 在實務上一定會碰到，傳統會使用 Promise 處理，事實上 Future 更適合 Point-free。"
 }
 </script>
@@ -443,11 +443,17 @@ a:hover {
 <p>按下 <code>Get Book</code> 會從 API 獲得 <code>title</code> 。</p>
 <p><strong>api/getBook_.js</strong></p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> attemptP <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> encaseP <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture'</span>
 
-<span class="token keyword">export</span> <span class="token keyword">default</span> id <span class="token operator">=</span><span class="token operator">></span> <span class="token function">attemptP</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> axios<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`/book/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> id <span class="token operator">=</span><span class="token operator">></span> _ <span class="token operator">=</span><span class="token operator">></span> encaseP <span class="token punctuation">(</span>axios<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token template-string"><span class="token string">`/book/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>使用 <code>attemptP()</code> 將 Promise 轉成 Future。</p>
+<ul>
+<li><code>encaseP</code>：將 <code>axios.get</code> 轉成回傳 Future 的 function 後，再傳入 url</li>
+</ul>
+<blockquote>
+<p><code>_</code> 是為了前端 <code>pipe</code> 方便</p>
+</blockquote>
+<p><strong>App.vue</strong></p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
 div
   button(@click='onClick') Get Book
@@ -457,38 +463,38 @@ div {{ title }}
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
 <span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> write <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> thunkify<span class="token punctuation">,</span> map<span class="token punctuation">,</span> path <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> path <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> error <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> fork<span class="token punctuation">,</span> mapRej <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture'</span>
 <span class="token keyword">import</span> getBook <span class="token keyword">from</span> <span class="token string">'/src/api/getBook_'</span>
 
-<span class="token keyword">let</span> title <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> title <span class="token operator">=</span> ref <span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">thunkify</span><span class="token punctuation">(</span>getBook<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">path</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'title'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">mapRej</span><span class="token punctuation">(</span><span class="token function">path</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'error'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">fork</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>title<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> onClick <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
+  getBook <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  map <span class="token punctuation">(</span>path <span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'title'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  mapRej <span class="token punctuation">(</span>path <span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'error'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>write <span class="token punctuation">(</span>title<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>17 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">thunkify</span><span class="token punctuation">(</span>getBook<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">path</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'title'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">mapRej</span><span class="token punctuation">(</span><span class="token function">path</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'error'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">fork</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>title<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
+  getBook <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  map <span class="token punctuation">(</span>path <span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'title'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  mapRej <span class="token punctuation">(</span>path <span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'error'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>write <span class="token punctuation">(</span>title<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>使用 <code>pipe()</code> 組合 <code>onClick()</code>：</p>
+<p>使用 <code>pipe</code> 組合 <code>onClick</code>：</p>
 <ul>
-<li><code>thunkify(getBook)(1)</code>：將 <code>getBook()</code> 轉成 Thunk 再傳入資料</li>
-<li><code>map(path([&#39;data&#39;, &#39;title&#39;]))</code>：在 Resolved Future 內取得 <code>data.title</code></li>
-<li><code>mapRej(path([&#39;response&#39;, &#39;data&#39;, &#39;error&#39;]))</code>：在 Rejected Future 內取得 <code>response.date.error</code></li>
-<li><code>fork(error)(write(title))</code>：從 Future 內取出資料並處理 Rejected Future</li>
+<li><code>getBook (1)</code>：將 <code>id</code> 傳入 <code>getBook</code> 回傳 Future</li>
+<li><code>map (path ([&#39;data&#39;, &#39;title&#39;]))</code>：在 Resolved Future 內取得 <code>data.title</code></li>
+<li><code>mapRej (path ([&#39;response&#39;, &#39;data&#39;, &#39;error&#39;]))</code>：在 Rejected Future 內取得 <code>response.date.error</code></li>
+<li><code>fork (error) (write (title))</code>：從 Future 內取出資料寫入 <code>title</code> state，並處理 Rejected Future</li>
 </ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>透過 <code>mapRef()</code> 可在 <code>pipe()</code> 內處理 Rejected Future，不必再如 <code>otherwise()</code> 需另外組合 function 處理</li>
+<li>透過 <code>mapRef</code> 可在 <code>pipe</code> 內處理 Rejected Future，不必再如 <code>otherwise</code> 需另外組合 function 處理 Rejected Promise</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/fluture-js/Fluture" target="_blank" rel="noopener">Fluture</a>, <a href="https://github.com/fluture-js/Fluture#attemptp" target="_blank" rel="noopener">attemptP()</a><br><a href="https://github.com/fluture-js/Fluture" target="_blank" rel="noopener">Fluture</a>, <a href="https://github.com/fluture-js/Fluture#maprej" target="_blank" rel="noopener">mapRej()</a></p>
 
@@ -502,8 +508,6 @@ div {{ title }}
     <a class="post-tags-list-item" href='/tags/Vue/'>#&nbsp;Vue</a>
     
     <a class="post-tags-list-item" href='/tags/Fluture/'>#&nbsp;Fluture</a>
-    
-    <a class="post-tags-list-item" href='/tags/Future/'>#&nbsp;Future</a>
     
   </span>
   
