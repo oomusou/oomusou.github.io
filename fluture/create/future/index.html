@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-06-29T01:39:25.000Z",
-    "dateModified": "2021-06-29T01:40:54.040Z",
+    "dateModified": "2021-06-29T01:59:36.708Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -443,15 +443,21 @@ a:hover {
 <span class="token keyword">import</span> <span class="token punctuation">{</span> error<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> Future <span class="token punctuation">(</span><span class="token punctuation">(</span>rej<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> job <span class="token operator">=</span> setTimeout <span class="token punctuation">(</span>res<span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">,</span> <span class="token number">42</span><span class="token punctuation">)</span>
-  <span class="token keyword">let</span> cancel <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> clearTimeout <span class="token punctuation">(</span>job<span class="token punctuation">)</span>
-  <span class="token keyword">return</span> cancel
+  <span class="token keyword">let</span> t <span class="token operator">=</span> setTimeout <span class="token punctuation">(</span>res<span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">,</span> <span class="token number">42</span><span class="token punctuation">)</span>
+  <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> clearTimeout <span class="token punctuation">(</span>t<span class="token punctuation">)</span>
 <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
 fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Fluture 提供了 <code>Future</code> 建立 Future，它提供了 <code>rej</code> 與 <code>res</code> 兩 function，<code>rej</code> 可建立 Rejected Future，而 <code>res</code> 可建立 Resolved Future。</p>
-<p>較特別的是 <code>Future</code> 必須回傳 <code>cancel</code> function 提供 cancel Future 功能，且 function 名稱必須是 <code>cancel</code>，不能為 anonymous function。</p>
+<p>較特別的是 <code>Future</code> 必須回傳 function 提供 cancel Future 功能。</p>
+<blockquote>
+<p><strong>Future</strong><br><code>((a -&gt; Undefined, b -&gt; Undefined) -&gt; Cancel) -&gt; Future a b</code><br>建立 Cancellable Future</p>
+</blockquote>
+<p><code>a -&gt; Undefined</code>：提供 <code>rej</code> 建立 Rejected Future</p>
+<p><code>b -&gt; Undefined</code>：提供 <code>res</code> 建立 Resolved Future</p>
+<p><code>Cancel</code>：回傳 <code>cancel</code></p>
+<p><code>Future a b</code>：回傳 Cancellable Future</p>
 <p><img src="/images/fluture/create/future/future000.png" alt="future000"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li><code>Future</code> 用法很類似 Promise Constructor，都提供了 <code>rej</code> 與 <code>res</code>，唯 <code>Future</code> 只是 free function，並不需要 <code>new</code>，但必須回傳 <code>cancel</code></li>
