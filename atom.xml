@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="https://fpjs.fun/"/>
-  <updated>2021-06-29T01:59:36.708Z</updated>
+  <updated>2021-06-29T05:42:09.009Z</updated>
   <id>https://fpjs.fun/</id>
   
   <author>
@@ -17,17 +17,37 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>使用 resolve 建立 Resolved Future</title>
+    <link href="https://fpjs.fun/fluture/create/resolve/"/>
+    <id>https://fpjs.fun/fluture/create/resolve/</id>
+    <published>2021-06-29T03:10:23.000Z</published>
+    <updated>2021-06-29T05:42:09.009Z</updated>
+    
+    <content type="html"><![CDATA[<p>雖然可用 <code>Future</code> 建立完整的 Cancellable Future，但若想快速建立 Resolved Future，可直接使用 <code>resolve</code>。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Fluture 14.0.0</p><h2 id="resolve"><a href="#resolve" class="headerlink" title="resolve"></a>resolve</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> resolve<span class="token punctuation">,</span> value <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'Fluture'</span><span class="token keyword">import</span> <span class="token punctuation">{</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token keyword">let</span> data <span class="token operator">=</span> resolve <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token keyword">let</span> f <span class="token operator">=</span> value <span class="token punctuation">(</span>log<span class="token punctuation">)</span>f <span class="token punctuation">(</span>data<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li><code>resolve</code>：將 <code>1</code> 包進 Resolved Future</li><li><code>value</code>：從 Resolved Future 內取出內部值由 <code>log</code> 顯示</li></ul><blockquote><p><strong>resolve</strong><br><code>b -&gt; Future a b</code><br>將 value 包進 Resolved Future</p></blockquote><p><code>b</code>：傳入 value</p><p><code>Future a b</code>：回傳 Resolved Future</p><p><img src="/images/fluture/create/resolve/resolve000.png" alt="resolve000"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>由於 <code>data</code> 只有 Resolved Future，並沒有 Rejected Future，因此可直接使用 <code>value</code> 取出，不必使用 <code>fork</code></li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://dev.to/avaq" target="_blank" rel="noopener">Aldwin Vlasbolm</a>, <a href="https://dev.to/avaq/fluture-a-functional-alternative-to-promises-21b" target="_blank" rel="noopener">Functional Alternative to Promises</a><br><a href="https://github.com/fluture-js" target="_blank" rel="noopener">Future</a>, <a href="https://github.com/fluture-js/Fluture#resolve" target="_blank" rel="noopener">resolve</a><br><a href="https://github.com/fluture-js" target="_blank" rel="noopener">Future</a>, <a href="https://github.com/fluture-js/Fluture#resolve" target="_blank" rel="noopener">value</a></p>]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;雖然可用 &lt;code&gt;Future&lt;/code&gt; 建立完整的 Cancellable Future，但若想快速建立 Resolved Future，可直接使用 &lt;code&gt;resolve&lt;/code&gt;。&lt;/p&gt;
+    
+    </summary>
+    
+    
+      <category term="Fluture" scheme="https://fpjs.fun/tags/Fluture/"/>
+    
+  </entry>
+  
+  <entry>
     <title>使用 Future 建立 Cancellable Future</title>
     <link href="https://fpjs.fun/fluture/create/future/"/>
     <id>https://fpjs.fun/fluture/create/future/</id>
     <published>2021-06-29T01:39:25.000Z</published>
-    <updated>2021-06-29T01:59:36.708Z</updated>
+    <updated>2021-06-29T02:57:40.245Z</updated>
     
-    <content type="html"><![CDATA[<p>若要建立 Cancellable Future，可使用 <code>Future</code> 建立。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Fluture 14.0.0</p><h2 id="Future"><a href="#Future" class="headerlink" title="Future"></a>Future</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Future<span class="token punctuation">,</span> fork <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture'</span><span class="token keyword">import</span> <span class="token punctuation">{</span> error<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token keyword">let</span> data <span class="token operator">=</span> Future <span class="token punctuation">(</span><span class="token punctuation">(</span>rej<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>  <span class="token keyword">let</span> t <span class="token operator">=</span> setTimeout <span class="token punctuation">(</span>res<span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">,</span> <span class="token number">42</span><span class="token punctuation">)</span>  <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> clearTimeout <span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">)</span>fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Fluture 提供了 <code>Future</code> 建立 Future，它提供了 <code>rej</code> 與 <code>res</code> 兩 function，<code>rej</code> 可建立 Rejected Future，而 <code>res</code> 可建立 Resolved Future。</p><p>較特別的是 <code>Future</code> 必須回傳 function 提供 cancel Future 功能。</p><blockquote><p><strong>Future</strong><br><code>((a -&gt; Undefined, b -&gt; Undefined) -&gt; Cancel) -&gt; Future a b</code><br>建立 Cancellable Future</p></blockquote><p><code>a -&gt; Undefined</code>：提供 <code>rej</code> 建立 Rejected Future</p><p><code>b -&gt; Undefined</code>：提供 <code>res</code> 建立 Resolved Future</p><p><code>Cancel</code>：回傳 <code>cancel</code></p><p><code>Future a b</code>：回傳 Cancellable Future</p><p><img src="/images/fluture/create/future/future000.png" alt="future000"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li><code>Future</code> 用法很類似 Promise Constructor，都提供了 <code>rej</code> 與 <code>res</code>，唯 <code>Future</code> 只是 free function，並不需要 <code>new</code>，但必須回傳 <code>cancel</code></li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://dev.to/avaq" target="_blank" rel="noopener">Aldwin Vlasbolm</a>, <a href="https://dev.to/avaq/fluture-a-functional-alternative-to-promises-21b" target="_blank" rel="noopener">Functional Alternative to Promises</a><br><a href="https://github.com/fluture-js/Fluture" target="_blank" rel="noopener">Fluture</a>, <a href="https://github.com/fluture-js/Fluture#future" target="_blank" rel="noopener">Future</a></p>]]></content>
+    <content type="html"><![CDATA[<p>若要建立完整 Cancellable Future，可使用 <code>Future</code> 建立。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Fluture 14.0.0</p><h2 id="Future"><a href="#Future" class="headerlink" title="Future"></a>Future</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Future<span class="token punctuation">,</span> fork <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture'</span><span class="token keyword">import</span> <span class="token punctuation">{</span> error<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span><span class="token keyword">let</span> data <span class="token operator">=</span> Future <span class="token punctuation">(</span><span class="token punctuation">(</span>rej<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>  <span class="token keyword">let</span> t <span class="token operator">=</span> setTimeout <span class="token punctuation">(</span>res<span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span>  <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> clearTimeout <span class="token punctuation">(</span>t<span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token keyword">let</span> f <span class="token operator">=</span> fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>f <span class="token punctuation">(</span>data<span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>Fluture 提供了 <code>Future</code> 建立 Future，它提供了 <code>rej</code> 與 <code>res</code> 兩 function，<code>rej</code> 可建立 Rejected Future，而 <code>res</code> 可建立 Resolved Future。</p><p>較特別的是 <code>Future</code> 必須回傳 function 提供 cancel Future 功能。</p><blockquote><p><strong>Future</strong><br><code>((a -&gt; Undefined, b -&gt; Undefined) -&gt; Cancel) -&gt; Future a b</code><br>建立 Cancellable Future</p></blockquote><p><code>a -&gt; Undefined</code>：提供 <code>rej</code> 建立 Rejected Future</p><p><code>b -&gt; Undefined</code>：提供 <code>res</code> 建立 Resolved Future</p><p><code>Cancel</code>：回傳 <code>cancel</code></p><p><code>Future a b</code>：回傳 Cancellable Future</p><p><img src="/images/fluture/create/future/future000.png" alt="future000"></p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li><code>Future</code> 用法很類似 Promise Constructor，都提供了 <code>rej</code> 與 <code>res</code>，唯 <code>Future</code> 只是 free function，並不需要 <code>new</code>，但必須回傳 <code>cancel</code></li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://dev.to/avaq" target="_blank" rel="noopener">Aldwin Vlasbolm</a>, <a href="https://dev.to/avaq/fluture-a-functional-alternative-to-promises-21b" target="_blank" rel="noopener">Functional Alternative to Promises</a><br><a href="https://github.com/fluture-js/Fluture" target="_blank" rel="noopener">Fluture</a>, <a href="https://github.com/fluture-js/Fluture#future" target="_blank" rel="noopener">Future</a></p>]]></content>
     
     <summary type="html">
     
-      &lt;p&gt;若要建立 Cancellable Future，可使用 &lt;code&gt;Future&lt;/code&gt; 建立。&lt;/p&gt;
+      &lt;p&gt;若要建立完整 Cancellable Future，可使用 &lt;code&gt;Future&lt;/code&gt; 建立。&lt;/p&gt;
     
     </summary>
     
@@ -405,28 +425,6 @@
     
     </summary>
     
-    
-      <category term="VuePress" scheme="https://fpjs.fun/tags/VuePress/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>VuePress 使用 Vite</title>
-    <link href="https://fpjs.fun/vuepress/general/vite/"/>
-    <id>https://fpjs.fun/vuepress/general/vite/</id>
-    <published>2021-06-19T08:58:32.000Z</published>
-    <updated>2021-06-19T09:00:16.789Z</updated>
-    
-    <content type="html"><![CDATA[<p>VuePress 2 雖然使用 Vue 3，但預設仍使用 Webpack，若要使用 Vite 則要另外安裝 VuePress-Vite。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>VuePress 2.0.0-beta.19<br>VuePress-Vite 2.0.0-beta.19</p><h2 id="Add-VuePress-Vite"><a href="#Add-VuePress-Vite" class="headerlink" title="Add VuePress-Vite"></a>Add VuePress-Vite</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add --dev vuepress-vite@next<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>使用 Yarn 安裝 <code>vuepress-vite</code>。</p><h2 id="Dev-Server"><a href="#Dev-Server" class="headerlink" title="Dev Server"></a>Dev Server</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn docs:dev<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>啟動 Dev Server 於 <code>http://localhost:8080/</code>。</p><p><img src="/images/vuepress/general/vite/vite000.png" alt="vite000"></p><p>當安裝  <code>vuepress-vite</code> 後，VuePress 2 會自動使用 Vite 為 bundler，可明顯發現比 Webpack 快。</p><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>VitePress 優勢在於使用 Vite，VuePress 2 只要安裝 <code>vuepress-vite</code> 之後也可享受 Vite 的速度優勢</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://v2.vuepress.vuejs.org" target="_blank" rel="noopener">VuePress</a>, <a href="https://v2.vuepress.vuejs.org/guide/bundler.html#vite" target="_blank" rel="noopener">Vite</a></p>]]></content>
-    
-    <summary type="html">
-    
-      &lt;p&gt;VuePress 2 雖然使用 Vue 3，但預設仍使用 Webpack，若要使用 Vite 則要另外安裝 VuePress-Vite。&lt;/p&gt;
-    
-    </summary>
-    
-    
-      <category term="Vite" scheme="https://fpjs.fun/tags/Vite/"/>
     
       <category term="VuePress" scheme="https://fpjs.fun/tags/VuePress/"/>
     
