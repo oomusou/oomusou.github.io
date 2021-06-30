@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-06-29T15:21:14.000Z",
-    "dateModified": "2021-06-29T15:22:28.441Z",
+    "dateModified": "2021-06-30T01:43:14.846Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -459,7 +459,7 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 <ul>
 <li><code>map</code>：處理 Resolved Future</li>
 <li><code>mapRej</code>：處理 Rejected Future，傳入普通 function</li>
-<li><code>chainRej</code>：處理 Rejected Future，傳入回傳 Future 的 function</li>
+<li><code>chainRej</code>：處理 Rejected Future，傳入回傳 Future 的 function，若回傳 Rejected Future 則繼續 Rejected Track；若回傳 Resolved Future 則回到 Resolved Track</li>
 </ul>
 <blockquote>
 <p><strong>chainRej</strong><br><code>(a -&gt; Future c b) -&gt; Future a b -&gt; Future c b</code><br>提供回傳 Future 的 function 處理 Rejected Future</p>
@@ -491,9 +491,12 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 <p><code>Throwing e a r</code>：傳入一般 function</p>
 <p><code>a -&gt; Future e r</code>：回傳 Future 的新 function</p>
 <p><img src="/images/fluture/transform/chainrej/chainrej001.png" alt="chainrej001"></p>
+<h2 id="Railway-Oriented-Programming"><a href="#Railway-Oriented-Programming" class="headerlink" title="Railway Oriented Programming"></a>Railway Oriented Programming</h2><p><img src="/images/fluture/transform/chainrej/chainrej002.png" alt="chainrej002"></p>
+<p><code>chainRej</code> 支援 Railway Oriented Programming，因為傳入回傳 Future 的 function，可能是 Rejected Future 或 Resolved Future，因此可能繼續在 Rejected Track，或者回到 Resolved Track。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>可在同一個 Function Pipeline 使用多次 <code>mapRej</code> 與 <code>chainRej</code>，不像 Promise 只能使用一次 <code>otherwise</code></li>
 <li><code>encase</code> 可將一般 unary function 轉成回傳 Future 的 function</li>
+<li><code>chainRej</code> 支援 Railway Oriented Programming，可繼續留在 Rejected Track，或者切回 Resolved Track</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/fluture-js/Fluture" target="_blank" rel="noopener">Future</a>, <a href="https://github.com/fluture-js/Fluture#chainrej" target="_blank" rel="noopener">chainRej</a><br><a href="https://github.com/fluture-js/Fluture" target="_blank" rel="noopener">Future</a>, <a href="https://github.com/fluture-js/Fluture#encase" target="_blank" rel="noopener">encase</a></p>
 
@@ -513,6 +516,13 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
                 <div class="post-nav px-2 bg-gray">
 	<ul class="pagination">
 		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/fluture/transform/map/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 map 處理 Resolved Future</div>
+			</a>
+		</li>
 		
 		<!-- Next Nav -->
 		
