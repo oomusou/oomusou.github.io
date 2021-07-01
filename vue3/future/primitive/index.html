@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-05-29T10:12:49.000Z",
-    "dateModified": "2021-06-27T16:05:28.870Z",
+    "dateModified": "2021-07-01T01:30:33.338Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -445,14 +445,11 @@ a:hover {
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> encaseP <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture'</span>
 
-<span class="token keyword">export</span> <span class="token keyword">default</span> id <span class="token operator">=</span><span class="token operator">></span> _ <span class="token operator">=</span><span class="token operator">></span> encaseP <span class="token punctuation">(</span>axios<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token template-string"><span class="token string">`/book/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> id <span class="token operator">=</span><span class="token operator">></span> _ <span class="token operator">=</span><span class="token operator">></span> encaseP <span class="token punctuation">(</span>axios<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token template-string"><span class="token string">`/book/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>id<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
-<li><code>encaseP</code>：將 <code>axios.get</code> 轉成回傳 Future 的 function 後，再傳入 url</li>
+<li><code>encaseP</code>：將 <code>axios</code> 轉成回傳 Future 的 function 後，再傳入 url</li>
 </ul>
-<blockquote>
-<p><code>_</code> 是為了前端 <code>pipe</code> 方便</p>
-</blockquote>
 <p><strong>App.vue</strong></p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
 div
@@ -491,12 +488,12 @@ div {{ title }}
 <li><code>getBook (1)</code>：將 <code>id</code> 傳入 <code>getBook</code> 回傳 Future</li>
 <li><code>map (path ([&#39;data&#39;, &#39;title&#39;]))</code>：在 Resolved Future 內取得 <code>data.title</code></li>
 <li><code>mapRej (path ([&#39;response&#39;, &#39;data&#39;, &#39;error&#39;]))</code>：在 Rejected Future 內取得 <code>response.date.error</code></li>
-<li><code>fork (error) (write (title))</code>：從 Future 內取出資料寫入 <code>title</code> state，並處理 Rejected Future</li>
+<li><code>fork (error) (write (title))</code>：從 從 Future 內處理 Rejected Future，並從 Resolved Future 內取出資料寫入 <code>title</code> state</li>
 </ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>透過 <code>mapRef</code> 可在 <code>pipe</code> 內處理 Rejected Future，不必再如 <code>otherwise</code> 需另外組合 function 處理 Rejected Promise</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/fluture-js/Fluture" target="_blank" rel="noopener">Fluture</a>, <a href="https://github.com/fluture-js/Fluture#attemptp" target="_blank" rel="noopener">attemptP()</a><br><a href="https://github.com/fluture-js/Fluture" target="_blank" rel="noopener">Fluture</a>, <a href="https://github.com/fluture-js/Fluture#maprej" target="_blank" rel="noopener">mapRej()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/fluture-js/Fluture" target="_blank" rel="noopener">Fluture</a>, <a href="https://github.com/fluture-js/Fluture#encasep" target="_blank" rel="noopener">encaseP</a><br><a href="https://github.com/fluture-js/Fluture" target="_blank" rel="noopener">Fluture</a>, <a href="https://github.com/fluture-js/Fluture#maprej" target="_blank" rel="noopener">mapRej</a></p>
 
                     </article>
                     <p class="post-footer-info mb-0 pt-2">
@@ -518,9 +515,9 @@ div {{ title }}
 		<!-- Prev Nav -->
 		
 		<li class="page-item page-prev">
-			<a href="/vue3/future/object-array/">
+			<a href="/vue3/future/array-object/">
 				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 Future 處理 GET 回傳 Object Array</div>
+				<div class="page-item-subtitle">使用 Future 處理 GET 回傳 Array Object</div>
 			</a>
 		</li>
 		

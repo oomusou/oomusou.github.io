@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-05-29T11:33:31.000Z",
-    "dateModified": "2021-06-27T16:05:24.959Z",
+    "dateModified": "2021-07-01T06:18:33.354Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -445,9 +445,12 @@ a:hover {
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> attemptP <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture'</span>
 
-<span class="token keyword">export</span> <span class="token keyword">default</span> body <span class="token operator">=</span><span class="token operator">></span> <span class="token function">attemptP</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> axios<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span><span class="token string">'/login'</span><span class="token punctuation">,</span> body<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">export</span> <span class="token keyword">default</span> body <span class="token operator">=</span><span class="token operator">></span> attemptP <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> axios<span class="token punctuation">.</span><span class="token function">post</span><span class="token punctuation">(</span><span class="token string">'/login'</span><span class="token punctuation">,</span> body<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>使用 <code>attemptP()</code> 將 Promise 轉成 Future。</p>
+<ul>
+<li><code>attemptP</code>：將回傳 Promise 的 function 轉成 Future</li>
+</ul>
+<p><strong>App.vue</strong></p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
 div
   span ID
@@ -469,43 +472,43 @@ div {{ result.password }}
 <span class="token keyword">import</span> <span class="token punctuation">{</span> fork<span class="token punctuation">,</span> mapRej <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture'</span>
 <span class="token keyword">import</span> login <span class="token keyword">from</span> <span class="token string">'/src/api/login_'</span>
 
-<span class="token keyword">let</span> id <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> password <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> id <span class="token operator">=</span> ref <span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> password <span class="token operator">=</span> ref <span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> result <span class="token operator">=</span> ref <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token function">unref</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">unref</span><span class="token punctuation">(</span>password<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token function">zipObj</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token string">'password'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token keyword">let</span> onClick <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">[</span>unref <span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">,</span> unref <span class="token punctuation">(</span>password<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  zipObj <span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token string">'password'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   login<span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">mapRej</span><span class="token punctuation">(</span><span class="token function">path</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'error'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">fork</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  map <span class="token punctuation">(</span>prop <span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  mapRej <span class="token punctuation">(</span>path <span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'error'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>write <span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>26 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token function">unref</span><span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">unref</span><span class="token punctuation">(</span>password<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token function">zipObj</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token string">'password'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
+  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">[</span>unref <span class="token punctuation">(</span>id<span class="token punctuation">)</span><span class="token punctuation">,</span> unref <span class="token punctuation">(</span>password<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  zipObj <span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token string">'password'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   login<span class="token punctuation">,</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">mapRej</span><span class="token punctuation">(</span><span class="token function">path</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'error'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">fork</span><span class="token punctuation">(</span>error<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  map <span class="token punctuation">(</span>prop <span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  mapRej <span class="token punctuation">(</span>path <span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'data'</span><span class="token punctuation">,</span> <span class="token string">'error'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>write <span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>使用 <code>pipe()</code> 組合 <code>onClick()</code>：</p>
+<p>使用 <code>pipe</code> 組合 <code>onClick</code>：</p>
 <ul>
-<li><code>() =&gt; [unref(id), unref(password)]</code>：使用 <code>unref()</code> 讀取 state 並以 Array 回傳</li>
-<li><code>zipObj([&#39;id&#39;, &#39;password&#39;])</code>：組合出 Object 準備傳入 <code>login()</code></li>
+<li><code>() =&gt; [unref(id), unref(password)]</code>：使用 <code>unref()</code> 讀取 state 並以 Array 回傳，這裡不能使用 K combinator，Vue 3 會失去 reactivity</li>
+<li><code>zipObj ([&#39;id&#39;, &#39;password&#39;])</code>：組合出 Object 準備傳入 <code>login</code></li>
 <li><code>login</code>：呼叫 API function 回傳 Future</li>
-<li><code>map(prop(&#39;data&#39;))</code>：在 Resolved Future 內取得 <code>data</code></li>
-<li><code>mapRej(path([&#39;response&#39;, &#39;data&#39;, &#39;error&#39;]))</code>：在 Rejected Future 內取得 <code>response.date.error</code></li>
-<li><code>fork(error)(write(result))</code>：從 Future 內取出資料並處理 Rejected Future</li>
+<li><code>map (prop (&#39;data&#39;))</code>：在 Resolved Future 內取得 <code>data</code></li>
+<li><code>mapRej (path ([&#39;response&#39;, &#39;data&#39;, &#39;error&#39;]))</code>：在 Rejected Future 內取得 <code>response.date.error</code></li>
+<li><code>fork (error) (write(result))</code>：從 Future 內處理 Rejected Future，並從 Resolved Future 內取出資料寫入 <code>result</code> state</li>
 </ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>透過 <code>mapRef()</code> 可在 <code>pipe()</code> 內處理 Rejected Future，不必再如 <code>otherwise()</code> 需另外組合 function 處理</li>
+<li>透過 <code>mapRef</code> 可在 <code>pipe</code> 內處理 Rejected Future，不必再如 <code>otherwise</code> 需另外組合 function 處理</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/fluture-js/Fluture" target="_blank" rel="noopener">Fluture</a>, <a href="https://github.com/fluture-js/Fluture#attemptp" target="_blank" rel="noopener">attemptP()</a><br><a href="https://github.com/fluture-js/Fluture" target="_blank" rel="noopener">Fluture</a>, <a href="https://github.com/fluture-js/Fluture#maprej" target="_blank" rel="noopener">mapRej()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/fluture-js/Fluture" target="_blank" rel="noopener">Fluture</a>, <a href="https://github.com/fluture-js/Fluture#attemptp" target="_blank" rel="noopener">attemptP</a><br><a href="https://github.com/fluture-js/Fluture" target="_blank" rel="noopener">Fluture</a>, <a href="https://github.com/fluture-js/Fluture#maprej" target="_blank" rel="noopener">mapRej</a></p>
 
                     </article>
                     <p class="post-footer-info mb-0 pt-2">
@@ -536,9 +539,9 @@ div {{ result.password }}
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/vue3/future/object-array/">
+			<a href="/vue3/future/array-object/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 Future 處理 GET 回傳 Object Array</div>
+				<div class="page-item-subtitle">使用 Future 處理 GET 回傳 Array Object</div>
 			</a>
 		</li>
 		
