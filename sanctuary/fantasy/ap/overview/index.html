@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-07-04T13:10:39.000Z",
-    "dateModified": "2021-07-04T13:19:27.086Z",
+    "dateModified": "2021-07-06T06:06:39.973Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -545,19 +545,22 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 <p>Data 與 function 必須包在相同類型 Object 內，因此都必須是 Future</p>
 </blockquote>
 <p><img src="/images/sanctuary/fantasy/ap/overview/ap010.png" alt="ap010"></p>
-<h3 id="Rejected"><a href="#Rejected" class="headerlink" title="Rejected"></a>Rejected</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> ap<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> resolve<span class="token punctuation">,</span> fork <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture'</span>
+<h3 id="Rejected"><a href="#Rejected" class="headerlink" title="Rejected"></a>Rejected</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> resolve<span class="token punctuation">,</span> reject<span class="token punctuation">,</span> fork <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> env <span class="token keyword">as</span> flutureEnv <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture-sanctuary-types'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> log<span class="token punctuation">,</span> error <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> resolve <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> ap<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env<span class="token punctuation">:</span> env<span class="token punctuation">.</span>concat <span class="token punctuation">(</span>flutureEnv<span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
+<span class="token keyword">let</span> data <span class="token operator">=</span> reject <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
   ap <span class="token punctuation">(</span>resolve <span class="token punctuation">(</span>add <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
   fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span>
 
 f <span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若 <code>data</code> 為 Rejected，則傳入 <code>ap</code> 的 function 不會執行。</p>
 <p><img src="/images/sanctuary/fantasy/ap/overview/ap011.png" alt="ap011"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
