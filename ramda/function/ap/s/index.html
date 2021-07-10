@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-07-10T03:58:13.000Z",
-    "dateModified": "2021-07-10T04:15:13.267Z",
+    "dateModified": "2021-07-10T04:32:40.496Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -453,9 +453,9 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 
 <span class="token keyword">let</span> f <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> add <span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">(</span>multiply <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若將 operator 改成 function，會發現 <code>add()</code> 第二個 argument 須先經過 <code>multiply()</code> 運算過才傳入。</p>
+<p>若將 operator 改成 function，會發現 <code>add</code> 第二個 argument 須先經過 <code>multiply</code> 運算過才傳入。</p>
 <p><img src="/images/ramda/function/ap/s/s001.png" alt="s001"></p>
 <h2 id="ap"><a href="#ap" class="headerlink" title="ap"></a>ap</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ap<span class="token punctuation">,</span> add<span class="token punctuation">,</span> multiply <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
@@ -466,8 +466,9 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>這種第二個 argument 須經過運算後再傳入的 pattern，就是所謂的 S Combinator，其中 <code>S</code> 為 <code>S</code> equence，可使用 <code>ap</code> 組合使其 Point-free。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">ap <span class="token punctuation">(</span>f<span class="token punctuation">)</span> <span class="token punctuation">(</span>g<span class="token punctuation">)</span> <span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">=</span> f <span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token punctuation">(</span>g <span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<blockquote>
+<p>ap (f) (g) (x) = f (x) (g (x))</p>
+</blockquote>
 <p>而 <code>ap</code> 正是 S Combinator 的實現。</p>
 <blockquote>
 <p><strong>ap</strong><br><code>(x → a → b) → (x → a) → x → a</code><br>實現 S Combinator</p>
@@ -485,12 +486,13 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 <p><code>f b</code>：回傳新 Apply</p>
 <p>由於 Function 也是 Apply，因此 data 為 unary function，而第一個 argument 相當於 unary function 包進 unary function 傳入，因此為 binary function。</p>
 <p><img src="/images/ramda/function/ap/s/s002.png" alt="s002"></p>
-<h2 id="chain"><a href="#chain" class="headerlink" title="chain"></a>chain</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript">chain <span class="token punctuation">(</span>f<span class="token punctuation">)</span> <span class="token punctuation">(</span>g<span class="token punctuation">)</span> <span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">=</span> f <span class="token punctuation">(</span>g <span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>x<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="chain"><a href="#chain" class="headerlink" title="chain"></a>chain</h2><blockquote>
+<p>chain (f) (g) (x) = f (g (x)) (x)</p>
+</blockquote>
 <p>眼尖的人應該會發現 <code>ap</code> 與 <code>chain</code> 非常接近：</p>
 <ul>
-<li><code>ap (f) (g) = f (x) (g (x))</code></li>
-<li><code>chain (f) (g) = f (g (x)) (x)</code></li>
+<li><code>ap (f) (g) (x) = f (x) (g (x))</code></li>
+<li><code>chain (f) (g) (x) = f (g (x)) (x)</code></li>
 </ul>
 <p><code>ap</code> 在第二個 argument 先經過其他 function 運算，而 <code>chain</code> 則在第一個 argument 先經過其他 function 運算。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
@@ -516,6 +518,13 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
                 <div class="post-nav px-2 bg-gray">
 	<ul class="pagination">
 		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/sanctuary/fantasy/ap/s/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 ap 實現 S Combinator</div>
+			</a>
+		</li>
 		
 		<!-- Next Nav -->
 		
