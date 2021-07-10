@@ -49,7 +49,7 @@
 
 <meta name="format-detection" content="telephone=no">
 <!-- Description -->
-<meta name="description" content="Binary Function 若第二個 Argument 須先經過其他 Function 運算再傳入，此為 S Combinator，可使用 ap 實現。">
+<meta name="description" content="Binary Function 若第二個 Argument 須先經過其他 Unary Function 運算再傳入，此為 S Combinator，可使用 ap 實現。">
 <!-- Keywords -->
 <meta name="keywords" content=", Sanctuary">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
@@ -168,7 +168,7 @@ a:hover {
 
 <meta property="og:url" content="https://fpjs.fun/sanctuary/fantasy/ap/s/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
-<meta property="og:description" content="Binary Function 若第二個 Argument 須先經過其他 Function 運算再傳入，此為 S Combinator，可使用 ap 實現。">
+<meta property="og:description" content="Binary Function 若第二個 Argument 須先經過其他 Unary Function 運算再傳入，此為 S Combinator，可使用 ap 實現。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-07-10T04:36:39.000Z",
-    "dateModified": "2021-07-10T04:38:32.886Z",
+    "dateModified": "2021-07-10T12:13:37.340Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -234,7 +234,7 @@ a:hover {
     },
     
     "keywords": ", Sanctuary",
-    "description": "Binary Function 若第二個 Argument 須先經過其他 Function 運算再傳入，此為 S Combinator，可使用 ap 實現。"
+    "description": "Binary Function 若第二個 Argument 須先經過其他 Unary Function 運算再傳入，此為 S Combinator，可使用 ap 實現。"
 }
 </script>
 
@@ -436,7 +436,7 @@ a:hover {
                 </div>
                 <div class="card-body">
                     <article id="post-content">
-                        <p>Binary Function 若第二個 Argument 須先經過其他 Function 運算再傳入，此為 S Combinator，可使用 <code>ap</code> 實現。</p>
+                        <p>Binary Function 若第二個 Argument 須先經過其他 Unary Function 運算再傳入，此為 S Combinator，可使用 <code>ap</code> 實現。</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Sanctuary 3.1.0</p>
 <h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">10</span>
@@ -457,6 +457,21 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若將 operator 改成 function，會發現 <code>add</code> 第二個 argument 須先經過 <code>mult</code> 運算過才傳入。</p>
 <p><img src="/images/sanctuary/fantasy/ap/s/s001.png" alt="s001"></p>
+<h2 id="converge"><a href="#converge" class="headerlink" title="converge"></a>converge</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> converge<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> mult<span class="token punctuation">,</span> I <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">10</span>
+
+<span class="token keyword">let</span> f <span class="token operator">=</span> converge <span class="token punctuation">(</span>add<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">[</span>I<span class="token punctuation">,</span> mult <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>一般為了 Point-free，都會朝向 <code>pipe</code>、<code>compose</code>、<code>useWith</code> 或 <code>converge</code> 這些 function 著手。</p>
+<p>因為發現 <code>add</code> 是實質最後一個 function，第一個 argument 不變，第二個 argument 經過 <code>mult (3)</code>，很直覺會朝向 <code>converge</code> 重構。</p>
+<blockquote>
+<p>當出現 <code>converge (f) ([I, g])</code> 時，它等效於 <code>ap (f) (g)</code></p>
+</blockquote>
+<p><img src="/images/sanctuary/fantasy/ap/s/s003.png" alt="s003"></p>
 <h2 id="ap"><a href="#ap" class="headerlink" title="ap"></a>ap</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ap<span class="token punctuation">,</span> add<span class="token punctuation">,</span> mult <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">10</span>
@@ -467,16 +482,16 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>這種第二個 argument 須經過運算後再傳入的 pattern，就是所謂的 S Combinator，其中 <code>S</code> 為 <code>S</code> equence，可使用 <code>ap</code> 組合使其 Point-free。</p>
 <blockquote>
-<p>ap (f) (g) (x) = f (x) (g (x))</p>
+<p><code>ap (f) (g) (x) = f (x) (g (x))</code></p>
 </blockquote>
 <p>而 <code>ap</code> 正是 S Combinator 的實現。</p>
 <blockquote>
-<p><strong>ap</strong><br><code>(x → a → b) → (x → a) → x → a</code><br>實現 S Combinator</p>
+<p><strong>ap</strong><br><code>(a → b → c) → (a → b) → a → c</code><br>實現 S Combinator</p>
 </blockquote>
-<p><code>x -&gt; a -&gt; b</code>：第一個 argument 為 binary function</p>
-<p><code>x -&gt; a</code>：第二個 argument 為 unary function</p>
-<p><code>x</code>：為 data</p>
-<p><code>a</code>：回傳結果</p>
+<p><code>a -&gt; b -&gt; c</code>：傳入 binary function</p>
+<p><code>a -&gt; b</code>：傳入 unary function</p>
+<p><code>a</code>：為 data</p>
+<p><code>c</code>：回傳結果</p>
 <p><code>ap</code> 原本定義為：</p>
 <blockquote>
 <p><strong>ap</strong><br><code>Apply f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b</code><br>將 function 包進 Apply 再傳入 <code>ap</code> 改變 Apply 內部值</p>
@@ -487,7 +502,7 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 <p>由於 Function 也是 Apply，因此 data 為 unary function，而第一個 argument 相當於 unary function 包進 unary function 傳入，因此為 binary function。</p>
 <p><img src="/images/sanctuary/fantasy/ap/s/s002.png" alt="s002"></p>
 <h2 id="chain"><a href="#chain" class="headerlink" title="chain"></a>chain</h2><blockquote>
-<p>chain (f) (g) (x) = f (g (x)) (x)</p>
+<p><code>chain (f) (g) (x) = f (g (x)) (x)</code></p>
 </blockquote>
 <p>眼尖的人應該會發現 <code>ap</code> 與 <code>chain</code> 非常接近：</p>
 <ul>
@@ -498,6 +513,7 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Binary function 若只有一個 argument 經過 function 運算，可使用 <code>ap</code> 或 <code>chain</code> 組合</li>
 <li>Binary function 若兩個 argument 都需經過 function 運算，可使用 <code>converge</code> 組合</li>
+<li>若一開始看不出使用 <code>ap</code>，可先重構成 <code>converge</code>，當發現 <code>converge (f) ([I, g])</code> 時再重構成 <code>ap</code></li>
 <li><code>ap</code> 之所以能實現 S combinator，因為 unary function 也是 Apply，當 unary function 包進 unary function 時就成為 binary function</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://sanctuary.js.org" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://sanctuary.js.org/#ap" target="_blank" rel="noopener">ap</a></p>
@@ -518,6 +534,13 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
                 <div class="post-nav px-2 bg-gray">
 	<ul class="pagination">
 		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/ramda/function/chain/s/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 chain 實現 S&#39; Combinator</div>
+			</a>
+		</li>
 		
 		<!-- Next Nav -->
 		
