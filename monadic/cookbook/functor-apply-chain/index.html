@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-07-06T16:53:37.000Z",
-    "dateModified": "2021-07-10T16:06:29.558Z",
+    "dateModified": "2021-07-11T02:43:33.479Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -438,7 +438,6 @@ a:hover {
                     <article id="post-content">
                         <p>Functor、Apply 與 Chain 本質都是 Typeclass，只是各提供不同方式處理 Function 而已。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Sanctuary 3.1.0</p>
 <h2 id="Functor"><a href="#Functor" class="headerlink" title="Functor"></a>Functor</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Just<span class="token punctuation">,</span> map<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> Just <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
@@ -456,11 +455,11 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 <p><code>f a</code>：data 為 Functor</p>
 <p><code>f b</code>：回傳新 Functor</p>
 <p><img src="/images/monadic/cookbook/functor-apply-chain/monad000.png" alt="monad000"></p>
-<h2 id="Apply"><a href="#Apply" class="headerlink" title="Apply"></a>Apply</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Just<span class="token punctuation">,</span> ap<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<h2 id="Apply"><a href="#Apply" class="headerlink" title="Apply"></a>Apply</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> <span class="token keyword">of</span><span class="token punctuation">,</span> Maybe<span class="token punctuation">,</span> Just<span class="token punctuation">,</span> ap<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> Just <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> ap <span class="token punctuation">(</span>Just <span class="token punctuation">(</span>add <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> f <span class="token operator">=</span> ap <span class="token punctuation">(</span><span class="token keyword">of</span> <span class="token punctuation">(</span>Maybe<span class="token punctuation">)</span> <span class="token punctuation">(</span>add <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
@@ -473,11 +472,11 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 <p><code>f a</code>：data 為 Apply</p>
 <p><code>f b</code>：回傳新 Apply</p>
 <p><img src="/images/monadic/cookbook/functor-apply-chain/monad001.png" alt="monad001"></p>
-<h2 id="Chain"><a href="#Chain" class="headerlink" title="Chain"></a>Chain</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> Just<span class="token punctuation">,</span> chain<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<h2 id="Chain"><a href="#Chain" class="headerlink" title="Chain"></a>Chain</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> <span class="token keyword">of</span><span class="token punctuation">,</span> Maybe<span class="token punctuation">,</span> Just<span class="token punctuation">,</span> chain<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> Just <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> add_ <span class="token operator">=</span> n <span class="token operator">=</span><span class="token operator">></span> compose <span class="token punctuation">(</span>Just<span class="token punctuation">)</span> <span class="token punctuation">(</span>add <span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> add_ <span class="token operator">=</span> n <span class="token operator">=</span><span class="token operator">></span> compose <span class="token punctuation">(</span><span class="token keyword">of</span> <span class="token punctuation">(</span>Maybe<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>add <span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> f <span class="token operator">=</span> chain <span class="token punctuation">(</span>add_ <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
 
