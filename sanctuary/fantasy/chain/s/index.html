@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-07-10T13:33:12.000Z",
-    "dateModified": "2021-07-10T13:34:55.036Z",
+    "dateModified": "2021-07-15T14:23:16.510Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -456,16 +456,14 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 
 f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Functional 會使用 <code>head</code> 取得 Array 的第一個 element，但 <code>head</code> 會回傳 Maybe，需使用 <code>fromMaybe</code> 特別處理，然後在 <code>append</code> 到最後並回傳。</p>
+<p>Functional 會使用 <code>head</code> 取得 Array 的第一個 element，然後再 <code>append</code> 到最後並回傳。</p>
 <p><img src="/images/sanctuary/fantasy/chain/s/s001.png" alt="s001"></p>
 <h2 id="converge"><a href="#converge" class="headerlink" title="converge"></a>converge</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> converge<span class="token punctuation">,</span> append<span class="token punctuation">,</span> head<span class="token punctuation">,</span> identity <span class="token keyword">as</span> I <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> converge <span class="token punctuation">(</span>append<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">[</span>head<span class="token punctuation">,</span> I<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+converge <span class="token punctuation">(</span>append<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">[</span>head<span class="token punctuation">,</span> I<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>一般為了 Point-free，都會朝向 <code>pipe</code>、<code>compose</code>、<code>useWith</code> 或 <code>converge</code> 這些 function 著手。</p>
 <p>因為發現 <code>append</code> 是實質最後一個 function，第一個 argument 經過 <code>head</code>，第二個不變，很直覺會朝向 <code>converge</code> 重構。</p>
 <blockquote>
@@ -477,10 +475,8 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> chain <span class="token punctuation">(</span>append<span class="token punctuation">)</span> <span class="token punctuation">(</span>head<span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+chain <span class="token punctuation">(</span>append<span class="token punctuation">)</span> <span class="token punctuation">(</span>head<span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>這種第一個 argument 須經過運算後再傳入的 pattern，很類似 S Combinator，姑且稱之為 S’ combinator，可使用 <code>chain</code> 組合使其 Point-free。</p>
 <blockquote>
 <p><strong>chain (f) (g) (x) = f (g (x)) (x)</strong></p>

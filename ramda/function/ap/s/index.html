@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-07-10T03:58:13.000Z",
-    "dateModified": "2021-07-10T12:14:08.530Z",
+    "dateModified": "2021-07-15T14:53:44.914Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -461,10 +461,8 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">10</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> converge <span class="token punctuation">(</span>add<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">[</span>I<span class="token punctuation">,</span> multiply <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+converge <span class="token punctuation">(</span>add<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">[</span>I<span class="token punctuation">,</span> multiply <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>一般為了 Point-free，都會朝向 <code>pipe</code>、<code>compose</code>、<code>useWith</code> 或 <code>converge</code> 這些 function 著手。</p>
 <p>因為發現 <code>add</code> 是實質最後一個 function，第一個 argument 不變，第二個 argument 經過 <code>multiplay (3)</code>，很直覺會朝向 <code>converge</code> 重構。</p>
 <blockquote>
@@ -475,10 +473,8 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">10</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> ap <span class="token punctuation">(</span>add<span class="token punctuation">)</span> <span class="token punctuation">(</span>multiply <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+ap <span class="token punctuation">(</span>add<span class="token punctuation">)</span> <span class="token punctuation">(</span>multiply <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>這種第二個 argument 須經過運算後再傳入的 pattern，就是所謂的 S Combinator，其中 <code>S</code> 為 <code>S</code> equence，可使用 <code>ap</code> 組合使其 Point-free。</p>
 <blockquote>
 <p><code>ap (f) (g) (x) = f (x) (g (x))</code></p>
@@ -487,8 +483,8 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 <blockquote>
 <p><strong>ap</strong><br><code>(a → b → c) → (a → b) → a → c</code><br>實現 S Combinator</p>
 </blockquote>
-<p><code>a -&gt; b -&gt; c</code>：傳入 binary function</p>
-<p><code>a -&gt; b</code>：傳入 unary function</p>
+<p><code>(a → b → c)</code>：傳入 binary function</p>
+<p><code>(a → b)</code>：傳入 unary function</p>
 <p><code>a</code>：為 data</p>
 <p><code>c</code>：回傳結果</p>
 <p><code>ap</code> 原本定義為：</p>

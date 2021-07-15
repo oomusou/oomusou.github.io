@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-07-10T04:36:39.000Z",
-    "dateModified": "2021-07-10T12:13:37.340Z",
+    "dateModified": "2021-07-15T14:47:32.116Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -438,7 +438,6 @@ a:hover {
                     <article id="post-content">
                         <p>Binary Function 若第二個 Argument 須先經過其他 Unary Function 運算再傳入，此為 S Combinator，可使用 <code>ap</code> 實現。</p>
 <a id="more"></a>
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Sanctuary 3.1.0</p>
 <h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">10</span>
 
 <span class="token keyword">let</span> f <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">+</span> <span class="token number">3</span> <span class="token operator">*</span> x
@@ -462,10 +461,8 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">10</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> converge <span class="token punctuation">(</span>add<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">[</span>I<span class="token punctuation">,</span> mult <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+converge <span class="token punctuation">(</span>add<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">[</span>I<span class="token punctuation">,</span> mult <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>一般為了 Point-free，都會朝向 <code>pipe</code>、<code>compose</code>、<code>useWith</code> 或 <code>converge</code> 這些 function 著手。</p>
 <p>因為發現 <code>add</code> 是實質最後一個 function，第一個 argument 不變，第二個 argument 經過 <code>mult (3)</code>，很直覺會朝向 <code>converge</code> 重構。</p>
 <blockquote>
@@ -476,10 +473,8 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">10</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> ap <span class="token punctuation">(</span>add<span class="token punctuation">)</span> <span class="token punctuation">(</span>mult <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+ap <span class="token punctuation">(</span>add<span class="token punctuation">)</span> <span class="token punctuation">(</span>mult <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>這種第二個 argument 須經過運算後再傳入的 pattern，就是所謂的 S Combinator，其中 <code>S</code> 為 <code>S</code> equence，可使用 <code>ap</code> 組合使其 Point-free。</p>
 <blockquote>
 <p><code>ap (f) (g) (x) = f (x) (g (x))</code></p>
