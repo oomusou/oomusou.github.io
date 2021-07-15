@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-07-11T04:41:13.000Z",
-    "dateModified": "2021-07-12T16:05:48.957Z",
+    "dateModified": "2021-07-14T14:03:05.646Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -443,42 +443,42 @@ a:hover {
 <h2 id="Fantasy-Land"><a href="#Fantasy-Land" class="headerlink" title="Fantasy Land"></a>Fantasy Land</h2><p><img src="/images/monadic/monad/overview/monad000.png" alt="monad000"></p>
 <p>根據 Fantasy Land 定義，必須實現 Functor、Apply、Applicative 與 Chain 四個 typeclass，才能算完整 Monad。</p>
 <h2 id="Functor"><a href="#Functor" class="headerlink" title="Functor"></a>Functor</h2><blockquote>
-<p><strong>map</strong><br><code>Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b</code><br>將 unary function 傳入 <code>map</code> 改變 Functor 內部 value</p>
+<p><strong>map</strong><br><code>Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b</code><br>將 Functor 與 unary function 綁定改變 Functor</p>
 </blockquote>
 <ul>
-<li><p>根據 Fantasy Land 定義，支援 <code>map</code> 的 Object 就是 Functor，這也是為什麼 Sanctuary 對於 <code>map</code> 的 type signature 會出現 <code>Functor</code> 原因，算是最基本的 typeclass</p>
-</li>
-<li><p>對於 Monad 來說，必須也實現 <code>map</code> 支援 Functor，這表示所有 typeclass 為 Functor 的 function 都適用於 Monad</p>
-</li>
-<li><p><code>map</code> 使我們能傳入 unary function 改變 Object 內部 value</p>
-</li>
+<li>根據 Fantasy Land 定義，支援 <code>map</code> 的 Object 就是 Functor，這也是為什麼 Sanctuary 對於 <code>map</code> 的 type signature 會出現 <code>Functor</code> 原因，算是最基本的 typeclass</li>
+<li>對於 Monad 來說，必須也實現 <code>map</code> 支援 Functor，這表示所有 typeclass 為 Functor 的 function 都適用於 Monad</li>
+<li><code>map</code> 使我們能將 Functor 與 unary function 綁定改變 Functor</li>
 </ul>
 <h2 id="Apply"><a href="#Apply" class="headerlink" title="Apply"></a>Apply</h2><blockquote>
-<p><strong>ap</strong><br><code>Apply f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b</code><br>將 unary function 包進 Apply 傳入 <code>ap</code> 改變 Apply 內部 value</p>
+<p><strong>ap</strong><br><code>Apply f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b</code><br>將 Apply 與包進 Apply 的 function 綁定改變 Apply</p>
 </blockquote>
 <ul>
-<li><p>根據 Fantasy Land 定義，支援 <code>ap</code> 的 Object 就是 Apply，這也是為什麼在 Sanctuary 對於 <code>ap</code> 的 type signature 會出現 <code>Apply</code> 原因</p>
-</li>
-<li><p>對於 Monad 來說，必須也實現 <code>ap</code> 支援 Apply，這表示所有 typeclass 為 Apply 的 function 都適用於 Monad</p>
-</li>
-<li><p><code>ap</code> 使我們能傳入包進 Apply 的 unary function 改變 Object 內部 value</p>
-</li>
+<li>根據 Fantasy Land 定義，支援 <code>ap</code> 的 Object 就是 Apply，這也是為什麼在 Sanctuary 對於 <code>ap</code> 的 type signature 會出現 <code>Apply</code> 原因</li>
+<li>對於 Monad 來說，必須也實現 <code>ap</code> 支援 Apply，這表示所有 typeclass 為 Apply 的 function 都適用於 Monad</li>
+<li><code>ap</code> 使我們能將 Apply 與包進 Apply 的 unary function 綁定改變 Apply</li>
 </ul>
+<blockquote>
+<p>Haskell 稱支援 <code>ap</code> 的 Object 就是 Applicative；而 Fantasy Land 稱為 Apply</p>
+</blockquote>
 <h2 id="Applicative"><a href="#Applicative" class="headerlink" title="Applicative"></a>Applicative</h2><blockquote>
 <p><strong>of</strong><br><code>Applicative f =&gt; TypeRep f -&gt; a -&gt; f a</code><br>將 value 包進 Applicative</p>
 </blockquote>
 <ul>
 <li>根據 Fantasy Land 定義，支援 <code>of</code> 的 Object 就是 Applicative，這也是為什麼 Sanctuary 對於 <code>of</code> 的 type signature 會出現 <code>Applicative</code> 原因</li>
 <li>對於 Monad 來說，必須也實現 <code>of</code> 支援 Applicative，這表示所有 typeclass 為 Applicative 的 function 都適用於 Monad</li>
-<li><code>of</code> 使我們能將 value 包進 Applicative 建立 Object</li>
+<li><code>of</code> 使我們能將 value 包進 Applicative</li>
 </ul>
+<blockquote>
+<p>Haskell 稱為 <code>return</code>；而 Fantasy Land 稱為 <code>of</code></p>
+</blockquote>
 <h2 id="Chain"><a href="#Chain" class="headerlink" title="Chain"></a>Chain</h2><blockquote>
-<p><strong>chain</strong><br><code>Chain m =&gt; (a -&gt; m b) -&gt; m a -&gt; m b</code><br>將回傳 Chain 的 unary function 傳入 <code>chain</code> 改變 Chain 內部 value</p>
+<p><strong>chain</strong><br><code>Chain m =&gt; (a -&gt; m b) -&gt; m a -&gt; m b</code><br>將 Chain 與回傳 Chain 的 unary function 綁定改變 Chain</p>
 </blockquote>
 <ul>
 <li>根據 Fantasy Land 定義，支援 <code>chain</code> 的 Object 就是 Chain，這也是為什麼 Sanctuary 對於 <code>chain</code> 的 type signature 會出現 <code>Chain</code> 原因</li>
 <li>對於 Monad 來說，必須也實現 <code>chain</code> 支援 Chain，這表示所有 typeclass 為 Chain 的 function 都適用於 Monad</li>
-<li><code>chain</code> 使我們能傳入回傳 Chain 的 unary function 改變 Object 內部 value</li>
+<li><code>chain</code> 使我們能將 Chain 與回傳 Chain 的 unary function 綁定改變 Chain</li>
 </ul>
 <h2 id="Maybe、Either、Future"><a href="#Maybe、Either、Future" class="headerlink" title="Maybe、Either、Future"></a>Maybe、Either、Future</h2><p>Maybe、Either 與 Future 是 FP 中典型的三大 Monad：</p>
 <ul>
@@ -488,7 +488,7 @@ a:hover {
 </ul>
 <p>Maybe、Either 與 Future 都是 Monad，因此採用相同處理方式，其最重的哲學就是：</p>
 <blockquote>
-<p>將所有運算在 Monad 內運算，直到最後再從 Monad 內取出 value</p>
+<p>將所有運算集中在 Monad 內，直到最後再從 Monad 內取出 value</p>
 </blockquote>
 <p>這樣的優點是：</p>
 <ul>
@@ -506,7 +506,7 @@ a:hover {
 <li>Either：如自行 validation 時會回傳 Either</li>
 <li>Future：如呼叫 API 時會回傳 Future</li>
 </ul>
-<p>將回傳 Monad 的 unary function 傳入 <code>chain</code>，可直接改變 Monad 內部 value，並避免兩 va層 Monad</p>
+<p>將回傳 Monad 的 unary function 傳入 <code>chain</code>，可直接改變 Monad 內部 value，並避免產生兩層 Monad</p>
 </li>
 </ul>
 <h2 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h2><p>Promise 常被爭議是否算 Monad ?</p>
@@ -542,12 +542,19 @@ a:hover {
 	<ul class="pagination">
 		<!-- Prev Nav -->
 		
+		<li class="page-item page-prev">
+			<a href="/monadic/monad/laws/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">深入淺出 Monad Laws</div>
+			</a>
+		</li>
+		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
 			<a href="/ramda/function/chain/overview/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 chain 傳入回傳 Chain 的 Function</div>
+				<div class="page-item-subtitle">使用 chain 將 Chain 與回傳 Chain 的 Function 綁定</div>
 			</a>
 		</li>
 		
