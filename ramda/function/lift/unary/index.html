@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-07-04T02:04:18.000Z",
-    "dateModified": "2021-07-04T05:00:24.421Z",
+    "dateModified": "2021-07-16T09:09:06.166Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -442,104 +442,66 @@ a:hover {
 <h2 id="Primitive"><a href="#Primitive" class="headerlink" title="Primitive"></a>Primitive</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> negate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> Just <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> negate
-
-f <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-f <span class="token punctuation">(</span>Just <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+negate <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+negate <span class="token punctuation">(</span>Just <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>negate</code> 可處理 Number 為負值，但卻無法處理 Maybe Number 相加，因為 <code>negate</code> 無法處理 monadic type。</p>
 <p><img src="/images/ramda/function/lift/unary/unary001.png" alt="unary001"></p>
-<h2 id="Maybe"><a href="#Maybe" class="headerlink" title="Maybe"></a>Maybe</h2><h3 id="Just"><a href="#Just" class="headerlink" title="Just"></a>Just</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> lift<span class="token punctuation">,</span> negate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> Just<span class="token punctuation">,</span> fromMaybe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h2 id="Maybe"><a href="#Maybe" class="headerlink" title="Maybe"></a>Maybe</h2><h3 id="Just"><a href="#Just" class="headerlink" title="Just"></a>Just</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> lift<span class="token punctuation">,</span> negate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Just <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> Just <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> negate_ <span class="token operator">=</span> lift <span class="token punctuation">(</span>negate<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  negate_<span class="token punctuation">,</span>
-  fromMaybe <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  log
-<span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>使用 <code>lift</code> 將 <code>negate</code> 提升成 <code>negate_</code>，因此能接受 Just。</p>
+lift <span class="token punctuation">(</span>negate<span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>negate</code> 使用 <code>lift</code> 提升後就能接受 Maybe。</p>
 <blockquote>
 <p><strong>lift</strong><br><code>(*… → *) → ([*]… → [*])</code><br>將一般 function 提升能處理 Apply 的 function</p>
 </blockquote>
 <p><code>(*… → *)</code>：傳入一般 function</p>
 <p><code>([*]… → [*])</code>：回傳能處理 Apply 的 function</p>
 <p><img src="/images/ramda/function/lift/unary/unary002.png" alt="unary002"></p>
-<h3 id="Nothing"><a href="#Nothing" class="headerlink" title="Nothing"></a>Nothing</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> lift<span class="token punctuation">,</span> negate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> Nothing<span class="token punctuation">,</span> fromMaybe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h3 id="Nothing"><a href="#Nothing" class="headerlink" title="Nothing"></a>Nothing</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> lift<span class="token punctuation">,</span> negate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Nothing <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> Nothing
 
-<span class="token keyword">let</span> negate_ <span class="token operator">=</span> lift <span class="token punctuation">(</span>negate<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  negate_<span class="token punctuation">,</span>
-  fromMaybe <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  log
-<span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若傳入為 Nothing，則 <code>negate_</code> 也能回傳 Nothing。</p>
+lift <span class="token punctuation">(</span>negate<span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>若 <code>data</code> 為 Nothing，則 <code>lift (negate)</code> 也會回傳 Nothing。</p>
 <p><img src="/images/ramda/function/lift/unary/unary003.png" alt="unary003"></p>
-<h2 id="Either"><a href="#Either" class="headerlink" title="Either"></a>Either</h2><h3 id="Right"><a href="#Right" class="headerlink" title="Right"></a>Right</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> lift<span class="token punctuation">,</span> negate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> Right<span class="token punctuation">,</span> either <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> error<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h2 id="Either"><a href="#Either" class="headerlink" title="Either"></a>Either</h2><h3 id="Right"><a href="#Right" class="headerlink" title="Right"></a>Right</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> lift<span class="token punctuation">,</span> negate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Right <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> Right <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> negate_ <span class="token operator">=</span> lift <span class="token punctuation">(</span>negate<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  negate_<span class="token punctuation">,</span> 
-  either <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Right 也是 Functor，因此也能使用 <code>negate_</code>。</p>
+lift <span class="token punctuation">(</span>negate<span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>negate</code> 使用 <code>lift</code> 提升後也能接受 Either。</p>
 <p><img src="/images/ramda/function/lift/unary/unary004.png" alt="unary004"></p>
-<h3 id="Left"><a href="#Left" class="headerlink" title="Left"></a>Left</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> lift<span class="token punctuation">,</span> negate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> Left<span class="token punctuation">,</span> either <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> error<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h3 id="Left"><a href="#Left" class="headerlink" title="Left"></a>Left</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> lift<span class="token punctuation">,</span> negate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Left <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> Left <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> negate_ <span class="token operator">=</span> lift <span class="token punctuation">(</span>negate<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  negate_<span class="token punctuation">,</span> 
-  either <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若傳入為 Left，則 <code>negate_</code> 也能回傳 Left。</p>
+lift <span class="token punctuation">(</span>negate<span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>若 <code>data</code> 為 Left，則 <code>lift (negate)</code> 也能回傳 Left。</p>
 <p><img src="/images/ramda/function/lift/unary/unary005.png" alt="unary005"></p>
-<h2 id="Fluture"><a href="#Fluture" class="headerlink" title="Fluture"></a>Fluture</h2><h3 id="Resolved"><a href="#Resolved" class="headerlink" title="Resolved"></a>Resolved</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> resolve<span class="token punctuation">,</span> fork <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture'</span>
+<h2 id="Future"><a href="#Future" class="headerlink" title="Future"></a>Future</h2><h3 id="Resolved"><a href="#Resolved" class="headerlink" title="Resolved"></a>Resolved</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> resolve<span class="token punctuation">,</span> fork <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> lift<span class="token punctuation">,</span> negate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> error<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> resolve <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> negate_ <span class="token operator">=</span> lift <span class="token punctuation">(</span>negate<span class="token punctuation">)</span>
-
 <span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  negate_<span class="token punctuation">,</span> 
+  lift <span class="token punctuation">(</span>negate<span class="token punctuation">)</span><span class="token punctuation">,</span> 
   fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
 f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Resolved 也是 Functor，因此也能使用 <code>negate_</code>。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>negate</code> 使用 <code>lift</code> 提升後也能接受 Future。</p>
 <p><img src="/images/ramda/function/lift/unary/unary006.png" alt="unary006"></p>
 <h3 id="Rejected"><a href="#Rejected" class="headerlink" title="Rejected"></a>Rejected</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> reject<span class="token punctuation">,</span> fork <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> lift<span class="token punctuation">,</span> negate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
@@ -547,16 +509,14 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> reject <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> negate_ <span class="token operator">=</span> lift <span class="token punctuation">(</span>negate<span class="token punctuation">)</span>
-
 <span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  negate_<span class="token punctuation">,</span> 
+  lift <span class="token punctuation">(</span>negate<span class="token punctuation">)</span><span class="token punctuation">,</span> 
   fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
 <span class="token punctuation">)</span>
 
 f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若傳入為 Rejected，則 <code>negate_</code> 也能回傳 Rejected。</p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>若 <code>data</code> 為 Rejected，則 <code>lift (negate)</code> 也能回傳 Rejected。</p>
 <p><img src="/images/ramda/function/lift/unary/unary007.png" alt="unary007"></p>
 <h2 id="Why"><a href="#Why" class="headerlink" title="Why ?"></a>Why ?</h2><p>看到這裡可能會覺得很神奇，為什麼 <code>negate</code> 這種一般 function 經過 <code>lift</code> 提升後就可以使用 Maybe、Either 與 Future 呢 ?</p>
 <p><code>lift</code> 原意是將普通 function 提升成能處理 Apply 的 function，它在內部會呼叫 Apply 的 <code>ap</code>，因此一般 function 得以在 Apply 內運算。</p>
@@ -595,9 +555,9 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/sanctuary/fantasy/map/">
+			<a href="/sanctuary/either/chain-validation/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 map 提升 Unary Function</div>
+				<div class="page-item-subtitle">使用 chain 組合多個 Validation</div>
 			</a>
 		</li>
 		

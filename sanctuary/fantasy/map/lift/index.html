@@ -51,7 +51,7 @@
 <!-- Description -->
 <meta name="description" content="一般我們所寫的 Function 都只能處理 ECMAScript 的原生 Type，而無法處理 Maybe、Either、Future 這類 Monadic Type，透過 map 可將普通 Unary Function 提升成能處理 Functor 的 Function。">
 <!-- Keywords -->
-<meta name="keywords" content=", Fluture, Sanctuary">
+<meta name="keywords" content=", Sanctuary">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
 <meta http-equiv="Cache-Control" content="no-transform">
 <meta http-equiv="Cache-Control" content="no-siteapp">
@@ -166,16 +166,16 @@ a:hover {
 	<meta property="og:title" content="使用 map 提升 Unary Function | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://fpjs.fun/sanctuary/fantasy/map/">
+<meta property="og:url" content="https://fpjs.fun/sanctuary/fantasy/map/lift/">
 <meta property="og:image" content="https://fpjs.fun/apple-touch-icon.png">
 <meta property="og:description" content="一般我們所寫的 Function 都只能處理 ECMAScript 的原生 Type，而無法處理 Maybe、Either、Future 這類 Monadic Type，透過 map 可將普通 Unary Function 提升成能處理 Functor 的 Function。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2021-07-03T15:16:19.000Z">
-<meta property="article:modified_time" content="2021-07-03T15:16:19.000Z">
+<meta property="article:published_time" content="2021-07-16T14:05:23.000Z">
+<meta property="article:modified_time" content="2021-07-16T14:05:23.000Z">
 <meta property="article:author" content="Sam Xiao">
-<meta property="og:article:tag" content=", Fluture, Sanctuary">
+<meta property="og:article:tag" content=", Sanctuary">
 
 
 	<!-- ### Analytics ### -->
@@ -186,19 +186,19 @@ a:hover {
 
 
 	<!-- ### Canonical link ### -->
-	<link rel="canonical" href="https://fpjs.fun/sanctuary/fantasy/map/">
+	<link rel="canonical" href="https://fpjs.fun/sanctuary/fantasy/map/lift/">
 	<!-- ### Structured Data ### -->
 	
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://fpjs.fun/sanctuary/fantasy/map/",
+    "url": "https://fpjs.fun/sanctuary/fantasy/map/lift/",
     "@type": "BlogPosting",
     "logo": "https://fpjs.fun/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://fpjs.fun/sanctuary/fantasy/map/"
+        "@id": "https://fpjs.fun/sanctuary/fantasy/map/lift/"
     },
     "headline": "使用 map 提升 Unary Function | 點燈坊",
     
@@ -207,8 +207,8 @@ a:hover {
         "url": "https://fpjs.fun/apple-touch-icon.png"
     },
     
-    "datePublished": "2021-07-03T15:16:19.000Z",
-    "dateModified": "2021-07-04T02:15:05.222Z",
+    "datePublished": "2021-07-16T14:05:23.000Z",
+    "dateModified": "2021-07-16T14:08:26.083Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -233,7 +233,7 @@ a:hover {
         "query-input": "required name=search_term_string"
     },
     
-    "keywords": ", Fluture, Sanctuary",
+    "keywords": ", Sanctuary",
     "description": "一般我們所寫的 Function 都只能處理 ECMAScript 的原生 Type，而無法處理 Maybe、Either、Future 這類 Monadic Type，透過 map 可將普通 Unary Function 提升成能處理 Functor 的 Function。"
 }
 </script>
@@ -431,7 +431,7 @@ a:hover {
 <div class="post-header-info">
 	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
 		alt="Sam Xiao's Avatar">
-	<span>2021-07-03</span>
+	<span>2021-07-16</span>
 </div>
                 </div>
                 <div class="card-body">
@@ -441,84 +441,48 @@ a:hover {
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Sanctuary 3.1.0</p>
 <h2 id="Primitive"><a href="#Primitive" class="headerlink" title="Primitive"></a>Primitive</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> negate<span class="token punctuation">,</span> Just <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> negate
-
-f <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-f <span class="token punctuation">(</span>Just <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+negate <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+negate <span class="token punctuation">(</span>Just <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>negate</code> 可處理 Number 為負值，但卻無法處理 Maybe Number 相加，因為 <code>negate</code> 無法處理 monadic type。</p>
-<p><img src="/images/sanctuary/fantasy/map/map000.png" alt="map000"></p>
-<h2 id="Maybe"><a href="#Maybe" class="headerlink" title="Maybe"></a>Maybe</h2><h3 id="Just"><a href="#Just" class="headerlink" title="Just"></a>Just</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> negate<span class="token punctuation">,</span> Just<span class="token punctuation">,</span> fromMaybe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<p><img src="/images/sanctuary/fantasy/map/lift/lift000.png" alt="map000"></p>
+<h2 id="Maybe"><a href="#Maybe" class="headerlink" title="Maybe"></a>Maybe</h2><h3 id="Just"><a href="#Just" class="headerlink" title="Just"></a>Just</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> negate<span class="token punctuation">,</span> Just <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> Just <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> negate_ <span class="token operator">=</span> map <span class="token punctuation">(</span>negate<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
-  negate_<span class="token punctuation">,</span>
-  fromMaybe <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  log
-<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+map <span class="token punctuation">(</span>negate<span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用 <code>map</code> 將 <code>negate</code> 提升成 <code>negate_</code>，因此能接受 Just。</p>
 <blockquote>
 <p><strong>map</strong><br><code>Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b</code><br>將 unary function 提升成能接受 Functor 的 function</p>
 </blockquote>
-<p><code>a -&gt; b</code>：傳入一般 unary function</p>
+<p><code>a -&gt; b</code>：一般 unary function</p>
 <p><code>f a -&gt; f b</code>：回傳能接受 Functor 的 unary function</p>
-<p><img src="/images/sanctuary/fantasy/map/map001.png" alt="map001"></p>
-<h3 id="Nothing"><a href="#Nothing" class="headerlink" title="Nothing"></a>Nothing</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> negate<span class="token punctuation">,</span> Nothing<span class="token punctuation">,</span> fromMaybe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<p><img src="/images/sanctuary/fantasy/map/lift/lift001.png" alt="map001"></p>
+<h3 id="Nothing"><a href="#Nothing" class="headerlink" title="Nothing"></a>Nothing</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> negate<span class="token punctuation">,</span> Nothing <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> Nothing
 
-<span class="token keyword">let</span> negate_ <span class="token operator">=</span> map <span class="token punctuation">(</span>negate<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
-  negate_<span class="token punctuation">,</span>
-  fromMaybe <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  log
-<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若傳入為 Nothing，則 <code>negate_</code> 也能回傳 Nothing。</p>
-<p><img src="/images/sanctuary/fantasy/map/map002.png" alt="map002"></p>
-<h2 id="Either"><a href="#Either" class="headerlink" title="Either"></a>Either</h2><h3 id="Right"><a href="#Right" class="headerlink" title="Right"></a>Right</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> negate<span class="token punctuation">,</span> Right<span class="token punctuation">,</span> either <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> error<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+map <span class="token punctuation">(</span>negate<span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>若 <code>data</code> 為 Nothing，則 <code>map (negate)</code> 也會回傳 Nothing。</p>
+<p><img src="/images/sanctuary/fantasy/map/lift/lift002.png" alt="map002"></p>
+<h2 id="Either"><a href="#Either" class="headerlink" title="Either"></a>Either</h2><h3 id="Right"><a href="#Right" class="headerlink" title="Right"></a>Right</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> negate<span class="token punctuation">,</span> Right <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> Right <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> negate_ <span class="token operator">=</span> map <span class="token punctuation">(</span>negate<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
-  negate_<span class="token punctuation">,</span> 
-  either <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Right 也是 Functor，因此也能使用 <code>negate_</code>。</p>
-<p><img src="/images/sanctuary/fantasy/map/map003.png" alt="map003"></p>
-<h3 id="Left"><a href="#Left" class="headerlink" title="Left"></a>Left</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> negate<span class="token punctuation">,</span> Left<span class="token punctuation">,</span> either <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> error<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+map <span class="token punctuation">(</span>negate<span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>negate</code> 使用 <code>lift</code> 提升後也能接受 Either。</p>
+<p><img src="/images/sanctuary/fantasy/map/lift/lift003.png" alt="map003"></p>
+<h3 id="Left"><a href="#Left" class="headerlink" title="Left"></a>Left</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> negate<span class="token punctuation">,</span> Left <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> Left <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> negate_ <span class="token operator">=</span> map <span class="token punctuation">(</span>negate<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
-  negate_<span class="token punctuation">,</span> 
-  either <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若傳入為 Left，則 <code>negate_</code> 也能回傳 Left。</p>
-<p><img src="/images/sanctuary/fantasy/map/map004.png" alt="map004"></p>
+map <span class="token punctuation">(</span>negate<span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>若 <code>data</code> 為 Left，則 <code>map (negate)</code> 也能回傳 Left。</p>
+<p><img src="/images/sanctuary/fantasy/map/lift/lift004.png" alt="map004"></p>
 <h2 id="Future"><a href="#Future" class="headerlink" title="Future"></a>Future</h2><h3 id="Resolved"><a href="#Resolved" class="headerlink" title="Resolved"></a>Resolved</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> resolve<span class="token punctuation">,</span> fork <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> env <span class="token keyword">as</span> flutureEnv <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture-sanctuary-types'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env<span class="token punctuation">,</span> negate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
@@ -528,27 +492,25 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> resolve <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> negate_ <span class="token operator">=</span> map <span class="token punctuation">(</span>negate<span class="token punctuation">)</span>
-
 <span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
-  negate_<span class="token punctuation">,</span> 
+  map <span class="token punctuation">(</span>negate<span class="token punctuation">)</span><span class="token punctuation">,</span> 
   fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
 <span class="token punctuation">]</span><span class="token punctuation">)</span>
 
 f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 6 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env<span class="token punctuation">:</span> env<span class="token punctuation">.</span>concat <span class="token punctuation">(</span>flutureEnv<span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>Sanctuary 並不認識 Future 而導致無法通過 type checking，因此要使用 Fluture 提供的 <code>fluture-sanctuary-types</code>。</p>
-<p>12 行</p>
+<p>10 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
-  negate_<span class="token punctuation">,</span> 
+  map <span class="token punctuation">(</span>negate<span class="token punctuation">)</span><span class="token punctuation">,</span> 
   fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
 <span class="token punctuation">]</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>Resolved 也是 Functor，因此也能使用 <code>negate_</code>。</p>
-<p><img src="/images/sanctuary/fantasy/map/map005.png" alt="map005"></p>
+<p><code>negate</code> 使用 <code>map</code> 提升後也能接受 Future。</p>
+<p><img src="/images/sanctuary/fantasy/map/lift/lift005.png" alt="map005"></p>
 <h3 id="Rejected"><a href="#Rejected" class="headerlink" title="Rejected"></a>Rejected</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> reject<span class="token punctuation">,</span> fork <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> env <span class="token keyword">as</span> flutureEnv <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture-sanctuary-types'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env<span class="token punctuation">,</span> negate <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
@@ -558,18 +520,17 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> reject <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> negate_ <span class="token operator">=</span> map <span class="token punctuation">(</span>negate<span class="token punctuation">)</span>
-
 <span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
-  negate_<span class="token punctuation">,</span> 
+  map <span class="token punctuation">(</span>negate<span class="token punctuation">)</span><span class="token punctuation">,</span> 
   fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
 <span class="token punctuation">]</span><span class="token punctuation">)</span>
 
 f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若傳入為 Rejected，則 <code>negate_</code> 也能回傳 Rejected。</p>
-<p><img src="/images/sanctuary/fantasy/map/map006.png" alt="map006"></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>若 <code>data</code> 為 Rejected，則 <code>map (negate)</code> 也能回傳 Rejected。</p>
+<p><img src="/images/sanctuary/fantasy/map/lift/lift006.png" alt="map006"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>Ramda 使用 <code>lift</code> 提升 unary function 支援 Apply，但 Sanctuary 使用 <code>map</code> 提升 unary function 支援 Functor，因為 Maybe、Either 與 Future 既是 Functor 也是 Apply，因此 <code>map</code> 亦適用</li>
 <li>只要遵循 <a href="https://github.com/fantasyland/fantasy-land" target="_blank" rel="noopener">Fantasy Land</a> 的 monadic type，function 就能彼此支援，因此 Sanctuary 的 <code>map</code> 也能使用 Fluture 的 Future</li>
 <li>Sanctuary 的 type checking 預設並不認識 Future，但 Fluture 支援 Sanctuary，只要使用 <code>fluture-sanctuary-types</code> 後，Sanctuary 也能對 Future 使用 type checking</li>
 </ul>
@@ -582,8 +543,6 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
   <span class="post-tags-list mt-2">
     
     
-    <a class="post-tags-list-item" href='/tags/Fluture/'>#&nbsp;Fluture</a>
-    
     <a class="post-tags-list-item" href='/tags/Sanctuary/'>#&nbsp;Sanctuary</a>
     
   </span>
@@ -595,18 +554,18 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 		<!-- Prev Nav -->
 		
 		<li class="page-item page-prev">
-			<a href="/ramda/function/lift/unary/">
+			<a href="/sanctuary/fantasy/map/compose/">
 				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 lift 提升 Unary Function</div>
+				<div class="page-item-subtitle">使用 map 將兩個 Function 綁定</div>
 			</a>
 		</li>
 		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/sanctuary/either/chain-validation/">
+			<a href="/ramda/function/map/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 chain 組合多個 Validation</div>
+				<div class="page-item-subtitle">使用 map 將兩個 Function 綁定</div>
 			</a>
 		</li>
 		

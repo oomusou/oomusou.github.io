@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-07-06T16:53:37.000Z",
-    "dateModified": "2021-07-12T16:03:52.938Z",
+    "dateModified": "2021-07-16T05:46:05.747Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -439,64 +439,58 @@ a:hover {
                         <p>Functor、Apply 與 Chain 本質都是 Typeclass，只是各提供不同方式處理 Function 而已。</p>
 <a id="more"></a>
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Sanctuary 3.1.0</p>
-<h2 id="Functor"><a href="#Functor" class="headerlink" title="Functor"></a>Functor</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Just<span class="token punctuation">,</span> map<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<h2 id="Functor"><a href="#Functor" class="headerlink" title="Functor"></a>Functor</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Just<span class="token punctuation">,</span> map <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> Just <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> map <span class="token punctuation">(</span>add <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>data</code> 為 <code>Just 1</code>，我們希望提供 function 使其成為 <code>Just 2</code>。</p>
-<p>Functor 提供 <code>map</code> 讓我們直接傳入 function 以改變內部值，因此可直接傳入 <code>add (1)</code> 進 <code>map</code> 即可。</p>
+map <span class="token punctuation">(</span>inc<span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>data</code> 為 Maybe，<code>inc</code> 為一般 function，可使用 <code>map</code> 將 Maybe 與 <code>inc</code> 綁定改變 Maybe。</p>
 <blockquote>
-<p><strong>map</strong><br><code>Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b</code><br>將 <code>a -&gt; b</code> 傳入 Functor 以改變 Functor 內部值</p>
+<p><strong>map</strong><br><code>Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b</code><br>將 Functor 與 一般 function 綁定改變 Functor</p>
 </blockquote>
-<p><code>a -&gt; b</code>：傳入 unary function</p>
+<p><code>a -&gt; b</code>：一般 function</p>
 <p><code>f a</code>：data 為 Functor</p>
 <p><code>f b</code>：回傳新 Functor</p>
 <p><img src="/images/monadic/cookbook/functor-apply-chain/monad000.png" alt="monad000"></p>
-<h2 id="Apply"><a href="#Apply" class="headerlink" title="Apply"></a>Apply</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Just<span class="token punctuation">,</span> map<span class="token punctuation">,</span> add<span class="token punctuation">,</span> ap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<h2 id="Apply"><a href="#Apply" class="headerlink" title="Apply"></a>Apply</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> Just<span class="token punctuation">,</span> ap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> Just <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> add_ <span class="token operator">=</span> n <span class="token operator">=</span><span class="token operator">></span> map <span class="token punctuation">(</span>add<span class="token punctuation">)</span> <span class="token punctuation">(</span>Just <span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> inc_ <span class="token operator">=</span> Just <span class="token punctuation">(</span>inc<span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> ap <span class="token punctuation">(</span>add_ <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>data</code> 仍為 <code>Just 1</code>，我們希望提供 function 使其成為 <code>Just 2</code>。</p>
-<p>Apply 提供 <code>ap</code> 讓我們將 function 包進 Apply 後再傳入以改變內部值，因此可將 <code>add (1)</code> 包進 Maybe 後再傳入 <code>ap</code> 即可。</p>
-<p>使用 <code>add</code> 傳進 <code>map</code>，但 data 則為 <code>Just 1</code>，會產生包進 Maybe 的 <code>add (1)</code>。</p>
+ap <span class="token punctuation">(</span>inc_<span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>data</code> 為 Maybe，<code>inc_</code> 為包進 Maybe 的 function，可使用 <code>ap</code> 將 Maybe 與 <code>inc_</code>  綁定改變 Maybe。</p>
 <blockquote>
-<p><strong>ap</strong><br><code>Apply f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b</code><br>將 <code>f (a -&gt; b)</code> 傳入 Apply 以改變 Apply 內部值</p>
+<p><strong>ap</strong><br><code>Apply f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b</code><br>將 Apply 與包進 Apply 的 function 綁定改變 Apply</p>
 </blockquote>
-<p><code>f (a -&gt; b)</code>：傳入包在 Apply 的 unary function</p>
+<p><code>f (a -&gt; b)</code>：包進 Apply 的 function</p>
 <p><code>f a</code>：data 為 Apply</p>
 <p><code>f b</code>：回傳新 Apply</p>
 <p><img src="/images/monadic/cookbook/functor-apply-chain/monad001.png" alt="monad001"></p>
-<h2 id="Chain"><a href="#Chain" class="headerlink" title="Chain"></a>Chain</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> <span class="token keyword">of</span><span class="token punctuation">,</span> Maybe<span class="token punctuation">,</span> Just<span class="token punctuation">,</span> chain<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<h2 id="Chain"><a href="#Chain" class="headerlink" title="Chain"></a>Chain</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> Just<span class="token punctuation">,</span> chain <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> Just <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> add_ <span class="token operator">=</span> n <span class="token operator">=</span><span class="token operator">></span> compose <span class="token punctuation">(</span><span class="token keyword">of</span> <span class="token punctuation">(</span>Maybe<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>add <span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> inc_ <span class="token operator">=</span> compose <span class="token punctuation">(</span>Just<span class="token punctuation">)</span> <span class="token punctuation">(</span>inc<span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> chain <span class="token punctuation">(</span>add_ <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><code>data</code> 仍為 <code>Just 1</code>，我們希望提供 function 使其成為 <code>Just 2</code>。</p>
-<p>Chain 提供 <code>chain</code> 讓我們將回傳 Chain 的 function 傳入以改變內部值，因此先將 <code>add</code> 改成 <code>add_</code> 回傳 Chain，再將 <code>add_</code> 傳進 <code>chain</code> 即可。</p>
+chain <span class="token punctuation">(</span>inc_<span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>data</code> 為 Maybe，<code>inc_</code> 為回傳 Maybe 的 function，可使用 <code>chain</code> 將 Maybe 與 <code>inc_</code>  綁定改變 Maybe。</p>
 <blockquote>
-<p><strong>chain</strong><br><code>Chain m =&gt; (a -&gt; m b) -&gt; m a -&gt; m b</code><br>將 <code>a -&gt; m b</code> 傳入 Chain 以改變 Chain 內部值</p>
+<p><strong>chain</strong><br><code>Chain m =&gt; (a -&gt; m b) -&gt; m a -&gt; m b</code><br>將 Chain 與回傳 Chain 的 function 綁定改變 Chain</p>
 </blockquote>
-<p><code>a -&gt; m b</code>：傳入回傳 Chain 的 function</p>
+<p><code>a -&gt; m b</code>：回傳 Chain 的 function</p>
 <p><code>m a</code>：data 為 Chain</p>
 <p><code>m b</code>：回傳新 Chain</p>
 <p><img src="/images/monadic/cookbook/functor-apply-chain/monad002.png" alt="monad002"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>為什麼本文都以 Maybe 討論呢 ? 因為 Maybe 既是 Functor、Apply 也是 Chain，因此 <code>map</code>、<code>ap</code> 與 <code>chain</code> 都可使用，只是傳入 function 形式不同而已</li>
+<li>Fantasy Land 稱為 Apply，但 Haskell 稱為 Applicative，事實上都是支援 <code>ap</code> 的 Object</li>
 </ul>
 <h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://twitter.com/_egonschiele" target="_blank" rel="noopener">Adit Bhargava</a>, <a href="https://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html" target="_blank" rel="noopener">Functors, Applicatives, And Monads in Pictures</a><br><a href="https://sanctuary.js.org" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://sanctuary.js.org/#map" target="_blank" rel="noopener">map</a><br><a href="https://sanctuary.js.org" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://sanctuary.js.org/#ap" target="_blank" rel="noopener">ap</a><br><a href="https://sanctuary.js.org" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://sanctuary.js.org/#chain" target="_blank" rel="noopener">chain</a></p>
 
@@ -522,7 +516,7 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 		<li class="page-item page-prev">
 			<a href="/ramda/function/ap/overview/">
 				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">使用 ap 傳入包在 Apply 的 Function</div>
+				<div class="page-item-subtitle">使用 ap 將 Apply 與包進 Apply 的 Function 綁定</div>
 			</a>
 		</li>
 		
