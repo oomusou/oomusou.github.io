@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-07-17T12:55:57.000Z",
-    "dateModified": "2021-07-17T13:00:09.062Z",
+    "dateModified": "2021-07-17T14:23:57.639Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -473,7 +473,12 @@ a:hover {
 compose <span class="token punctuation">(</span>getValue<span class="token punctuation">)</span> <span class="token punctuation">(</span>map <span class="token punctuation">(</span>inc<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 compose <span class="token punctuation">(</span>getValue<span class="token punctuation">)</span> <span class="token punctuation">(</span>ap <span class="token punctuation">(</span>inc_<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>使用 module 實現 Applicative。</p>
+<p>實現 Applicative 需滿足 3 個 typeclass：</p>
+<ul>
+<li><strong>Functor</strong>：實現 <code>map</code> 將 Functor 與 function 綁定</li>
+<li><strong>Apply</strong>：實現 <code>ap</code> 將 Apply 與包進 Apply 的 function 綁定</li>
+<li><strong>Applicative</strong>：實現 <code>of</code> 由 value 建立 Applicative</li>
+</ul>
 <p>第 5 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> _x <span class="token operator">=</span> x
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
@@ -481,25 +486,26 @@ compose <span class="token punctuation">(</span>getValue<span class="token punct
 <p>第 7 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> map <span class="token operator">=</span> f <span class="token operator">=</span><span class="token operator">></span> Applicative <span class="token punctuation">(</span>f <span class="token punctuation">(</span>_x<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>Apply 必須實現 Functor。</p>
+<p>Applicative 必須實現 Functor。</p>
 <p>根據 Fantasy Land 定義：</p>
 <p><code>fantasy-land/map :: Functor f =&gt; f a ~&gt; (a → b) → f a → f b</code></p>
 <p>Object 必須有 <code>map</code> 才是 Functor。</p>
-<p>將 Object 內部 <code>_x</code> 透過傳入 <code>f</code> 運算後，使用 <code>Apply</code> 包成新 Apply 回傳。</p>
+<p>將 Object 內部 <code>_x</code> 透過傳入 <code>f</code> 運算後，使用 <code>Applicative</code> 包成新 Applicative 回傳。</p>
 <p>第 9 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> ap <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>map <span class="token punctuation">(</span>f <span class="token operator">=</span><span class="token operator">></span> f <span class="token punctuation">(</span>_x<span class="token punctuation">)</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Applicative 必須實現 Apply。</p>
 <p>根據 Fantasy Land 定義：</p>
 <p><code>fantasy-land/ap :: Apply f =&gt; f a ~&gt; f (a -&gt; b) -&gt; f b</code></p>
 <p>Object 必須有 <code>ap</code> 才是 Apply。</p>
-<p>從傳入 Apply 取出 <code>f</code> 後，將 Object 內部 <code>_x</code> 傳入 <code>f</code> 運算後，改變 Apply 回傳。</p>
+<p>從傳入 Applicative 取出 <code>f</code> 後，將 Object 內部 <code>_x</code> 傳入 <code>f</code> 運算後，改變 Applicative 回傳。</p>
 <blockquote>
 <p>由於 <code>ap</code> 需呼叫 <code>map</code> 取得 <code>f</code>，因此 Apply 必須先實現 Functor 的 <code>map</code></p>
 </blockquote>
 <p>11 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> getValue <span class="token operator">=</span> _ <span class="token operator">=</span><span class="token operator">></span> _x
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>使用 <code>getValue</code> 取出 Functor 內部值。</p>
+<p>使用 <code>getValue</code> 取出 Applicative 內部 value。</p>
 <blockquote>
 <p><code>getValue</code> 並非 Fantasy Land 所要求，只是方便取出 Object 內部 value</p>
 </blockquote>
@@ -519,9 +525,9 @@ compose <span class="token punctuation">(</span>getValue<span class="token punct
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>提供 free function 方便使用：</p>
 <ul>
-<li><code>map</code>：呼叫 Apply 的 <code>map</code></li>
-<li><code>ap</code>：呼叫 Apply 的 <code>ap</code></li>
-<li><code>getValue</code>：呼叫 Apply 的 <code>getValue</code></li>
+<li><code>map</code>：呼叫 Applicative 的 <code>map</code></li>
+<li><code>ap</code>：呼叫 Applicative 的 <code>ap</code></li>
+<li><code>getValue</code>：呼叫 Applicative 的 <code>getValue</code></li>
 </ul>
 <p>26 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> of_ <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
@@ -559,6 +565,13 @@ compose <span class="token punctuation">(</span>getValue<span class="token punct
                 <div class="post-nav px-2 bg-gray">
 	<ul class="pagination">
 		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/monadic/chain/my-chain/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">自行實作 Chain</div>
+			</a>
+		</li>
 		
 		<!-- Next Nav -->
 		
