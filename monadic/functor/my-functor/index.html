@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-07-16T16:10:54.000Z",
-    "dateModified": "2021-07-16T16:18:46.651Z",
+    "dateModified": "2021-07-17T11:26:33.321Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -441,7 +441,8 @@ a:hover {
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Fantasy Land 5.0.0</p>
 <h2 id="Fantasy-Land"><a href="#Fantasy-Land" class="headerlink" title="Fantasy Land"></a>Fantasy Land</h2><p><img src="/images/monadic/functor/my-functor/functor000.png" alt="functor003"></p>
 <p>在眾多 ADT 中，Functor 位於最底層，也是眾多 ADT 的基礎。</p>
-<h2 id="Functor"><a href="#Functor" class="headerlink" title="Functor"></a>Functor</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Functor"><a href="#Functor" class="headerlink" title="Functor"></a>Functor</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> compose <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
 
 <span class="token keyword">let</span> Functor <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
   <span class="token keyword">let</span> _x <span class="token operator">=</span> x
@@ -456,17 +457,13 @@ a:hover {
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
 
+<span class="token keyword">let</span> map <span class="token operator">=</span> f <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>map <span class="token punctuation">(</span>f<span class="token punctuation">)</span>
 <span class="token keyword">let</span> getValue <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>getValue <span class="token punctuation">(</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> Functor <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> data <span class="token operator">=</span> Functor <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  map <span class="token punctuation">(</span>inc<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  getValue
-<span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+compose <span class="token punctuation">(</span>getValue<span class="token punctuation">)</span> <span class="token punctuation">(</span>map <span class="token punctuation">(</span>inc<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用 module 實現 Functor。</p>
 <p>第 4 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> _x <span class="token operator">=</span> x
@@ -482,29 +479,28 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 <p>第 8 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> getValue <span class="token operator">=</span> _ <span class="token operator">=</span><span class="token operator">></span> _x
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>使用 <code>getValue()</code> 取出 Functor 內部值。</p>
+<p>使用 <code>getValue</code> 取出 Functor 內部值。</p>
 <blockquote>
 <p><code>getValue</code> 並非 Fantasy Land 所要求，只是方便取出 Object 內部 value</p>
 </blockquote>
 <p>16 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> getValue <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>getValue <span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<p>提供 free function 方便使用，<code>getValue</code> 會呼叫 Object 的 <code>getValue</code>。</p>
-<p>18 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> Functor <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> map <span class="token operator">=</span> f <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>map <span class="token punctuation">(</span>f<span class="token punctuation">)</span>
+<span class="token keyword">let</span> getValue <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>getValue <span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>提供 free function 方便使用：</p>
+<ul>
+<li><code>map</code>：呼叫 Functor 的 <code>map</code></li>
+<li><code>getValue</code>：呼叫 Functor 的 <code>getValue</code></li>
+</ul>
+<p>20 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> Functor <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  map <span class="token punctuation">(</span>inc<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  getValue
-<span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>建立 Functor，並使用 <code>pipe</code> 組合 <code>map</code> 與 <code>getValue()</code>。</p>
-<p>其中 <code>map</code> 為 Ramda 所提供的 <code>map</code>，證明自己建立的 <code>Functor</code> 已符合 Fantasy Land 規格，因此 Ramda 的 <code>map</code> 可綁定。</p>
+compose <span class="token punctuation">(</span>getValue<span class="token punctuation">)</span> <span class="token punctuation">(</span>map <span class="token punctuation">(</span>inc<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>建立 Functor，並組合 <code>map (inc)</code> 與 <code>getValue</code> 改變 Functor。</p>
 <p><img src="/images/monadic/functor/my-functor/functor001.png" alt="functor001"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>Functor 為 Monadic Programming 基礎，是最基本 type class，其定義是必須支援 <code>map</code></li>
+<li>Functor 為 Monadic Programming 基礎，是最基本 typeclass，其定義是必須支援 <code>map</code></li>
 </ul>
 
                     </article>
