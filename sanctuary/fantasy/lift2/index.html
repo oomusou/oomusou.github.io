@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-06-26T08:47:59.000Z",
-    "dateModified": "2021-07-16T12:12:17.916Z",
+    "dateModified": "2021-07-18T12:39:23.578Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -497,22 +497,20 @@ lift2 <span class="token punctuation">(</span>add<span class="token punctuation"
 <span class="token keyword">let</span> data1 <span class="token operator">=</span> resolve <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 <span class="token keyword">let</span> data2 <span class="token operator">=</span> resolve <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
+pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
   lift2 <span class="token punctuation">(</span>add<span class="token punctuation">)</span> <span class="token punctuation">(</span>data2<span class="token punctuation">)</span><span class="token punctuation">,</span> 
   fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data1<span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data1<span class="token punctuation">)</span> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 6 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> lift2 <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env<span class="token punctuation">:</span> env<span class="token punctuation">.</span>concat <span class="token punctuation">(</span>flutureEnv<span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>Sanctuary 並不認識 Future 而導致無法通過 type checking，因此要使用 Fluture 提供的 <code>fluture-sanctuary-types</code>。</p>
 <p>11 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
   lift2 <span class="token punctuation">(</span>add<span class="token punctuation">)</span> <span class="token punctuation">(</span>data2<span class="token punctuation">)</span><span class="token punctuation">,</span> 
   fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data1<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>add</code> 使用 <code>lift2</code> 提升後也能接受 Future。</p>
 <p><img src="/images/sanctuary/fantasy/lift2/lift2005.png" alt="lift2005"></p>
@@ -526,13 +524,11 @@ f <span class="token punctuation">(</span>data1<span class="token punctuation">)
 <span class="token keyword">let</span> data1 <span class="token operator">=</span> resolve <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 <span class="token keyword">let</span> data2 <span class="token operator">=</span> reject <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
+pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
   lift2 <span class="token punctuation">(</span>add<span class="token punctuation">)</span> <span class="token punctuation">(</span>data2<span class="token punctuation">)</span><span class="token punctuation">,</span> 
   fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data1<span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data1<span class="token punctuation">)</span> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若 <code>data</code> 為 Rejected，則 <code>lift2 (add)</code> 也會回傳 Rejected。</p>
 <p><img src="/images/sanctuary/fantasy/lift2/lift2006.png" alt="lift2006"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>

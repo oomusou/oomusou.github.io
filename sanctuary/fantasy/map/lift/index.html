@@ -208,7 +208,7 @@ a:hover {
     },
     
     "datePublished": "2021-07-16T14:05:23.000Z",
-    "dateModified": "2021-07-16T15:14:33.679Z",
+    "dateModified": "2021-07-18T11:32:39.775Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -494,22 +494,20 @@ map <span class="token punctuation">(</span>negate<span class="token punctuation
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> resolve <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
+pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
   map <span class="token punctuation">(</span>negate<span class="token punctuation">)</span><span class="token punctuation">,</span> 
   fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 6 行</p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map <span class="token punctuation">}</span> <span class="token operator">=</span> create <span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env<span class="token punctuation">:</span> env<span class="token punctuation">.</span>concat <span class="token punctuation">(</span>flutureEnv<span class="token punctuation">)</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <p>Sanctuary 並不認識 Future 而導致無法通過 type checking，因此要使用 Fluture 提供的 <code>fluture-sanctuary-types</code>。</p>
 <p>10 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
   map <span class="token punctuation">(</span>negate<span class="token punctuation">)</span><span class="token punctuation">,</span> 
   fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>negate</code> 使用 <code>map</code> 提升後也能接受 Future。</p>
 <p><img src="/images/sanctuary/fantasy/map/lift/lift005.png" alt="map005"></p>
@@ -522,13 +520,11 @@ f <span class="token punctuation">(</span>data<span class="token punctuation">)<
 
 <span class="token keyword">let</span> data <span class="token operator">=</span> reject <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
+pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
   map <span class="token punctuation">(</span>negate<span class="token punctuation">)</span><span class="token punctuation">,</span> 
   fork <span class="token punctuation">(</span>error<span class="token punctuation">)</span> <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-f <span class="token punctuation">(</span>data<span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若 <code>data</code> 為 Rejected，則 <code>map (negate)</code> 也能回傳 Rejected。</p>
 <p><img src="/images/sanctuary/fantasy/map/lift/lift006.png" alt="map006"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
