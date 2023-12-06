@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html 
+>
+  <head>
+  <meta charset="utf-8">
+  <!-- ### DNS Prefetch ### -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+  <!-- ### Preload ### -->
+  
+
+  <!-- ### Meta & Title & Info ### -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>Vue 的 Functional 架構 | 點燈坊</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff2601">
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="Vue 2 雖然不算是 FP 架構，但透過不一樣寫法，仍可使 Vue 2 接近 FP 讓 Project 更易維護。">
+<!-- Keywords -->
+<meta name="keywords" content=", Vue">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+  <!-- ### Import File ### -->
+  
+    <!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+  
+  <!-- ### Site Verification ### -->
+  
+
+  <!-- ### RSS ### -->
+  
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+  <!-- ### WebApp ### -->
+  <meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="點燈坊">
+<meta name="msapplication-starturl" content="https://yabai.tw">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="點燈坊">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+  <!-- ### The Open Graph & Twitter Card Protocol ### -->
+  <meta property="og:title" content="Vue 的 Functional 架構 | 點燈坊">
+<meta property="og:site_name" content="點燈坊">
+
+<meta property="og:url" content="https://yabai.tw/vue/fp/architecture/">
+<meta property="og:image"
+	content="https://yabai.tw/apple-touch-icon.png">
+<meta property="og:description" content="Vue 2 雖然不算是 FP 架構，但透過不一樣寫法，仍可使 Vue 2 接近 FP 讓 Project 更易維護。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-02-29T12:08:58.000Z">
+<meta property="article:modified_time" content="2020-02-29T12:08:58.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", Vue">
+
+
+  <!-- ### Analytics ### -->
+  
+
+
+
+
+
+  <!-- ### Canonical link ### -->
+  <link rel="canonical" href="https://yabai.tw/vue/fp/architecture/">
+  <!-- ### Structured Data ### -->
+  
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://yabai.tw/vue/fp/architecture/",
+    "@type": "BlogPosting",
+    "logo": "https://yabai.tw/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://yabai.tw/vue/fp/architecture/"
+    },
+    "headline": "Vue 的 Functional 架構 | 點燈坊",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://yabai.tw/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2020-02-29T12:08:58.000Z",
+    "dateModified": "2023-12-03T15:59:18.889Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/img/default_avatar.png"
+        },
+        "description": "うまく使いさえすれば、時間はいつも十分にある"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "點燈坊",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://yabai.tw/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", Vue",
+    "description": "Vue 2 雖然不算是 FP 架構，但透過不一樣寫法，仍可使 Vue 2 接近 FP 讓 Project 更易維護。"
+}
+</script>
+
+  <!-- ### Custom Head ### -->
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+  <body>
+  <header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      點燈坊
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    うまく使いさえすれば、時間はいつも十分にある
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">ホーム</a>
+      <a href="/series/" class="navbar-link">シリーズ</a>
+      <a href="/tags/" class="navbar-link">タグ</a>
+      <a href="/search" class="navbar-link">検索</a>
+      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+  
+<!-- ## Post ## -->
+<div class="post-container">
+  <div id="post-card" class="card">
+    <div class="card-item-container">
+      <div class="card-inner-cell">
+        <div class="card-header">
+          
+<h1 class="card-title h3 mb-2">Vue 的 Functional 架構</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2020-02-29</span>
+</div>
+
+        </div>
+        <div class="card-body">
+          <article id="post-content">
+            <p>Vue 2 雖然不算是 FP 架構，但透過不一樣寫法，仍可使 Vue 2 接近 FP 讓 Project 更易維護。</p>
+<a id="more"></a>
+
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 2.6.11<br>Vuex 3.1.2<br>Ramda 0.27.0</p>
+<h2 id="Challenge-of-Web"><a href="#Challenge-of-Web" class="headerlink" title="Challenge of Web"></a>Challenge of Web</h2><h3 id="Backend-MVC"><a href="#Backend-MVC" class="headerlink" title="Backend MVC"></a>Backend MVC</h3><p>約在 2015 年，主流的 Web 開發架構仍以後端 MVC 為主：</p>
+<ol>
+<li>PHP &#x2F; Laravel</li>
+<li>Ruby &#x2F; Ruby on Rails</li>
+<li>C# &#x2F; .NET MVC</li>
+<li>Python &#x2F; Django</li>
+</ol>
+<p>這類都是 <code>後端</code> 以 MVC 為主，<code>前端</code> 以 jQuery &#x2F; Ajax 為輔的架構。</p>
+<p>這種架構有幾個挑戰：</p>
+<ol>
+<li>有於重點在後端，時常必須換頁到後端去，使用者會明顯感受到網頁重新載入，視覺與使用感受較差</li>
+<li>若想減少換頁到後端，就必須大量使用 jQuery &#x2F; Ajax，則前端就會有大量 ECMAScript</li>
+<li>由於 ECMAScript 缺乏 module 概念，實務上常常會看到上千行的  jQuery &#x2F; ECMAScript，導致維護困難</li>
+<li>由於 jQuery &#x2F; ECMAScript 是躲在後端網頁內，因此大部分的 jQuery &#x2F; ECMAScript 都是由後端工程師撰寫，但由於 ECMAScript 語言特性與後端語言明顯的差異，大部分後端工程師選擇逃避原生 ECMAScript，而改用較容易的 jQuery，此時都是 Web 工程師都是 <code>全端工程師</code></li>
+<li>也由於使用 jQuery，導致大部分 <code>全端工程師</code> 並沒有深入研究 ECMAScript，而是認為前端只是控制 HTML &#x2F; DOM 而已，jQuery 足已，因此沒必要深入研究 ECMAScript，導致一些 ECMAScript 很重要的語言特性被忽略 (first-class function, higher order function、closure、IIFE、function composition …)，其實這些 FP 特性，才是 ECMAScript 精華所在</li>
+</ol>
+<h3 id="Separation-of-Frontend-and-Backend"><a href="#Separation-of-Frontend-and-Backend" class="headerlink" title="Separation of Frontend and Backend"></a>Separation of Frontend and Backend</h3><p>2015 年開始有一些前端 framework 嶄露頭角，如 AngularJS、React：</p>
+<ol>
+<li>後端只寫到 API，以 JSON 與前端溝通</li>
+<li><code>顯示邏輯</code> 寫在前端，而不是以 presenter pattern 寫在後端，因此沒有網頁重新載入，視覺與使用感受佳</li>
+<li>前端開始有 component 概念，也開始使用 ES6 的 module 概念，因此不再出現上千行 JavaScript，可重構成 component 與 module，更容易維護</li>
+<li>由於使用 ES6 與原本 ES5 相比，幾乎是全新語言，有學習門檻</li>
+<li>前端技術發展迅速，開始有<ul>
+<li>Node 生態圈 (NPM、Yarn)</li>
+<li>ECMAScript 每年會更新一版 (2015 ~ 2020)</li>
+<li>Babel &#x2F; Webpack 編譯打包技術 + ESLint (即使 JavaScript 不編譯，亦可享有編譯的優點)</li>
+<li>層出不窮的 library</li>
+<li>層出不窮的 framework (Angular、React、Vue)</li>
+<li>由於前端技術爆炸，已經不再只有 jQuery，後端也要精通前端已經有難度，因此前後端開始分家，開始有所謂 <code>前端工程師</code></li>
+</ul>
+</li>
+</ol>
+<h2 id="Evolution-of-Frontend"><a href="#Evolution-of-Frontend" class="headerlink" title="Evolution of Frontend"></a>Evolution of Frontend</h2><p>相較於 jQuery、前端開始有了新的概念：</p>
+<ol>
+<li><strong>Data Binding</strong>：傳統 jQuery 直接控制 DOM；現在前端改為控制 data，現在由 framework 處理 data 與 DOM 的改變</li>
+<li><strong>Functional Programming</strong>：由於 ECMAScript 深具 Functional 語言特性 (以 Scheme 為原型)，原本 OOP 的 MVC 架構蛻變為 FP 的 Pipeline (單向資料流) 架構 (React 的 Redux、Vue 的 Vuex)</li>
+<li>Webpack Tree-shaking：由於 OOP 大量使用 field，導致 tree-shaking 無法有效發揮，前端開始使用 FP 方式，以 function 取代 class，並使用 FP 的 function composition 取代 OOP 的 DI (Ramda)</li>
+</ol>
+<blockquote>
+<p> 可以發現前端的改變：</p>
+<ol>
+<li>從控制 DOM 轉為控制 data，回歸程式設計的本質</li>
+<li>由 Object Oriented Programming 轉為 Functional Programming</li>
+</ol>
+</blockquote>
+<h2 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a>Vue</h2><p>Vue 吸取 React 與 Angular 的優點：</p>
+<ol>
+<li>從 Angular 學到學習門檻較低的 HTML Template，而非 React 的 JSX</li>
+<li>從 Angular 學到 directive 控制 HTML，而非 React 直接以 ECMAScript 夾雜 HTML</li>
+<li>從 React 學到 component 概念，使得 <code>顯示邏輯</code> 得以模組化</li>
+<li>從 React 學到 <code>狀態管理</code> 概念 (Redux) ，讓跨 component 的溝通更加簡單 (Vuex)</li>
+<li>Vue 前期學 Angular 較多，後期則明顯向 React 靠攏</li>
+</ol>
+<p>儘管如此，Vue 也有自己的缺點：</p>
+<ol>
+<li>Vue 的 <code>data</code>、<code>computed</code>、<code>props</code>、<code>method</code> … 都必須靠 <code>this</code> 存取，這是一種具有 side effect 的寫法，且由於 <code>this</code> 的可變性，導致 Vue 重構困難</li>
+<li>Vue 寫法多元，最原始寫法是一種依賴 <code>this</code>，很像 OOP 又不是 OOP 寫法，後來又開發出 class component，這是正統 OOP，風格很像 Angular，但也由於太偏 OOP，導致大部分人寫 Vue 都使用 OOP 思維，而忘記 ECMAScript 最重要的 Functional 特性 (first-class function、higher order function、closure、IIFE、function composition …)</li>
+<li>將 <code>computed</code>、<code>method</code> 寫在 Vue instance 內，導致縮排過多</li>
+</ol>
+<h2 id="Functional-Vue"><a href="#Functional-Vue" class="headerlink" title="Functional Vue"></a>Functional Vue</h2><ul>
+<li>Vue 的 <code>data</code>、<code>computed</code>、<code>props</code>、<code>method</code> 本質都是 function，不要將這些寫在 Vue instance 內，而將所有的 function 拉出來，也由於看到的是一條條 function，不是類似 OOP 的 method，有助於發現重複的部分以 higher order function 重構</li>
+<li>除了 HTML data binding 的資料放在 <code>data</code> 外，不要把 <code>data</code> 當成 OOP 的 field 使用，如此可避免使用 side effect 寫法，而改用 pure function 風格</li>
+<li>將資料從 data 搬到 Vuex 的 state，由於 <code>state</code>、<code>getter</code>、<code>mutation</code> 與 <code>action</code> 不使用 <code>this</code>，Vue 可徹底從 ES5 的 function expression 解放，全面改用 ES6 的 arrow function，不僅更簡潔，也更適合 higher order function 實現</li>
+<li>也由於 Vuex 的  <code>computed</code>、<code>method</code> 本質上都是 function，可以很容易抽成 higher order function，也可以整合 Ramda 這類 functional library，透過 function composition 產生  <code>computed</code>、<code>method</code></li>
+<li>也由於 <code>商業邏輯</code> 與 <code>顯示邏輯</code> 都集中在 Vuex 的 store，因此各 component 很容易重複使用這些邏輯，且只要 <code>state</code> 與 <code>getter</code> 有變動，其他 component 資料都會跟著變動</li>
+<li>由於 <code>邏輯</code> 都在 Vuex 的 store，unit test 可集中火力放在 store 即可</li>
+<li>也由於所有的 function 都沒有 <code>this</code>，都是 pure function 沒有 side effect，因此很容易重構到適當 module，不必被 Vue 的 <code>component</code> 或 <code>mixin</code> 所綁架</li>
+</ul>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>Functional Vue &#x3D; Vue Component + Vuex + Ramda + ES6 Module</li>
+</ul>
+
+          </article>
+          <p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/Vue/'>#&nbsp;Vue</a>
+    
+  </span>
+  
+</p>
+        </div>
+        <div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/vue/fp/coding-style/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">如何使用 FP 風格開發 Vue ?</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/ramda/logic/allpass/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 allPass() 組合符合所有條件的 Predicate</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="text-center">
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://yabai.tw">點燈坊</a>
+  </p>
+</footer>
+
+  <!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+  </body>
+</html>

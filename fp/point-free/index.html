@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html 
+>
+  <head>
+  <meta charset="utf-8">
+  <!-- ### DNS Prefetch ### -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+  <!-- ### Preload ### -->
+  
+
+  <!-- ### Meta & Title & Info ### -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>FP 之 Point-free | 點燈坊</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff2601">
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="Curry Function 最主要的目的在於 Function Composition，所以儘管是 多 個 Argument，最後也可變成多個 單一 Argument 的 Function 方便組合；而 Point-free 正是最適合 Function Composition 寫法。">
+<!-- Keywords -->
+<meta name="keywords" content=", FP">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+  <!-- ### Import File ### -->
+  
+    <!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+  
+  <!-- ### Site Verification ### -->
+  
+
+  <!-- ### RSS ### -->
+  
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+  <!-- ### WebApp ### -->
+  <meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="點燈坊">
+<meta name="msapplication-starturl" content="https://yabai.tw">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="點燈坊">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+  <!-- ### The Open Graph & Twitter Card Protocol ### -->
+  <meta property="og:title" content="FP 之 Point-free | 點燈坊">
+<meta property="og:site_name" content="點燈坊">
+
+<meta property="og:url" content="https://yabai.tw/fp/point-free/">
+<meta property="og:image"
+	content="https://yabai.tw/apple-touch-icon.png">
+<meta property="og:description" content="Curry Function 最主要的目的在於 Function Composition，所以儘管是 多 個 Argument，最後也可變成多個 單一 Argument 的 Function 方便組合；而 Point-free 正是最適合 Function Composition 寫法。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-01-31T15:43:28.000Z">
+<meta property="article:modified_time" content="2020-01-31T15:43:28.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", FP">
+
+
+  <!-- ### Analytics ### -->
+  
+
+
+
+
+
+  <!-- ### Canonical link ### -->
+  <link rel="canonical" href="https://yabai.tw/fp/point-free/">
+  <!-- ### Structured Data ### -->
+  
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://yabai.tw/fp/point-free/",
+    "@type": "BlogPosting",
+    "logo": "https://yabai.tw/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://yabai.tw/fp/point-free/"
+    },
+    "headline": "FP 之 Point-free | 點燈坊",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://yabai.tw/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2020-01-31T15:43:28.000Z",
+    "dateModified": "2023-12-03T15:59:18.592Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/img/default_avatar.png"
+        },
+        "description": "うまく使いさえすれば、時間はいつも十分にある"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "點燈坊",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://yabai.tw/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", FP",
+    "description": "Curry Function 最主要的目的在於 Function Composition，所以儘管是 多 個 Argument，最後也可變成多個 單一 Argument 的 Function 方便組合；而 Point-free 正是最適合 Function Composition 寫法。"
+}
+</script>
+
+  <!-- ### Custom Head ### -->
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+  <body>
+  <header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      點燈坊
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    うまく使いさえすれば、時間はいつも十分にある
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">ホーム</a>
+      <a href="/series/" class="navbar-link">シリーズ</a>
+      <a href="/tags/" class="navbar-link">タグ</a>
+      <a href="/search" class="navbar-link">検索</a>
+      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+  
+<!-- ## Post ## -->
+<div class="post-container">
+  <div id="post-card" class="card">
+    <div class="card-item-container">
+      <div class="card-inner-cell">
+        <div class="card-header">
+          
+<h1 class="card-title h3 mb-2">FP 之 Point-free</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2020-01-31</span>
+</div>
+
+        </div>
+        <div class="card-body">
+          <article id="post-content">
+            <p>Curry Function 最主要的目的在於 Function Composition，所以儘管是 <code>多</code> 個 Argument，最後也可變成多個 <code>單一</code> Argument 的 Function 方便組合；而 Point-free 正是最適合 Function Composition 寫法。</p>
+<a id="more"></a>
+
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.15.2<br>VS Code 1.41.1<br>Quokka 1.0.276<br>F# 4.7<br>ECMAScript 2015<br>Ramda 0.26.1</p>
+<h2 id="FSharp"><a href="#FSharp" class="headerlink" title="FSharp"></a>FSharp</h2><p>由於 F# 是純 FP 語言，function 可自動成為 curry function，常發現 F# 的 function 會如此設計。</p>
+<blockquote>
+<p><strong>List.map()</strong><br><code>mapping : (&#39;T -&gt; &#39;U) -&gt; list : &#39;T list -&gt; &#39;U list</code></p>
+</blockquote>
+<blockquote>
+<p><strong>List.filter()</strong><br><code>predicate : (&#39;T -&gt; bool) -&gt; list : &#39;T list -&gt; &#39;T list</code></p>
+</blockquote>
+<blockquote>
+<p><strong>List.reduce()</strong><br><code>reduction : (&#39;T -&gt; &#39;T -&gt; &#39;T) -&gt; list : &#39;T list -&gt; &#39;T</code></p>
+</blockquote>
+<p>僅管 <code>List.map()</code>、  <code>List.filter()</code> 與 <code>List.reduce()</code> 三個 function 功能都不同，input 與 return 值也不同，但最後一個 argument 一定都是 <code>list : &#39;T list</code>。</p>
+<h3 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h3><pre class="line-numbers highlight language-fsharp"><code class="language-fsharp"><span class="token keyword">let</span> mapSquare <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">map</span> <span class="token punctuation">(</span><span class="token keyword">fun</span> x <span class="token operator">-</span><span class="token operator">></span> x <span class="token operator">*</span> x<span class="token punctuation">)</span>
+<span class="token keyword">let</span> filterOdd <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">filter</span> <span class="token punctuation">(</span><span class="token keyword">fun</span> x <span class="token operator">-</span><span class="token operator">></span> x <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> sum <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">reduce</span> <span class="token punctuation">(</span><span class="token keyword">fun</span> a x <span class="token operator">-</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> calculate arr <span class="token operator">=</span> 
+  arr
+  <span class="token operator">|</span><span class="token operator">></span> mapSquare
+  <span class="token operator">|</span><span class="token operator">></span> filterOdd
+  <span class="token operator">|</span><span class="token operator">></span> sum
+    
+calculate <span class="token punctuation">[</span><span class="token number">1</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">|</span><span class="token operator">></span> printf <span class="token string">"%A"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 1 行</p>
+<pre class="line-numbers highlight language-fsharp"><code class="language-fsharp"><span class="token keyword">let</span> mapSquare <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">map</span> <span class="token punctuation">(</span><span class="token keyword">fun</span> x <span class="token operator">-</span><span class="token operator">></span> x <span class="token operator">*</span> x<span class="token punctuation">)</span>
+<span class="token keyword">let</span> filterOdd <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">filter</span> <span class="token punctuation">(</span><span class="token keyword">fun</span> x <span class="token operator">-</span><span class="token operator">></span> x <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> sum <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">reduce</span> <span class="token punctuation">(</span><span class="token keyword">fun</span> a x <span class="token operator">-</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><code>List.map()</code>、<code>List.filter()</code> 與 <code>List.reduce()</code> 都僅提供 1 個 argument，所以 <code>mapSquare()</code>、<code>filterOdd()</code> 與 <code>sum()</code> 都是 function。</p>
+<p>第 5 行</p>
+<pre class="line-numbers highlight language-fsharp"><code class="language-fsharp"><span class="token keyword">let</span> calculate arr <span class="token operator">=</span> 
+  arr
+  <span class="token operator">|</span><span class="token operator">></span> mapSquare
+  <span class="token operator">|</span><span class="token operator">></span> filterOdd
+  <span class="token operator">|</span><span class="token operator">></span> sum
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>將 <code>mapSquare()</code>、<code>filterOdd()</code> 與 <code>sum()</code> 透過 pipeline 處理 <code>arr</code>。</p>
+<p>因為 <code>mapSquare()</code>、<code>filterOdd()</code> 與 <code>sum()</code> 的最後一個 argument 都是 <code>list : &#39;T list</code>，在 pipeline 時，F# 允許省略之。</p>
+<blockquote>
+<p><code>|&gt;</code> 為 F# 的 pipeline，<code>由左至右</code></p>
+</blockquote>
+<h3 id="Function-Composition"><a href="#Function-Composition" class="headerlink" title="Function Composition"></a>Function Composition</h3><pre class="line-numbers highlight language-fsharp"><code class="language-fsharp"><span class="token keyword">let</span> mapSquare <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">map</span> <span class="token punctuation">(</span><span class="token keyword">fun</span> x <span class="token operator">-</span><span class="token operator">></span> x <span class="token operator">*</span> x<span class="token punctuation">)</span>
+<span class="token keyword">let</span> filterOdd <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">filter</span> <span class="token punctuation">(</span><span class="token keyword">fun</span> x <span class="token operator">-</span><span class="token operator">></span> x <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> sum <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">reduce</span> <span class="token punctuation">(</span><span class="token keyword">fun</span> a x <span class="token operator">-</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> calculate <span class="token operator">=</span> mapSquare <span class="token operator">></span><span class="token operator">></span> filterOdd <span class="token operator">></span><span class="token operator">></span> sum
+    
+calculate <span class="token punctuation">[</span><span class="token number">1</span> <span class="token punctuation">.</span><span class="token punctuation">.</span> <span class="token number">3</span><span class="token punctuation">]</span> <span class="token operator">|</span><span class="token operator">></span> printf <span class="token string">"%A"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 1 行</p>
+<pre class="line-numbers highlight language-fsharp"><code class="language-fsharp"><span class="token keyword">let</span> mapSquare <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">map</span> <span class="token punctuation">(</span><span class="token keyword">fun</span> x <span class="token operator">-</span><span class="token operator">></span> x <span class="token operator">*</span> x<span class="token punctuation">)</span>
+<span class="token keyword">let</span> filterOdd <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">filter</span> <span class="token punctuation">(</span><span class="token keyword">fun</span> x <span class="token operator">-</span><span class="token operator">></span> x <span class="token operator">%</span> <span class="token number">2</span> <span class="token operator">=</span> <span class="token number">1</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> sum <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">reduce</span> <span class="token punctuation">(</span><span class="token keyword">fun</span> a x <span class="token operator">-</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><code>List.map()</code>、<code>List.filter()</code> 與 <code>List.reduce()</code> 都僅提供 1 個 argument，所以 <code>mapSquare()</code>、<code>filterOdd()</code> 與 <code>sum()</code> 都是 function。</p>
+<p>第  5 行</p>
+<pre class="line-numbers highlight language-fsharp"><code class="language-fsharp"><span class="token keyword">let</span> calculate <span class="token operator">=</span> mapSquare <span class="token operator">></span><span class="token operator">></span> filterOdd <span class="token operator">></span><span class="token operator">></span> sum
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將 <code>mapSquare()</code>、<code>filterOdd()</code> 與 <code>filterOdd()</code> 組合成 <code>calculate()</code> 。</p>
+<p>因為 <code>mapSquare()</code>、<code>filterOdd()</code> 與 <code>sum()</code> 的最後一個 argument 都是 <code>list : &#39;T list</code>，在 function composition 時，F# 允許省略之。</p>
+<blockquote>
+<p><code>&gt;&gt;</code> 為 F# 的 function composition，<code>由左至右</code></p>
+</blockquote>
+<p>我們可以發現  F# 在設計 function 時，會 <code>故意</code> 將要處理的 <code>資料</code> 放在最後一個 argument，將 <code>條件</code> 放在前面的 argument，如此所有 function 無論要做 pipeline 或 function composition 時，都可省略最後一個 argument，使程式碼更簡潔。</p>
+<blockquote>
+<p>Pipeline 與 function composition 講的其實是同一件事情，只是 F# 文化較喜歡使用  pipeline，而 Haskell 較愛用 function composition</p>
+</blockquote>
+<p>當初以為這只是 F# 的 syntax sugar，後來在歐陽繼超的 <code>前端函數式攻城指南</code> 與 <code>Haskell 趣學指南</code> 這兩本書，才發現這是 FP 特有風格，稱為 point-free。</p>
+<h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><blockquote>
+<p><strong>Point-free</strong><br>Function 不特別將要處理的 data 放進參 argument，因此也不回傳處理過的 data，而是回傳 function，這有助於 function composition，也稱為 Tacit Programming</p>
+</blockquote>
+<blockquote>
+<p>Q：為甚麼 point-free 能成立呢 ?</p>
+</blockquote>
+<pre class="line-numbers highlight language-fsharp"><code class="language-fsharp"><span class="token keyword">let</span> fn arr <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">map</span> <span class="token punctuation">(</span><span class="token keyword">fun</span> x <span class="token operator">-</span><span class="token operator">></span> x <span class="token operator">*</span> x<span class="token punctuation">)</span> arr
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>若原本 <code>fn()</code> 只帶一個 argument，相當於將 <code>arr</code> 傳入 <code>List.map (fun x -&gt; x * x)</code>，並回傳處理過的結果。</p>
+<pre class="line-numbers highlight language-fsharp"><code class="language-fsharp"><span class="token keyword">let</span> fn <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">map</span> <span class="token punctuation">(</span><span class="token keyword">fun</span> x <span class="token operator">-</span><span class="token operator">></span> x <span class="token operator">*</span> x<span class="token punctuation">)</span> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>由於 F# 的 function 天生是 curry function，<code>fn()</code> 沒有 argument，<code>=</code> 左右將 <code>arr</code> 同時消去，就相當於回傳 <code>List.map (fun x -&gt; x * x)</code> 。</p>
+<p>所以一個 function 將 data 放在最後一個 argument 時，提不提供 data 都成立：</p>
+<ul>
+<li>有提供 data 則回傳處理過的 data</li>
+<li>不提供 data 則回傳 function</li>
+</ul>
+<p>由於回傳是 function，特別適合做 function composition。</p>
+<blockquote>
+<p>Q：為什麼稱為 point-free ?</p>
+</blockquote>
+<p>Point 所指的就是傳入 data 的 argument，point-free 就是指 function 將 data 放在最後一個 argument，要使用時故意將最後一個 argumet 丟棄 (free)，則變成回傳 function，但若 data 不是最後一個 argument，則無法丟棄，因此也無法變成 function，也無法繼續再做 function composition。</p>
+<blockquote>
+<p>Q：為什麼 point-free 適合做 function composition ?</p>
+</blockquote>
+<p>Function composition 事實上來自於數學的 <code>合成函數</code>，也就是 <code>fog(x) = f(g(x))</code>，其中：</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">fog</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token operator">=</span> <span class="token function">f</span><span class="token punctuation">(</span>y<span class="token punctuation">)</span>
+y      <span class="token operator">=</span> <span class="token function">g</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>也就是 <code>g(x)</code> 的 output 剛好為 <code>f(y)</code> 的 input，因此才能將 <code>f(g(x))</code> 合併，變成 <code>fog(x)</code>，其中的 <code>y</code> 剛好被消滅。</p>
+<p>若 <code>f()</code> 與 <code>g()</code> 每個 function 的 <code>格式都一樣</code>，都是最後一個 argument 為 data，則可將所有 function 加以組合成一個新 function，這就是 function composition。</p>
+<h2 id="ECMAScript"><a href="#ECMAScript" class="headerlink" title="ECMAScript"></a>ECMAScript</h2><p>前面談的都是 F#，你可能看得似懂非懂，我們就來將相同程式碼以大家熟悉的 ECMAScript 改寫：</p>
+<h3 id="Pipeline-1"><a href="#Pipeline-1" class="headerlink" title="Pipeline"></a>Pipeline</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> map <span class="token operator">=</span> fn <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span>
+<span class="token keyword">let</span> filter <span class="token operator">=</span> fn <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span>
+<span class="token keyword">let</span> reduce <span class="token operator">=</span> fn <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> mapSquare <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">*</span> x<span class="token punctuation">)</span>
+<span class="token keyword">let</span> filterOdd <span class="token operator">=</span> <span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">%</span> <span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> sum <span class="token operator">=</span> <span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> pipe <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">...</span>fns<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> init <span class="token operator">=</span><span class="token operator">></span> fns<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>g<span class="token punctuation">,</span> f<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">f</span><span class="token punctuation">(</span>g<span class="token punctuation">)</span><span class="token punctuation">,</span> init<span class="token punctuation">)</span> 
+
+<span class="token keyword">let</span> calculate <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>mapSquare<span class="token punctuation">,</span> filterOdd<span class="token punctuation">,</span> sum<span class="token punctuation">)</span>
+
+<span class="token function">calculate</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 1 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> map <span class="token operator">=</span> fn <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span>
+<span class="token keyword">let</span> filter <span class="token operator">=</span> fn <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span>
+<span class="token keyword">let</span> reduce <span class="token operator">=</span> fn <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>ECMAScript 雖然都有提供 <code>map()</code>、<code>filter()</code> 與 <code>reduce()</code>，但這些都不是 curry function，因此無法使用 function composition，所以第一步就是將這些 function 改寫成 curry function。</p>
+<p>第 5 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> mapSquare <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">*</span> x<span class="token punctuation">)</span>
+<span class="token keyword">let</span> filterOdd <span class="token operator">=</span> <span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">%</span> <span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> sum <span class="token operator">=</span> <span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>改寫成 point-free function。</p>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> pipe <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">...</span>fns<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> init <span class="token operator">=</span><span class="token operator">></span> fns<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>g<span class="token punctuation">,</span> f<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">f</span><span class="token punctuation">(</span>g<span class="token punctuation">)</span><span class="token punctuation">,</span> init<span class="token punctuation">)</span> 
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>由於 ECMAScript 沒有提供 <code>pipe()</code> 組合 function，我們自己土炮用 <code>reduce()</code> 寫一個 <code>pipe()</code>，負責將多個 point-free function 組合成單一 function。</p>
+<p>11 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> calculate <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>mapSquare<span class="token punctuation">,</span> filterOdd<span class="token punctuation">,</span> sum<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將 <code>mapSquare()</code>、<code>filterOdd()</code> 與 <code>sum()</code> 組合成 <code>calculate()</code>。</p>
+<p>這裡與 F# 一樣，而是 <code>由左至右</code>。</p>
+<p><img src="/images/fp/pointfree/pointfree000.png" alt="pointfree000"></p>
+<h3 id="Function-Composition-1"><a href="#Function-Composition-1" class="headerlink" title="Function Composition"></a>Function Composition</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> map <span class="token operator">=</span> fn <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span>
+<span class="token keyword">let</span> filter <span class="token operator">=</span> fn <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span>
+<span class="token keyword">let</span> reduce <span class="token operator">=</span> fn <span class="token operator">=</span><span class="token operator">></span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> mapSquare <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">*</span> x<span class="token punctuation">)</span>
+<span class="token keyword">let</span> filterOdd <span class="token operator">=</span> <span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">%</span> <span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> sum <span class="token operator">=</span> <span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> compose <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">...</span>fns<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> init <span class="token operator">=</span><span class="token operator">></span> fns<span class="token punctuation">.</span><span class="token function">reduceRight</span><span class="token punctuation">(</span><span class="token punctuation">(</span>g<span class="token punctuation">,</span> f<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">f</span><span class="token punctuation">(</span>g<span class="token punctuation">)</span><span class="token punctuation">,</span> init<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> calculate <span class="token operator">=</span> <span class="token function">compose</span><span class="token punctuation">(</span>sum<span class="token punctuation">,</span> filterOdd<span class="token punctuation">,</span> mapSquare<span class="token punctuation">)</span>
+
+<span class="token function">calculate</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> compose <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">...</span>fns<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> init <span class="token operator">=</span><span class="token operator">></span> fns<span class="token punctuation">.</span><span class="token function">reduceRight</span><span class="token punctuation">(</span><span class="token punctuation">(</span>g<span class="token punctuation">,</span> f<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">f</span><span class="token punctuation">(</span>g<span class="token punctuation">)</span><span class="token punctuation">,</span> init<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>由於 ECMAScript 沒有提供 <code>compose()</code> 組合 function，我們自己土炮用 <code>reduceRight()</code> 寫一個 <code>compose()</code>，負責將多個 point-free function 組合成單一 function。</p>
+<p>11 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> calculate <span class="token operator">=</span> <span class="token function">compose</span><span class="token punctuation">(</span>sum<span class="token punctuation">,</span> filterOdd<span class="token punctuation">,</span> mapSquare<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將 <code>mapSquare()</code>、<code>filterOdd()</code> 與 <code>sum()</code> 組合成 <code>calculate()</code>。</p>
+<p>這裡與 F# 不一樣，而是 <code>由右至左</code>。</p>
+<p><img src="/images/fp/pointfree/pointfree001.png" alt="pointfree001"></p>
+<p>ECMAScript 雖然寫的出來，但由於沒有直接支援 curry function 、<code>pipe()</code> 與 <code>compose()</code>，因此寫起來有些冗長。</p>
+<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><h3 id="Pipeline-2"><a href="#Pipeline-2" class="headerlink" title="Pipeline"></a>Pipeline</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> filter<span class="token punctuation">,</span> reduce<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> mapSquare <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">*</span> x<span class="token punctuation">)</span>
+<span class="token keyword">let</span> filterOdd <span class="token operator">=</span> <span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">%</span> <span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> sum <span class="token operator">=</span> <span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> calculate <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>mapSquare<span class="token punctuation">,</span> filterOdd<span class="token punctuation">,</span> sum<span class="token punctuation">)</span>
+
+<span class="token function">calculate</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ? </span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 1 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> filter<span class="token punctuation">,</span> reduce<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>從 Ramda 引入 <code>map()</code>、<code>filter()</code>、<code>reduce()</code> ，這些都是已經是 curry function。</p>
+<p>也從 Ramda 引入 <code>pipe()</code>。</p>
+<p>第 3 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> mapSquare <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">*</span> x<span class="token punctuation">)</span>
+<span class="token keyword">let</span> filterOdd <span class="token operator">=</span> <span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">%</span> <span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> sum <span class="token operator">=</span> <span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>使用 Ramda 的 function 改寫成 point-free function。</p>
+<p>第 7 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> calculate <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>mapSquare<span class="token punctuation">,</span> filterOdd<span class="token punctuation">,</span> sum<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 Ramda 的 <code>pipe()</code> 將 <code>mapSquare()</code>、<code>filterOdd()</code> 與 <code>sum()</code> 組合成 <code>calculate()</code>。</p>
+<p><img src="/images/fp/pointfree/pointfree002.png" alt="pointfree002"></p>
+<h3 id="Function-Composition-2"><a href="#Function-Composition-2" class="headerlink" title="Function Composition"></a>Function Composition</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> filter<span class="token punctuation">,</span> reduce<span class="token punctuation">,</span> compose <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> mapSquare <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">*</span> x<span class="token punctuation">)</span>
+<span class="token keyword">let</span> filterOdd <span class="token operator">=</span> <span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">%</span> <span class="token number">2</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> sum <span class="token operator">=</span> <span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> calculate <span class="token operator">=</span> <span class="token function">compose</span><span class="token punctuation">(</span>sum<span class="token punctuation">,</span> filterOdd<span class="token punctuation">,</span> mapSquare<span class="token punctuation">)</span>
+
+<span class="token function">calculate</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ? </span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 1 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> filter<span class="token punctuation">,</span> reduce<span class="token punctuation">,</span> compose <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>從 Ramda 引入 <code>map()</code>、<code>filter()</code>、<code>reduce()</code> ，這些都是已經是 curry function。</p>
+<p>也從 Ramda 引入 <code>compose()</code>。</p>
+<p>第 7 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> calculate <span class="token operator">=</span> <span class="token function">compose</span><span class="token punctuation">(</span>sum<span class="token punctuation">,</span> filterOdd<span class="token punctuation">,</span> mapSquare<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 Ramda 的 <code>compose()</code> 將 <code>mapSquare()</code>、<code>filterOdd()</code> 與 <code>sum()</code> 組合成 <code>calculate()</code>。</p>
+<p><img src="/images/fp/pointfree/pointfree003.png" alt="pointfree003"></p>
+<p>Ramda 版本已經非常精簡，我們只需實作 point-free function 再加以組合即可，整體風格已經與純 FP 的 F# 非常接近。</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>Point-free 是 FP 設計 argument 的基本精神，這也是為什麼歐陽繼超在<code>前端函數式攻城指南</code>一書中指出 Underscore 設計錯誤，因為 Underscore 是 <code>_.map([1, 2, 3], x =&gt; x + 1)</code>，將 data 放在第 1 個  argument，這並不符合 point-free 原則，因此 Underscore 無法使用 function composition</li>
+<li>FP 首重觀念，只要心裡有 function composition，無論是在 F# 或在 ECMAScript 都可實作</li>
+<li>純 ECMAScript 實作稍微冗長，若使用 Ramda，則整體精簡程度已經與 F# 非常接近</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>歐陽繼超，<a href="https://www.tenlong.com.tw/products/9787121297243" target="_blank" rel="noopener">前端函數式攻城指南</a><br>Miran Lipovaca, <a href="https://www.tenlong.com.tw/products/9787115335593" target="_blank" rel="noopener">Haskell 趣學指南</a><br><a href="https://en.wikipedia.org/wiki/Main_Page" target="_blank" rel="noopener">Wikipedia</a>, <a href="https://en.wikipedia.org/wiki/Tacit_programming" target="_blank" rel="noopener">Tacit Programming</a></p>
+
+          </article>
+          <p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/FP/'>#&nbsp;FP</a>
+    
+  </span>
+  
+</p>
+        </div>
+        <div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/fp/immutable/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">FP 之 Immutable</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/ramda/array/tail/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 tail() 取得不包含第一筆的 Array</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="text-center">
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://yabai.tw">點燈坊</a>
+  </p>
+</footer>
+
+  <!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+  </body>
+</html>

@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html 
+>
+  <head>
+  <meta charset="utf-8">
+  <!-- ### DNS Prefetch ### -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+  <!-- ### Preload ### -->
+  
+
+  <!-- ### Meta & Title & Info ### -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>如何學習 Functional Programming ? | 點燈坊</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff2601">
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="Functional Programming 近年逐漸受到重視，尤其 ECMAScript 本身具有 Functional 特質 (First-class Function、Closure、Higher-order Function)，再加上 React、Redux、RxJS、Ramda … 等推波助瀾，FP 從理論走向實務，但也由於 FP 與 OOP 思維迥異，因此很多人視 FP 為異端而裹足不前，本文整理出 FP 三個最重要心法幫助大家學習。">
+<!-- Keywords -->
+<meta name="keywords" content=", FP">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+  <!-- ### Import File ### -->
+  
+    <!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+  
+  <!-- ### Site Verification ### -->
+  
+
+  <!-- ### RSS ### -->
+  
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+  <!-- ### WebApp ### -->
+  <meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="點燈坊">
+<meta name="msapplication-starturl" content="https://yabai.tw">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="點燈坊">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+  <!-- ### The Open Graph & Twitter Card Protocol ### -->
+  <meta property="og:title" content="如何學習 Functional Programming ? | 點燈坊">
+<meta property="og:site_name" content="點燈坊">
+
+<meta property="og:url" content="https://yabai.tw/fp/overview/">
+<meta property="og:image"
+	content="https://yabai.tw/apple-touch-icon.png">
+<meta property="og:description" content="Functional Programming 近年逐漸受到重視，尤其 ECMAScript 本身具有 Functional 特質 (First-class Function、Closure、Higher-order Function)，再加上 React、Redux、RxJS、Ramda … 等推波助瀾，FP 從理論走向實務，但也由於 FP 與 OOP 思維迥異，因此很多人視 FP 為異端而裹足不前，本文整理出 FP 三個最重要心法幫助大家學習。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-06-28T22:32:00.000Z">
+<meta property="article:modified_time" content="2019-06-28T22:32:00.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", FP">
+
+
+  <!-- ### Analytics ### -->
+  
+
+
+
+
+
+  <!-- ### Canonical link ### -->
+  <link rel="canonical" href="https://yabai.tw/fp/overview/">
+  <!-- ### Structured Data ### -->
+  
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://yabai.tw/fp/overview/",
+    "@type": "BlogPosting",
+    "logo": "https://yabai.tw/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://yabai.tw/fp/overview/"
+    },
+    "headline": "如何學習 Functional Programming ? | 點燈坊",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://yabai.tw/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2019-06-28T22:32:00.000Z",
+    "dateModified": "2023-12-03T15:59:18.592Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/img/default_avatar.png"
+        },
+        "description": "うまく使いさえすれば、時間はいつも十分にある"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "點燈坊",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://yabai.tw/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", FP",
+    "description": "Functional Programming 近年逐漸受到重視，尤其 ECMAScript 本身具有 Functional 特質 (First-class Function、Closure、Higher-order Function)，再加上 React、Redux、RxJS、Ramda … 等推波助瀾，FP 從理論走向實務，但也由於 FP 與 OOP 思維迥異，因此很多人視 FP 為異端而裹足不前，本文整理出 FP 三個最重要心法幫助大家學習。"
+}
+</script>
+
+  <!-- ### Custom Head ### -->
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+  <body>
+  <header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      點燈坊
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    うまく使いさえすれば、時間はいつも十分にある
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">ホーム</a>
+      <a href="/series/" class="navbar-link">シリーズ</a>
+      <a href="/tags/" class="navbar-link">タグ</a>
+      <a href="/search" class="navbar-link">検索</a>
+      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+  
+<!-- ## Post ## -->
+<div class="post-container">
+  <div id="post-card" class="card">
+    <div class="card-item-container">
+      <div class="card-inner-cell">
+        <div class="card-header">
+          
+<h1 class="card-title h3 mb-2">如何學習 Functional Programming ?</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2019-06-29</span>
+</div>
+
+        </div>
+        <div class="card-body">
+          <article id="post-content">
+            <p>Functional Programming 近年逐漸受到重視，尤其 ECMAScript 本身具有 Functional 特質 (First-class Function、Closure、Higher-order Function)，再加上 React、Redux、RxJS、Ramda … 等推波助瀾，FP 從理論走向實務，但也由於 FP 與 OOP 思維迥異，因此很多人視 FP 為異端而裹足不前，本文整理出 FP 三個最重要心法幫助大家學習。</p>
+<a id="more"></a>
+
+<h2 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h2><p>FP 特色之一就是 <code>專有名詞</code> 很多，如 currying、partial application、functor、monad … 等，光搞懂一個名詞就要花很多時間，但這些性質其實都是從 FP 三個最基本特性所衍伸，也就是要學好 FP，應該先從最基本觀念建立起，然後再逐步向外學習其他衍生特性。</p>
+<p>FP 本質有三：</p>
+<ul>
+<li>Decouple Data and Function</li>
+<li>No Side Effect</li>
+<li>Function Composition</li>
+</ul>
+<h2 id="Decouple-Data-and-Function"><a href="#Decouple-Data-and-Function" class="headerlink" title="Decouple Data and Function"></a>Decouple Data and Function</h2><p>傳統 OOP 教我們 <code>資料</code> 與 <code>功能</code> 合一，以 <code>職責</code> 的角度，將 <code>資料</code> 與 <code>功能</code> 封裝在 class 內，在實務上很容易遇到以下問題：</p>
+<ul>
+<li>由於資料與功能合一，但功能不斷增加，很容易單一 class 有太多功能，但由於這些功能又與該資料有關，放在其他 class 又不適合，導致 class 爆炸</li>
+<li>若不同資料有相同功能，放在哪一個 class 都很尷尬</li>
+</ul>
+<p>FP 則是強調 <code>資料</code> 與 <code>功能</code> 分離：</p>
+<ul>
+<li><code>資料</code> 僅以 array 與 object literal 表示，不另外建立型別</li>
+<li><code>功能</code> 僅以 function 表示，可自行將 function 放在合適 module，與 <code>資料</code> 無關</li>
+</ul>
+<p>也由於 FP 的資料與功能分離：</p>
+<ul>
+<li>功能不斷增加，只要不斷新增 function，再重構到適合的 module 即可，因此沒有單一 class 爆炸問題</li>
+<li>由於 module 與 data 是獨立的，因此容易重複使用，也不會有該功能該放在哪一個 class 的尷尬</li>
+</ul>
+<h2 id="No-Side-Effect"><a href="#No-Side-Effect" class="headerlink" title="No Side Effect"></a>No Side Effect</h2><p>傳統 OOP 最小顆粒是 class，class 對外而言是封裝，但對內則無，因此 class 內部 method 以 <code>this</code> 去存取 field，在實務上很容易遇到以下問題：</p>
+<ul>
+<li>Class 並不見得由同一個人寫，也就是由團隊不同人維護不同 method，因此要維護 method 時，必須很清楚 field 的來龍去脈，因為 bug 通常就是來自於其他 method 修改了 field</li>
+<li>由於需求改變，功能不斷增加，單一 class 很容易 method 過多而爆炸，因此會想要重構到新 class，但由於各 method 共用 field 盤根錯節，要重構到其他 class 並不容易</li>
+<li>有些 method 並沒有回傳值，其目的只是修改 field，但這些 field 可能根本沒有 getter，導致 unit test 困難</li>
+</ul>
+<p>FP 的 function 都是 pure function，也就是 function 只跟 argument 有關，且一定要有回傳值：</p>
+<ul>
+<li>儘管一個 module 由團隊不同人維護不同 function，但因為 function 只跟 parameter 有關，只要搞懂該 function 即可，也不用擔心被其他 function 影響</li>
+<li>當單一 module 的 fuction 過多時，只要建立新 module，再將 function 剪下貼上即可，不用擔心共用 field 問題，非常容易重構</li>
+<li>Pure function 只跟 parameter 有關，又一定有回傳值，因此 unit test 非常容易，只要提供 argument 的 stub，並且驗證結果即可</li>
+</ul>
+<h2 id="Function-Composition"><a href="#Function-Composition" class="headerlink" title="Function Composition"></a>Function Composition</h2><p>程式只要寫大，就會有重複程式碼問題要解決，傳統 OOP 使用 <code>繼承</code>，這會造成 <code>子類別</code> 與 <code>父類別</code> 的 <code>強耦合</code>，父類別所新增的 method 會讓子類別強迫概括承受。</p>
+<p>後來 OOP 建議改用 class composition，也就是將重複的部分抽成新 class，使用 DI 注入，在實務上很容易遇到以下問題：</p>
+<ul>
+<li>為了讓 class 單一職責，我們希望 class 顆粒盡量小，但這又會造成 DI 注入爆炸</li>
+<li>若要將 class 單一職責到極致，常常會看到一個 class &#x2F; interface 只有一個 method，造成檔案數目爆炸</li>
+</ul>
+<p>FP 則是使用 function composition，將重複部分抽成小小 function，再以 higher-order function 組合成新 function：</p>
+<ul>
+<li>Function 顆粒遠比 class 小，徹底實踐單一職責，重複使用率超高</li>
+<li>不會造成 DI 爆炸，只是 import 很多而已，但 import 很多也沒什麼關係</li>
+<li>不會再有一個 class &#x2F; interface 只有一個 method 的窘境，檔案數目大幅減少</li>
+</ul>
+<p>對於常用的 higher order function，如 RxJS、Ramda、Crocks 已經提供很多，我們只需寫與商業邏輯相關的小 function，然後組合 library 所提供的 function 即可</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>初學者在學習 FP 時，只要時時想到這三點，要求自己這樣寫程式，FP 功力就會慢慢進步</li>
+<li>儘管某些 framework 還是使用 OOP 設計，但盡量將這三點融合在 OOP 內，也能使程式更容易維護</li>
+<li>FP 關鍵在於 function composition，因此熟悉 Ramda 或 RxJS 的 function 是必要的</li>
+</ul>
+
+          </article>
+          <p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/FP/'>#&nbsp;FP</a>
+    
+  </span>
+  
+</p>
+        </div>
+        <div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/ecmascript/general/essence/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">發現 ECMAScript 本質</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/webstorm/general/wrap-shortcut/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">如何在 WebStorm 快速切換 Word Wrap ?</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="text-center">
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://yabai.tw">點燈坊</a>
+  </p>
+</footer>
+
+  <!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+  </body>
+</html>

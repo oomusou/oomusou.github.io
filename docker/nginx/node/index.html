@@ -1,0 +1,659 @@
+<!DOCTYPE html>
+<html 
+>
+  <head>
+  <meta charset="utf-8">
+  <!-- ### DNS Prefetch ### -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+  <!-- ### Preload ### -->
+  
+
+  <!-- ### Meta & Title & Info ### -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>將 Node 包進 Nginx Image | 點燈坊</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff2601">
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="在 Microservice 架構下，理論上 Nginx 與 Node 應該各自放在不同 Container 下，但有時 API 就是要控制 Nginx 或其他執行檔如 FFmpeg，此時將 Node 與 Nginx 包在同一個 Image 會更方便。">
+<!-- Keywords -->
+<meta name="keywords" content=", Docker, Nginx, Node">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+  <!-- ### Import File ### -->
+  
+    <!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+  
+  <!-- ### Site Verification ### -->
+  
+
+  <!-- ### RSS ### -->
+  
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+  <!-- ### WebApp ### -->
+  <meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="點燈坊">
+<meta name="msapplication-starturl" content="https://yabai.tw">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="點燈坊">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+  <!-- ### The Open Graph & Twitter Card Protocol ### -->
+  <meta property="og:title" content="將 Node 包進 Nginx Image | 點燈坊">
+<meta property="og:site_name" content="點燈坊">
+
+<meta property="og:url" content="https://yabai.tw/docker/nginx/node/">
+<meta property="og:image"
+	content="https://yabai.tw/apple-touch-icon.png">
+<meta property="og:description" content="在 Microservice 架構下，理論上 Nginx 與 Node 應該各自放在不同 Container 下，但有時 API 就是要控制 Nginx 或其他執行檔如 FFmpeg，此時將 Node 與 Nginx 包在同一個 Image 會更方便。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-10-31T11:24:59.000Z">
+<meta property="article:modified_time" content="2021-10-31T11:24:59.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", Docker, Nginx, Node">
+
+
+  <!-- ### Analytics ### -->
+  
+
+
+
+
+
+  <!-- ### Canonical link ### -->
+  <link rel="canonical" href="https://yabai.tw/docker/nginx/node/">
+  <!-- ### Structured Data ### -->
+  
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://yabai.tw/docker/nginx/node/",
+    "@type": "BlogPosting",
+    "logo": "https://yabai.tw/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://yabai.tw/docker/nginx/node/"
+    },
+    "headline": "將 Node 包進 Nginx Image | 點燈坊",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://yabai.tw/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2021-10-31T11:24:59.000Z",
+    "dateModified": "2023-12-03T15:59:18.575Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/img/default_avatar.png"
+        },
+        "description": "うまく使いさえすれば、時間はいつも十分にある"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "點燈坊",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://yabai.tw/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", Docker, Nginx, Node",
+    "description": "在 Microservice 架構下，理論上 Nginx 與 Node 應該各自放在不同 Container 下，但有時 API 就是要控制 Nginx 或其他執行檔如 FFmpeg，此時將 Node 與 Nginx 包在同一個 Image 會更方便。"
+}
+</script>
+
+  <!-- ### Custom Head ### -->
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+  <body>
+  <header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      點燈坊
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    うまく使いさえすれば、時間はいつも十分にある
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">ホーム</a>
+      <a href="/series/" class="navbar-link">シリーズ</a>
+      <a href="/tags/" class="navbar-link">タグ</a>
+      <a href="/search" class="navbar-link">検索</a>
+      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+  
+<!-- ## Post ## -->
+<div class="post-container">
+  <div id="post-card" class="card">
+    <div class="card-item-container">
+      <div class="card-inner-cell">
+        <div class="card-header">
+          
+<h1 class="card-title h3 mb-2">將 Node 包進 Nginx Image</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2021-10-31</span>
+</div>
+
+        </div>
+        <div class="card-body">
+          <article id="post-content">
+            <p>在 Microservice 架構下，理論上 Nginx 與 Node 應該各自放在不同 Container 下，但有時 API 就是要控制 Nginx 或其他執行檔如 FFmpeg，此時將 Node 與 Nginx 包在同一個 Image 會更方便。</p>
+<a id="more"></a>
+
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Nginx 1.18.0<br>Node 12.15.0</p>
+<h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">FROM nginx:stable-alpine
+WORKDIR /usr/src/app
+
+COPY default.conf /etc/nginx/conf.d/
+COPY package.json .
+COPY index.js .
+COPY entrypoint.sh /
+
+RUN apk add nodejs -q
+RUN apk add yarn -q
+RUN yarn install
+RUN chmod +x /entrypoint.sh
+
+ENTRYPOINT ["/entrypoint.sh"]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 1 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">FROM nginx:stable-alpine
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>以 <code>nginx:stable-alpine</code> 為基底。</p>
+<p>第 2 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">WORKDIR /usr/src/app
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將預設目錄設定在 <code>/usr/src/app</code>，也就是 Node 相關 <code>*.js</code> 的所在目錄。</p>
+<p>第 4 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">COPY default.conf /etc/nginx/conf.d/
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將自定義了 Nginx configuration 檔複製進 image。</p>
+<p>第 5 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">COPY package.json .
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將 <code>package.json</code> 複製進 image。</p>
+<p>第 6 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">COPY index.js .
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將 Node 所有檔案複製進 image。</p>
+<p>第 7 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">COPY entrypoint.sh /
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將自定義的 <code>entrypoint.sh</code> 複製進 image。</p>
+<blockquote>
+<p>為什麼要使用 script ? 稍後會解釋</p>
+</blockquote>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">RUN apk update
+RUN apk add nodejs -q
+RUN apk add yarn -q
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>安裝 Node 與 Yarn。</p>
+<blockquote>
+<p>在 alpine 內只能使用 <code>apk</code>，不能使用 <code>apt-get</code></p>
+</blockquote>
+<p>12 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">RUN yarn install
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>根據 <code>package.json</code> 安裝 NPM package，如 <code>express</code>。</p>
+<p>13 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">RUN chmod +x /entrypoint.sh
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>賦予 <code>entrypoint.sh</code> 有執行權利。</p>
+<p>15 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">ENTRYPOINT ["/entrypoint.sh"]
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>最後執行 <code>entrypoint.sh</code>。</p>
+<h2 id="Nginx-Configuration"><a href="#Nginx-Configuration" class="headerlink" title="Nginx Configuration"></a>Nginx Configuration</h2><p><strong>default.conf</strong></p>
+<pre class="line-numbers highlight language-json"><code class="language-json">server <span class="token punctuation">{</span>
+  listen       <span class="token number">80</span><span class="token punctuation">;</span>
+  server_name  localhost<span class="token punctuation">;</span>
+
+  location / <span class="token punctuation">{</span>
+    root   /usr/share/nginx/html<span class="token punctuation">;</span>
+    index  index.html index.htm<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  error_page   <span class="token number">500</span> <span class="token number">502</span> <span class="token number">503</span> <span class="token number">504</span>  /50x.html<span class="token punctuation">;</span>
+  location = /50x.html <span class="token punctuation">{</span>
+    root   /usr/share/nginx/html<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>採用預設的 Nginx 設定檔。</p>
+<h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><p><strong>index.js</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> express <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'express'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> app <span class="token operator">=</span> <span class="token function">express</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> port <span class="token operator">=</span> <span class="token number">3000</span>
+
+app<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'/hello'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  res<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span><span class="token string">'world'</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span>port<span class="token punctuation">,</span> _ <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Node listening on port </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>port<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>使用 Express 實現簡單的 RESTful GET API。</p>
+<h2 id="Shell-Script"><a href="#Shell-Script" class="headerlink" title="Shell Script"></a>Shell Script</h2><p><strong>entrypoint.sh</strong></p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">#!/bin/sh
+node index.js &
+nginx -g 'daemon off;'
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>由於 container 必須啟動 Node 與 Nginx，因此必須透過 <code>entrypoint.sh</code> 啟動。</p>
+<p>因為已經設定好 <code>WORKDIR</code> 為 <code>/usr/src/app</code>，可直接以 <code>node</code> 執行 <code>index.js</code>。</p>
+<p>但還得啟動 Nginx，只好在 <code>node</code> 最後加上 <code>&amp;</code>，表示在背景執行，最後執行 Nginx。</p>
+<h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3"</span>
+
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token key atrule">nginx</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">-</span>node<span class="token punctuation">:</span>0.1.0
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> MyNginx
+    <span class="token key atrule">restart</span><span class="token punctuation">:</span> always
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> <span class="token string">"80:80"</span>
+      <span class="token punctuation">-</span> <span class="token string">"3000:3000"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Nginx 使用了 port <code>80</code>，而 Node 使用了 port <code>3000</code>，須在 <code>docker-compose.yml</code> 特別設定。</p>
+<h2 id="NPM-Script"><a href="#NPM-Script" class="headerlink" title="NPM Script"></a>NPM Script</h2><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"nginx-node"</span><span class="token punctuation">,</span>
+  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"0.1.0"</span><span class="token punctuation">,</span>
+  <span class="token property">"private"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"node index.js"</span><span class="token punctuation">,</span>
+    <span class="token property">"docker:build"</span><span class="token operator">:</span> <span class="token string">"docker build -t $npm_package_name:$npm_package_version ."</span><span class="token punctuation">,</span>
+    <span class="token property">"docker:save"</span><span class="token operator">:</span> "docker save $npm_package_name<span class="token operator">:</span>$npm_package_version | gzip > $npm_package_name-$npm_package_version.tar.gz"<span class="token punctuation">,</span>
+    <span class="token property">"docker:login"</span><span class="token operator">:</span> <span class="token string">"docker exec -it MyNginx sh"</span><span class="token punctuation">,</span>
+    <span class="token property">"docker:log"</span><span class="token operator">:</span> <span class="token string">"docker logs MyNginx"</span><span class="token punctuation">,</span>
+    <span class="token property">"docker:rmi"</span><span class="token operator">:</span> <span class="token string">"docker rmi $npm_package_name:$npm_package_version"</span><span class="token punctuation">,</span>
+    <span class="token property">"docker:up"</span><span class="token operator">:</span> <span class="token string">"docker-compose up -d"</span><span class="token punctuation">,</span>
+    <span class="token property">"docker:down"</span><span class="token operator">:</span> <span class="token string">"docker-compose down"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"express"</span><span class="token operator">:</span> <span class="token string">"^4.17.1"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>將常用 Docker command 以 NPM script 管理。</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>若其他 server 也想將 Node 包進去，也可參考此文方式</li>
+</ul>
+
+          </article>
+          <p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/Docker/'>#&nbsp;Docker</a>
+    
+    <a class="post-tags-list-item" href='/tags/Nginx/'>#&nbsp;Nginx</a>
+    
+    <a class="post-tags-list-item" href='/tags/Node/'>#&nbsp;Node</a>
+    
+  </span>
+  
+</p>
+        </div>
+        <div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/docker/microservice/express/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 Express 實現 Microservice</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/docker/nginx/ffmpeg/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 Docker 將 Nginx + FFmpeg 打包 Image</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="text-center">
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://yabai.tw">點燈坊</a>
+  </p>
+</footer>
+
+  <!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+  </body>
+</html>

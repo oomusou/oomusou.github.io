@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html 
+>
+  <head>
+  <meta charset="utf-8">
+  <!-- ### DNS Prefetch ### -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+  <!-- ### Preload ### -->
+  
+
+  <!-- ### Meta & Title & Info ### -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>使用 Docker 將 Nginx + Sub-Path + Vue 打包成 Image | 點燈坊</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff2601">
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="若只將 Vue Deploy 到單一 Domain 則比較單純，但若是 Domain 的 Sub-Path，則 Vue CLI 與 Nginx 都需要加上其他設定。">
+<!-- Keywords -->
+<meta name="keywords" content=", Vue, Docker, Nginx">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+  <!-- ### Import File ### -->
+  
+    <!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+  
+  <!-- ### Site Verification ### -->
+  
+
+  <!-- ### RSS ### -->
+  
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+  <!-- ### WebApp ### -->
+  <meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="點燈坊">
+<meta name="msapplication-starturl" content="https://yabai.tw">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="點燈坊">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+  <!-- ### The Open Graph & Twitter Card Protocol ### -->
+  <meta property="og:title" content="使用 Docker 將 Nginx + Sub-Path + Vue 打包成 Image | 點燈坊">
+<meta property="og:site_name" content="點燈坊">
+
+<meta property="og:url" content="https://yabai.tw/docker/vue/nginx-subpath/">
+<meta property="og:image"
+	content="https://yabai.tw/apple-touch-icon.png">
+<meta property="og:description" content="若只將 Vue Deploy 到單一 Domain 則比較單純，但若是 Domain 的 Sub-Path，則 Vue CLI 與 Nginx 都需要加上其他設定。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-10-31T07:57:23.000Z">
+<meta property="article:modified_time" content="2021-10-31T07:57:23.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", Vue, Docker, Nginx">
+
+
+  <!-- ### Analytics ### -->
+  
+
+
+
+
+
+  <!-- ### Canonical link ### -->
+  <link rel="canonical" href="https://yabai.tw/docker/vue/nginx-subpath/">
+  <!-- ### Structured Data ### -->
+  
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://yabai.tw/docker/vue/nginx-subpath/",
+    "@type": "BlogPosting",
+    "logo": "https://yabai.tw/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://yabai.tw/docker/vue/nginx-subpath/"
+    },
+    "headline": "使用 Docker 將 Nginx + Sub-Path + Vue 打包成 Image | 點燈坊",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://yabai.tw/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2021-10-31T07:57:23.000Z",
+    "dateModified": "2023-12-03T15:59:18.575Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/img/default_avatar.png"
+        },
+        "description": "うまく使いさえすれば、時間はいつも十分にある"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "點燈坊",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://yabai.tw/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", Vue, Docker, Nginx",
+    "description": "若只將 Vue Deploy 到單一 Domain 則比較單純，但若是 Domain 的 Sub-Path，則 Vue CLI 與 Nginx 都需要加上其他設定。"
+}
+</script>
+
+  <!-- ### Custom Head ### -->
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+  <body>
+  <header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      點燈坊
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    うまく使いさえすれば、時間はいつも十分にある
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">ホーム</a>
+      <a href="/series/" class="navbar-link">シリーズ</a>
+      <a href="/tags/" class="navbar-link">タグ</a>
+      <a href="/search" class="navbar-link">検索</a>
+      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+  
+<!-- ## Post ## -->
+<div class="post-container">
+  <div id="post-card" class="card">
+    <div class="card-item-container">
+      <div class="card-inner-cell">
+        <div class="card-header">
+          
+<h1 class="card-title h3 mb-2">使用 Docker 將 Nginx + Sub-Path + Vue 打包成 Image</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2021-10-31</span>
+</div>
+
+        </div>
+        <div class="card-body">
+          <article id="post-content">
+            <p>若只將 Vue Deploy 到單一 Domain 則比較單純，但若是 Domain 的 Sub-Path，則 Vue CLI 與 Nginx 都需要加上其他設定。</p>
+<a id="more"></a>
+
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Nginx 1.18<br>Vue 2.6.11</p>
+<h2 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h2><p><img src="/images/docker/vue/nginx-subpath/subpath000.png" alt="subpath000"></p>
+<p>假設我們想將 Vue deploy 到 domain 的 <code>/admin</code>，Vue CLI 與 Nginx 各該如何設定呢 ?</p>
+<h2 id="env"><a href="#env" class="headerlink" title=".env"></a>.env</h2><pre class="line-numbers highlight language-json"><code class="language-json">BASE_URL=admin
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>在 project 根目錄新增 <code>.env</code>，設定 <code>BASE_URL</code> 為 <code>admin</code>。</p>
+<blockquote>
+<p>為什麼要叫 <code>BASE_URL</code> 呢 ? 稍後會看到 Vue 很多檔案已經使用 <code>BASE_URL</code> 這個 environment variable</p>
+</blockquote>
+<p><img src="/images/docker/vue/nginx-subpath/subpath001.png" alt="subpath001"></p>
+<h2 id="vue-config-js"><a href="#vue-config-js" class="headerlink" title="vue.config.js"></a>vue.config.js</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript">module<span class="token punctuation">.</span>exports <span class="token operator">=</span> <span class="token punctuation">{</span>
+  publicPath<span class="token punctuation">:</span><span class="token template-string"><span class="token string">`/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>BASE_URL<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>在 project 根目錄新增 <code>vue.config.js</code>，設定 <code>publicPath</code> 為 <code>BASE_URL</code> environment variable。</p>
+<p>至此 Webpack 在 build-time 都會加上 <code>admin</code> sub-path。</p>
+<blockquote>
+<p>Vue CLI 4.x 要在 path 前加上 <code>/</code></p>
+</blockquote>
+<p><img src="/images/docker/vue/nginx-subpath/subpath002.png" alt="subpath002"></p>
+<p><strong>index.html</strong></p>
+<p><img src="/images/docker/vue/nginx-subpath/subpath003.png" alt="subpath003"></p>
+<p>Vue 對於 <code>public</code> 目錄下的 <code>index.html</code> 的 <code>favicon.ico</code> 已經加上 <code>BASE_URL</code> 修正 <code>href</code> attribute。</p>
+<p><strong>router&#x2F;index.js</strong></p>
+<p><img src="/images/docker/vue/nginx-subpath/subpath004.png" alt="subpath004"></p>
+<p>Vue router 也使用了 <code>BASE_URL</code> environment variable。</p>
+<blockquote>
+<p>這也是為什麼我們在 <code>.env</code> 配合 Vue 繼續使用 <code>BASE_URL</code> 原因</p>
+</blockquote>
+<h2 id="dockerfile"><a href="#dockerfile" class="headerlink" title="dockerfile"></a>dockerfile</h2><pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">FROM nginx:stable-alpine
+WORKDIR /usr/share/nginx/html
+COPY dist .
+COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+EXPOSE 8080
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 1 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">FROM nginx:stable-alpine
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>由 <code>nginx:stable-alpine</code> 為基底建立 Docker image。</p>
+<p>第 2 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">WORKDIR /usr/share/nginx/html
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>設定 <code>/usr/share/nginx/html</code> 為預設目錄，如此當進入 container 內部時，預設就是此目錄方便 debug。</p>
+<p>第 3 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">COPY dist .
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將 <code>yarn build</code> 下所有檔案複製到 container 內部的 <code>/usr/share/nginx/html</code> 預設目錄內。</p>
+<p>第 4 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">COPY nginx/default.conf /etc/nginx/conf.d/default.conf
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將 Nginx 的 <code>default.conf</code> 取代 container 內的 <code>default.conf</code>。</p>
+<p>第 5 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">EXPOSE 8080
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>表示 container 將使用 <code>8080</code> port。</p>
+<p><img src="/images/docker/vue/nginx-subpath/subpath005.png" alt="subpath005"></p>
+<h2 id="Nginx-Configuration"><a href="#Nginx-Configuration" class="headerlink" title="Nginx Configuration"></a>Nginx Configuration</h2><pre class="line-numbers highlight language-json"><code class="language-json">server <span class="token punctuation">{</span>
+  listen       <span class="token number">8080</span><span class="token punctuation">;</span>
+  server_name  localhost<span class="token punctuation">;</span>
+
+  location /admin <span class="token punctuation">{</span>
+    alias /usr/share/nginx/html<span class="token punctuation">;</span>
+
+    expires -<span class="token number">1</span><span class="token punctuation">;</span>
+    add_header Pragma <span class="token string">"no-cache"</span><span class="token punctuation">;</span>
+    add_header Cache-Control <span class="token string">"no-store, no-cache, must-revalidate, post-check=0, pre-check=0"</span><span class="token punctuation">;</span>
+
+    try_files $uri $uri/ /index.html = <span class="token number">404</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  error_page   <span class="token number">500</span> <span class="token number">502</span> <span class="token number">503</span> <span class="token number">504</span>  /50x.html<span class="token punctuation">;</span>
+  location = /50x.html <span class="token punctuation">{</span>
+    root   /usr/share/nginx/html<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 1 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json">listen <span class="token number">8080</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>設定 Nginx 使用 <code>8080</code> port，與 <code>dockerfile</code> 的 <code>EXPOSE 8080</code> 相對應。</p>
+<blockquote>
+<p><code>8080</code> 最關鍵的設定是在 Nginx，<code>dockerfile</code> 的 <code>EXPOSE</code> 只是給人寫 <code>docker-compose</code> 時參考使用</p>
+</blockquote>
+<p>第 5 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json">location /admin <span class="token punctuation">{</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>設定 Nginx 使用 <code>admin</code> sub-path。</p>
+<blockquote>
+<p>這是本文最關鍵設定，否則 Nginx 無法使用 <code>admin</code> sub-path</p>
+</blockquote>
+<p>第 6 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json">alias /usr/share/nginx/html<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>admin</code> sub-path 相當於 container 內部的 <code>/usr/share/nginx/html</code> 。</p>
+<blockquote>
+<p>注意要使用 <code>alias</code> 而非 <code>root</code></p>
+</blockquote>
+<p>12 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json">try_files $uri $uri/ /index.html = <span class="token number">404</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>由於 Vue 為 SPA，當 URL 找不到時，Nginx 會自動導到 <code>index.html</code>，由 Vue router 決定。</p>
+<p><img src="/images/docker/vue/nginx-subpath/subpath006.png" alt="subpath006"></p>
+<h2 id="docker-compose-yml"><a href="#docker-compose-yml" class="headerlink" title="docker-compose.yml"></a>docker-compose.yml</h2><pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3"</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token key atrule">nginx</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> vue<span class="token punctuation">-</span>publicpath<span class="token punctuation">:</span>0.1.0
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> MyNginx
+    <span class="token key atrule">restart</span><span class="token punctuation">:</span> always
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> 80<span class="token punctuation">:</span><span class="token number">8080</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 4 行</p>
+<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">image</span><span class="token punctuation">:</span> vue<span class="token punctuation">-</span>publicpath<span class="token punctuation">:</span>0.1.0
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>vue-publicpath:0.1.0</code> Docker image。</p>
+<p>第 5 行</p>
+<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">container_name</span><span class="token punctuation">:</span> MyNginx
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>自行命名 container 名稱為 <code>MyNginx</code> 。</p>
+<p>第 6 行</p>
+<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">restart</span><span class="token punctuation">:</span> always
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>當執行失敗時會自動重啟 container。</p>
+<p>第 7 行</p>
+<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">ports</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> 80<span class="token punctuation">:</span><span class="token number">8080</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>將 host 的 <code>80</code> port 對應到 container 的 <code>8080</code> port。</p>
+<p><img src="/images/docker/vue/nginx-subpath/subpath007.png" alt="subpath007"></p>
+<h2 id="NPM-Script"><a href="#NPM-Script" class="headerlink" title="NPM Script"></a>NPM Script</h2><p><strong>package.json</strong></p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"serve"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service serve"</span><span class="token punctuation">,</span>
+    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service build"</span><span class="token punctuation">,</span>
+    <span class="token property">"lint"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service lint"</span><span class="token punctuation">,</span>
+    <span class="token property">"docker:build"</span><span class="token operator">:</span> <span class="token string">"yarn build &amp;&amp; docker build -t $npm_package_name:$npm_package_version ."</span><span class="token punctuation">,</span>
+    <span class="token property">"docker:login"</span><span class="token operator">:</span> <span class="token string">"docker exec -it MyNginx sh"</span><span class="token punctuation">,</span>
+    <span class="token property">"docker:log"</span><span class="token operator">:</span> <span class="token string">"docker logs MyNginx"</span><span class="token punctuation">,</span>
+    <span class="token property">"docker:up"</span><span class="token operator">:</span> <span class="token string">"docker-compose up -d"</span><span class="token punctuation">,</span>
+    <span class="token property">"docker:down"</span><span class="token operator">:</span> <span class="token string">"docker-compose down"</span><span class="token punctuation">,</span>
+    <span class="token property">"docker:rmi"</span><span class="token operator">:</span> <span class="token string">"docker rmi $npm_package_name:$npm_package_version"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 3 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"serve"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service serve"</span><span class="token punctuation">,</span>
+<span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service build"</span><span class="token punctuation">,</span>
+<span class="token property">"lint"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service lint"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>原本 Vue CLI 所內建的 NPM Script。</p>
+<p>第 6 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"docker:build"</span><span class="token operator">:</span> <span class="token string">"yarn build &amp;&amp; docker build -t $npm_package_name:$npm_package_version ."</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>執行 <code>yarn build</code> 使用 Webpack 打包到 <code>dist</code> 目錄下，並且使用 <code>docker build</code> 根據 <code>dockerfile</code> 建立 Docker image。</p>
+<blockquote>
+<p>直接使用 <code>$npm_package_name</code> 與 <code>$npm_package_version</code> 讀取 <code>package.json</code> 中的 <code>name</code> 與 <code>version</code>，將來改版只要修改 <code>version</code> 即可</p>
+</blockquote>
+<p>第 7 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"docker:login"</span><span class="token operator">:</span> <span class="token string">"docker exec -it MyNginx sh"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>進入 container 內 debug 用。</p>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"docker:up"</span><span class="token operator">:</span> <span class="token string">"docker-compose up -d"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>根據 <code>docker-compose.yml</code> 啟動 container。</p>
+<p>第 10 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"docker:down"</span><span class="token operator">:</span> <span class="token string">"docker-compose down"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>結束 container。</p>
+<p>11 行</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"docker:rmi"</span><span class="token operator">:</span> <span class="token string">"docker rmi $npm_package_name:$npm_package_version"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>刪除 Docker image。</p>
+<p><img src="/images/docker/vue/nginx-subpath/subpath008.png" alt="subpath008"></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>要使 Vue 能在 domain 的 sub-path 使用有兩個關鍵：Vue CLI 要使用 <code>BASE_URL</code> environment variable 且在 <code>vue.config.js</code> 使用 <code>publicPath</code> property；Nginx  Configuration 則要建立 sub-path rule 並使用 <code>alias</code></li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://cli.vuejs.org/" target="_blank" rel="noopener">Vue CLI</a>, <a href="https://cli.vuejs.org/config/#publicpath" target="_blank" rel="noopener">publicPath</a><br><a href="https://daten-und-bass.io/blog/author/arne/" target="_blank" rel="noopener">Arne</a>, <a href="https://daten-und-bass.io/blog/serving-a-vue-cli-production-build-on-a-sub-path-with-nginx/" target="_blank" rel="noopener">Serving a vue-cli Production Build on a Sub-Path with Nginx</a></p>
+
+          </article>
+          <p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/Vue/'>#&nbsp;Vue</a>
+    
+    <a class="post-tags-list-item" href='/tags/Docker/'>#&nbsp;Docker</a>
+    
+    <a class="post-tags-list-item" href='/tags/Nginx/'>#&nbsp;Nginx</a>
+    
+  </span>
+  
+</p>
+        </div>
+        <div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/docker/vue/docker-compose/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 Docker Compose 測試 Build 過的 Vue</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/docker/vue/nginx-reverse-proxy/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 Docker 將 Nginx + Reverse Proxy + Vue 打包成 Image</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="text-center">
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://yabai.tw">點燈坊</a>
+  </p>
+</footer>
+
+  <!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+  </body>
+</html>
