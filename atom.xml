@@ -6,7 +6,7 @@
   <link href="https://yabai.tw/atom.xml" rel="self"/>
   
   <link href="https://yabai.tw/"/>
-  <updated>2023-12-18T06:06:39.016Z</updated>
+  <updated>2023-12-18T09:32:35.340Z</updated>
   <id>https://yabai.tw/</id>
   
   <author>
@@ -15,6 +15,29 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>SASS on Sonama M2</title>
+    <link href="https://yabai.tw/sass/sonoma-m2/"/>
+    <id>https://yabai.tw/sass/sonoma-m2/</id>
+    <published>2023-12-18T09:27:19.000Z</published>
+    <updated>2023-12-18T09:32:35.340Z</updated>
+    
+    <content type="html"><![CDATA[<p>若要將原本在 Intel 跑的 SASS 專案跑在 M2 的 Sonoma，將遇到 Node.js 與 Python 版本挑戰。</p><a id="more"></a><h2 id="Symptoms"><a href="#Symptoms" class="headerlink" title="Symptoms"></a>Symptoms</h2><ul><li>原本專案只能跑在 Node.js 14.21.3，必須使用使用 NVM 安裝 14.21.3，但 14.21.3 只有 Intel 版本，必須重新編譯才能跑在 M2，而編譯又必須在 Python 3.9 以下，但 Sonoma 已經提供更新的 Python 3.11，因此無法編譯出 Node.js 14.21.3</li><li>原本專案使用 SASS，而它必須使用 Python 2</li></ul><h2 id="Solutions"><a href="#Solutions" class="headerlink" title="Solutions"></a>Solutions</h2><ul><li>先安裝 Anaconda 管理 Python 版本，建立 Python 3.9 環境編譯出 Node.js 14.21.3</li><li>手動安裝 Python 2</li></ul><p>如此就能在 Node.js 14.21.3 + Python 2 環境下執行原有專案</p><h2 id="Anaconda"><a href="#Anaconda" class="headerlink" title="Anaconda"></a>Anaconda</h2><p><img src="/images/sass/sonoma-m2/m201.webp" alt="m201"></p><ul><li>Anaconda 為 Python 的版本管理工具</li><li>在 <a href="https://www.anaconda.com/download" target="_blank" rel="noopener">https://www.anaconda.com/download</a> 下載 64-Bit Graphical Installer</li></ul><p><img src="/images/sass/sonoma-m2/m202.webp" alt="m202"></p><ul><li>在 Anaconda.Nagivator 建立 Python 3.9 環境<ul><li><strong>Name</strong>：建立環境名稱 (不能使用 <code>.</code>，只能以 <code>-</code> 代替)</li><li><strong>Packages Python</strong>：指定 Python 版本為 <code>3.9.18</code></li></ul></li></ul><p><img src="/images/sass/sonoma-m2/m203.webp" alt="m203"></p><ul><li>選擇 <code>環境名稱</code>，右鍵 <code>Open Terminal</code> 開啟 Python 3.9 環境</li></ul><h2 id="Node-js-14-21-3"><a href="#Node-js-14-21-3" class="headerlink" title="Node.js 14.21.3"></a>Node.js 14.21.3</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">(Python3-9) $ nvm install 14.21.3<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>在 Python 3.9 下使用 NVM 安裝 Node.js 14.21.3</li></ul><blockquote><p>由 NVM 只提供 14.21.3 的 Intel 版本，需重新編譯才能跑在 M2</p></blockquote><pre class="line-numbers highlight language-shell"><code class="language-shell">$ nvm alias default 14.21.3<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>回到 macOS 正常 terminal 下 (不在 Anaconda 的 Python 3.9 下)，設定 14.21.3 為 Node.js 預設版本</li></ul><h2 id="Python-2"><a href="#Python-2" class="headerlink" title="Python 2"></a>Python 2</h2><p><img src="/images/sass/sonoma-m2/m204.webp" alt="m204"></p><ul><li>Homebrew 已經不提供 Python 2，只能從官網 <a href="https://www.python.org/downloads/release/python-2718/" target="_blank" rel="noopener">https://www.python.org/downloads/release/python-2718/</a> 下載 Python 2 手動安裝</li></ul><pre class="line-numbers highlight language-shell"><code class="language-shell">$ python2<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>安裝完輸入 <code>python2</code> 會順利出線 prompt</li></ul><p><img src="/images/sass/sonoma-m2/m205.webp" alt="m205"></p><h2 id="NPM-install"><a href="#NPM-install" class="headerlink" title="NPM install"></a>NPM install</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ npm install --python=$(which python2)<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>將下載所有 npm package</li><li>SASS 將為 M2 重新編譯</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>舊一點的 Node.js 版本還需要搭配特定版本的 Python 才能編譯</li><li>Anaconda 為 Python 的版本管理工具</li><li>SASS 所需的 Python 2 需手動安裝，Anaconda 並不支援</li><li><code>npm install</code> 可透過 <code>--python</code> 指定 Python 2 實際路徑</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;若要將原本在 Intel 跑的 SASS 專案跑在 M2 的 Sonoma，將遇到 Node.js 與 Python 版本挑戰。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="macOS" scheme="https://yabai.tw/tags/macOS/"/>
+    
+    <category term="SASS" scheme="https://yabai.tw/tags/SASS/"/>
+    
+    <category term="Sonoma" scheme="https://yabai.tw/tags/Sonoma/"/>
+    
+  </entry>
   
   <entry>
     <title>お金持ち</title>
@@ -414,27 +437,6 @@
     
     
     <category term="macOS" scheme="https://yabai.tw/tags/macOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>我的 Kaiteki 基本設定</title>
-    <link href="https://yabai.tw/macos/setup/kaiteki/"/>
-    <id>https://yabai.tw/macos/setup/kaiteki/</id>
-    <published>2023-12-17T15:35:47.000Z</published>
-    <updated>2023-12-17T15:42:54.480Z</updated>
-    
-    <content type="html"><![CDATA[<p>本文記錄我的 Kateki 基本設定。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Kaiteki 1.71</p><h2 id="App-Store"><a href="#App-Store" class="headerlink" title="App Store"></a>App Store</h2><p><img src="/images/macos/setup/kaiteki/kaiteki001.webp" alt="kaiteki001"></p><h2 id="PixelPerfect"><a href="#PixelPerfect" class="headerlink" title="PixelPerfect"></a>PixelPerfect</h2><p><img src="/images/macos/setup/kaiteki/kaiteki002.webp" alt="kaiteki002"></p><ul><li>使用 Pixel Perfect 將字型大小變大</li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;本文記錄我的 Kateki 基本設定。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="macOS" scheme="https://yabai.tw/tags/macOS/"/>
-    
-    <category term="Kaiteki" scheme="https://yabai.tw/tags/Kaiteki/"/>
     
   </entry>
   
