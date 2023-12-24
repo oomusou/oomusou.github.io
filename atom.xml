@@ -6,7 +6,7 @@
   <link href="https://yabai.tw/atom.xml" rel="self"/>
   
   <link href="https://yabai.tw/"/>
-  <updated>2023-12-23T16:08:24.405Z</updated>
+  <updated>2023-12-24T08:58:07.612Z</updated>
   <id>https://yabai.tw/</id>
   
   <author>
@@ -15,6 +15,107 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用 Git Submodule 安裝 Hextra 主題</title>
+    <link href="https://yabai.tw/hugo/theme/hextra/installation/git-submodule/"/>
+    <id>https://yabai.tw/hugo/theme/hextra/installation/git-submodule/</id>
+    <published>2023-12-24T08:56:32.000Z</published>
+    <updated>2023-12-24T08:58:07.612Z</updated>
+    
+    <content type="html"><![CDATA[<p>Hextra 主題有多種安裝方式，若想修改 Hextra 主題，且想獲得最乾淨的原始 Hugo 專案，則要使用 Git Submodule 方式安裝。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Hextra 0.7</p><h2 id="Create-New-Site"><a href="#Create-New-Site" class="headerlink" title="Create New Site"></a>Create New Site</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ hugo new site hextra-git-lab --format json<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li><code>hugo new site</code>：使用預設的骨架建立新網站</li><li><code>--format json</code> : 以 JSON 格式建立設定檔</li></ul><h2 id="Add-Hextra-Theme"><a href="#Add-Hextra-Theme" class="headerlink" title="Add Hextra Theme"></a>Add Hextra Theme</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ git init$ git submodule add https://github.com/imfing/hextra.git themes/hextra<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><ul><li><strong>git init</strong>：因為要使用 Git Submodule 安裝 Hextra 主題，因此要先使用 <code>git init</code> 建立 git repository</li><li><strong>git submodule add</strong>：使用 Git Submodule 安裝 Hextra 主題</li></ul><h2 id="Configure-Hextra-Theme"><a href="#Configure-Hextra-Theme" class="headerlink" title="Configure Hextra Theme"></a>Configure Hextra Theme</h2><p><strong>hugo.json</strong></p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>  <span class="token property">"baseURL"</span><span class="token operator">:</span> <span class="token string">"https://example.org/"</span><span class="token punctuation">,</span>  <span class="token property">"languageCode"</span><span class="token operator">:</span> <span class="token string">"en-us"</span><span class="token punctuation">,</span>  <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"My New Hugo Site"</span><span class="token punctuation">,</span>  <span class="token property">"theme"</span><span class="token operator">:</span> <span class="token string">"hextra"</span><span class="token punctuation">,</span>  <span class="token property">"menu"</span><span class="token operator">:</span> <span class="token punctuation">{</span>    <span class="token property">"main"</span><span class="token operator">:</span> <span class="token punctuation">[</span>      <span class="token punctuation">{</span>        <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Search"</span><span class="token punctuation">,</span>        <span class="token property">"weight"</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>        <span class="token property">"params"</span><span class="token operator">:</span> <span class="token punctuation">{</span>          <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"search"</span>        <span class="token punctuation">}</span>      <span class="token punctuation">}</span>    <span class="token punctuation">]</span>  <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><strong>Line 5</strong></p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"theme"</span><span class="token operator">:</span> <span class="token string">"hextra"</span><span class="token punctuation">,</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>設定 Hugo 使用主題為 <code>hextra</code></li></ul><p><strong>Line 6</strong></p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"menu"</span><span class="token operator">:</span> <span class="token punctuation">{</span>  <span class="token property">"main"</span><span class="token operator">:</span> <span class="token punctuation">[</span>    <span class="token punctuation">{</span>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Search"</span><span class="token punctuation">,</span>      <span class="token property">"weight"</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>      <span class="token property">"params"</span><span class="token operator">:</span> <span class="token punctuation">{</span>        <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"search"</span>      <span class="token punctuation">}</span>    <span class="token punctuation">}</span>  <span class="token punctuation">]</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>官網並沒有提到這個設定，但若沒加此段設定，會在成 JavaScript 執行錯誤</li></ul><h2 id="Add-Some-Content"><a href="#Add-Some-Content" class="headerlink" title="Add Some Content"></a>Add Some Content</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ hugo new content/_index.md$ hugo new content/docs/_index.md<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><ul><li>使用 <code>hego new</code> 建立 markdown 檔案</li></ul><h2 id="Preview-the-Site"><a href="#Preview-the-Site" class="headerlink" title="Preview the Site"></a>Preview the Site</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ hugo server --buildDrafts --disableFastRender<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>啟動 development mode 的 Web Server</li></ul><h1 id="gitignore"><a href="#gitignore" class="headerlink" title=".gitignore"></a>.gitignore</h1><p><strong>.gitignore</strong></p><pre class="line-numbers highlight language-gitignore"><code class="language-gitignore"># Hugo outputpublic/resources/.hugo_build.lock# Editor.vscode/# NPMnode_modules# WebStorm.idea# macOS.DS_Store<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>更新 <code>.gitignore</code> 加入 NPM &#x2F; WebStorm 與 macOS 部分</li></ul><h2 id="Update-All-Git-Submodules"><a href="#Update-All-Git-Submodules" class="headerlink" title="Update All Git Submodules"></a>Update All Git Submodules</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ git submodule update --remote<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>更新所有 Git Submodule</li></ul><h2 id="Updat-Only-Hextra-Theme"><a href="#Updat-Only-Hextra-Theme" class="headerlink" title="Updat Only Hextra Theme"></a>Updat Only Hextra Theme</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ git submodule update --remote themes/hextra<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>只更新 Hextra 主題</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>若想修改 Hextra 的 layout 或 CSS，則必須使用 Git Submodule 方式安裝 Hextra 主題，在 themes&#x2F;hextra 下可看到完整的源代碼</li><li>TailwindCSS JIT 已經整合在 Hextra 主題內，只要修改其 utility class，就可直接在 development mode 看到即時改變</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://imfing.github.io/hextra/" target="_blank" rel="noopener">Hextra</a>, <a href="https://imfing.github.io/hextra/docs/getting-started/#setup-hextra-as-git-submodule" target="_blank" rel="noopener">Setup Hextra as Git submodule</a></p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;Hextra 主題有多種安裝方式，若想修改 Hextra 主題，且想獲得最乾淨的原始 Hugo 專案，則要使用 Git Submodule 方式安裝。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Hugo" scheme="https://yabai.tw/tags/Hugo/"/>
+    
+    <category term="Hextra" scheme="https://yabai.tw/tags/Hextra/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用 Hugo Module 安裝 Hextra 主題</title>
+    <link href="https://yabai.tw/hugo/theme/hextra/installation/hugo-module/"/>
+    <id>https://yabai.tw/hugo/theme/hextra/installation/hugo-module/</id>
+    <published>2023-12-24T08:14:10.000Z</published>
+    <updated>2023-12-24T08:36:19.693Z</updated>
+    
+    <content type="html"><![CDATA[<p>Hextra 主題有多種安裝方式，若不想修改 Hextra 主題，且想獲得最乾淨的原始 Hugo 專案，則使用 Hugo Module 也是不錯的方式。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Hextra 0.7</p><h2 id="Create-New-Site"><a href="#Create-New-Site" class="headerlink" title="Create New Site"></a>Create New Site</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ hugo new site hextra-module-lab --format json<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li><code>hugo new site</code>：使用預設的骨架建立新網站</li><li><code>--format json</code> : 以 JSON 格式建立設定檔</li></ul><h2 id="Add-Hextra-Theme"><a href="#Add-Hextra-Theme" class="headerlink" title="Add Hextra Theme"></a>Add Hextra Theme</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ hugo mod init github.com/oomusou/hextra-module-lab$ hugo mod get github.com/imfing/hextra<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><ul><li><strong>hugo mod init</strong>：將此專案以 Hugo module 形式初始化</li><li><strong>hugo mod get</strong>：使用 Hugo Module 安裝 Hextra 主題</li></ul><h2 id="Configure-Hextra-Theme"><a href="#Configure-Hextra-Theme" class="headerlink" title="Configure Hextra Theme"></a>Configure Hextra Theme</h2><p><strong>hugo.json</strong></p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>   <span class="token property">"baseURL"</span><span class="token operator">:</span> <span class="token string">"https://example.org/"</span><span class="token punctuation">,</span>   <span class="token property">"languageCode"</span><span class="token operator">:</span> <span class="token string">"en-us"</span><span class="token punctuation">,</span>   <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"My New Hugo Site"</span><span class="token punctuation">,</span>   <span class="token property">"module"</span><span class="token operator">:</span> <span class="token punctuation">{</span>      <span class="token property">"imports"</span><span class="token operator">:</span> <span class="token punctuation">[</span>         <span class="token punctuation">{</span> <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"github.com/imfing/hextra"</span> <span class="token punctuation">}</span>      <span class="token punctuation">]</span>   <span class="token punctuation">}</span><span class="token punctuation">,</span>   <span class="token property">"menu"</span><span class="token operator">:</span> <span class="token punctuation">{</span>      <span class="token property">"main"</span><span class="token operator">:</span> <span class="token punctuation">[</span>         <span class="token punctuation">{</span>            <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Search"</span><span class="token punctuation">,</span>            <span class="token property">"weight"</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>            <span class="token property">"params"</span><span class="token operator">:</span> <span class="token punctuation">{</span>               <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"search"</span>            <span class="token punctuation">}</span>         <span class="token punctuation">}</span>      <span class="token punctuation">]</span>   <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><strong>Line 5</strong></p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"module"</span><span class="token operator">:</span> <span class="token punctuation">{</span>  <span class="token property">"imports"</span><span class="token operator">:</span> <span class="token punctuation">[</span>    <span class="token punctuation">{</span> <span class="token property">"path"</span><span class="token operator">:</span> <span class="token string">"github.com/imfing/hextra"</span> <span class="token punctuation">}</span>  <span class="token punctuation">]</span><span class="token punctuation">}</span><span class="token punctuation">,</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>設定 Hextra 主題的路徑</li></ul><p><strong>Line 10</strong></p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"menu"</span><span class="token operator">:</span> <span class="token punctuation">{</span>  <span class="token property">"main"</span><span class="token operator">:</span> <span class="token punctuation">[</span>    <span class="token punctuation">{</span>      <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Search"</span><span class="token punctuation">,</span>      <span class="token property">"weight"</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>      <span class="token property">"params"</span><span class="token operator">:</span> <span class="token punctuation">{</span>        <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"search"</span>      <span class="token punctuation">}</span>    <span class="token punctuation">}</span>  <span class="token punctuation">]</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>官網並沒有提到這個設定，但若沒加此段設定，會在成 JavaScript 執行錯誤</li></ul><h2 id="Add-Some-Content"><a href="#Add-Some-Content" class="headerlink" title="Add Some Content"></a>Add Some Content</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ hugo new content/_index.md$ hugo new content/docs/_index.md<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><ul><li>使用 <code>hego new</code> 建立 markdown 檔案</li></ul><h2 id="Preview-the-Site"><a href="#Preview-the-Site" class="headerlink" title="Preview the Site"></a>Preview the Site</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ hugo server --buildDrafts --disableFastRender<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>啟動 development mode 的 Web Server</li></ul><h1 id="gitignore"><a href="#gitignore" class="headerlink" title=".gitignore"></a>.gitignore</h1><p><strong>.gitignore</strong></p><pre class="line-numbers highlight language-gitignore"><code class="language-gitignore"># Hugo outputpublic/resources/.hugo_build.lock# Editor.vscode/# NPMnode_modules# WebStorm.idea# macOS.DS_Store<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>更新 <code>.gitignore</code> 加入 NPM &#x2F; WebStorm 與 macOS 部分</li></ul><h2 id="Update-All-Hugo-Modules"><a href="#Update-All-Hugo-Modules" class="headerlink" title="Update All Hugo Modules"></a>Update All Hugo Modules</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ hugo mod get -u<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>更新所有 Hugo Module</li></ul><h2 id="Updat-Only-Hextra-Theme"><a href="#Updat-Only-Hextra-Theme" class="headerlink" title="Updat Only Hextra Theme"></a>Updat Only Hextra Theme</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ hugo mod get -u github.com/imfing/hextra<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>只更新 Hextra 主題</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>若使用 Hugo Module 安裝 Hextra 主題，在本地並不包含任何 Hextra 的源代碼，若想用修改 Hextra 的 layout 或 CSS 則不適用此方法</li><li>若只想使用 Hextra 主題並不想修改其源代碼，可以使用此方式從頭開始建立自己的 Hugo 專案</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://imfing.github.io/hextra/" target="_blank" rel="noopener">Hextra</a>, <a href="https://imfing.github.io/hextra/docs/getting-started/#setup-hextra-as-hugo-module" target="_blank" rel="noopener">Setup Hextra as Hugo module</a></p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;Hextra 主題有多種安裝方式，若不想修改 Hextra 主題，且想獲得最乾淨的原始 Hugo 專案，則使用 Hugo Module 也是不錯的方式。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Hugo" scheme="https://yabai.tw/tags/Hugo/"/>
+    
+    <category term="Hextra" scheme="https://yabai.tw/tags/Hextra/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hugo 的 .gitignore</title>
+    <link href="https://yabai.tw/hugo/general/gitignore/"/>
+    <id>https://yabai.tw/hugo/general/gitignore/</id>
+    <published>2023-12-24T07:03:36.000Z</published>
+    <updated>2023-12-24T07:05:55.474Z</updated>
+    
+    <content type="html"><![CDATA[<p>使用 Hugo 時，有些檔案並不用近 Git，我們可將這些檔案寫在 <code>.gitignore</code> 內。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Hugo 0.121</p><h2 id="Git"><a href="#Git" class="headerlink" title="Git"></a>Git</h2><p><strong>.gitignore</strong></p><pre class="line-numbers highlight language-gitignore"><code class="language-gitignore"># Hugopublicresources.hugo_build.lock# Editor.vscode.idea# NPMnode_modules# macOS.DS_Store<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p>將 <code>.gitignore</code> 建立在 Hugo 專案的 <code>根目錄</code> 下。</p><ul><li><code>public</code> : final HTML&#x2F;CSS&#x2F;JavaScript for production</li><li><code>resources</code>：<code>hugo server</code> 時所建立的暫存目錄</li><li><code>.hugo_build.lock</code> : Hugo build 所建立的 lock 檔</li><li><code>.vscode</code>：VSCode 的暫存檔存放目錄</li><li><code>.idea</code> : WebStorm 的暫存檔存放目錄</li><li><code>node_modules</code> : NPM 套件存放目錄</li><li><code>.DS_Store</code> : macOS 的資源檔</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Hugo CLI 並沒有提供預設的 <code>.gitignore</code> 檔，因此我們必須自己建立 &#96;.gitignore</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;使用 Hugo 時，有些檔案並不用近 Git，我們可將這些檔案寫在 &lt;code&gt;.gitignore&lt;/code&gt; 內。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Hugo" scheme="https://yabai.tw/tags/Hugo/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用 Starter Template 安裝 Hextra 主題</title>
+    <link href="https://yabai.tw/hugo/theme/hextra/installation/starter-template/"/>
+    <id>https://yabai.tw/hugo/theme/hextra/installation/starter-template/</id>
+    <published>2023-12-24T03:36:01.000Z</published>
+    <updated>2023-12-24T07:11:59.236Z</updated>
+    
+    <content type="html"><![CDATA[<p>Hextra 主題有多種安裝方式，最簡單的就是使用官方所提供的 Starter Template。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Hextra 0.7</p><h2 id="Clone-the-Repo"><a href="#Clone-the-Repo" class="headerlink" title="Clone the Repo"></a>Clone the Repo</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ git clone https://github.com/imfing/hextra-starter-template.git starter-template$ cd starter-template<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><ul><li>將 Hextra starter template 下載到 <code>starter-template</code> 目錄下</li><li>進入 <code>starter-template</code> 目錄</li></ul><pre class="line-numbers highlight language-shell"><code class="language-shell">$ hugo mod tidy$ hugo server --logLevel debug --disableFastRender -p 1313<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><ul><li>移除 <code>go.mod</code> 與 <code>go.sum</code> 內沒用的資訊</li><li>啟動 development mode 的 Web Server</li></ul><h2 id="gitignore"><a href="#gitignore" class="headerlink" title=".gitignore"></a>.gitignore</h2><pre class="line-numbers highlight language-gitignore"><code class="language-gitignore"># Hugo outputpublic/resources/.hugo_build.lock# Editor.vscode/# NPMnode_modules# WebStorm.idea# macOS.DS_Store<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>更新 <code>.gitignore</code> 加入 NPM &#x2F; WebStorm 與 macOS 部分</li></ul><h2 id="Update-Theme"><a href="#Update-Theme" class="headerlink" title="Update Theme"></a>Update Theme</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ hugo mod get -u$ hugo mod tidy<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><ul><li>更新 Hextra 主題</li><li>移除 <code>go.mod</code> 與 <code>go.sum</code> 內沒用的資訊</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Hextra 的 starter template 是由 Hugo Module 所提供，在本地並不包含任何 Hextra 的源代碼，若想用修改 Hextra 的 layout 或 CSS 則不適用此方法</li><li>儘管無法修改 Hextra 源代碼，其一堆設定檔仍極具參考價值</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/imfing" target="_blank" rel="noopener">Xim</a>, <a href="https://github.com/imfing/hextra-starter-template" target="_blank" rel="noopener">Hextra Starter Template</a></p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;Hextra 主題有多種安裝方式，最簡單的就是使用官方所提供的 Starter Template。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Hugo" scheme="https://yabai.tw/tags/Hugo/"/>
+    
+    <category term="Hextra" scheme="https://yabai.tw/tags/Hextra/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Hugo 初體驗</title>
+    <link href="https://yabai.tw/hugo/general/overview/"/>
+    <id>https://yabai.tw/hugo/general/overview/</id>
+    <published>2023-12-24T03:09:31.000Z</published>
+    <updated>2023-12-24T07:35:42.982Z</updated>
+    
+    <content type="html"><![CDATA[<p>Hugo 是由 Go 所寫的 SSG，也是目前 JAMstack 下最快的 SSG。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Hugo 0.121</p><h2 id="Installation"><a href="#Installation" class="headerlink" title="Installation"></a>Installation</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ brew install hugo$ hugo version<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><ul><li>使用 Homebrew 安裝 Hugo。</li></ul><h2 id="Create-New-Site"><a href="#Create-New-Site" class="headerlink" title="Create New Site"></a>Create New Site</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ hugo new site hugo-lab --format json<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li><code>hugo new site</code>：使用預設的骨架建立新網站</li><li><code>--format json</code> : 以 JSON 格式建立設定檔</li></ul><h2 id="Create-NPM-Config"><a href="#Create-NPM-Config" class="headerlink" title="Create NPM Config"></a>Create NPM Config</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ npm init -y<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>建立空的 NPM 設定檔</li></ul><h2 id="Layout"><a href="#Layout" class="headerlink" title="Layout"></a>Layout</h2><p><strong>layouts&#x2F;index.html</strong></p><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token doctype">&lt;!DOCTYPE html></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>width<span class="token punctuation">=</span>device-width, initial-scale<span class="token punctuation">=</span>1.0<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>Hello Hugo<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript"></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>Hello JAMstack<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>在 <code>layouts</code> 目錄建立 <code>index.html</code></li></ul><h2 id="NPM-Config"><a href="#NPM-Config" class="headerlink" title="NPM Config"></a>NPM Config</h2><p><strong>package.json</strong></p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"hugo-lab"</span><span class="token punctuation">,</span>  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"1.0.0"</span><span class="token punctuation">,</span>  <span class="token property">"license"</span><span class="token operator">:</span> <span class="token string">"MIT"</span><span class="token punctuation">,</span>  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>    <span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"hugo server"</span><span class="token punctuation">,</span>    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"hugo --minify"</span>  <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><strong>Line 5</strong></p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>  <span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"hugo server"</span><span class="token punctuation">,</span>  <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"hugo --minify"</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><ul><li><code>dev</code> : 以 Development Mode 啟動 Web Server</li><li><code>build</code> : 以 Production Mode 編譯 HTML&#x2F;CSS&#x2F;JavaScript</li></ul><h2 id="Development-Mode"><a href="#Development-Mode" class="headerlink" title="Development Mode"></a>Development Mode</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ npm run dev<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>以 Development Mode 啟動 Web Server</li></ul><h2 id="Production-Mode"><a href="#Production-Mode" class="headerlink" title="Production Mode"></a>Production Mode</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ npm run build$ serve public<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><ul><li>以 Production Mode 編譯 HTML&#x2F;CSS&#x2F;JavaScript 在 <code>public</code> 目錄下</li><li>以 serve 將 <code>public</code> 目錄啟動 Web Server</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>雖然 Hugo 由 Go 所寫的 SSG，我們仍可使用 NPM 來管理 Hugo</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://gohugo.io/" target="_blank" rel="noopener">Hugo</a>, <a href="https://gohugo.io/getting-started/quick-start/" target="_blank" rel="noopener">Quick Start</a></p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;Hugo 是由 Go 所寫的 SSG，也是目前 JAMstack 下最快的 SSG。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Hugo" scheme="https://yabai.tw/tags/Hugo/"/>
+    
+  </entry>
   
   <entry>
     <title>伝える、届ける</title>
@@ -205,9 +306,9 @@
     
     <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
     
-    <category term="自動" scheme="https://yabai.tw/tags/%E8%87%AA%E5%8B%95/"/>
-    
     <category term="動詞II" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EII/"/>
+    
+    <category term="自動" scheme="https://yabai.tw/tags/%E8%87%AA%E5%8B%95/"/>
     
   </entry>
   
@@ -332,111 +433,6 @@
     
     
     <category term="macOS" scheme="https://yabai.tw/tags/macOS/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>MacBook Pro 2022 13.3&quot; 使用心得</title>
-    <link href="https://yabai.tw/macos/macbook/2022/mbp13/"/>
-    <id>https://yabai.tw/macos/macbook/2022/mbp13/</id>
-    <published>2023-12-23T07:17:51.000Z</published>
-    <updated>2023-12-23T07:19:29.497Z</updated>
-    
-    <content type="html"><![CDATA[<p>2022 年的 MacBook 已經全面使用 ARM 的 M2，雖然最令人矚目的莫過於全新設計的 MacBook Air，然而 Apple 卻也發表了使用舊設計的 MacBook Pro。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>MacBook Pro 2022 13.3”</p><h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><p>CPU 改用 M2 後，最大的衝擊 app 必須改寫支援，經過 M1 的混亂之後，在我的 workflow 所使用的 app 都已經順利支援 M2，唯有 KKBOX 仍然使用 Intel，必須靠 Rosetta 2 加以轉譯，索性就把 KKBOX 換成支援 M2 的 Spotify 了。</p><p>Ｍ2 的執行速度也是比 Intel i5 快上許多，對我來說最耗時的莫過於 Hexo 將 markdown 編譯成 HTML，目前僅需幾秒鐘即可完成。</p><p>由於 MacBook 都沒在關機，螢幕翻開就使用，但 Intel 都會明顯感覺需要時間喚醒 CPU，且偶而還會出現 CPU 喚不醒而需重新開機，但 M2 則完全沒此問題，一翻開螢幕就可使用，完全不需喚醒 CPU。</p><p>最後就是省電，目前 Macbook 出門再也不用擔心沒電問題，也不必準備行動電池，還可反過來當 iPhone 的行動電源。</p><p>筆記型電腦最重要的就是續航力，沒電什麼事情都做不了。</p><blockquote><p>M2 在各方面都完勝 Intel</p></blockquote><h2 id="Fan"><a href="#Fan" class="headerlink" title="Fan"></a>Fan</h2><p>Intel 最為人詬病的就是燙，2020 的 I5 MacBook Pro 幾乎隨時風扇都在運行中，但 M2 則近乎沒有溫度，M2 MacBook Pro 13” 雖有風扇，但我也從來沒看過他運轉過。</p><blockquote><p>M2 MacBook Pro 帶風扇有點雞肋</p></blockquote><h2 id="Memory"><a href="#Memory" class="headerlink" title="Memory"></a>Memory</h2><p>M2 採 SoC 設計，目前最多只能內建 24 GB 的記憶體，以我的 workflow 來說平常大概只用了 12 GB，當然瀏覽器的 tab 開越多就佔越多記憶體，24 GB 對我來說算夠用，當然記憶體這種越多越好，因為永遠不知到何時會使用到很耗記憶體的應用。</p><blockquote><p>希望記憶體能 32GB 以上更好，但目前 24GB 仍夠用</p></blockquote><h2 id="Chassy"><a href="#Chassy" class="headerlink" title="Chassy"></a>Chassy</h2><p>M2 MacBook Pro 仍沿用了自 2016 年的經典設計。</p><p>M2 MacBook Pro 看似使用舊的設計，但還是有些差異，由於 M2 幾乎沒熱量，因此底部兩側的扇熱孔被取消，也不必再擔心散熱孔會積灰塵問題。</p><p>M2 MacBook Pro 由於稍微較厚的設計，導致電池容量更大，根據 Apple 官方數據， M2 MacBook Pro 的使用時間為 20 小時，為目前續航力最長的 MacBook。</p><blockquote><p>經典設計的外型很美，M2 MacBook Pro 意外因為較厚設計擁有更大電池與更長續航力</p></blockquote><h2 id="Keyboard"><a href="#Keyboard" class="headerlink" title="Keyboard"></a>Keyboard</h2><p>M2 Macbook Pro 則維持了 M1 Macbook Air 的打字手感，依然使用剪刀腳鍵盤。</p><blockquote><p>先撇開打字手感不討論，蝴蝶鍵盤最大的問題是容易壞、容易沾黏，因此 M2 MacBook Pro 鍵盤較優</p></blockquote><h2 id="Touch-Bar"><a href="#Touch-Bar" class="headerlink" title="Touch Bar"></a>Touch Bar</h2><p>目前 MacBook 產品線，M2 MacBook Pro 13” 是唯一提供 Touch Bar 的機種。</p><p>Touch Bar 的優劣見仁見智，我個人是先買 M2 MacBook Air，用了快一年後，因為懷念 Touch Bar 所帶來的工作效率，索性再買了 M2 MacBook Pro。</p><p>原本以為 M2 搭配 Touch Bar 算拼裝車，穩定性堪憂，但實際用起來 Touch Bar 比原本 Intel 還穩，且螢幕一翻開就可使用 Touch Bar，完全不用喚醒 CPU，且 BetterTouchTool 仍然支援 M2 的 Touch Bar，依然可使用 BetterTouchTool 對 Touch Bar 做各種魔改。</p><blockquote><p>M2 MacBook Pro 有 Touch Bar 工作更有效率</p></blockquote><h2 id="Color"><a href="#Color" class="headerlink" title="Color"></a>Color</h2><p>M2 MacBook Pro 我買了最容易照顧的原色：<code>銀色</code>。</p><blockquote><p>若要懶到極致則要選 <code>銀色</code>，不用擔心指紋，也不用擔心掉色</p></blockquote><h2 id="Bazel"><a href="#Bazel" class="headerlink" title="Bazel"></a>Bazel</h2><p>M2 MacBook Pro 仍維持原本的厚邊框沒有改變。</p><blockquote><p>邊框當然是越窄越好</p></blockquote><h2 id="Speaker"><a href="#Speaker" class="headerlink" title="Speaker"></a>Speaker</h2><p>M2 MacBook Pro 則維持喇叭放在鍵盤的兩側，左右聲道清晰可辨，低音也明顯強很多。</p><blockquote><p>M2 MacBook Pro 將喇叭放到鍵盤兩側才是正確設計</p></blockquote><h2 id="USB-C"><a href="#USB-C" class="headerlink" title="USB-C"></a>USB-C</h2><p>M2 MacBook Pro 只有兩個 USB-C，且都還在左側。</p><blockquote><p>當然最理想是如 2020 MacBook Pro 一樣左右各兩個 USB-C，但若只提供兩個 USB-C，最好也是左右各一個，而不是兩個都在左側</p></blockquote><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>M2 MacBook Pro 13.3” 優點有三個<ul><li>Touch Bar</li><li>無 Notch</li><li>兩側的 Speaker</li></ul></li><li>M2 MacBook Pro 13.3” 缺點有兩個<ul><li>只有 2 個 USB-C，且都位於左側</li><li>只能外接一個螢幕，不適合正式開發使用</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;2022 年的 MacBook 已經全面使用 ARM 的 M2，雖然最令人矚目的莫過於全新設計的 MacBook Air，然而 Apple 卻也發表了使用舊設計的 MacBook Pro。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="macOS" scheme="https://yabai.tw/tags/macOS/"/>
-    
-    <category term="MacBook" scheme="https://yabai.tw/tags/MacBook/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>親子</title>
-    <link href="https://yabai.tw/nihonngo/vocabulary/o/oyako/"/>
-    <id>https://yabai.tw/nihonngo/vocabulary/o/oyako/</id>
-    <published>2023-12-23T03:56:35.000Z</published>
-    <updated>2023-12-23T03:57:50.506Z</updated>
-    
-    <content type="html"><![CDATA[<p>おやこ [1]：<code>名</code> 親子。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>親子という関係は時が流れても変わらない。</code></p><p>所謂的親子關係即使時間流逝也不會改變。</p><ul><li>親子(おやこ) [1]：<code>名</code> 親子</li><li>という：<code>慣</code> 所謂的</li><li>関係(かんけい) [0]：<code>名</code> 關係</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>時(とき) [2]：<code>名</code> 時間</li><li>が：<code>格助</code> 表 <code>主題</code></li><li>流(なが)れる [3]：<code>動II</code> <code>自動</code> <code>辞書形</code> 流動<ul><li>流れて [2]：<code>て形</code> 流動</li><li>流れても [2]：<code>即使</code> 即使流動</li></ul></li><li>変(か)わる [0]：<code>動I</code> <code>自動</code> <code>辞書形</code> 改變<ul><li>変わらない [0]：<code>ない形</code> 不改變</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;おやこ [1]：&lt;code&gt;名&lt;/code&gt; 親子。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Vて も (即使)</title>
-    <link href="https://yabai.tw/nihonngo/grammer/particle/demo/demo08/"/>
-    <id>https://yabai.tw/nihonngo/grammer/particle/demo/demo08/</id>
-    <published>2023-12-22T15:50:33.000Z</published>
-    <updated>2023-12-22T15:51:47.514Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>動詞て形</code> <code>も</code> 可表示預期事情 <code>沒有發生</code>，或者與 <code>預期相反</code>，翻譯成 <code>即使</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>Vて</code> + <code>も</code></li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>雨が降っても行く。</code></p><p>即使下雨也要去。</p><ul><li>雨(あめ) [1]：<code>名</code> 雨</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>降(ふ)る [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 下雨<ul><li>降って [1]：<code>て形</code> 下雨</li><li>降っても[1]：<code>即使</code> 即使下雨</li></ul></li><li>行(い)く [0]：<code>動I</code> <code>自動</code> 去</li></ul><p><code>親子という関係は時が流れても変わらない。</code></p><p>所謂的親子關係即使時間流逝也不會改變。</p><ul><li>親子(おやこ) [1]：<code>名</code> 親子</li><li>という：<code>慣</code> 所謂的</li><li>関係(かんけい) [0]：<code>名</code> 關係</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>時(とき) [2]：<code>名</code> 時間</li><li>が：<code>格助</code> 表 <code>主題</code></li><li>流(なが)れる [3]：<code>動II</code> <code>自動</code> <code>辞書形</code> 流動<ul><li>流れて [2]：<code>て形</code> 流動</li><li>流れても [2]：<code>即使</code> 即使流動</li></ul></li><li>変(か)わる [0]：<code>動I</code> <code>自動</code> <code>辞書形</code> 改變<ul><li>変わらない [0]：<code>ない形</code> 不改變</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;動詞て形&lt;/code&gt; &lt;code&gt;も&lt;/code&gt; 可表示預期事情 &lt;code&gt;沒有發生&lt;/code&gt;，或者與 &lt;code&gt;預期相反&lt;/code&gt;，翻譯成 &lt;code&gt;即使&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="動詞て形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E3%81%A6%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>いA くても (即使)</title>
-    <link href="https://yabai.tw/nihonngo/grammer/particle/demo/demo07/"/>
-    <id>https://yabai.tw/nihonngo/grammer/particle/demo/demo07/</id>
-    <published>2023-12-22T15:34:51.000Z</published>
-    <updated>2023-12-22T15:54:05.901Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>副助詞</code> <code>でも</code> 可表示預期事情 <code>沒有發生</code>，或者與 <code>預期相反</code>，翻譯成 <code>即使</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>いA</code> <del>い</del> + <code>くても</code></li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>高くても買う。</code></p><p>即使貴也買。</p><ul><li>高(たか)い [2]：<code>い形容</code> 貴的<ul><li>高くて [2]：<code>即使</code> 即使貴</li></ul></li><li>買(か)う [1]：<code>動I</code> <code>他動</code> 買</li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;副助詞&lt;/code&gt; &lt;code&gt;でも&lt;/code&gt; 可表示預期事情 &lt;code&gt;沒有發生&lt;/code&gt;，或者與 &lt;code&gt;預期相反&lt;/code&gt;，翻譯成 &lt;code&gt;即使&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="副助詞" scheme="https://yabai.tw/tags/%E5%89%AF%E5%8A%A9%E8%A9%9E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>N でも (連)</title>
-    <link href="https://yabai.tw/nihonngo/grammer/particle/demo/demo05/"/>
-    <id>https://yabai.tw/nihonngo/grammer/particle/demo/demo05/</id>
-    <published>2023-12-22T15:24:56.000Z</published>
-    <updated>2023-12-22T15:26:01.303Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>格助詞</code> <code>でも</code> 可表示 <code>極端的例子</code>，翻譯成 <code>連</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>N</code> + <code>でも</code></li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>これは子供でも解ける問題です。</code></p><p>這是連小孩都會解的問題。</p><ul><li>これ [0]：<code>代</code> 這個</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>子供(こども) [0]：<code>名</code> 小孩</li><li>でも [1]：<code>格助</code> 表 <code>連</code></li><li>解(と)く[1]：<code>動I</code> <code>他動</code> <code>辞書形</code> 解答<ul><li>解ける [2]：<code>可能形</code> 會解答</li></ul></li><li>問題(もんだい) [0]：<code>名</code> 問題</li><li>です [0]：<code>助動</code> 是</li></ul><p><code>私の会社は熱でも休めません。</code></p><p>我的公司連發燒都不可請假。</p><ul><li>私(わたし) [0]：<code>代</code> 我</li><li>の：<code>格助</code> 表 <code>所有</code></li><li>会社(かいしゃ) [0]：<code>名</code> 公司</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>熱(ねつ) [2]：<code>名</code> 發燒</li><li>でも [1]：<code>格助</code> 表 <code>連</code></li><li>休(やす)む [2]：<code>動I</code> <code>自他</code> <code>辞書形</code> 請假<ul><li>休める [3]：<code>可能形</code> 可請假</li><li>休めます [3]：<code>ます形</code> 可請假</li><li>休めません [4]：<code>否定</code> 不可請假</li></ul></li></ul><p><code>私でもできますから、とても簡単ですよ。</code></p><p>連我都會，所以很簡單啦。</p><ul><li>私(わたし) [0]：<code>代</code> 我</li><li>でも [1]：<code>格助</code> 表 <code>連</code></li><li>できる [2]：<code>動II</code> <code>自動</code> <code>辞書形</code> 會<ul><li>できます [3]：<code>ます形</code> 會</li></ul></li><li>から [1]：<code>接助</code> 表 <code>原因</code></li><li>とても [0]：<code>副</code> 很</li><li>簡単(かんたん) [0]：<code>な形容</code> 簡單的</li><li>です [0]：<code>助動</code> 是</li><li>よ：<code>終助</code> 表 <code>告知</code></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;格助詞&lt;/code&gt; &lt;code&gt;でも&lt;/code&gt; 可表示 &lt;code&gt;極端的例子&lt;/code&gt;，翻譯成 &lt;code&gt;連&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="格助詞" scheme="https://yabai.tw/tags/%E6%A0%BC%E5%8A%A9%E8%A9%9E/"/>
     
   </entry>
   
