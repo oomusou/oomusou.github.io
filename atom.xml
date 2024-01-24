@@ -6,7 +6,7 @@
   <link href="https://yabai.tw/atom.xml" rel="self"/>
   
   <link href="https://yabai.tw/"/>
-  <updated>2024-01-24T01:29:13.687Z</updated>
+  <updated>2024-01-24T07:32:41.873Z</updated>
   <id>https://yabai.tw/</id>
   
   <author>
@@ -15,6 +15,44 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>使用 Vite 建立 Vue 3 專案 (完整版)</title>
+    <link href="https://yabai.tw/vue3/general/create-vue-full/"/>
+    <id>https://yabai.tw/vue3/general/create-vue-full/</id>
+    <published>2024-01-24T07:28:52.000Z</published>
+    <updated>2024-01-24T07:32:41.873Z</updated>
+    
+    <content type="html"><![CDATA[<p>本文介紹以 Vite 快速建立 Vue 3 專案，官方建議在 Node.js 18.0 以上，目前我是使用 Node.js 19.9.0 (最新 LTS 是 20.11.0)。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Node.js 19.9.0<br>Vite 5.0<br>Vue 3.4</p><h2 id="Create-Project"><a href="#Create-Project" class="headerlink" title="Create Project"></a>Create Project</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ npm create vue@latest<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li><code>create-vue</code> 是基於 Vite 的 CLI</li><li>建立 Vue 專案的 Scaffolding</li><li>整合 tool chain (Prettier、ESLint、Vue Router、Vitest、Cypress…)</li><li>Bundle Tool (HTML &#x2F; JavaScript &#x2F; CSS 壓縮、把註解拿掉、Tree Shaking、Purge CSS、支援 IE…)</li><li>內建簡易 HTTP Web Server 可進行開發，並支援 Hot Reload</li></ul><p><img src="/images/vue3/general/create-vue-full/create001.webp" alt="vite001"></p><ul><li><strong>Project name</strong>：可自行輸入 <code>專案名稱</code>，將以此名稱作為 <code>目錄名稱</code></li></ul><p><img src="/images/vue3/general/create-vue-full/create002.webp" alt="vite002"></p><ul><li><strong>Add TypeScript？</strong>：<code>No</code></li></ul><blockquote><p>Vue 3 也支援 TypeScript，至於要不要使用 TypeScript 是另外一個主題， 不在此討論</p></blockquote><p><img src="/images/vue3/general/create-vue-full/create003.webp" alt="vite003"></p><ul><li><strong>Add JSX Suppot？</strong>：<code>No</code></li></ul><blockquote><p>JSX 是個 HTML Template，讓你可以將 JavaScript 跟 HTML 混再一起寫，主要是 <code>React</code> 使用，優點是可借助 JavaScript 的能力來寫 HTML，非常強大，缺點是將 JavaScript 跟 HTML 混在一起，很像早期 PHP，可讀性差且難以維護，Vue 社群很少人在用 JSX</p></blockquote><p><img src="/images/vue3/general/create-vue-full/create004.webp" alt="create004"></p><ul><li><p><strong>Add Vue Router for Single Page Application devalopment？</strong>：<code>No</code> &#x2F; <code>Yes</code></p><ul><li><code>No</code>：若是個人練習 Vue，可選擇 <code>No</code> 不安裝 Vue Router 降低複雜度</li><li><code>Yes</code>：實際專案要選擇 <code>Yes</code>，因為實際專案一定會用到 Vue Router 管理路由</li></ul></li></ul><p><img src="/images/vue3/general/create-vue-full/create005.webp" alt="create004"></p><ul><li><strong>Add Pinia for state management？</strong>：<code>No</code></li></ul><blockquote><p>Vue 2 時代實際專案一定要有 State Management，但 Vue 3 有 Reactity API 之後，Pinia 的角色變得很尷尬，Reactivity API 可以取代 Pinia 且更簡單</p></blockquote><p><img src="/images/vue3/general/create-vue-full/create006.webp" alt="create006"></p><ul><li><code>Add Vitest for Unit Testing？</code>：<code>No</code></li></ul><blockquote><p>Vue 也支援 Unit Test，<code>不實際打 API</code>，而是以 mock API 方式 (假資料) 專門測試 Vue 的 JavaScript 邏輯，優點是 <code>速度快</code>，缺點是由於是 <code>假資料</code>，所以通過 Unit Test 也不保證產品沒問題，將來可嘗試導入 Unit Test，目前先選 <code>No</code></p></blockquote><p><img src="/images/vue3/general/create-vue-full/create007.webp" alt="create007"></p><ul><li><strong>Add an End-to-End Testing Solution？</strong>：<code>No</code></li></ul><blockquote><p>Vue 也支援 End-to-End Testing，<code>會實際打 API</code>，優點是與實際使用狀況最接近，缺點是 <code>速度慢</code>，將來可嘗試導入 End-to-End Test，目前先選 <code>No</code></p></blockquote><p><img src="/images/vue3/general/create-vue-full/create008.webp" alt="create008"></p><ul><li><strong>Add ESLint for code quality？</strong>：<code>Yes</code></li></ul><blockquote><p>ESLint 為 JavaScript 的 Linter，用來檢查 JavaScript 寫法，由於 JavaScript 歷史悠久，一些古老的 JavaScript 寫法已經不建議使用，且 Vue 團隊也整合 JavaScript 與 Vue 的 best practice 在 ESLint 中，可藉此協助團隊的 code quality</p></blockquote><p><img src="/images/vue3/general/create-vue-full/create009.webp" alt="create009"></p><ul><li><strong>Add Prettier for code formatting？</strong>：<code>Yes</code></li></ul><blockquote><p>Prettier 為 Code Formatter，已內建支援 HTML、JavaScript、CSS，Vue 團隊也特別整理了 Vue coding style 的 best practice ，可避免 Git 在 commit 出現差異</p></blockquote><p><img src="/images/vue3/general/create-vue-full/create010.webp" alt="create010"></p><ul><li>所有建議設定如上</li></ul><h2 id="Install-NPM-Packages"><a href="#Install-NPM-Packages" class="headerlink" title="Install NPM Packages"></a>Install NPM Packages</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ cd vue34-lab$ npm install<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><ul><li>進入 Project 目錄</li><li><strong>npm install</strong>：安裝剛剛所勾選的 NPM 套件</li></ul><p><img src="/images/vue3/general/create-vue-full/create011.webp" alt="create011"></p><h2 id="Development-Environment"><a href="#Development-Environment" class="headerlink" title="Development Environment"></a>Development Environment</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ npm run dev<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>啟動開發環境</li></ul><p><img src="/images/vue3/general/create-vue-full/create012.webp" alt="create012"></p><ul><li>以 Vite 啟動開發環境</li><li>以內建 Web Server 在 <code>http://localhost:5173</code> 啟動</li></ul><p><img src="/images/vue3/general/create-vue-full/create013.webp" alt="create013"></p><ul><li>若有成功看到此畫面，表示 Node.js + NPM + Vite + Vue 相關 tool chain 與套件都已經安裝成功，可開始進行開發</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Vue 的 Node.js 環境要求不算嚴格，只要 Node.js 18.0 以上即可</li><li>實務上仍建議使用 NVM 管理 Node.js 版本，雖然 Vue 本身不挑 Node.js 版本，但所使用 <code>套件</code> 可能會挑 Node.js 版本，所以仍要有切換 Node.js 版本的心理準備</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://cn.vuejs.org/" target="_blank" rel="noopener">Vue</a>, <a href="https://cn.vuejs.org/guide/quick-start.html" target="_blank" rel="noopener">快速上手</a></p>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;本文介紹以 Vite 快速建立 Vue 3 專案，官方建議在 Node.js 18.0 以上，目前我是使用 Node.js 19.9.0 (最新 LTS 是 20.11.0)。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Vue" scheme="https://yabai.tw/tags/Vue/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用 Vite 建立 Vue 3 專案 (精簡版)</title>
+    <link href="https://yabai.tw/vue3/general/create-vue-mini/"/>
+    <id>https://yabai.tw/vue3/general/create-vue-mini/</id>
+    <published>2024-01-24T07:21:36.000Z</published>
+    <updated>2024-01-24T07:34:21.247Z</updated>
+    
+    <content type="html"><![CDATA[<p>Vue CLI 是基於 webpack，而 <code>create-vue</code> 則是基於 Vite，速度快很多。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vite 5.0<br>Vue 3.4</p><h2 id="Create-Project"><a href="#Create-Project" class="headerlink" title="Create Project"></a>Create Project</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ npm create vue@latest$ cd vue3-lab$ npm install$ npm run dev<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><ul><li><strong>npm create vue@latest</strong>：安裝 Vue 最新版本</li><li><strong>npm install</strong>：<code>create-vue</code> 並不會安裝相關套件，必須手動下 <code>npm install</code> 安裝</li><li><strong>npm run dev</strong>：啟動開發環境</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;Vue CLI 是基於 webpack，而 &lt;code&gt;create-vue&lt;/code&gt; 則是基於 Vite，速度快很多。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Vue" scheme="https://yabai.tw/tags/Vue/"/>
+    
+  </entry>
   
   <entry>
     <title>Vue 2 與 Vue 3 主要差異</title>
@@ -199,9 +237,9 @@
     
     <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
     
-    <category term="動詞I" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EI/"/>
-    
     <category term="自動" scheme="https://yabai.tw/tags/%E8%87%AA%E5%8B%95/"/>
+    
+    <category term="動詞I" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EI/"/>
     
   </entry>
   
@@ -241,9 +279,9 @@
     
     
     
-    <category term="Petite-vue" scheme="https://yabai.tw/tags/Petite-vue/"/>
-    
     <category term="Hugo" scheme="https://yabai.tw/tags/Hugo/"/>
+    
+    <category term="Petite-vue" scheme="https://yabai.tw/tags/Petite-vue/"/>
     
   </entry>
   
@@ -262,9 +300,9 @@
     
     
     
-    <category term="Petite-vue" scheme="https://yabai.tw/tags/Petite-vue/"/>
-    
     <category term="Hugo" scheme="https://yabai.tw/tags/Hugo/"/>
+    
+    <category term="Petite-vue" scheme="https://yabai.tw/tags/Petite-vue/"/>
     
   </entry>
   
@@ -391,46 +429,6 @@
     <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
     
     <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>何度 Vて も 飽きない (幾次都不膩)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/particle/demo/demo10/"/>
-    <id>https://yabai.tw/nihonngo/grammar/particle/demo/demo10/</id>
-    <published>2024-01-21T23:40:52.000Z</published>
-    <updated>2024-01-21T23:42:19.413Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>何度</code> <code>動詞て形</code> <code>も</code> <code>飽きない</code> 可表示 <code>幾次都不膩</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>何度</code> + <code>Vて</code> + <code>も</code> + <code>飽きない</code></li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>この店のラーメンは何度食べても飽きない。</code></p><p>這間的拉麵吃幾次都不會膩。</p><ul><li>この [0]：<code>連体</code> 這個</li><li>店(みせ) [2]：<code>名</code> 店</li><li>の：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>ラーメン [1]：<code>名</code> 拉麵</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>何度(なんど) [1]：<code>名</code> 幾次</li><li>食(た)べる [2]：<code>動II</code> <code>他動</code> <code>辞書形</code> 吃<ul><li>食べて [1]：<code>て形</code> 吃</li><li>食べても飽(あ)きない [6]：<code>幾次都不膩</code> 吃幾次都不膩</li></ul></li></ul><p><code>この映画は何度見ても飽きない。</code></p><p>這部電影看幾次都不會膩。</p><ul><li>この [0]：<code>連体</code> 這個　</li><li>映画(えいが) [1]：<code>名</code> 電影</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>何度(なんど) [1]：<code>名</code> 幾次</li><li>見(み)る [1]：<code>動II</code> <code>他動</code> <code>辞書形</code> 看<ul><li>見て [1]：<code>て形</code> 看</li><li>見ても飽(あ)きない [5]：<code>幾次都不膩</code> 看幾次都不膩</li></ul></li></ul><p><code>彼女の歌は何度聴いても飽きません。</code></p><p>她的歌聲聽幾次都不會膩。</p><ul><li>彼女(かのじょ) [1]：<code>代</code> 她</li><li>の：<code>格助</code> 表 <code>所有</code></li><li>歌(うた) [2]：<code>名</code> 歌聲</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>何度(なんど) [1]：<code>名</code> 幾次</li><li>聴(き)く[0]：<code>動I</code> <code>他動</code> <code>辞書形</code> 聽<ul><li>聴いて [0]：<code>て形</code> 聽</li><li>聴いても飽(あ)きない [6]：<code>幾次都不膩</code> 聽幾次都不膩</li><li>聴いても飽きません [8]：<code>ます形</code> 聽幾次都不膩</li></ul></li></ul><p><code>このゲームは何度遊んでも飽きません。</code></p><p>這個遊戲玩幾次都不會膩。</p><ul><li>この [0]：<code>連体</code> 這個</li><li>ゲーム [1]：<code>名</code> game、遊戲</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>何度(なんど) [1]：<code>名</code> 幾次</li><li>遊(あそ)ぶ [0]：<code>動I</code> <code>自動</code> <code>辞書形</code> 玩<ul><li>遊んで [0]：<code>て形</code> 玩</li><li>遊んでも飽(あ)きない [7]：<code>幾次都不膩</code> 玩幾次都不膩</li><li>遊んでも飽きません [9]：<code>ます形</code> 玩幾次都不膩</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;何度&lt;/code&gt; &lt;code&gt;動詞て形&lt;/code&gt; &lt;code&gt;も&lt;/code&gt; &lt;code&gt;飽きない&lt;/code&gt; 可表示 &lt;code&gt;幾次都不膩&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="動詞て形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E3%81%A6%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>我的 .zshrc 基本設定</title>
-    <link href="https://yabai.tw/macos/setup/zshrc/"/>
-    <id>https://yabai.tw/macos/setup/zshrc/</id>
-    <published>2024-01-21T13:37:50.000Z</published>
-    <updated>2024-01-21T13:38:43.681Z</updated>
-    
-    <content type="html"><![CDATA[<p>本文記錄我的 <code>.zshrc</code> 基本設定。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Sonoma</p><h2 id="zshrc"><a href="#zshrc" class="headerlink" title=".zshrc"></a>.zshrc</h2><pre class="line-numbers highlight language-shell"><code class="language-shell"># If you come from bash you might have to change your $PATH.export PATH=$HOME/bin:/usr/local/bin:$PATH# Path to your oh-my-zsh installation.export ZSH="$HOME/.oh-my-zsh"# Launch Z. /opt/homebrew/etc/profile.d/z.sh# Set name of the theme to load --- if set to "random", it will# load a random theme each time oh-my-zsh is loaded, in which case,# to know which specific one was loaded, run: echo $RANDOM_THEME# See https://github.com/ohmyzsh/ohmyzsh/wiki/ThemesZSH_THEME="robbyrussell"# Set list of themes to pick from when loading at random# Setting this variable when ZSH_THEME=random will cause zsh to load# a theme from this variable instead of looking in $ZSH/themes/# If set to an empty array, this variable will have no effect.# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )# Uncomment the following line to use case-sensitive completion.# CASE_SENSITIVE="true"# Uncomment the following line to use hyphen-insensitive completion.# Case-sensitive completion must be off. _ and - will be interchangeable.# HYPHEN_INSENSITIVE="true"# Uncomment one of the following lines to change the auto-update behavior# zstyle ':omz:update' mode disabled  # disable automatic updates# zstyle ':omz:update' mode auto      # update automatically without asking# zstyle ':omz:update' mode reminder  # just remind me to update when it's time# Uncomment the following line to change how often to auto-update (in days).# zstyle ':omz:update' frequency 13# Uncomment the following line if pasting URLs and other text is messed up.# DISABLE_MAGIC_FUNCTIONS="true"# Uncomment the following line to disable colors in ls.# DISABLE_LS_COLORS="true"# Uncomment the following line to disable auto-setting terminal title.# DISABLE_AUTO_TITLE="true"# Uncomment the following line to enable command auto-correction.# ENABLE_CORRECTION="true"# Uncomment the following line to display red dots whilst waiting for completion.# You can also set it to another string to have that shown instead of the default red dots.# e.g. COMPLETION_WAITING_DOTS="%F{yellow}waiting...%f"# Caution: this setting can cause issues with multiline prompts in zsh < 5.7.1 (see #5765)# COMPLETION_WAITING_DOTS="true"# Uncomment the following line if you want to disable marking untracked files# under VCS as dirty. This makes repository status check for large repositories# much, much faster.# DISABLE_UNTRACKED_FILES_DIRTY="true"# Uncomment the following line if you want to change the command execution time# stamp shown in the history command output.# You can set one of the optional three formats:# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"# or set a custom format using the strftime function format specifications,# see 'man strftime' for details.# HIST_STAMPS="mm/dd/yyyy"# Would you like to use another custom folder than $ZSH/custom?# ZSH_CUSTOM=/path/to/new-custom-folder# Which plugins would you like to load?# Standard plugins can be found in $ZSH/plugins/# Custom plugins may be added to $ZSH_CUSTOM/plugins/# Example format: plugins=(rails git textmate ruby lighthouse)# Add wisely, as too many plugins slow down shell startup.plugins=(git)source $ZSH/oh-my-zsh.sh# User configuration# export MANPATH="/usr/local/man:$MANPATH"# You may need to manually set your language environment# export LANG=en_US.UTF-8# Preferred editor for local and remote sessions# if [[ -n $SSH_CONNECTION ]]; then#   export EDITOR='vim'# else#   export EDITOR='mvim'# fi# Compilation flags# export ARCHFLAGS="-arch x86_64"# Set personal aliases, overriding those provided by oh-my-zsh libs,# plugins, and themes. Aliases can be placed here, though oh-my-zsh# users are encouraged to define aliases within the ZSH_CUSTOM folder.# For a full list of active aliases, run `alias`.## Example aliases# alias zshconfig="mate ~/.zshrc"# alias ohmyzsh="mate ~/.oh-my-zsh"alias ll='ls -al'alias y='npm run'alias ys='npm run dev'alias yl='npm run all'export NVM_DIR="$HOME/.nvm"  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><strong>Line 4</strong></p><pre class="line-numbers highlight language-shell"><code class="language-shell">export ZSH="$HOME/.oh-my-zsh"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>設定 ZSH 環境變數。</p><p><strong>Line 7</strong></p><pre class="line-numbers highlight language-shell"><code class="language-shell"># Launch Z. /opt/homebrew/etc/profile.d/z.sh<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><p>啟動 Z。</p><p><strong>Line 14</strong></p><pre class="line-numbers highlight language-shell"><code class="language-shell">ZSH_THEME="robbyrussell"<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><p>設定 ZSH 所使用的主題。</p><p><strong>Line 106</strong></p><pre class="line-numbers highlight language-shell"><code class="language-shell">alias ll='ls -al'alias y='npm run'alias ys='npm run dev'alias yl='npm run all'<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre><p>設定自己常用的 alias。</p><p><strong>Line 111</strong></p><pre class="line-numbers highlight language-shell"><code class="language-shell">export NVM_DIR="$HOME/.nvm"  [ -s "/opt/homebrew/opt/nvm/nvm.sh" ] && \. "/opt/homebrew/opt/nvm/nvm.sh"  # This loads nvm  [ -s "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm" ] && \. "/opt/homebrew/opt/nvm/etc/bash_completion.d/nvm"  # This loads nvm bash_completion<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre><p>設定 NVM 環境變數。</p>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;本文記錄我的 &lt;code&gt;.zshrc&lt;/code&gt; 基本設定。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="macOS" scheme="https://yabai.tw/tags/macOS/"/>
     
   </entry>
   
