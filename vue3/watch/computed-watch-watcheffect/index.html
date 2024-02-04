@@ -211,7 +211,7 @@ a:hover {
     },
     
     "datePublished": "2024-02-01T15:27:18.000Z",
-    "dateModified": "2024-02-01T15:30:03.970Z",
+    "dateModified": "2024-02-03T12:26:46.519Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -441,41 +441,56 @@ a:hover {
 <a id="more"></a>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.4</p>
-<h2 id="綜合比較"><a href="#綜合比較" class="headerlink" title="綜合比較"></a>綜合比較</h2><h3 id="執行時機"><a href="#執行時機" class="headerlink" title="執行時機"></a>執行時機</h3><ul>
+<h2 id="Behavior"><a href="#Behavior" class="headerlink" title="Behavior"></a>Behavior</h2><ul>
 <li><code>computed()</code>：一開始會執行一次</li>
 <li><code>watch()</code>：一開始不執行，追蹤的 state 改變才會執行</li>
 <li><code>watchEffect()</code>：一開始會執行一次</li>
 </ul>
-<h2 id="可否帶參數"><a href="#可否帶參數" class="headerlink" title="可否帶參數"></a>可否帶參數</h2><ul>
+<h2 id="Parameter"><a href="#Parameter" class="headerlink" title="Parameter"></a>Parameter</h2><ul>
 <li><code>computed()</code>：不可傳參數，若要傳參數改用一般 function</li>
 <li><code>watch()</code>：可傳參數，第一個參數為 <code>newValue</code>，第二個參數為 <code>oldValue</code></li>
 <li><code>watchEffect()</code>：不可傳參數</li>
 </ul>
-<h3 id="同步-x2F-非同步"><a href="#同步-x2F-非同步" class="headerlink" title="同步 &#x2F; 非同步"></a>同步 &#x2F; 非同步</h3><ul>
-<li><code>computed()</code>：只能 <code>同步</code></li>
+<h2 id="Sychoronous-x2F-Asynchronous"><a href="#Sychoronous-x2F-Asynchronous" class="headerlink" title="Sychoronous &#x2F; Asynchronous"></a>Sychoronous &#x2F; Asynchronous</h2><ul>
+<li><code>computed()</code>：只能 <code>同步</code> (不能 call API)</li>
 <li><code>watch()</code>：<code>同步</code>、<code>非同步</code> 皆可</li>
 <li><code>watchEffect()</code>：<code>同步</code>、<code>非同步</code> 皆可</li>
 </ul>
-<h3 id="Side-Effect"><a href="#Side-Effect" class="headerlink" title="Side Effect"></a>Side Effect</h3><ul>
-<li><code>computed()</code>：不可處理 Side Effect</li>
+<h2 id="Side-Effect"><a href="#Side-Effect" class="headerlink" title="Side Effect"></a>Side Effect</h2><ul>
+<li><code>computed()</code>：不可處理 Side Effect (Pure Function)</li>
 <li><code>watch()</code>：專門處理 Side Effect</li>
 <li><code>watchEffect()</code>：專門處理 Side Effect</li>
 </ul>
-<h3 id="行為"><a href="#行為" class="headerlink" title="行為"></a>行為</h3><ul>
+<h2 id="Return"><a href="#Return" class="headerlink" title="Return"></a>Return</h2><ul>
 <li><code>computed()</code>：回傳結果</li>
-<li><code>watch()</code>：執行傳入 function</li>
-<li><code>watchEffect()</code>：執行傳入 function</li>
+<li><code>watch()</code>：無回傳結果，執行傳入 function</li>
+<li><code>watchEffect()</code>：無回傳結果，執行傳入 function</li>
 </ul>
-<h2 id="追蹤對象"><a href="#追蹤對象" class="headerlink" title="追蹤對象"></a>追蹤對象</h2><ul>
+<h2 id="Tracking-Target"><a href="#Tracking-Target" class="headerlink" title="Tracking Target"></a>Tracking Target</h2><ul>
 <li><code>computed()</code>：可追蹤 state、computed</li>
 <li><code>watch()</code>：可追蹤 state、computed 或 array </li>
 <li><code>watchEffect()</code>：可追蹤 function 內 <code>同步</code> 的 state、computed 或 array，但不追蹤 <code>非同步</code> 的 state、computed 或 array</li>
+</ul>
+<h2 id="Effeciency"><a href="#Effeciency" class="headerlink" title="Effeciency"></a>Effeciency</h2><ul>
+<li><code>computed()</code>：支援 cache</li>
+<li><code>watch()</code>：不支援 cache</li>
+<li><code>watchEffect()</code>：不支援 cache</li>
+</ul>
+<h2 id="Maintainability"><a href="#Maintainability" class="headerlink" title="Maintainability"></a>Maintainability</h2><ul>
+<li><code>computed()</code>：可在 HTML template 中直接發現 computed  被使用，然後一直 trace function 即可，容易 debug</li>
+<li><code>watch()</code>：常會沒發現原來有個 state 或 computed 被 watch 偷偷修改，因為在 trace function 時無法發現有 <code>watch()</code> 存在，不容易 debug</li>
+<li><code>watchEffect()</code>：常會沒發現原來有個 state 或 computed 被 watch 偷偷修改，因為在 trace function 時無法發現有 <code>watchEffect()</code> 存在，不容易 debug</li>
+</ul>
+<h3 id="Usage"><a href="#Usage" class="headerlink" title="Usage"></a>Usage</h3><ul>
+<li><code>computed()</code>：<code>90%</code> 盡量使用 computed 實現</li>
+<li><code>watch()</code>：<code>5%</code> 僅用於 edge case、特例或 computed 難以實現時</li>
+<li><code>watchEffect()</code>：<code>5%</code> 僅用於 edge case、特例 或 computed 難以實現時</li>
 </ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li><code>computed()</code>：適合單純用來加工資料，如 HTML Template 上的顯示，</li>
 <li><code>watch()</code>：追蹤單一 state，且傳入 function 想根據新舊資料進行處理，如 route 參數變化重新發 API</li>
 <li><code>watchEffect()</code>：追蹤多個 state，且一開始會執行一次，如輸入變化會重新發 API，但有提供預設值可先執行一次</li>
-<li>有些需求用 <code>computed()</code>、<code>watch()</code> 與 <code>watchEffect()</code> 都可實現時，優先使用 <code>computed()</code>，這是效率最好的方式，也是可讀性最高，最容易維護方式，<code>watch()</code> 與 <code>watchEffect()</code> 常常會讓人忽略原來還有代碼寫在這裡</li>
+<li>有些需求用 <code>computed()</code>、<code>watch()</code> 與 <code>watchEffect()</code> 都可實現時，優先使用 <code>computed()</code>，這是效率最好的方式，也是可讀性最高，最容易維護方式, 而 <code>watch()</code> 與 <code>watchEffect()</code> 常常會讓人忽略原來還有代碼寫在這裡</li>
 </ul>
 
           </article>
@@ -494,6 +509,13 @@ a:hover {
         <div class="post-nav px-2 bg-gray">
 	<ul class="pagination">
 		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/vue3/cookbook/reactive-select/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">實現 Reactive Select</div>
+			</a>
+		</li>
 		
 		<!-- Next Nav -->
 		
