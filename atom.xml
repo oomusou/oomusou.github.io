@@ -6,7 +6,7 @@
   <link href="https://yabai.tw/atom.xml" rel="self"/>
   
   <link href="https://yabai.tw/"/>
-  <updated>2024-02-14T03:27:40.623Z</updated>
+  <updated>2024-02-14T16:04:25.704Z</updated>
   <id>https://yabai.tw/</id>
   
   <author>
@@ -15,6 +15,138 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>整合 Hugo 與 Pico CSS</title>
+    <link href="https://yabai.tw/hugo/general/pico/"/>
+    <id>https://yabai.tw/hugo/general/pico/</id>
+    <published>2024-02-14T15:59:25.000Z</published>
+    <updated>2024-02-14T16:04:25.704Z</updated>
+    
+    <content type="html"><![CDATA[<p>Pico CSS 為著名的 Classless CSS，特別適合 Blog、Document 之類應用，而 Hugo 也適合 Blog 與 Document，因此 Hugo 與 Pico CSS 可說是天作之合。</p><a id="more"></a><h2 id="New-Site"><a href="#New-Site" class="headerlink" title="New Site"></a>New Site</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ hugo new site hugo-pico --format json<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li><strong>hugo new site</strong> : 以預設骨架建立 Hugo 站台</li><li><strong>–format json</strong> : 以 JSON 格式作為 Hugo 設定檔</li></ul><h2 id="Install-Pico-CSS"><a href="#Install-Pico-CSS" class="headerlink" title="Install Pico CSS"></a>Install Pico CSS</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ npm install @picocss/pico<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>使用 NPM 安裝 Pico CSS</li></ul><h2 id="Module-Mounts"><a href="#Module-Mounts" class="headerlink" title="Module Mounts"></a>Module Mounts</h2><p><strong>hugo.json</strong></p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>   <span class="token property">"baseURL"</span><span class="token operator">:</span> <span class="token string">"https://example.org/"</span><span class="token punctuation">,</span>   <span class="token property">"languageCode"</span><span class="token operator">:</span> <span class="token string">"en-us"</span><span class="token punctuation">,</span>   <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"My New Hugo Site"</span><span class="token punctuation">,</span>   <span class="token property">"module"</span><span class="token operator">:</span> <span class="token punctuation">{</span>      <span class="token property">"mounts"</span><span class="token operator">:</span> <span class="token punctuation">[</span>         <span class="token punctuation">{</span>            <span class="token property">"source"</span><span class="token operator">:</span> <span class="token string">"node_modules/@picocss/pico/css/pico.min.css"</span><span class="token punctuation">,</span>            <span class="token property">"target"</span><span class="token operator">:</span> <span class="token string">"static/css/pico.min.css"</span>         <span class="token punctuation">}</span>      <span class="token punctuation">]</span>   <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><strong>Line 5</strong></p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"module"</span><span class="token operator">:</span> <span class="token punctuation">{</span>  <span class="token property">"mounts"</span><span class="token operator">:</span> <span class="token punctuation">[</span>    <span class="token punctuation">{</span>      <span class="token property">"source"</span><span class="token operator">:</span> <span class="token string">"node_modules/@picocss/pico/css/pico.min.css"</span><span class="token punctuation">,</span>      <span class="token property">"target"</span><span class="token operator">:</span> <span class="token string">"static/css/pico.min.css"</span>    <span class="token punctuation">}</span>  <span class="token punctuation">]</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>將 <code>node_modules</code> 目錄下的 <code>pico.min.css</code> mount 到 <code>static</code> 目錄下，只是邏輯上的 mount，並不是 copy 到 <code>static</code> 目錄下</li><li>因為 static 目錄下在 Hugo 可直接引用，所以直接將 <code>pico.min.css</code> 複製到 <code>static</code> 目錄下使用上最方便</li><li>雖然在 <code>static</code> 目錄下看不到 Pico CSS，但最後會將 Pico CSS publish 到 <code>public</code> 目錄下</li></ul><h2 id="Layout"><a href="#Layout" class="headerlink" title="Layout"></a>Layout</h2><p><strong>layouts&#x2F;index.html</strong></p><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token doctype">&lt;!doctype html></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>width<span class="token punctuation">=</span>device-width, initial-scale<span class="token punctuation">=</span>1.0<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>css/pico.min.css<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>    {{ $title := "Hugo X Pico CSS Lab" }}    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>{{ $title }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>main</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>container<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>2<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>3<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>main</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><strong>Line 6</strong></p><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>css/pico.min.css<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>直接引用 <code>static</code> 目錄下的 <code>pico.min.css</code></li></ul><p><strong>Line 7</strong></p><pre class="line-numbers highlight language-html"><code class="language-html">{{ $title := "Hugo X Pico CSS Lab" }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>{{ $title }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><ul><li>定義 Go template 變數</li><li>顯示 Go template 變數</li></ul><p><strong>Line 11</strong></p><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>main</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>container<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>2<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>3<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>main</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li><code>&lt;main&gt;</code>：在 <code>&lt;main&gt;</code> 使用 <code>container</code> layout</li><li><code>&lt;input&gt;</code>：使用 HTML 原生的 Form Button</li></ul><p><img src="/images/hugo/general/pico/pico001.webp" alt="pico001"></p><ul><li>Pico CCS 內建已支援 Light &#x2F; Dark mode 與 Responsive</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Pico CSS 的美感就是對 HTML tag 提供 default style，讓我們可以在撰寫最少 CSS 下完成需求，且直接使用 Light &#x2F; Dark mode 與支援 Responsive</li><li>因為 <code>pico.min.css</code> 已經被壓縮過，因次不必將 <code>pico.min.css</code> mount 到 <code>assets</code> 目錄由 Hugo Pip 壓縮，只要 mount 到 <code>static</code> 目錄下即可</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;Pico CSS 為著名的 Classless CSS，特別適合 Blog、Document 之類應用，而 Hugo 也適合 Blog 與 Document，因此 Hugo 與 Pico CSS 可說是天作之合。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Hugo" scheme="https://yabai.tw/tags/Hugo/"/>
+    
+    <category term="Pico CSS" scheme="https://yabai.tw/tags/Pico-CSS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>整合 Vue 3 與 Pico CSS</title>
+    <link href="https://yabai.tw/vue3/general/pico/"/>
+    <id>https://yabai.tw/vue3/general/pico/</id>
+    <published>2024-02-14T15:43:56.000Z</published>
+    <updated>2024-02-14T16:03:01.936Z</updated>
+    
+    <content type="html"><![CDATA[<p>Pico CSS 為著名的 Classless CSS，有別於 Tailwind CSS 的 Utility First CSS，他為 Semantic HTML 提供了 Default Style，讓我們在開發時專心於 HTML 與 Vue。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.4<br>Pico CSS 2.0</p><h2 id="Install-Pico-CSS"><a href="#Install-Pico-CSS" class="headerlink" title="Install Pico CSS"></a>Install Pico CSS</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ npm install @picocss/pico<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>使用 NPM 安裝 Pico CSS</li></ul><h2 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a>Vue</h2><p><strong>main.js</strong></p><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> createApp <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span><span class="token keyword">import</span> App <span class="token keyword">from</span> <span class="token string">'./App.vue'</span><span class="token keyword">import</span> <span class="token string">'@picocss/pico/css/pico.min.css'</span><span class="token function">createApp</span><span class="token punctuation">(</span>App<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">mount</span><span class="token punctuation">(</span><span class="token string">'#app'</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><strong>Line 3</strong></p><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token string">'@picocss/pico/css/pico.min.css'</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>引入安裝在 <code>node_modules</code> 的 Pico CSS</li></ul><p><strong>App.vue</strong></p><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>main</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>container<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>section</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>grid<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>+<span class="token punctuation">"</span></span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>h5</span><span class="token punctuation">></span></span>{{ count }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>h5</span><span class="token punctuation">></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>section</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>main</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span><span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token punctuation">.</span>value<span class="token operator">++</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>經典的 Counter，只使用 HTML 與 Vue，CSS 則只使用 Pico CSS</li></ul><p><img src="/images/vue3/general/pico/pico001.webp" alt="pico001"></p><ul><li>已經順利套上 Pico CSS</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Pico CSS 也可使用 NPM 安裝，我們只要在 <code>main.js</code> 將 Pico CSS 從 <code>node_modules</code> 目錄下 <code>import</code>，就可在 Vue 內使用</li><li>僅使用 <code>container</code> 與 <code>grid</code> 兩個 class 負責 layout，其他都由 Pico CSS 對 HTML tag 提供 default style</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;Pico CSS 為著名的 Classless CSS，有別於 Tailwind CSS 的 Utility First CSS，他為 Semantic HTML 提供了 Default Style，讓我們在開發時專心於 HTML 與 Vue。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Vue" scheme="https://yabai.tw/tags/Vue/"/>
+    
+    <category term="Pico CSS" scheme="https://yabai.tw/tags/Pico-CSS/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>披露する</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/hi/hirousuru/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/hi/hirousuru/</id>
+    <published>2024-02-14T11:04:37.000Z</published>
+    <updated>2024-02-14T11:05:28.256Z</updated>
+    
+    <content type="html"><![CDATA[<p>ひろうする [0]：<code>動III</code> <code>他動</code> 展現。</p><a id="more"></a><h2 id="動詞活用"><a href="#動詞活用" class="headerlink" title="動詞活用"></a>動詞活用</h2><ul><li>ます形：披露します [5]</li><li>辞書形：披露する [0]</li><li>ない形：披露しない [0]</li><li>て形：披露して [0]</li><li>た形：披露した [0]</li><li>可能形：披露できる [0]</li><li>意向形：披露しよう [5]</li><li>命令形：披露しろ [0]</li><li>禁止形：披露するな [0]</li><li>条件形：披露すれば [0]</li><li>受身形：披露される [0]</li><li>使役形：披露させる [0]</li><li>使役受身形：披露させられる [0]</li></ul><h2 id="文体"><a href="#文体" class="headerlink" title="文体"></a>文体</h2><ul><li>丁寧形現在肯定：披露します</li><li>丁寧形現在否定：披露しません</li><li>丁寧形過去肯定：披露しました</li><li>丁寧形過去否定：披露しませんでした</li><li>普通形現在肯定：披露する</li><li>普通形現在否定：披露しない</li><li>普通形過去肯定：披露した</li><li>普通形過去否定：披露しなかった</li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>課長はノリノリでダンスを披露した。</code></p><p>課長很 High 地展現他的舞技。</p><ul><li>課長(かちょう) [0]：<code>名</code> 課長</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>ノリノリ [0]：<code>慣</code> 很 high</li><li>で：<code>格助</code> 表 <code>狀態</code></li><li>ダンス [1]：<code>名</code> dance、跳舞</li><li>を：<code>格助</code> 接受 <code>披露する</code> 的 <code>賓語</code></li><li>披露(ひろう)する [0]：<code>動III</code> <code>他動</code> <code>辞書形</code> 展現<ul><li>披露した [0]：<code>た形</code> 展現了</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;ひろうする [0]：&lt;code&gt;動III&lt;/code&gt; &lt;code&gt;他動&lt;/code&gt; 展現。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="動詞III" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EIII/"/>
+    
+    <category term="他動" scheme="https://yabai.tw/tags/%E4%BB%96%E5%8B%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ノリノリ</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/no/norinori/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/no/norinori/</id>
+    <published>2024-02-14T10:53:57.000Z</published>
+    <updated>2024-02-14T11:06:48.497Z</updated>
+    
+    <content type="html"><![CDATA[<p>ノリノリ [0]：<code>慣</code> 很 high。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>Kenって今日ノリノリですね。</code></p><p>Ken 你今天很 High 耶。</p><ul><li>って：<code>縮約</code> 表 <code>は</code></li><li>今日(きょう) [1]：<code>名</code> 今天</li><li>ノリノリ [0]：<code>慣</code> 很 high</li><li>です [0]：<code>助動</code> 是</li><li>ね：<code>終助</code> 表 <code>稱讚</code></li></ul><p><code>課長はノリノリでダンスを披露した。</code></p><p>課長很 High 地展現他的舞技。</p><ul><li>課長(かちょう) [0]：<code>名</code> 課長</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>ノリノリ [0]：<code>慣</code> 很 high</li><li>で：<code>格助</code> 表 <code>狀態</code></li><li>ダンス [1]：<code>名</code> dance、跳舞</li><li>を：<code>格助</code> 接受 <code>披露する</code> 的 <code>賓語</code></li><li>披露(ひろう)する [0]：<code>動III</code> <code>他動</code> <code>辞書形</code> 展現<ul><li>披露した [0]：<code>た形</code> 展現了</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;ノリノリ [0]：&lt;code&gt;慣&lt;/code&gt; 很 high。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="慣用語" scheme="https://yabai.tw/tags/%E6%85%A3%E7%94%A8%E8%AA%9E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ノリが悪い</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/no/norigawarui/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/no/norigawarui/</id>
+    <published>2024-02-14T10:10:02.000Z</published>
+    <updated>2024-02-14T10:10:41.217Z</updated>
+    
+    <content type="html"><![CDATA[<p>ノリがわるい [5]：<code>い形容</code> 冷場的。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>ノリが悪い人。</code></p><p>冷場的人。</p><ul><li>ノリが悪い [4]：<code>い形容</code> 冷場的</li><li>人(ひと) [2]：<code>名</code> 人</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;ノリがわるい [5]：&lt;code&gt;い形容&lt;/code&gt; 冷場的。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="い形容詞" scheme="https://yabai.tw/tags/%E3%81%84%E5%BD%A2%E5%AE%B9%E8%A9%9E/"/>
+    
+    <category term="慣用語" scheme="https://yabai.tw/tags/%E6%85%A3%E7%94%A8%E8%AA%9E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>ノリがいい</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/no/norigaii/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/no/norigaii/</id>
+    <published>2024-02-14T10:01:29.000Z</published>
+    <updated>2024-02-14T10:04:37.630Z</updated>
+    
+    <content type="html"><![CDATA[<p>ノリがいい [4]：<code>い形容</code> 炒熱氣氛的。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>ノリがいいね。</code></p><p>氣氛很 high 呢。</p><ul><li>ノリがいい [4]：<code>い形容</code> 炒熱氣氛的</li><li>ね：<code>終助</code> 表 <code>稱讚</code></li></ul><p><code>ノリがいい人。</code></p><p>容易帶動氣氛的人。</p><ul><li>ノリがいい [4]：<code>い形容</code> 炒熱氣氛的</li><li>人(ひと) [2]：<code>名</code> 人</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;ノリがいい [4]：&lt;code&gt;い形容&lt;/code&gt; 炒熱氣氛的。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="い形容詞" scheme="https://yabai.tw/tags/%E3%81%84%E5%BD%A2%E5%AE%B9%E8%A9%9E/"/>
+    
+    <category term="慣用語" scheme="https://yabai.tw/tags/%E6%85%A3%E7%94%A8%E8%AA%9E/"/>
+    
+  </entry>
   
   <entry>
     <title>ノリですね (你配合的很好耶)</title>
@@ -250,27 +382,6 @@
   </entry>
   
   <entry>
-    <title>整合 Hugo 與 Pico CSS</title>
-    <link href="https://yabai.tw/hugo/general/pico/"/>
-    <id>https://yabai.tw/hugo/general/pico/</id>
-    <published>2024-02-13T08:04:37.000Z</published>
-    <updated>2024-02-13T08:07:52.245Z</updated>
-    
-    <content type="html"><![CDATA[<p>Pico CSS 為著名的 Classless CSS，特別適合 Blog、Document 之類應用，而 Hugo 也適合 Blog 與 Document，因此 Hugo 與 Pico CSS 可說是天作之合。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Hugo 0.121.2<br>Pico CSS 2.0</p><h2 id="New-Site"><a href="#New-Site" class="headerlink" title="New Site"></a>New Site</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ hugo new site hugo-pico --format json<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li><strong>hugo new site</strong> : 以預設骨架建立 Hugo 站台</li><li><strong>–format json</strong> : 以 JSON 格式作為 Hugo 設定檔</li></ul><h2 id="Install-Pico-CSS"><a href="#Install-Pico-CSS" class="headerlink" title="Install Pico CSS"></a>Install Pico CSS</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ npm install @picocss/pico<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>使用 NPM 安裝 Pico CSS</li></ul><h2 id="Module-Mounts"><a href="#Module-Mounts" class="headerlink" title="Module Mounts"></a>Module Mounts</h2><p><strong>hugo.json</strong></p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>   <span class="token property">"baseURL"</span><span class="token operator">:</span> <span class="token string">"https://example.org/"</span><span class="token punctuation">,</span>   <span class="token property">"languageCode"</span><span class="token operator">:</span> <span class="token string">"en-us"</span><span class="token punctuation">,</span>   <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"My New Hugo Site"</span><span class="token punctuation">,</span>   <span class="token property">"module"</span><span class="token operator">:</span> <span class="token punctuation">{</span>      <span class="token property">"mounts"</span><span class="token operator">:</span> <span class="token punctuation">[</span>         <span class="token punctuation">{</span>            <span class="token property">"source"</span><span class="token operator">:</span> <span class="token string">"node_modules/@picocss/pico/css/pico.css"</span><span class="token punctuation">,</span>            <span class="token property">"target"</span><span class="token operator">:</span> <span class="token string">"static/css/pico.css"</span>         <span class="token punctuation">}</span>      <span class="token punctuation">]</span>   <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><strong>Line 5</strong></p><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"module"</span><span class="token operator">:</span> <span class="token punctuation">{</span>  <span class="token property">"mounts"</span><span class="token operator">:</span> <span class="token punctuation">[</span>    <span class="token punctuation">{</span>      <span class="token property">"source"</span><span class="token operator">:</span> <span class="token string">"node_modules/@picocss/pico/css/pico.css"</span><span class="token punctuation">,</span>      <span class="token property">"target"</span><span class="token operator">:</span> <span class="token string">"assets/css/pico.css"</span>    <span class="token punctuation">}</span>  <span class="token punctuation">]</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>將 <code>node_modules</code> 目錄下的 Pico CSS mount 到 <code>assets</code> 目錄下，只是邏輯上的 mount，並不是 copy 到 <code>assets</code> 目錄下</li><li>因為在 <code>assets</code> 目錄下的 CSS 可直接使用 Hugo Pipe 加以壓縮，因此選擇 mount 到 <code>assets</code> 目錄下</li><li>雖然在 <code>assets</code> 目錄下看不到 Pico CSS，但最後會將 Pico CSS publish 到 <code>public</code> 目錄下</li></ul><h2 id="Layout"><a href="#Layout" class="headerlink" title="Layout"></a>Layout</h2><p><strong>layouts&#x2F;index.html</strong></p><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token doctype">&lt;!doctype html></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>width<span class="token punctuation">=</span>device-width, initial-scale<span class="token punctuation">=</span>1.0<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>    {{ $css := resources.Get "css/pico.css" }}    {{ if hugo.IsProduction }}      {{ $css = $css | minify | fingerprint }}    {{ else }}      {{ $css = $css |        fingerprint      }}    {{ end }}    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{{ $css.RelPermalink }}<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>    {{ $title := "Hugo X Pico CSS Lab" }}    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>{{ $title }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>main</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>container<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>2<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>3<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>main</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><strong>Line 6</strong></p><pre class="line-numbers highlight language-html"><code class="language-html">{{ $css := resources.Get "css/pico.css" }}<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li><code>resources.Get</code>：從 <code>assets</code> 目錄取得 <code>pico.css</code></li></ul><p><strong>Line 7</strong></p><pre class="line-numbers highlight language-html"><code class="language-html">{{ if hugo.IsProduction }}  {{ $css = $css | minify | fingerprint }}{{ else }}  {{ $css = $css | fingerprint }}{{ end }}<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li><code>hugo.IsProduction</code>：CSS 檔案只有在 build 時才需要加以壓縮，所以使用 <code>hugo.IsProduction</code> 判斷是否在 build 階段</li><li><code>minify</code>：將 CSS 壓縮</li><li><code>fingerprint</code>：以亂數產生檔名，避免 CSS 被 Browser 給 cache</li></ul><p><strong>Line 14</strong></p><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>link</span> <span class="token attr-name">rel</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>stylesheet<span class="token punctuation">"</span></span> <span class="token attr-name">href</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{{ $css.RelPermalink }}<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li><code>RelPermalink</code>：回傳檔案的相對路徑</li></ul><p><strong>Line 15</strong></p><pre class="line-numbers highlight language-html"><code class="language-html">{{ $title := "Hugo X Pico CSS Lab" }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>{{ $title }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><ul><li>定義 Go template 變數</li><li>顯示 Go template 變數</li></ul><p><strong>Line 19</strong></p><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>main</span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>container<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>1<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>2<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>button<span class="token punctuation">"</span></span> <span class="token attr-name">value</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>3<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>main</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li><code>&lt;main&gt;</code>：在 <code>&lt;main&gt;</code> 使用 <code>container</code> layout</li><li><code>&lt;input&gt;</code>：使用 HTML 原生的 Form Button</li></ul><p><img src="/images/hugo/general/pico/pico001.webp" alt="pico001"></p><ul><li>Pico CCS 內建已支援 Light &#x2F; Dark mode 與 Responsive</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>Pico CSS 的美感就是對 HTML tag 提供 default style，讓我們可以在撰寫最少 CSS 下完成需求，且直接使用 Light &#x2F; Dark mode 與支援 Responsive</li><li>使用 Module Mount 可簡單將 <code>node_modules</code> 下的 Pico CSS mount 到 <code>assets</code> 目錄下，並利用 Hugo Pipe 將 <code>pico.css</code> 加以壓縮，如此可繼續使用 NPM 管理 Pico CSS 版本，不必再手動將 Pico CSS 複製到 <code>static</code> 目錄下，此方法也適用於其他 NPM 套件</li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;Pico CSS 為著名的 Classless CSS，特別適合 Blog、Document 之類應用，而 Hugo 也適合 Blog 與 Document，因此 Hugo 與 Pico CSS 可說是天作之合。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="Hugo" scheme="https://yabai.tw/tags/Hugo/"/>
-    
-    <category term="Pico CSS" scheme="https://yabai.tw/tags/Pico-CSS/"/>
-    
-  </entry>
-  
-  <entry>
     <title>Vて くれ (給我做)</title>
     <link href="https://yabai.tw/nihonngo/grammar/verb/te/tekure/tekure01/"/>
     <id>https://yabai.tw/nihonngo/grammar/verb/te/tekure/tekure01/</id>
@@ -330,115 +441,6 @@
     <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
     
     <category term="比較名詞" scheme="https://yabai.tw/tags/%E6%AF%94%E8%BC%83%E5%90%8D%E8%A9%9E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>注意する</title>
-    <link href="https://yabai.tw/nihonngo/vocabulary/chu/chuuisuru/"/>
-    <id>https://yabai.tw/nihonngo/vocabulary/chu/chuuisuru/</id>
-    <published>2024-02-12T12:57:55.000Z</published>
-    <updated>2024-02-12T12:58:33.889Z</updated>
-    
-    <content type="html"><![CDATA[<p>ちゅういする [1]：<code>動III</code> <code>自動</code> 注意、警告。</p><a id="more"></a><h2 id="動詞活用"><a href="#動詞活用" class="headerlink" title="動詞活用"></a>動詞活用</h2><ul><li>ます形：注意します [5]</li><li>辞書形：注意する [1]</li><li>ない形：注意しない [4]</li><li>て形：注意して [3]</li><li>た形：注意した [3]</li><li>可能形：注意できる [5]</li><li>意向形：注意しよう [5]</li><li>命令形：注意しろ [1]</li><li>禁止形：注意するな [1]</li><li>条件形：注意すれば [1]</li><li>受身形：注意される [5]</li><li>使役形：注意させる [5]</li><li>使役受身形：注意させられる [7]</li></ul><h2 id="文体"><a href="#文体" class="headerlink" title="文体"></a>文体</h2><ul><li>丁寧形現在肯定：注意します</li><li>丁寧形現在否定：注意しません</li><li>丁寧形過去肯定：注意しました</li><li>丁寧形過去否定：注意しませんでした</li><li>普通形現在肯定：注意する</li><li>普通形現在否定：注意しない</li><li>普通形過去肯定：注意した</li><li>普通形過去否定：注意しなかった</li></ul><h2 id="注意"><a href="#注意" class="headerlink" title="注意"></a>注意</h2><p><code>忘れ物にご注意ください。</code></p><p>請留意別忘了東西。</p><ul><li>忘(わす)れ物(もの) [0]：<code>名</code> 遺忘的東西</li><li>に：<code>格助</code> 表 <code>動作對象</code></li><li>ご：<code>接頭</code> 表 <code>尊敬</code></li><li>注意(ちゅうい)する [1]：<code>動III</code> <code>自動</code> <code>辞書形</code> 注意<ul><li>注意ください [1]：<code>請託</code> 請注意</li></ul></li></ul><h2 id="警告"><a href="#警告" class="headerlink" title="警告"></a>警告</h2><p><code>先生に注意された学生は、自分は悪くないとばかりにそっぽを向いた。</code></p><p>被老師警告的學生好像在說自己沒錯似地不理睬。</p><ul><li>先生(せんせい) [3]：<code>名</code> 老師</li><li>に</li><li>注意(ちゅうい)する [0]：<code>動III</code> <code>自動</code> <code>辞書形</code> 警告<ul><li>注意される [0]：<code>受身形</code> 被警告</li><li>注意された [0]：<code>た形</code> 被警告了</li></ul></li><li>学生(がくせい) [0]：<code>名</code> 學生</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>自分(じぶん) [0]：<code>名</code> 自己</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>悪(わる)い [2]：<code>い形容</code> 錯的<ul><li>悪くない [2]：<code>ない形</code> 沒錯的</li><li>悪くないとばかりに [7]：<code>好像在說</code> 好像在說沒錯似地</li></ul></li><li>そっぼを向(む)く [1]：<code>慣</code> 不理睬<ul><li>そっぼを向いた [1]：<code>た形</code> 不理睬了</li></ul></li></ul><p><code>お医者さんに甘い物を食べないように注意されます。</code></p><p>被醫生警告請不要吃甜食。</p><ul><li>お：<code>接頭</code> 美化</li><li>医者(いしゃ) [0]：<code>名</code> 醫生</li><li>さん [0]：<code>名</code> 先生</li><li>に：<code>格助</code> 表 <code>動作者</code></li><li>甘(あま)い物(もの) [0]：<code>名</code> 甜食</li><li>を：<code>格助</code> 接受 <code>食べる</code> 的 <code>賓語</code></li><li>食(た)べる [2]：<code>動II</code> <code>他動</code> <code>辞書形</code> 吃<ul><li>食べない [2]：<code>ない形</code> 不吃</li><li>食べないように [5]：<code>指示</code> 不要吃</li></ul></li><li>注意(ちゅうい)する [1]：<code>動III</code> <code>自動</code> <code>辞書形</code> 警告<ul><li>注意される [6]：<code>受身形</code> 被警告</li><li>注意されます [6]：<code>ます形</code> 被警告</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;ちゅういする [1]：&lt;code&gt;動III&lt;/code&gt; &lt;code&gt;自動&lt;/code&gt; 注意、警告。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="動詞III" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EIII/"/>
-    
-    <category term="自動" scheme="https://yabai.tw/tags/%E8%87%AA%E5%8B%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>甘い物</title>
-    <link href="https://yabai.tw/nihonngo/vocabulary/a/amaimono/"/>
-    <id>https://yabai.tw/nihonngo/vocabulary/a/amaimono/</id>
-    <published>2024-02-12T12:55:16.000Z</published>
-    <updated>2024-02-12T12:55:47.977Z</updated>
-    
-    <content type="html"><![CDATA[<p>あまいもの [0]：<code>名</code> 甜食。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>お医者さんに甘い物を食べないように注意されます。</code></p><p>被醫生警告請不要吃甜食。</p><ul><li>お：<code>接頭</code> 美化</li><li>医者(いしゃ) [0]：<code>名</code> 醫生</li><li>さん [0]：<code>名</code> 先生</li><li>に：<code>格助</code> 表 <code>動作者</code></li><li>甘(あま)い物(もの) [0]：<code>名</code> 甜食</li><li>を：<code>格助</code> 接受 <code>食べる</code> 的 <code>賓語</code></li><li>食(た)べる [2]：<code>動II</code> <code>他動</code> <code>辞書形</code> 吃<ul><li>食べない [2]：<code>ない形</code> 不吃</li><li>食べないように [5]：<code>指示</code> 不要吃</li></ul></li><li>注意(ちゅうい)する [1]：<code>動III</code> <code>自動</code> <code>辞書形</code> 警告<ul><li>注意される [6]：<code>受身形</code> 被警告</li><li>注意されます [6]：<code>ます形</code> 被警告</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;あまいもの [0]：&lt;code&gt;名&lt;/code&gt; 甜食。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>命令する</title>
-    <link href="https://yabai.tw/nihonngo/vocabulary/me/meireisuru/"/>
-    <id>https://yabai.tw/nihonngo/vocabulary/me/meireisuru/</id>
-    <published>2024-02-12T12:52:13.000Z</published>
-    <updated>2024-02-12T12:52:52.403Z</updated>
-    
-    <content type="html"><![CDATA[<p>めいれいする [0]：<code>動III</code> <code>他動</code> 命令。</p><a id="more"></a><h2 id="動詞活用"><a href="#動詞活用" class="headerlink" title="動詞活用"></a>動詞活用</h2><ul><li>ます形：命令します [6]</li><li>辞書形：命令する [0]</li><li>ない形：命令しない [0]</li><li>て形：命令して [0]</li><li>た形：命令した [0]</li><li>可能形：命令できる [0]</li><li>意向形：命令しよう [6]</li><li>命令形：命令しろ [0]</li><li>禁止形：命令するな [0]</li><li>条件形：命令すれば [0]</li><li>受身形：命令される [0]</li><li>使役形：命令させる [0]</li><li>使役受身形：命令させられる [0]</li></ul><h2 id="文体"><a href="#文体" class="headerlink" title="文体"></a>文体</h2><ul><li>丁寧形現在肯定：命令します</li><li>丁寧形現在否定：命令しません</li><li>丁寧形過去肯定：命令しました</li><li>丁寧形過去否定：命令しませんでした</li><li>普通形現在肯定：命令する</li><li>普通形現在否定：命令しない</li><li>普通形過去肯定：命令した</li><li>普通形過去否定：命令しなかった</li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>先生はのび太に宿題をするように命令しました。</code></p><p>老師命令大雄要寫作業。</p><ul><li>先生(せんせい) [3]：<code>名</code> 先生</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>のび太(た) [0]：<code>名</code> 大雄</li><li>に：<code>格助</code> 表 <code>動作對象</code></li><li>宿題(しゅくだい) [0]：<code>名</code> 作業</li><li>を：<code>格助</code> 接受 <code>する</code> 的 <code>賓語</code></li><li>する [0]：<code>動III</code> <code>自他</code> <code>辞書形</code> 做<ul><li>するように [3]：<code>指示</code> 要做</li></ul></li><li>命令(めいれい)する [0]：<code>動III</code> <code>他動</code> <code>辞書形</code> 命令<ul><li>命令します [6]：<code>ます形</code> 命令</li><li>命令しました [6]：<code>た形</code> 命令了</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;めいれいする [0]：&lt;code&gt;動III&lt;/code&gt; &lt;code&gt;他動&lt;/code&gt; 命令。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="動詞III" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EIII/"/>
-    
-    <category term="他動" scheme="https://yabai.tw/tags/%E4%BB%96%E5%8B%95/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>間違い</title>
-    <link href="https://yabai.tw/nihonngo/vocabulary/ma/machigai/"/>
-    <id>https://yabai.tw/nihonngo/vocabulary/ma/machigai/</id>
-    <published>2024-02-12T12:45:46.000Z</published>
-    <updated>2024-02-12T12:46:31.095Z</updated>
-    
-    <content type="html"><![CDATA[<p>まちがい [3]：<code>名</code> 錯誤。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>間違いを直す。</code></p><p>改正錯誤。</p><ul><li>間違(まちが)い [3]：<code>名</code> 錯誤</li><li>を：<code>格助</code> 接受 <code>直す</code> 的 <code>賓語</code></li><li>直(なお)す [2]：<code>動I</code> <code>他動</code> 改正</li></ul><p><code>今回のテストは間違いだらけだ。</code></p><p>這次考試錯誤百出。</p><ul><li>今回(こんかい) [1]：<code>名</code> 這次</li><li>の：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>テスト [1]：<code>名</code> test、考試</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>間違(まちが)い [3]：<code>名</code> 錯誤<ul><li>間違いだらけ [3]：<code>都是</code> 都是錯誤</li></ul></li><li>だ：<code>助動</code> 是</li></ul><p><code>間違いじゃないよ。</code></p><p>並沒有錯啊！</p><ul><li>間違い [3]：<code>名</code> 錯誤<ul><li>間違いじゃない [4]：<code>名</code> 不是錯誤</li></ul></li><li>よ：<code>終助</code> 表 <code>告知</code></li></ul><p><code>間違いがないかどうか調べてください。</code></p><p>請查一下是否有錯。</p><ul><li>間違い [3]：<code>名</code> 錯誤</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>ある [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 有<ul><li>ない [1]：<code>ない形</code> 沒有</li></ul></li><li>かどうか [2]：<code>接</code> 是否</li><li>を：<code>格助</code> 接受 <code>調べる</code> 的 <code>賓語</code></li><li>調(しら)べる [3]：<code>動II</code> <code>他動</code> <code>辞書形</code> 調查<ul><li>調べて [2]：<code>て形</code> 調查</li><li>調べてください [2]：<code>請託</code> 請調查</li></ul></li></ul><p><code>日付お間違いないようお伝えください。</code></p><p>請轉告他不要搞錯日期。</p><ul><li>日付(ひづけ) [0]：<code>名</code> 日期</li><li>お：<code>接頭</code> 美化</li><li>間違(まちが)い [3]：<code>名</code> 錯誤</li><li>ある [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 有<ul><li>ない [1]：<code>ない形</code> 沒有</li><li>ないように [3]：<code>指示</code> 不要搞錯</li></ul></li><li>伝(つた)える [0]：<code>動II</code> <code>他動</code> <code>辞書形</code> 轉告<ul><li>伝えます [4]：<code>ます形</code> 轉告</li><li>お伝えください [0]：<code>尊敬語請託</code> 請傳</li></ul></li></ul><p>A：<code>誰？</code></p><p>B：<code>間違い電話だった。</code></p><p>Ａ：是誰？</p><p>B：打錯電話了。</p><ul><li>誰(だれ) [1]：<code>代</code> 誰</li><li>間違い [3]：<code>名</code> 錯誤</li><li>電話(でんわ) [0]：<code>名</code> 電話</li><li>だ：<code>助動</code> 是<ul><li>だった [1]：<code>た形</code> 是</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;まちがい [3]：&lt;code&gt;名&lt;/code&gt; 錯誤。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>日付</title>
-    <link href="https://yabai.tw/nihonngo/vocabulary/hi/hiduke/"/>
-    <id>https://yabai.tw/nihonngo/vocabulary/hi/hiduke/</id>
-    <published>2024-02-12T12:34:18.000Z</published>
-    <updated>2024-02-12T12:37:19.073Z</updated>
-    
-    <content type="html"><![CDATA[<p>ひづけ [0]：<code>名</code> 日期。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>日付お間違いないようお伝えください。</code></p><p>請轉告他不要搞錯日期。</p><ul><li>日付(ひづけ) [0]：<code>名</code> 日期</li><li>お：<code>接頭</code> 美化</li><li>間違(まちが)い [3]：<code>名</code> 錯誤</li><li>ある [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 有<ul><li>ない [1]：<code>ない形</code> 沒有</li><li>ないように [3]：<code>指示</code> 不要搞錯</li></ul></li><li>伝(つた)える [0]：<code>動II</code> <code>他動</code> <code>辞書形</code> 轉告<ul><li>伝えます [4]：<code>ます形</code> 轉告</li><li>お伝えください [0]：<code>尊敬語請託</code> 請傳</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;ひづけ [0]：&lt;code&gt;名&lt;/code&gt; 日期。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
     
   </entry>
   
