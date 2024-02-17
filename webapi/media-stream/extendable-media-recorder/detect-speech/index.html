@@ -30,7 +30,7 @@
 <meta name="viewport"
   content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <!-- Title -->
-<title>從麥克風每次取得固定 SIZE 的 PCM 格式檔案 | 點燈坊</title>
+<title>使用 AnalyserNode 偵測是否在講話 | 點燈坊</title>
 <!-- favicon -->
 <!-- Favicons -->
 
@@ -51,7 +51,7 @@
 
 <meta name="format-detection" content="telephone=no">
 <!-- Description -->
-<meta name="description" content="Web API 內建的 MediaRecorder 並無法將麥克風的聲音儲存成 PCM 格式檔案，而 extendable-media-recorder 提供與 MediaRecorder 相同的 interface，但可支援 PCM 格式，透過精確控制 start() 的時間，可取得固定 Size 的 Chunk。">
+<meta name="description" content="透過 Audio API 的  analyser，我們可取得聲音在頻域的平均值，可設定 threshold 判斷是否為 人聲。">
 <!-- Keywords -->
 <meta name="keywords" content=", Web API">
 <!-- Disable Fucking Bloody Baidu Tranformation -->
@@ -165,18 +165,18 @@ a:hover {
 <!-- Open Search -->
 
   <!-- ### The Open Graph & Twitter Card Protocol ### -->
-  <meta property="og:title" content="從麥克風每次取得固定 SIZE 的 PCM 格式檔案 | 點燈坊">
+  <meta property="og:title" content="使用 AnalyserNode 偵測是否在講話 | 點燈坊">
 <meta property="og:site_name" content="點燈坊">
 
-<meta property="og:url" content="https://yabai.tw/webapi/media-stream/fixedsize-chunk/">
+<meta property="og:url" content="https://yabai.tw/webapi/media-stream/extendable-media-recorder/detect-speech/">
 <meta property="og:image"
 	content="https://yabai.tw/apple-touch-icon.png">
-<meta property="og:description" content="Web API 內建的 MediaRecorder 並無法將麥克風的聲音儲存成 PCM 格式檔案，而 extendable-media-recorder 提供與 MediaRecorder 相同的 interface，但可支援 PCM 格式，透過精確控制 start() 的時間，可取得固定 Size 的 Chunk。">
+<meta property="og:description" content="透過 Audio API 的  analyser，我們可取得聲音在頻域的平均值，可設定 threshold 判斷是否為 人聲。">
 <meta name="twitter:card" content="summary">
 
 <meta property="og:type" content="article">
-<meta property="article:published_time" content="2024-02-09T04:26:23.000Z">
-<meta property="article:modified_time" content="2024-02-09T04:26:23.000Z">
+<meta property="article:published_time" content="2024-02-09T12:02:35.000Z">
+<meta property="article:modified_time" content="2024-02-09T12:02:35.000Z">
 <meta property="article:author" content="Sam Xiao">
 <meta property="og:article:tag" content=", Web API">
 
@@ -189,29 +189,29 @@ a:hover {
 
 
   <!-- ### Canonical link ### -->
-  <link rel="canonical" href="https://yabai.tw/webapi/media-stream/fixedsize-chunk/">
+  <link rel="canonical" href="https://yabai.tw/webapi/media-stream/extendable-media-recorder/detect-speech/">
   <!-- ### Structured Data ### -->
   
 
 <script type="application/ld+json">
 {
     "@context": "http://schema.org",
-    "url": "https://yabai.tw/webapi/media-stream/fixedsize-chunk/",
+    "url": "https://yabai.tw/webapi/media-stream/extendable-media-recorder/detect-speech/",
     "@type": "BlogPosting",
     "logo": "https://yabai.tw/apple-touch-icon.png",
     "mainEntityOfPage": {
         "@type": "WebPage",
-        "@id": "https://yabai.tw/webapi/media-stream/fixedsize-chunk/"
+        "@id": "https://yabai.tw/webapi/media-stream/extendable-media-recorder/detect-speech/"
     },
-    "headline": "從麥克風每次取得固定 SIZE 的 PCM 格式檔案 | 點燈坊",
+    "headline": "使用 AnalyserNode 偵測是否在講話 | 點燈坊",
     
     "image": {
         "@type": "ImageObject",
         "url": "https://yabai.tw/apple-touch-icon.png"
     },
     
-    "datePublished": "2024-02-09T04:26:23.000Z",
-    "dateModified": "2024-02-09T12:29:17.108Z",
+    "datePublished": "2024-02-09T12:02:35.000Z",
+    "dateModified": "2024-02-17T09:18:06.853Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -237,7 +237,7 @@ a:hover {
     },
     
     "keywords": ", Web API",
-    "description": "Web API 內建的 MediaRecorder 並無法將麥克風的聲音儲存成 PCM 格式檔案，而 extendable-media-recorder 提供與 MediaRecorder 相同的 interface，但可支援 PCM 格式，透過精確控制 start() 的時間，可取得固定 Size 的 Chunk。"
+    "description": "透過 Audio API 的  analyser，我們可取得聲音在頻域的平均值，可設定 threshold 判斷是否為 人聲。"
 }
 </script>
 
@@ -425,7 +425,7 @@ a:hover {
       <div class="card-inner-cell">
         <div class="card-header">
           
-<h1 class="card-title h3 mb-2">從麥克風每次取得固定 SIZE 的 PCM 格式檔案</h1>
+<h1 class="card-title h3 mb-2">使用 AnalyserNode 偵測是否在講話</h1>
 
 
 <div class="post-header-info">
@@ -437,10 +437,10 @@ a:hover {
         </div>
         <div class="card-body">
           <article id="post-content">
-            <p>Web API 內建的 <code>MediaRecorder</code> 並無法將麥克風的聲音儲存成 <code>PCM</code> 格式檔案，而 <code>extendable-media-recorder</code> 提供與 <code>MediaRecorder</code> 相同的 interface，但可支援 <code>PCM</code> 格式，透過精確控制 <code>start()</code> 的時間，可取得固定 Size 的 Chunk。</p>
+            <p>透過 Audio API 的  <code>analyser</code>，我們可取得聲音在頻域的平均值，可設定 <code>threshold</code> 判斷是否為 <code>人聲</code>。</p>
 <a id="more"></a>
 
-<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.3<br>extendable-media-recorder 9.1.6<br>extendable-media-recorder-wav-encoder 7.0.101</p>
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.4<br>extendable-media-recorder 9.1.7<br>extendable-media-recorder-wav-encoder 7.0.102</p>
 <h2 id="Install-Package"><a href="#Install-Package" class="headerlink" title="Install Package"></a>Install Package</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ npm install extendable-media-recorder
 $ npm install extendable-media-recorder-wav-encoder
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
@@ -448,14 +448,14 @@ $ npm install extendable-media-recorder-wav-encoder
 <li><code>extendable-media-recorder</code>：提供與原生 <code>MediaRecorder</code> 相同 interface 的新 <code>MediaRecorder</code></li>
 <li><code>extendable-media-recorder-wav-encoder</code>：支援 <code>WAV</code> 格式</li>
 </ul>
-<h2 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h2><p><img src="/images/webapi/media-stream/fixedsize-chunk/pcm001.svg" alt="pcm001"></p>
+<h2 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h2><p><img src="/images/webapi/media-stream/extendable-media-recorder/detect-speech/speech001.svg" alt="speech001"></p>
 <ul>
 <li><code>MediaStream</code>： 從麥克風取得 stream</li>
 <li><code>AudioContext</code>： 產生 16 bit stream</li>
-<li>由 <code>AudioContext</code> 產生 <code>SrcNode</code> 與 <code>DestNode</code>，需使用 <code>connect()</code> 將各 node 連結在一起</li>
-<li><code>MediaRecorder</code>：將 <code>WebM</code> 轉 <code>PCM</code></li>
+<li>由 <code>AudioContext</code> 產生 <code>SrcNode</code>、<code>AnalyserNode</code> 與 <code>DestNode</code>，需使用 <code>connect()</code> 將各 node 連結在一起</li>
+<li><code>AnalyserNode</code>：轉頻域</li>
 </ul>
-<h2 id="Extendable-Media-Recorder"><a href="#Extendable-Media-Recorder" class="headerlink" title="Extendable Media Recorder"></a>Extendable Media Recorder</h2><p><strong>main.js</strong></p>
+<h2 id="Speech-Detection"><a href="#Speech-Detection" class="headerlink" title="Speech Detection"></a>Speech Detection</h2><p><strong>main.js</strong></p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> createApp <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 <span class="token keyword">import</span> App <span class="token keyword">from</span> <span class="token string">'./App.vue'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> register <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'extendable-media-recorder'</span>
@@ -474,52 +474,59 @@ $ npm install extendable-media-recorder-wav-encoder
 </ul>
 <p><strong>App.vue</strong></p>
 <pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onStart<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Start<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onStop<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Stop<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>Speech Detection Demo<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onStart<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Start<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onStop<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Stop<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    Threshold：
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">v-model.number</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>threshold<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>avgVolume: {{ avgVolume }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>isSpeaking: {{ isSpeaking }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
 
 <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
 <span class="token keyword">import</span> <span class="token punctuation">{</span> MediaRecorder <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'extendable-media-recorder'</span>
 
 <span class="token keyword">const</span> SAMPLE_RATE <span class="token operator">=</span> <span class="token number">16000</span>
-<span class="token keyword">const</span> CHANNEL_COUNT <span class="token operator">=</span> <span class="token number">1</span>
-<span class="token keyword">const</span> SAMPLE_INTERVAL <span class="token operator">=</span> <span class="token number">250</span>
-<span class="token keyword">const</span> CHUNK_SIZE <span class="token operator">=</span> <span class="token number">16000</span>
-<span class="token keyword">const</span> FILE_NAME <span class="token operator">=</span> <span class="token string">'sample.pcm'</span>
+<span class="token keyword">const</span> SAMPLE_INTERVAL <span class="token operator">=</span> <span class="token number">250</span> <span class="token comment" spellcheck="true">// 0.5s</span>
+
+<span class="token keyword">let</span> threshold <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> avgVolume <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> isSpeaking <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span>
 
 <span class="token keyword">let</span> mediaRecorder <span class="token operator">=</span> <span class="token keyword">null</span>
 
 <span class="token keyword">let</span> onStart <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
   <span class="token keyword">try</span> <span class="token punctuation">{</span>
-    <span class="token keyword">let</span> mediaStream <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>mediaDevices<span class="token punctuation">.</span><span class="token function">getUserMedia</span><span class="token punctuation">(</span><span class="token punctuation">{</span> audio<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">let</span> mediaStream <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>mediaDevices<span class="token punctuation">.</span><span class="token function">getUserMedia</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      audio<span class="token punctuation">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
     <span class="token keyword">let</span> audioContext <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AudioContext</span><span class="token punctuation">(</span><span class="token punctuation">{</span> sampleRate<span class="token punctuation">:</span> SAMPLE_RATE <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">let</span> analyserNode <span class="token operator">=</span> audioContext<span class="token punctuation">.</span><span class="token function">createAnalyser</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+    analyserNode<span class="token punctuation">.</span>fftSize <span class="token operator">=</span> <span class="token number">256</span>
 
     <span class="token keyword">let</span> srcNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MediaStreamAudioSourceNode</span><span class="token punctuation">(</span>audioContext<span class="token punctuation">,</span> <span class="token punctuation">{</span> mediaStream <span class="token punctuation">}</span><span class="token punctuation">)</span>
-    <span class="token keyword">let</span> destNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MediaStreamAudioDestinationNode</span><span class="token punctuation">(</span>audioContext<span class="token punctuation">,</span> <span class="token punctuation">{</span>
-      channelCount<span class="token punctuation">:</span> CHANNEL_COUNT<span class="token punctuation">,</span>
-    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">let</span> destNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MediaStreamAudioDestinationNode</span><span class="token punctuation">(</span>audioContext<span class="token punctuation">)</span>
 
-    srcNode<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span>destNode<span class="token punctuation">)</span>
+    srcNode<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span>analyserNode<span class="token punctuation">)</span>
+    analyserNode<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span>destNode<span class="token punctuation">)</span>
 
     mediaRecorder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MediaRecorder</span><span class="token punctuation">(</span>destNode<span class="token punctuation">.</span>stream<span class="token punctuation">,</span> <span class="token punctuation">{</span>
-      mimeType<span class="token punctuation">:</span> <span class="token string">'audio/wav'</span><span class="token punctuation">,</span>
+      mimeType<span class="token punctuation">:</span> <span class="token string">'audio/wav'</span>
     <span class="token punctuation">}</span><span class="token punctuation">)</span>
 
-    mediaRecorder<span class="token punctuation">.</span>ondataavailable <span class="token operator">=</span> e <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-      <span class="token keyword">let</span> size <span class="token operator">=</span> e<span class="token punctuation">.</span>data<span class="token punctuation">.</span>size
-      <span class="token keyword">let</span> chunk <span class="token operator">=</span> e<span class="token punctuation">.</span>data
+    mediaRecorder<span class="token punctuation">.</span>ondataavailable <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      <span class="token keyword">let</span> bufferLength <span class="token operator">=</span> analyserNode<span class="token punctuation">.</span>frequencyBinCount
+      <span class="token keyword">let</span> bufferArray <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Uint8Array</span><span class="token punctuation">(</span>bufferLength<span class="token punctuation">)</span>
+      analyserNode<span class="token punctuation">.</span><span class="token function">getByteFrequencyData</span><span class="token punctuation">(</span>bufferArray<span class="token punctuation">)</span>
 
-      <span class="token keyword">if</span> <span class="token punctuation">(</span>size <span class="token operator">===</span> CHUNK_SIZE<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">let</span> blob <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Blob</span><span class="token punctuation">(</span><span class="token punctuation">[</span>chunk<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-        <span class="token keyword">let</span> link <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span>
-        link<span class="token punctuation">.</span>href <span class="token operator">=</span> URL<span class="token punctuation">.</span><span class="token function">createObjectURL</span><span class="token punctuation">(</span>blob<span class="token punctuation">)</span>
-        link<span class="token punctuation">.</span>download <span class="token operator">=</span> FILE_NAME
-        link<span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-        URL<span class="token punctuation">.</span><span class="token function">revokeObjectURL</span><span class="token punctuation">(</span>link<span class="token punctuation">.</span>href<span class="token punctuation">)</span>
-      <span class="token punctuation">}</span>
+      avgVolume<span class="token punctuation">.</span>value <span class="token operator">=</span> bufferArray<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>sum<span class="token punctuation">,</span> value<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> sum <span class="token operator">+</span> value<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">/</span> bufferLength
+      isSpeaking<span class="token punctuation">.</span>value <span class="token operator">=</span> avgVolume<span class="token punctuation">.</span>value <span class="token operator">></span> threshold<span class="token punctuation">.</span>value
     <span class="token punctuation">}</span>
 
     mediaRecorder<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span>SAMPLE_INTERVAL<span class="token punctuation">)</span>
@@ -532,73 +539,78 @@ $ npm install extendable-media-recorder-wav-encoder
   mediaRecorder<span class="token punctuation">.</span><span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">}</span>
 </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p><strong>Line 9</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> MediaRecorder <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'extendable-media-recorder'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
-<ul>
-<li>使用 <code>extendable-media-recorder</code> 所提供的 <code>MediaRecorder</code> 取代 Web API 內建的 <code>MediaRecorder</code></li>
-</ul>
-<p><strong>Line 12</strong></p>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>Line 19</strong></p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">const</span> SAMPLE_RATE <span class="token operator">=</span> <span class="token number">16000</span>
-<span class="token keyword">const</span> CHANNEL_COUNT <span class="token operator">=</span> <span class="token number">1</span>
-<span class="token keyword">const</span> SAMPLE_INTERVAL <span class="token operator">=</span> <span class="token number">250</span>
-<span class="token keyword">const</span> CHUNK_SIZE <span class="token operator">=</span> <span class="token number">16000</span>
-<span class="token keyword">const</span> FILE_NAME <span class="token operator">=</span> <span class="token string">'sample.pcm'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span class="token keyword">const</span> SAMPLE_INTERVAL <span class="token operator">=</span> <span class="token number">250</span> <span class="token comment" spellcheck="true">// 0.5s</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <p>設定可改用的變數：</p>
 <ul>
 <li><code>SAMPLE_RATE</code>：取樣頻率</li>
-<li><code>CHANNEL_COUNT</code>：Mono channel</li>
 <li><code>SAMPLE_INTERVAL</code>：每次取樣時間</li>
-<li><code>CHUNK_SIZE</code>：每次取樣的 size</li>
-<li><code>FILE_NAME</code>：下載檔名</li>
 </ul>
-<p><strong>Line 19</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> mediaStream <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>mediaDevices<span class="token punctuation">.</span><span class="token function">getUserMedia</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  audio<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<p><strong>Line 22</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> threshold <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">40</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> avgVolume <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> isSpeaking <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>threshold</code> state：設定判斷聲音大小的 threshold 值</li>
+<li><code>avgVolume</code> state：顯示目前平均聲音值</li>
+<li><code>isSpeaking</code> state：顯示目前是否在說話</li>
+</ul>
+<p><strong>Line 30</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> mediaStream <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>mediaDevices<span class="token punctuation">.</span><span class="token function">getUserMedia</span><span class="token punctuation">(</span><span class="token punctuation">{</span> audio<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <ul>
 <li>使用 Web API 內建的 <code>navigator.mediaDevices.getUserMedia()</code> 取得 <code>MediaStream</code></li>
 </ul>
-<p><strong>Line 21</strong></p>
+<p><strong>Line 34</strong></p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> audioContext <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AudioContext</span><span class="token punctuation">(</span><span class="token punctuation">{</span> sampleRate<span class="token punctuation">:</span> SAMPLE_RATE <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <ul>
 <li>要改變取樣頻率，必須使用 <code>AudioContext</code></li>
 </ul>
-<p><strong>Line 23</strong></p>
+<p><strong>Line 35</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> analyserNode <span class="token operator">=</span> audioContext<span class="token punctuation">.</span><span class="token function">createAnalyser</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+analyserNode<span class="token punctuation">.</span>fftSize <span class="token operator">=</span> <span class="token number">256</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li><code>AudioConext</code> 必須靠 <code>node</code> 方式運行</li>
+<li>由 <code>AudioContext</code> 建立 <code>analyserNode</code>，將由此 node 轉頻域</li>
+<li>設計其 <code>ffSize</code> 為 <code>256</code></li>
+</ul>
+<p><strong>Line 38</strong></p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> srcNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MediaStreamAudioSourceNode</span><span class="token punctuation">(</span>audioContext<span class="token punctuation">,</span> <span class="token punctuation">{</span> mediaStream <span class="token punctuation">}</span><span class="token punctuation">)</span>
 <span class="token keyword">let</span> destNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MediaStreamAudioDestinationNode</span><span class="token punctuation">(</span>audioContext<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
-<li><code>AudioConext</code> 必須靠 <code>node</code> 方式運行</li>
-<li>由 <code>AudioContext</code> 與 <code>MediaStream</code> 建立 <code>srcNode</code></li>
-<li>由 <code>AudioContext</code> 建立 <code>destNode</code></li>
+<li><p>由 <code>AudioContext</code> 與 <code>MediaStream</code> 建立 <code>srcNode</code></p>
+</li>
+<li><p>由 <code>AudioContext</code> 建立 <code>destNode</code></p>
+</li>
 </ul>
-<p><strong>Line 28</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">srcNode<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span>destNode<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><strong>Line 41</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">srcNode<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span>analyserNode<span class="token punctuation">)</span>
+analyserNode<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span>destNode<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
 <ul>
-<li>使用 <code>connect()</code> 連結 <code>srcNode</code> 與 <code>destNode</code></li>
+<li>使用 <code>connect()</code> 連接各 node</li>
 </ul>
-<p><strong>Line 30</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">mediaRecorder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MediaRecorder</span><span class="token punctuation">(</span>destNode<span class="token punctuation">.</span>stream<span class="token punctuation">,</span> <span class="token punctuation">{</span>
-  mimeType<span class="token punctuation">:</span> <span class="token string">'audio/wav'</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><strong>Line 44</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">mediaRecorder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MediaRecorder</span><span class="token punctuation">(</span>destNode<span class="token punctuation">.</span>stream<span class="token punctuation">,</span> <span class="token punctuation">{</span> mimeType<span class="token punctuation">:</span> <span class="token string">'audio/wav'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <ul>
 <li>使用 <code>extendable-media-recorder</code> 提供的 <code>MediaRecorder</code>，並改由 <code>destNode</code> 所處理過的 <code>MediaStream </code></li>
 <li>指定 <code>mineType</code> 為 <code>audio/wav</code></li>
 </ul>
-<p><strong>Line 50</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">mediaRecorder<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span>SAMPLE_RATE<span class="token punctuation">)</span>
+<p><strong>Line 60</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">mediaRecorder<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span>SAMPLE_INTERVAL<span class="token punctuation">)</span>
 <span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
 <ul>
-<li>只要精準設定 <code>SAMPLE_RATE</code> 時間，則每次 <code>dataavailable</code> event 被觸發時，都可取得固定 size 的 chunk</li>
+<li>只要設定 <code>SAMPLE_INTERVAL</code> 時間，則每次 <code>dataavailable</code> event 都會被精準觸發</li>
 </ul>
-<p><strong>Line 56</strong></p>
+<p><strong>Line 66</strong></p>
 <pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onStop <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
   mediaRecorder<span class="token punctuation">.</span><span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
 <span class="token punctuation">}</span>
@@ -606,33 +618,25 @@ $ npm install extendable-media-recorder-wav-encoder
 <ul>
 <li>啟動 <code>MediaRecoder</code> 開始錄音</li>
 </ul>
-<p><strong>Line 34</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">mediaRecorder<span class="token punctuation">.</span>ondataavailable <span class="token operator">=</span> e <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> size <span class="token operator">=</span> e<span class="token punctuation">.</span>data<span class="token punctuation">.</span>size
-  <span class="token keyword">let</span> chunk <span class="token operator">=</span> e<span class="token punctuation">.</span>data
+<p><strong>Line 48</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">mediaRecorder<span class="token punctuation">.</span>ondataavailable <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> bufferLength <span class="token operator">=</span> analyserNode<span class="token punctuation">.</span>frequencyBinCount
+  <span class="token keyword">let</span> bufferArray <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Uint8Array</span><span class="token punctuation">(</span>bufferLength<span class="token punctuation">)</span>
+  analyserNode<span class="token punctuation">.</span><span class="token function">getByteFrequencyData</span><span class="token punctuation">(</span>bufferArray<span class="token punctuation">)</span>
 
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>size <span class="token operator">===</span> CHUNK_SIZE<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">let</span> blob <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Blob</span><span class="token punctuation">(</span><span class="token punctuation">[</span>chunk<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-    <span class="token keyword">let</span> link <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span>
-    link<span class="token punctuation">.</span>href <span class="token operator">=</span> URL<span class="token punctuation">.</span><span class="token function">createObjectURL</span><span class="token punctuation">(</span>blob<span class="token punctuation">)</span>
-    link<span class="token punctuation">.</span>download <span class="token operator">=</span> FILE_NAME
-    link<span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-    URL<span class="token punctuation">.</span><span class="token function">revokeObjectURL</span><span class="token punctuation">(</span>link<span class="token punctuation">.</span>href<span class="token punctuation">)</span>
-  <span class="token punctuation">}</span>
+  avgVolume<span class="token punctuation">.</span>value <span class="token operator">=</span> bufferArray<span class="token punctuation">.</span><span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>sum<span class="token punctuation">,</span> value<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> sum <span class="token operator">+</span> value<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token operator">/</span> bufferLength
+  isSpeaking<span class="token punctuation">.</span>value <span class="token operator">=</span> avgVolume<span class="token punctuation">.</span>value <span class="token operator">></span> threshold<span class="token punctuation">.</span>value
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
-<li>觸發 <code>dataavaliable</code> event 取得音訊</li>
-<li>e.data：取得音訊 array</li>
-<li>e.data.size：取得 音訊 array 的大小</li>
-<li>每次 <code>dataavaliable</code> event 都將 chunk 存檔或傳進 API</li>
+<li>由 <code>analyserNode</code> 的 <code>frequencyBinCount()</code> 與 <code>getByteFrequencyData()</code> 取得頻域資料 Array</li>
+<li>由 Array 資料計算其頻域聲音平均值</li>
+<li>若平均大於 <code>threshold</code> 則為 <code>人聲</code></li>
 </ul>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
-<li>只要精準設定 <code>period</code> 時間，則每次 <code>dataavailable</code> event 被觸發時，都可取得固定 size 的 chunk</li>
-<li>實務發現只有第一次觸發 <code>dataavailable</code> event 時，chunk size 不太準，但之後都很精準，因此可在 <code>dataavailable</code> event 內多一次檢查</li>
+<li>Analyser 為 Audio API 一部分，不必另外安裝其他套件</li>
 </ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/AnalyserNode/getByteFrequencyData" target="_blank" rel="noopener">AnalyserNode getByteFrequencyData() method</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">
@@ -652,18 +656,18 @@ $ npm install extendable-media-recorder-wav-encoder
 		<!-- Prev Nav -->
 		
 		<li class="page-item page-prev">
-			<a href="/webapi/media-stream/extendable-media-recorder/pcm/">
+			<a href="/nihonngo/grammar/adverb/yo/youni/youni10/">
 				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">從麥克風取得 PCM 格式檔案</div>
+				<div class="page-item-subtitle">Vる ように (希望)</div>
 			</a>
 		</li>
 		
 		<!-- Next Nav -->
 		
 		<li class="page-item page-next">
-			<a href="/webapi/media-stream/audio-api/wav/">
+			<a href="/webapi/media-stream/extendable-media-recorder/wav/">
 				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
-				<div class="page-item-subtitle">從麥克風取得 WAV 格式檔案 (ScriptProcessor)</div>
+				<div class="page-item-subtitle">從麥克風取得 WAV 格式檔案</div>
 			</a>
 		</li>
 		
