@@ -6,7 +6,7 @@
   <link href="https://yabai.tw/atom.xml" rel="self"/>
   
   <link href="https://yabai.tw/"/>
-  <updated>2024-04-21T14:45:24.892Z</updated>
+  <updated>2024-04-23T15:37:09.135Z</updated>
   <id>https://yabai.tw/</id>
   
   <author>
@@ -15,6 +15,358 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>如何將 Object Array 轉 CSV 並下載 ?</title>
+    <link href="https://yabai.tw/ecmascript/cookbook/function/convert-to-csv/"/>
+    <id>https://yabai.tw/ecmascript/cookbook/function/convert-to-csv/</id>
+    <published>2024-04-23T15:35:52.000Z</published>
+    <updated>2024-04-23T15:37:09.135Z</updated>
+    
+    <content type="html"><![CDATA[<p>雖然可以從 Server 端直接處理 CSV 下載，但若 CSV 內必須處理多國語言，則必須將 Object Array 先下載到 Browser，然後再轉成 CSV 下載。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>ECMAScript 2015</p><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token doctype">&lt;!doctype html></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>html</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>en<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>head</span><span class="token punctuation">></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">charset</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>UTF-8<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>meta</span> <span class="token attr-name">name</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>viewport<span class="token punctuation">"</span></span> <span class="token attr-name">content</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>width<span class="token punctuation">=</span>device-width, initial-scale<span class="token punctuation">=</span>1.0<span class="token punctuation">"</span></span> <span class="token punctuation">/></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>title</span><span class="token punctuation">></span></span>HTML Lab<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>title</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>head</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">></span></span>    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>download-csv<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Download CSV<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>body</span><span class="token punctuation">></span></span>  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">    <span class="token keyword">let</span> covertToCSV <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>      <span class="token keyword">let</span> headers <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>arr<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>      <span class="token keyword">let</span> rows <span class="token operator">=</span> arr<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>item <span class="token operator">=</span><span class="token operator">></span> headers<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>header <span class="token operator">=</span><span class="token operator">></span> item<span class="token punctuation">[</span>header<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>      <span class="token keyword">let</span> headerRow <span class="token operator">=</span> headers<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span>      <span class="token keyword">let</span> csvRows <span class="token operator">=</span> <span class="token punctuation">[</span>headerRow<span class="token punctuation">,</span> <span class="token operator">...</span>rows<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>row <span class="token operator">=</span><span class="token operator">></span> row<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span>      <span class="token keyword">return</span> csvRows<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">)</span>    <span class="token punctuation">}</span>    <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>      <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'John'</span><span class="token punctuation">,</span> age<span class="token punctuation">:</span> <span class="token number">24</span><span class="token punctuation">,</span> city<span class="token punctuation">:</span> <span class="token string">'紐約'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>      <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Jane'</span><span class="token punctuation">,</span> age<span class="token punctuation">:</span> <span class="token number">23</span><span class="token punctuation">,</span> city<span class="token punctuation">:</span> <span class="token string">'芝加哥'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>      <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Jim'</span><span class="token punctuation">,</span> age<span class="token punctuation">:</span> <span class="token number">25</span><span class="token punctuation">,</span> city<span class="token punctuation">:</span> <span class="token string">'洛杉磯'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>    <span class="token punctuation">]</span>    <span class="token keyword">let</span> downloadCSV <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">querySelector</span><span class="token punctuation">(</span><span class="token string">'#download-csv'</span><span class="token punctuation">)</span>    downloadCSV<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'click'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>      <span class="token keyword">let</span> csv <span class="token operator">=</span> <span class="token function">covertToCSV</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span>      <span class="token keyword">let</span> blobUrl <span class="token operator">=</span> URL<span class="token punctuation">.</span><span class="token function">createObjectURL</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Blob</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'\uFEFF'</span> <span class="token operator">+</span> csv<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>      <span class="token keyword">let</span> anchor <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span>      anchor<span class="token punctuation">.</span>href <span class="token operator">=</span> blobUrl      anchor<span class="token punctuation">.</span>target <span class="token operator">=</span> <span class="token string">'_blank'</span>      anchor<span class="token punctuation">.</span>download <span class="token operator">=</span> <span class="token string">'export_data.csv'</span>      anchor<span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token punctuation">)</span>    <span class="token punctuation">}</span><span class="token punctuation">)</span>  </span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>html</span><span class="token punctuation">></span></span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><strong>Line 21</strong></p><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>  <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'John'</span><span class="token punctuation">,</span> age<span class="token punctuation">:</span> <span class="token number">24</span><span class="token punctuation">,</span> city<span class="token punctuation">:</span> <span class="token string">'紐約'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>  <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Jane'</span><span class="token punctuation">,</span> age<span class="token punctuation">:</span> <span class="token number">23</span><span class="token punctuation">,</span> city<span class="token punctuation">:</span> <span class="token string">'芝加哥'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>  <span class="token punctuation">{</span> name<span class="token punctuation">:</span> <span class="token string">'Jim'</span><span class="token punctuation">,</span> age<span class="token punctuation">:</span> <span class="token number">25</span><span class="token punctuation">,</span> city<span class="token punctuation">:</span> <span class="token string">'洛杉磯'</span> <span class="token punctuation">}</span><span class="token punctuation">,</span><span class="token punctuation">]</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>資料必須是 Object Array 形式，資料可以包含中文</li></ul><p><strong>Line 12</strong></p><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> covertToCSV <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>  <span class="token keyword">let</span> headers <span class="token operator">=</span> Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>arr<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>  <span class="token keyword">let</span> rows <span class="token operator">=</span> arr<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>item <span class="token operator">=</span><span class="token operator">></span> headers<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>header <span class="token operator">=</span><span class="token operator">></span> item<span class="token punctuation">[</span>header<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span>  <span class="token keyword">let</span> headerRow <span class="token operator">=</span> headers<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span>  <span class="token keyword">let</span> csvRows <span class="token operator">=</span> <span class="token punctuation">[</span>headerRow<span class="token punctuation">,</span> <span class="token operator">...</span>rows<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>row <span class="token operator">=</span><span class="token operator">></span> row<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">]</span>  <span class="token keyword">return</span> csvRows<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>將 Object Array 轉成 CSV</li></ul><p><strong>Line 29</strong></p><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> csv <span class="token operator">=</span> <span class="token function">covertToCSV</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token keyword">let</span> blobUrl <span class="token operator">=</span> URL<span class="token punctuation">.</span><span class="token function">createObjectURL</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Blob</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'\uFEFF'</span> <span class="token operator">+</span> csv<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token keyword">let</span> anchor <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span>anchor<span class="token punctuation">.</span>href <span class="token operator">=</span> blobUrlanchor<span class="token punctuation">.</span>target <span class="token operator">=</span> <span class="token string">'_blank'</span>anchor<span class="token punctuation">.</span>download <span class="token operator">=</span> <span class="token string">'export_data.csv'</span>anchor<span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li>將 CSV 自動下載</li></ul><p><strong>Line 31</strong></p><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> blobUrl <span class="token operator">=</span> URL<span class="token punctuation">.</span><span class="token function">createObjectURL</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Blob</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'\uFEFF'</span> <span class="token operator">+</span> csv<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>加入 BOM 讓 Excel 可成功開啟</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>傳統建立 CSV 方法無法結解 Excel 開啟會有亂碼問題，唯有加入 BOM 之後才能解決</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;雖然可以從 Server 端直接處理 CSV 下載，但若 CSV 內必須處理多國語言，則必須將 Object Array 先下載到 Browser，然後再轉成 CSV 下載。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="ECMAScript" scheme="https://yabai.tw/tags/ECMAScript/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>模型</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/mo/mokei/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/mo/mokei/</id>
+    <published>2024-04-23T03:10:22.000Z</published>
+    <updated>2024-04-23T03:10:55.803Z</updated>
+    
+    <content type="html"><![CDATA[<p>もけい [0]：<code>名</code> 模型。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>作り込んだ模型。</code></p><p>製作精美的模型。</p><ul><li>作(つく)る [2]：<code>動I</code> <code>他動</code> <code>辞書形</code> 製作<ul><li>作ります [4]：<code>ます形</code> 製作</li><li>作り込(こ)む [4]：<code>徹底</code> 製作精美</li><li>作り込んだ [4]：<code>た形</code> 製作精美</li></ul></li><li>模型(もけい) [0]：<code>名</code> 模型</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;もけい [0]：&lt;code&gt;名&lt;/code&gt; 模型。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>作り込む</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/tsu/tsukurikomu/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/tsu/tsukurikomu/</id>
+    <published>2024-04-23T02:59:59.000Z</published>
+    <updated>2024-04-23T03:08:08.067Z</updated>
+    
+    <content type="html"><![CDATA[<p>つくりこむ [4]：<code>動I</code> <code>他動</code> 製作精美。</p><a id="more"></a><h2 id="動詞活用"><a href="#動詞活用" class="headerlink" title="動詞活用"></a>動詞活用</h2><ul><li>ます形：作り込みます [6]</li><li>辞書形：作り込む [4]</li><li>ない形：作り込まない [5]</li><li>て形：作り込んで [4]</li><li>た形：作り込んだ [4]</li><li>可能形：作り込まれる [6]</li><li>意向形：作り込もう [5]</li><li>命令形：作り込め [4]</li><li>禁止形：作り込むな [4]</li><li>条件形：作り込まれば [4]</li><li>受身形：作り込まれる [6]</li><li>使役形：作り込ませる [6]</li><li>使役受身形：作り込ませられる [8]、作り込まされる [7]</li></ul><h2 id="文体"><a href="#文体" class="headerlink" title="文体"></a>文体</h2><ul><li>丁寧形現在肯定：作り込みます</li><li>丁寧形現在否定：作り込みません</li><li>丁寧形過去肯定：作り込みました</li><li>丁寧形過去否定：作り込みませんでした</li><li>普通形現在肯定：作り込む</li><li>普通形現在否定：作り込まない</li><li>普通形過去肯定：作り込んだ</li><li>普通形過去否定：作り込まなかった</li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>作り込んだ模型。</code></p><p>製作精美的模型。</p><blockquote><p>徹底地做，衍生為 <code>製作精美</code></p></blockquote><ul><li>作(つく)る [2]：<code>動I</code> <code>他動</code> <code>辞書形</code> 製作<ul><li>作ります [4]：<code>ます形</code> 製作</li><li>作り込(こ)む [4]：<code>徹底</code> 製作精美</li><li>作り込んだ [4]：<code>た形</code> 製作精美</li></ul></li><li>模型(もけい) [0]：<code>名</code> 模型</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;つくりこむ [4]：&lt;code&gt;動I&lt;/code&gt; &lt;code&gt;他動&lt;/code&gt; 製作精美。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="動詞I" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EI/"/>
+    
+    <category term="他動" scheme="https://yabai.tw/tags/%E4%BB%96%E5%8B%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>考え込む</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/ka/kanngaekomu/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/ka/kanngaekomu/</id>
+    <published>2024-04-23T02:20:00.000Z</published>
+    <updated>2024-04-23T02:20:48.215Z</updated>
+    
+    <content type="html"><![CDATA[<p>かんがえこむ [5]：<code>動I</code> <code>自動</code> 深思。 </p><a id="more"></a><h2 id="動詞活用"><a href="#動詞活用" class="headerlink" title="動詞活用"></a>動詞活用</h2><ul><li>ます形：考え込みます [7]</li><li>辞書形：考え込む [5]　</li><li>ない形：考え込まない [6]</li><li>て形：考え込んで [5]</li><li>た形：考え込んだ [5]</li><li>可能形：考え込まれる [7]</li><li>意向形：考え込もう [6]</li><li>命令形：考え込め [5]</li><li>禁止形：考え込むな [5]</li><li>条件形：考え込まれば [5]</li><li>受身形：考え込まれる[7]</li><li>使役形：考え込ませる [7]</li><li>使役受身形：考え込ませられる [9]、考え込まされる [8]</li></ul><h2 id="文体"><a href="#文体" class="headerlink" title="文体"></a>文体</h2><ul><li>丁寧形現在肯定：</li><li>丁寧形現在否定：</li><li>丁寧形過去肯定：</li><li>丁寧形過去否定：</li><li>普通形現在肯定：</li><li>普通形現在否定：</li><li>普通形過去肯定：</li><li>普通形過去否定：</li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>仕事のことで考え込んでしまった。</code></p><p>好好沈思工作的事情。</p><blockquote><p>徹底地思考，衍生為 <code>沈思</code></p></blockquote><ul><li>仕事(しごと) [0]：<code>名</code> 工作</li><li>の：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>こと [0]：<code>名</code> 事情</li><li>で：<code>格助</code> 表 <code>範圍</code></li><li>考(かんが)える [4]：<code>動II</code> <code>他動</code> <code>辞書形</code> 考慮<ul><li>考えます [5]：<code>ます形</code> 考慮</li><li>考え込(こ)む [5]：<code>徹底</code> 深思 </li><li>考え込んで [5]：<code>て形</code> 深思</li><li>考え込んでしまう [5]：<code>極致</code> 好好深思</li><li>考え込んでしまった [5]：<code>た形</code> 好好深思了</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;かんがえこむ [5]：&lt;code&gt;動I&lt;/code&gt; &lt;code&gt;自動&lt;/code&gt; 深思。 &lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="動詞I" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EI/"/>
+    
+    <category term="自動" scheme="https://yabai.tw/tags/%E8%87%AA%E5%8B%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>思い込む</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/o/omoikomu/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/o/omoikomu/</id>
+    <published>2024-04-23T00:10:37.000Z</published>
+    <updated>2024-04-23T00:11:17.587Z</updated>
+    
+    <content type="html"><![CDATA[<p>おもいこむ [4]：<code>動I</code> <code>自動</code> 深信。</p><a id="more"></a><h2 id="動詞活用"><a href="#動詞活用" class="headerlink" title="動詞活用"></a>動詞活用</h2><ul><li>ます形：思い込みます [6]</li><li>辞書形：思い込む [4]</li><li>ない形：思い込まない [5]</li><li>て形：思い込んで [4]</li><li>た形：思い込んだ [4]</li><li>可能形：思い込まれる [6]</li><li>意向形：思い込もう [5]</li><li>命令形：思い込め [4]</li><li>禁止形：思い込むな [4]</li><li>条件形：思い込まれば [4]</li><li>受身形：思い込まれる [6]</li><li>使役形：思う込ませる [6]</li><li>使役受身形：思い込ませられる [8]、思い込まされる [7]</li></ul><h2 id="文体"><a href="#文体" class="headerlink" title="文体"></a>文体</h2><ul><li>丁寧形現在肯定：思い込みます</li><li>丁寧形現在否定：思い込みません</li><li>丁寧形過去肯定：思い込みました</li><li>丁寧形過去否定：思い込みませんでした</li><li>普通形現在肯定：思い込む</li><li>普通形現在否定：思い込まない</li><li>普通形過去肯定：思い込んだ</li><li>普通形過去否定：思い込まなかった</li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>彼女も俺のことが好きだと思い込んでいる。</code></p><p>一直深信她也喜歡我。</p><blockquote><p>徹底地想，衍生為 <code>深信</code></p></blockquote><ul><li>彼女(かのじょ) [1]：<code>代</code> 她</li><li>も：<code>格助</code> 表 <code>也</code></li><li>俺(おれ) [0]：<code>代</code> 我</li><li>の：<code>格助</code> 表 <code>所有</code></li><li>こと [0]：<code>名</code> 事情</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>好(す)き [2]：<code>な形容</code> 喜歡的</li><li>だ：<code>助動</code> 是</li><li>と：<code>格助</code> 表 <code>內容</code></li><li>思(おも)う [2]：<code>動I</code> <code>他動</code> <code>辞書形</code> 想<ul><li>思います [4]：<code>ます形</code> 想</li><li>思い込む [4]：<code>徹底</code> 深信</li><li>思い込んで [4]：<code>て形</code> 深信</li><li>思い込んでいる [4]：<code>維持狀態</code> 深信著</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;おもいこむ [4]：&lt;code&gt;動I&lt;/code&gt; &lt;code&gt;自動&lt;/code&gt; 深信。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="動詞I" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EI/"/>
+    
+    <category term="自動" scheme="https://yabai.tw/tags/%E8%87%AA%E5%8B%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>売り込む</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/u/urikomu/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/u/urikomu/</id>
+    <published>2024-04-23T00:02:24.000Z</published>
+    <updated>2024-04-23T00:03:38.926Z</updated>
+    
+    <content type="html"><![CDATA[<p>うりこむ [3]：<code>動I</code> <code>他動</code> 推銷。</p><a id="more"></a><h2 id="動詞活用"><a href="#動詞活用" class="headerlink" title="動詞活用"></a>動詞活用</h2><ul><li>ます形：売り込みます [5]</li><li>辞書形：売り込む [3]</li><li>ない形：売り込まない [4]</li><li>て形：売り込んで [3]</li><li>た形：売り込んだ [3]</li><li>可能形：売り込まれる [5]</li><li>意向形：売り込もう [4]</li><li>命令形：売り込め [3]</li><li>禁止形：売り込むな [3]</li><li>条件形：売り込めば [3]</li><li>受身形：売り込まれる [5]</li><li>使役形：売り込ませる [5]</li><li>使役受身形：売り込ませられる [7]、売り込まされる [6]</li></ul><h2 id="文体"><a href="#文体" class="headerlink" title="文体"></a>文体</h2><ul><li>丁寧形現在肯定：売り込みます</li><li>丁寧形現在否定：売り込みません</li><li>丁寧形過去肯定：売り込みました</li><li>丁寧形過去否定：売り込みませんでした</li><li>普通形現在肯定：売り込む</li><li>普通形現在否定：売り込まない</li><li>普通形過去肯定：売り込んだ</li><li>普通形過去否定：売り込まなかった</li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>商品を売り込む。</code></p><p>推銷商品。</p><blockquote><p>徹底地賣，衍生為 <code>推銷</code></p></blockquote><ul><li>商品(しょうひん) [1]：<code>名</code> 商品</li><li>を：<code>格助</code> 接受 <code>売り込む</code> 的 <code>賓語</code></li><li>売(う)る [0]：<code>動I</code> <code>他動</code> <code>辞書形</code> 賣<ul><li>売ります [3]：<code>ます形</code> 賣</li><li>売り込(こ)む [3]：<code>徹底</code> 推銷</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;うりこむ [3]：&lt;code&gt;動I&lt;/code&gt; &lt;code&gt;他動&lt;/code&gt; 推銷。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="動詞I" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EI/"/>
+    
+    <category term="他動" scheme="https://yabai.tw/tags/%E4%BB%96%E5%8B%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Vます 込む (徹底)</title>
+    <link href="https://yabai.tw/nihonngo/grammar/verb/masu/comp-verb/komu/komu02/"/>
+    <id>https://yabai.tw/nihonngo/grammar/verb/masu/comp-verb/komu/komu02/</id>
+    <published>2024-04-22T23:53:16.000Z</published>
+    <updated>2024-04-23T03:07:46.583Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>動詞ます形</code> <del>ます</del> <code>込む</code> 可表示 <code>扯底</code>，翻譯成 <code>...進去</code>、<code>...下去</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>Vます</code> <del>ます</del> + <code>込む</code></li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>商品を売り込む。</code></p><p>推銷商品。</p><blockquote><p>徹底地賣，衍生為 <code>推銷</code></p></blockquote><ul><li>商品(しょうひん) [1]：<code>名</code> 商品</li><li>を：<code>格助</code> 接受 <code>売り込む</code> 的 <code>賓語</code></li><li>売(う)る [0]：<code>動I</code> <code>他動</code> <code>辞書形</code> 賣<ul><li>売ります [3]：<code>ます形</code> 賣</li><li>売り込(こ)む [3]：<code>徹底</code> 推銷</li></ul></li></ul><p><code>彼女も俺のことが好きだと思い込んでいる。</code></p><p>一直深信她也喜歡我。</p><blockquote><p>徹底地想，衍生為 <code>深信</code></p></blockquote><ul><li>彼女(かのじょ) [1]：<code>代</code> 她</li><li>も：<code>格助</code> 表 <code>也</code></li><li>俺(おれ) [0]：<code>代</code> 我</li><li>の：<code>格助</code> 表 <code>所有</code></li><li>こと [0]：<code>名</code> 事情</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>好(す)き [2]：<code>な形容</code> 喜歡的</li><li>だ：<code>助動</code> 是</li><li>と：<code>格助</code> 表 <code>內容</code></li><li>思(おも)う [2]：<code>動I</code> <code>他動</code> <code>辞書形</code> 想<ul><li>思います [4]：<code>ます形</code> 想</li><li>思い込む [4]：<code>徹底</code> 深信</li><li>思い込んで [4]：<code>て形</code> 深信</li><li>思い込んでいる [4]：<code>維持狀態</code> 深信著</li></ul></li></ul><p><code>仕事のことで考え込んでしまった。</code></p><p>好好沈思工作的事情。</p><blockquote><p>徹底地思考，衍生為 <code>沈思</code></p></blockquote><ul><li>仕事(しごと) [0]：<code>名</code> 工作</li><li>の：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>こと [0]：<code>名</code> 事情</li><li>で：<code>格助</code> 表 <code>範圍</code></li><li>考(かんが)える [4]：<code>動II</code> <code>他動</code> <code>辞書形</code> 考慮<ul><li>考えます [5]：<code>ます形</code> 考慮</li><li>考え込(こ)む [5]：<code>徹底</code> 深思 </li><li>考え込んで [5]：<code>て形</code> 深思</li><li>考え込んでしまう [5]：<code>極致</code> 好好深思</li><li>考え込んでしまった [5]：<code>た形</code> 好好深思了</li></ul></li></ul><p><code>作り込んだ模型。</code></p><p>製作精美的模型。</p><blockquote><p>徹底地做，衍生為 <code>製作精美</code></p></blockquote><ul><li>作(つく)る [2]：<code>動I</code> <code>他動</code> <code>辞書形</code> 製作<ul><li>作ります [4]：<code>ます形</code> 製作</li><li>作り込(こ)む [4]：<code>徹底</code> 製作精美</li><li>作り込んだ [4]：<code>た形</code> 製作精美</li></ul></li><li>模型(もけい) [0]：<code>名</code> 模型</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;code&gt;動詞ます形&lt;/code&gt; &lt;del&gt;ます&lt;/del&gt; &lt;code&gt;込む&lt;/code&gt; 可表示 &lt;code&gt;扯底&lt;/code&gt;，翻譯成 &lt;code&gt;...進去&lt;/code&gt;、&lt;code&gt;...下去&lt;/code&gt;。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="動詞ます形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E3%81%BE%E3%81%99%E5%BD%A2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>申し込む</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/mo/moushikomu/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/mo/moushikomu/</id>
+    <published>2024-04-22T11:18:09.000Z</published>
+    <updated>2024-04-22T11:19:47.877Z</updated>
+    
+    <content type="html"><![CDATA[<p>もうしこむ [4]：<code>動I</code> <code>他動</code> 申請、報名。</p><a id="more"></a><h2 id="動詞活用"><a href="#動詞活用" class="headerlink" title="動詞活用"></a>動詞活用</h2><ul><li>ます形：申し込みます [5]</li><li>辞書形：申し込む [4]</li><li>ない形：申し込まない [5]</li><li>て形：申し込んで [4]</li><li>た形：申し込んだ [4]</li><li>可能形：申し込める [5]</li><li>意向形：申し込もう [5]</li><li>命令形：申し込め [4]</li><li>禁止形：申し込むな [4]</li><li>条件形：申し込めば [4]</li><li>受身形：申し込まれる [6]</li><li>使役形：申し込ませる [6]</li><li>使役受身形：申し込ませられる [8]、申し込まされる [7]</li></ul><h2 id="文体"><a href="#文体" class="headerlink" title="文体"></a>文体</h2><ul><li>丁寧形現在肯定：申し込みます</li><li>丁寧形現在否定：申し込みません</li><li>丁寧形過去肯定：申し込みました</li><li>丁寧形過去否定：申し込みませんでした</li><li>普通形現在肯定：申し込む</li><li>普通形現在否定：申し込まない</li><li>普通形過去肯定：申し込んだ</li><li>普通形過去否定：申し込まなかった</li></ul><h2 id="申請"><a href="#申請" class="headerlink" title="申請"></a>申請</h2><p><code>試合を申し込む。</code></p><p>申請參加比賽。</p><blockquote><p>說到裡面，衍生為 <code>申請</code></p></blockquote><ul><li>試合(しあい) [0]：<code>名</code> 比賽</li><li>を：<code>格助</code> 接受 <code>申し込む</code> 的 <code>賓語</code></li><li>申(もう)す [1]：<code>動I</code> <code>自他</code> <code>辞書形</code> 言う 的 <code>謙讓語</code><ul><li>申します [4]：<code>ます形</code> 說</li><li>申し込(こ)む [4]：<code>到裡面</code> 申請</li></ul></li></ul><p><code>明日北海道旅行は申し込もうと思う。</code></p><p>我想明天申請到北海道旅行。</p><ul><li>明日(あした) [3]：<code>名</code> 明天</li><li>北海道(ほっかいどう) [3]：<code>名</code> 北海道</li><li>旅行(りょこう) [0]：<code>名</code> 旅行</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>申(もう)し込(こ)む [4]：<code>動I</code> <code>他動</code> <code>辭書形</code> 申請<ul><li>申し込もう [5]：<code>意向形</code> 申請</li></ul></li><li>と：<code>格助</code> 表 <code>內容</code></li><li>思(おも)う [2]：<code>動I</code> <code>他動</code> 想</li></ul><p>A：<code>申し込みはどうするんですか。</code></p><p>B：<code>この紙に名前を書くだけでいいんです。</code></p><p>A：怎麼報名呢？</p><p>B：只要在這張紙上寫上姓名就好了。</p><ul><li>申(もう)し込(こ)み [0]：<code>名</code> 報名</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>どう [1]：<code>副</code> 如何</li><li>する [0]：<code>動III</code> <code>自動</code> 做</li><li>んですか [0]：<code>關心好奇</code> 做嗎？</li><li>この [0]：<code>連体</code> 這個</li><li>紙(かみ) [2]：<code>名</code> 紙</li><li>に：<code>格助</code> 表 <code>動作對象</code></li><li>名前(なまえ) [0]：<code>名</code> 姓名</li><li>を：<code>格助</code> 接受 <code>書く</code> 的 <code>賓語</code></li><li>書(か)く [1]：<code>動I</code> <code>他動</code> 寫</li><li>だけでいい [6]：<code>慣</code> 只要..就好</li><li>んです [0]：<code>接尾</code> 解釋</li></ul><h2 id="報名"><a href="#報名" class="headerlink" title="報名"></a>報名</h2><p><code>なんとなく試験に申し込んでみた。</code></p><p>不知道為什麼就報名考試看看了。</p><ul><li>なんとなく [4]：<code>副</code> 不知道為什麼就</li><li>試験(しけん) [2]：<code>名</code> 考試</li><li>に：<code>格助</code> 表 <code>動作對象</code></li><li>申(もう)し込(こ)む [4]：<code>動I</code> <code>他動</code> <code>辞書形</code> 報名<ul><li>申し込んで [4]：<code>て形</code> 報名</li><li>申し込んでみる [4]：<code>試看看</code> 報名看看</li><li>申し込んでみた [4]：<code>た形</code> 報名看看了</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;もうしこむ [4]：&lt;code&gt;動I&lt;/code&gt; &lt;code&gt;他動&lt;/code&gt; 申請、報名。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="動詞I" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EI/"/>
+    
+    <category term="他動" scheme="https://yabai.tw/tags/%E4%BB%96%E5%8B%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>落ち込む</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/o/ochikomu/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/o/ochikomu/</id>
+    <published>2024-04-22T11:14:30.000Z</published>
+    <updated>2024-04-22T11:16:58.522Z</updated>
+    
+    <content type="html"><![CDATA[<p>おちこむ [0]：<code>動I</code> <code>自動</code> 心情低落。</p><a id="more"></a><h2 id="動詞活用"><a href="#動詞活用" class="headerlink" title="動詞活用"></a>動詞活用</h2><ul><li>ます形：落ち込みます [5]</li><li>辞書形：落ち込む [0]</li><li>ない形：落ち込まない [0]</li><li>て形：落ち込んで [0]</li><li>た形：落ち込んだ [0]</li><li>可能形：落ち込める [0]</li><li>意向形：落ち込もう [4]</li><li>命令形：落ち込め [0]</li><li>禁止形：落ち込むな [0]</li><li>条件形：落ち込めば [0]</li><li>受身形：落ち込まれる [0]</li><li>使役形：落ち込ませる [0]</li><li>使役受身形：落ち込ませられる [0]、落ち込まされる [0]</li></ul><h2 id="文体"><a href="#文体" class="headerlink" title="文体"></a>文体</h2><ul><li>丁寧形現在肯定：落ち込みます</li><li>丁寧形現在否定：落ち込みません</li><li>丁寧形過去肯定：落ち込めました</li><li>丁寧形過去否定：落ち込みませんでした</li><li>普通形現在肯定：落ち込む</li><li>普通形現在否定：落ち込まない</li><li>普通形過去肯定：落ち込んだ</li><li>普通形過去否定：落ち込まなかった</li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>彼は落ち込んでいる。</code></p><p>他心情低落。</p><blockquote><p>掉到裡面，衍生為 <code>心情低落</code></p></blockquote><ul><li>彼(かれ) [1]：<code>代</code> 我</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>落(お)ちる [2]：<code>動II</code> <code>自動</code> <code>辞書形</code> 掉落<ul><li>落ちます [3]：<code>ます形</code> 掉落</li><li>落ち込(こ)む [0]：<code>到裡面</code> 心情低落</li><li>落ち込んで [0]：<code>て形</code> 心情低落</li><li>落ち込んでいる [0]：<code>維持狀態</code> 心情低落</li></ul></li></ul><p>みんな落ち込んでいますね。もしかして、試合に負けたんですか。&#96;</p><p>大家都很心情低落，搞不好是輸掉比賽了嗎？</p><ul><li>みんな [3]：<code>名</code> 大家</li><li>落(お)ち込(こ)む [0]：<code>動I</code> <code>自動</code> <code>辞書形</code> 心情低落<ul><li>落ち込んで [0]：<code>て形</code> 心情低落</li><li>落ち込んでいる [0]：<code>持續狀態</code> 心情低落</li><li>落ち込んでいます [0]：<code>ます形</code> 心情低落</li></ul></li><li>ね：<code>終助</code> 表 <code>尋求認同</code></li><li>もしかして [1]：<code>副</code> 搞不好</li><li>試合(しあい) [0]：<code>名</code> 比賽</li><li>に：<code>格助</code> 表 <code>動作對象</code></li><li>負(ま)ける [0]：<code>動II</code> <code>自他</code> <code>辞書形</code> 輸<ul><li>負けた [0]：<code>た形</code> 輸</li><li>負けたんですか [0]：<code>關心好奇</code> 輸嗎？</li></ul></li></ul><p><code>すごく落ち込んで体調を崩した時期がありました。</code></p><p>我有過非常心情低落且身體掛掉的時期。</p><ul><li>すごい [2]：<code>い形容</code> 非常的<ul><li>すごく [2]：<code>副</code> 非常地</li></ul></li><li>落(お)ち込(こ)む [0]：<code>動I</code> <code>自動</code> <code>辞書形</code> 心情低落<ul><li>落ち込んで [0]：<code>て形</code> 心情低落</li></ul></li><li>体調(たいちょう) [0]：<code>名</code> 身體狀況</li><li>を：<code>格助</code> 接受 <code>崩す</code> 的 <code>賓語</code></li><li>崩(くず)す [2]：<code>動I</code> <code>他動</code> <code>辞書形</code> 搞壞<ul><li>崩した [2]：<code>た形</code> 搞壞了</li></ul></li><li>時期(じき) [1]：<code>名</code> 時期</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>ある [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 有<ul><li>あります [3]：<code>ます形</code> 有</li><li>ありました [3]：<code>た形</code> 有</li></ul></li></ul><p><code>なんか仕事で失敗しちゃったから、落ち込むのはもちろんなんだけど。</code></p><p>總覺得因為工作失敗了，當然會心情低落。</p><ul><li>なんか [1]：<code>副</code> 總覺得</li><li>仕事(しごと) [0]：<code>名</code> 工作</li><li>で：<code>格助</code> 表 <code>原因</code></li><li>失敗(しっぱい)する [0]：<code>動III</code> <code>自動</code> <code>辞書形</code> 失敗<ul><li>失敗して [0]：<code>て形</code> 失敗</li><li>失敗してしまう [0]：<code>遺憾</code> 惜敗</li><li>失敗してしまった [0]：<code>た形</code> 惜敗了</li><li>失敗しちゃった [0]：<code>縮約</code> 惜敗了</li></ul></li><li>から [1]：<code>格助</code> 表 <code>原因</code></li><li>落(お)ち込(こ)む [0]：<code>動I</code> <code>自動</code> <code>辞書形</code> 心情低落<ul><li>落ち込むの [0]：<code>名</code> 心情低落</li></ul></li><li>は：<code>副助</code> 表 <code>主題</code></li><li>もちろん [2]：<code>名</code> 當然</li><li>な：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>んだ [1]：<code>終助</code> 表 <code>解釋</code></li><li>けど [1]：<code>終助</code> 表 <code>說明</code></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;おちこむ [0]：&lt;code&gt;動I&lt;/code&gt; &lt;code&gt;自動&lt;/code&gt; 心情低落。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="動詞I" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EI/"/>
+    
+    <category term="自動" scheme="https://yabai.tw/tags/%E8%87%AA%E5%8B%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>詰める</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/tsu/tsumeru/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/tsu/tsumeru/</id>
+    <published>2024-04-22T11:09:01.000Z</published>
+    <updated>2024-04-22T11:09:45.901Z</updated>
+    
+    <content type="html"><![CDATA[<p>つめる [2]：<code>動II</code> <code>他動</code> 塞滿。</p><a id="more"></a><h2 id="動詞活用"><a href="#動詞活用" class="headerlink" title="動詞活用"></a>動詞活用</h2><ul><li>ます形：詰めます [3]</li><li>辞書形：詰める [2]</li><li>ない形：詰めない [2]</li><li>て形：詰めて [1]</li><li>た形：詰めた [1]</li><li>可能形：詰められる [4]</li><li>意向形：詰めよう [3]</li><li>命令形：詰めろ [2]</li><li>禁止形：詰めるな [2]</li><li>条件形：詰めれば [2]</li><li>受身形：詰められる [4]</li><li>使役形：詰めさせる [4]</li><li>使役受身形：詰めさせられる [6]</li></ul><h2 id="文体"><a href="#文体" class="headerlink" title="文体"></a>文体</h2><ul><li>丁寧形現在肯定：詰めます</li><li>丁寧形現在否定：詰めません</li><li>丁寧形過去肯定：詰めました</li><li>丁寧形過去否定：詰めませんでした</li><li>普通形現在肯定：詰める</li><li>普通形現在否定：詰めない</li><li>普通形過去肯定：詰めた</li><li>普通形過去否定：詰めなかった</li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>瓶に詰める。</code></p><p>塞入瓶內。</p><ul><li>瓶(びん) [1]：<code>名</code> 瓶</li><li>に：<code>格助</code> 表 <code>進入點</code></li><li>詰(つ)める [2]：<code>動II</code> <code>他動</code> 塞滿</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;つめる [2]：&lt;code&gt;動II&lt;/code&gt; &lt;code&gt;他動&lt;/code&gt; 塞滿。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="動詞II" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EII/"/>
+    
+    <category term="他動" scheme="https://yabai.tw/tags/%E4%BB%96%E5%8B%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>カバン</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/ka/kabann/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/ka/kabann/</id>
+    <published>2024-04-22T10:55:28.000Z</published>
+    <updated>2024-04-22T10:56:13.690Z</updated>
+    
+    <content type="html"><![CDATA[<p>かばん [0]：<code>名</code> 袋子。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>パソコンを入れるカバンを買った。</code></p><p>我買了放電腦的袋子。</p><ul><li>パソコン [0]：<code>名</code> 電腦</li><li>入(い)れる [0]：<code>動II</code> 放入</li><li>カバン [0]：<code>名</code> 袋子</li><li>買(か)う [0]：<code>動I</code> <code>他動</code> <code>辞書形</code> 買<ul><li>買った [0]：<code>た形</code> 買了</li></ul></li></ul><p><code>カバンの中に鍵や財布などがある。</code></p><p>書包裡有鑰匙、錢包等等。</p><ul><li>カバン [0]：<code>名</code> 袋子</li><li>の：<code>助</code> 表 <code>所在</code></li><li>中(なか)：<code>名</code> 裡面</li><li>に：<code>助</code> 表 <code>存在位置</code></li><li>鍵(かぎ) [2]：<code>名</code> 鑰匙</li><li>や：<code>格助</code> 表 <code>列舉</code></li><li>財布(さいふ) [0]：<code>名</code> 錢包</li><li>など [1]：<code>格助</code> 表 <code>等等</code></li><li>が：<code>格助</code> 表 <code>主語</code></li><li>ある [1]：<code>動III</code> <code>自動</code> 有</li></ul><p><code>服をカバンに詰め込む。</code></p><p>將衣服塞進包包。</p><ul><li>服(ふく) [2]：<code>名</code> 衣服</li><li>を：<code>格助</code> 接受 <code>詰め込む</code> 的 <code>賓語</code></li><li>カバン [0]：<code>名</code> 包包</li><li>に：<code>格助</code> 表 <code>進入點</code></li><li>詰(つ)める [2]：<code>動I</code> <code>他動</code> <code>辞書形</code> 塞滿<ul><li>詰めます [3]：<code>ます形</code> 塞滿</li><li>詰め込(こ)む [0]：<code>到裡面</code> 塞進</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;かばん [0]：&lt;code&gt;名&lt;/code&gt; 袋子。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>書き込む</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/ka/kakikomu/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/ka/kakikomu/</id>
+    <published>2024-04-22T10:48:57.000Z</published>
+    <updated>2024-04-22T10:51:33.323Z</updated>
+    
+    <content type="html"><![CDATA[<p>かきこむ [3]：<code>動I</code> <code>他動</code> 填入。</p><a id="more"></a><h2 id="動詞活用"><a href="#動詞活用" class="headerlink" title="動詞活用"></a>動詞活用</h2><ul><li>ます形：書き込みます [5]</li><li>辞書形：書き込む [3]</li><li>ない形：書き込まない [4]</li><li>て形：書き込んで [3]</li><li>た形：書き込んだ [3]</li><li>可能形：書き込める [4]</li><li>意向形：書き込もう [4]</li><li>命令形：書き込め [3]</li><li>禁止形：書き込むな [3]</li><li>条件形：書き込めば [3]</li><li>受身形：書き込まれる [5]</li><li>使役形：書き込ませる [5]</li><li>使役受身形：書き込ませられる [7]、書き込まされる [6]</li></ul><h2 id="文体"><a href="#文体" class="headerlink" title="文体"></a>文体</h2><ul><li>丁寧形現在肯定：書き込みます</li><li>丁寧形現在否定：書き込みません</li><li>丁寧形過去肯定：書き込みました</li><li>丁寧形過去否定：書き込みませんでした</li><li>普通形現在肯定：書き込む</li><li>普通形現在否定：書き込まらい</li><li>普通形過去肯定：書き込んだ</li><li>普通形過去否定：書き込まらかった</li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>ネットの掲示板に書き込む。</code></p><p>在網路討論區留言。</p><ul><li>ネット [1]：<code>名</code> net、網路</li><li>の：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>掲示板(けいじばん) [0]：<code>名</code> 討論區</li><li>に：<code>格助</code> 表 <code>動作對象</code></li><li>書(か)く [0]：<code>動I</code> <code>他動</code> <code>辞書形</code> 寫<ul><li>書きます [3]：<code>ます形</code> 寫</li><li>書き込(こ)む [3]：<code>到裡面</code> 填入</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;かきこむ [3]：&lt;code&gt;動I&lt;/code&gt; &lt;code&gt;他動&lt;/code&gt; 填入。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="動詞I" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EI/"/>
+    
+    <category term="他動" scheme="https://yabai.tw/tags/%E4%BB%96%E5%8B%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>掲示板</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/ke/keijibann/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/ke/keijibann/</id>
+    <published>2024-04-21T23:58:02.000Z</published>
+    <updated>2024-04-21T23:58:47.494Z</updated>
+    
+    <content type="html"><![CDATA[<p>けいじばん [0]：<code>名</code> 討論區。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>ネットの掲示板に書き込む。</code></p><p>在網路討論區留言。</p><ul><li>ネット [1]：<code>名</code> net、網路</li><li>の：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>掲示板(けいじばん) [0]：<code>名</code> 討論區</li><li>に：<code>格助</code> 表 <code>動作對象</code></li><li>書(か)く [0]：<code>動I</code> <code>他動</code> <code>辞書形</code> 寫<ul><li>書きます [3]：<code>ます形</code> 寫</li><li>書き込(こ)む [3]：<code>到裡面</code> 填入</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;けいじばん [0]：&lt;code&gt;名&lt;/code&gt; 討論區。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>飲み込む</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/no/nomikomu/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/no/nomikomu/</id>
+    <published>2024-04-21T23:54:57.000Z</published>
+    <updated>2024-04-21T23:55:40.286Z</updated>
+    
+    <content type="html"><![CDATA[<p>のみこむ [0]：<code>動I</code> <code>他動</code> 喝下、吞下。</p><a id="more"></a><h2 id="動詞活用"><a href="#動詞活用" class="headerlink" title="動詞活用"></a>動詞活用</h2><ul><li>ます形：飲み込みます [5]</li><li>辞書形：飲み込む [0]</li><li>ない形：飲み込まない [0]</li><li>て形：飲み込んで [0]</li><li>た形：飲み込んだ [0]</li><li>可能形：飲み込める [0]</li><li>意向形：飲み込もう [4]</li><li>命令形：飲み込め [0]</li><li>禁止形：飲み込むな [0]</li><li>条件形：飲み込めば [0]</li><li>受身形：飲み込まれる [0]</li><li>使役形：飲み込ませる [0]</li><li>使役受身形：飲み込ませられる [0]、飲み込まされる [0]</li></ul><h2 id="文体"><a href="#文体" class="headerlink" title="文体"></a>文体</h2><ul><li>丁寧形現在肯定：飲み込みます</li><li>丁寧形現在否定：飲み込みません</li><li>丁寧形過去肯定：飲み込みました</li><li>丁寧形過去否定：飲み込みませんでした</li><li>普通形現在肯定：飲み込む</li><li>普通形現在否定：飲み込まない</li><li>普通形過去肯定：飲み込んだ</li><li>普通形過去否定：飲み込まなかった</li></ul><h2 id="喝下"><a href="#喝下" class="headerlink" title="喝下"></a>喝下</h2><p><code>水を飲み込もうとするとき、咳をしました。</code></p><p>正要喝水時咳嗽了。</p><ul><li>水(みず) [0]：<code>名</code> 水</li><li>を：<code>格助</code> 接受 <code>飲み込む</code> 的 <code>賓語</code></li><li>飲(の)み込(こ)む [0]：<code>動I</code> <code>他動</code> <code>辞書形</code> 喝下<ul><li>飲み込もう [0]：<code>意向形</code> 喝下</li><li>飲み込もうとするとき [0]：<code>現在正要做時</code> 現在正要喝時</li></ul></li><li>咳(せき)をする [0]：<code>慣</code> 咳嗽<ul><li>咳をします [5]：<code>ます形</code> 咳嗽</li><li>咳をしました [5]：<code>た形</code> 咳嗽了</li></ul></li></ul><h2 id="吞下"><a href="#吞下" class="headerlink" title="吞下"></a>吞下</h2><p><code>唾を飲み込む。</code></p><p>吞下口水。</p><ul><li>唾(つば) [1]：<code>名</code> 唾液</li><li>を：<code>格助</code> 接受 <code>飲み込む</code> 的 <code>賓語</code></li><li>飲(の)む [1]：<code>動I</code> <code>他動</code> <code>辞書形</code> <code>喝</code><ul><li>飲みます [3]：<code>ます形</code> 喝</li><li>飲み込(こ)む [0]：<code>到裡面</code> 吞下</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;のみこむ [0]：&lt;code&gt;動I&lt;/code&gt; &lt;code&gt;他動&lt;/code&gt; 喝下、吞下。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="動詞I" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EI/"/>
+    
+    <category term="他動" scheme="https://yabai.tw/tags/%E4%BB%96%E5%8B%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>唾</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/tsu/tsuba/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/tsu/tsuba/</id>
+    <published>2024-04-21T23:52:56.000Z</published>
+    <updated>2024-04-21T23:53:24.657Z</updated>
+    
+    <content type="html"><![CDATA[<p>つば [1]：<code>名</code> 唾液。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>唾を飲み込む。</code></p><p>吞下口水。</p><ul><li>唾(つば) [1]：<code>名</code> 唾液</li><li>を：<code>格助</code> 接受 <code>飲み込む</code> 的 <code>賓語</code></li><li>飲(の)む [1]：<code>動I</code> <code>他動</code> <code>辞書形</code> <code>喝</code><ul><li>飲みます [3]：<code>ます形</code> 喝</li><li>飲み込(こ)む [0]：<code>到裡面</code> 吞下</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;つば [1]：&lt;code&gt;名&lt;/code&gt; 唾液。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>Vます 込む (到裡面)</title>
+    <link href="https://yabai.tw/nihonngo/grammar/verb/masu/comp-verb/komu/komu01/"/>
+    <id>https://yabai.tw/nihonngo/grammar/verb/masu/comp-verb/komu/komu01/</id>
+    <published>2024-04-21T23:48:29.000Z</published>
+    <updated>2024-04-22T11:04:30.561Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>動詞ます形</code> <del>ます</del> <code>込む</code> 可表示 <code>到裡面</code>，翻譯成 <code>...進去</code>、<code>...下去</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>Vます</code> <del>ます</del> + <code>込む</code></li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>唾を飲み込む。</code></p><p>吞下口水。</p><ul><li>唾(つば) [1]：<code>名</code> 唾液</li><li>を：<code>格助</code> 接受 <code>飲み込む</code> 的 <code>賓語</code></li><li>飲(の)む [1]：<code>動I</code> <code>他動</code> <code>辞書形</code> <code>喝</code><ul><li>飲みます [3]：<code>ます形</code> 喝</li><li>飲み込(こ)む [0]：<code>到裡面</code> 吞下</li></ul></li></ul><p><code>ネットの掲示板に書き込む。</code></p><p>在網路討論區留言。</p><ul><li>ネット [1]：<code>名</code> net、網路</li><li>の：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>掲示板(けいじばん) [0]：<code>名</code> 討論區</li><li>に：<code>格助</code> 表 <code>動作對象</code></li><li>書(か)く [0]：<code>動I</code> <code>他動</code> <code>辞書形</code> 寫<ul><li>書きます [3]：<code>ます形</code> 寫</li><li>書き込(こ)む [3]：<code>到裡面</code> 填入</li></ul></li></ul><p><code>服をカバンに詰め込む。</code></p><p>將衣服塞進包包。</p><ul><li>服(ふく) [2]：<code>名</code> 衣服</li><li>を：<code>格助</code> 接受 <code>詰め込む</code> 的 <code>賓語</code></li><li>カバン [0]：<code>名</code> 包包</li><li>に：<code>格助</code> 表 <code>進入點</code></li><li>詰(つ)める [2]：<code>動II</code> <code>他動</code> <code>辞書形</code> 塞滿<ul><li>詰めます [3]：<code>ます形</code> 塞滿</li><li>詰め込(こ)む [0]：<code>到裡面</code> 塞進</li></ul></li></ul><p><code>彼は落ち込んでいる。</code></p><p>他心情低落。</p><blockquote><p>掉到裡面，衍生為 <code>心情低落</code></p></blockquote><ul><li>彼(かれ) [1]：<code>代</code> 我</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>落(お)ちる [2]：<code>動II</code> <code>自動</code> <code>辞書形</code> 掉落<ul><li>落ちます [3]：<code>ます形</code> 掉落</li><li>落ち込(こ)む [0]：<code>到裡面</code> 心情低落</li><li>落ち込んで [0]：<code>て形</code> 心情低落</li><li>落ち込んでいる [0]：<code>維持狀態</code> 心情低落</li></ul></li></ul><p><code>試合を申し込む。</code></p><p>申請參加比賽。</p><blockquote><p>說到裡面，衍生為 <code>申請</code></p></blockquote><ul><li>試合(しあい) [0]：<code>名</code> 比賽</li><li>を：<code>格助</code> 接受 <code>申し込む</code> 的 <code>賓語</code></li><li>申(もう)す [1]：<code>動I</code> <code>自他</code> <code>辞書形</code> 言う 的 <code>謙讓語</code><ul><li>申します [4]：<code>ます形</code> 說</li><li>申し込(こ)む [4]：<code>到裡面</code> 申請</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;code&gt;動詞ます形&lt;/code&gt; &lt;del&gt;ます&lt;/del&gt; &lt;code&gt;込む&lt;/code&gt; 可表示 &lt;code&gt;到裡面&lt;/code&gt;，翻譯成 &lt;code&gt;...進去&lt;/code&gt;、&lt;code&gt;...下去&lt;/code&gt;。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="動詞ます形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E3%81%BE%E3%81%99%E5%BD%A2/"/>
+    
+  </entry>
   
   <entry>
     <title>登録する</title>
@@ -101,348 +453,6 @@
     <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
     
     <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Vます 済み (完畢)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/verb/masu/comp-verb/zumi/"/>
-    <id>https://yabai.tw/nihonngo/grammar/verb/masu/comp-verb/zumi/</id>
-    <published>2024-04-21T14:29:14.000Z</published>
-    <updated>2024-04-21T14:42:23.019Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>動詞ます形</code> <del>ます</del> <code>済み</code> 可表示 <code>完畢</code>，為 <code>名詞</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>動IIIVます</code> <del>します</del> + <code>済み</code></li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>入金確認済み。</code></p><p>入帳確認完畢。</p><ul><li>入金(にゅうきん) [0]：<code>名</code> 入帳</li><li>確認(かくにん)する [0]：<code>動III</code> <code>他動</code> <code>辞書形</code> 確認<ul><li>確認します [6]：<code>ます形</code> 確認</li><li>確認済(ず)み [6]：<code>完畢</code> 確認完畢</li></ul></li></ul><p><code>解決済みの問題。</code></p><p>解決完畢的問題。</p><ul><li>解決(かいけつ)する [0]：<code>動III</code> <code>自他</code> <code>辞書形</code> 解決<ul><li>解決します [6]：<code>ます形</code> 解決</li><li>解決済(ず)み [6]：<code>完畢</code> 解決完畢</li></ul></li><li>の：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>問題(もんだい) [0]：<code>名</code> 問題</li></ul><p><code>注文済みの商品。</code></p><p>訂購完畢的商品。</p><ul><li>注文(ちゅうもん)する [0]：<code>動III</code> <code>他動</code> <code>辞書形</code> 訂購<ul><li>注文します [6]：<code>ます形</code> 訂購</li><li>注文済(ず)み [6]：<code>完畢</code> 訂購完畢</li></ul></li><li>の：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>商品(しょうひん) [1]：<code>名</code> 商品</li></ul><p><code>会員登録済み。</code></p><p>會員註冊完畢。</p><ul><li>会員(かいいん) [0]：<code>名</code> 會員</li><li>登録(とうろく)する [0]：<code>動III</code> <code>他動</code> <code>辞書形</code> 註冊<ul><li>登録します [6]：<code>ます形</code> 註冊</li><li>登録済(ず)み [6]：<code>完畢</code> 登入完畢</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;動詞ます形&lt;/code&gt; &lt;del&gt;ます&lt;/del&gt; &lt;code&gt;済み&lt;/code&gt; 可表示 &lt;code&gt;完畢&lt;/code&gt;，為 &lt;code&gt;名詞&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
-    
-    <category term="動詞ます形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E3%81%BE%E3%81%99%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>吹く</title>
-    <link href="https://yabai.tw/nihonngo/vocabulary/fu/fuku2/"/>
-    <id>https://yabai.tw/nihonngo/vocabulary/fu/fuku2/</id>
-    <published>2024-04-21T12:52:56.000Z</published>
-    <updated>2024-04-21T12:53:39.578Z</updated>
-    
-    <content type="html"><![CDATA[<p>ふく [1]：<code>動I</code> <code>自動</code> 吹。</p><a id="more"></a><h2 id="動詞活用"><a href="#動詞活用" class="headerlink" title="動詞活用"></a>動詞活用</h2><ul><li>ます形：吹きます [3]</li><li>辞書形：吹く [0]</li><li>ない形：吹かない [0]</li><li>て形：吹いて [0]</li><li>た形：吹いた [0]</li><li>可能形：吹ける [0]</li><li>意向形：吹こう [2]</li><li>命令形：吹け [0]</li><li>禁止形：吹くな [0]</li><li>条件形：吹けば [0]</li><li>受身形：吹かれる [0]</li><li>使役形：吹かせる [0]</li><li>使役受身形：吹かせられる [0]、吹かされる [0]</li></ul><h2 id="文体"><a href="#文体" class="headerlink" title="文体"></a>文体</h2><ul><li>丁寧形現在肯定：吹きます</li><li>丁寧形現在否定：吹きません</li><li>丁寧形過去肯定：吹きました</li><li>丁寧形過去否定：吹きませんでした</li><li>普通形現在肯定：吹く</li><li>普通形現在否定：吹かない</li><li>普通形過去肯定：吹いた</li><li>普通形過去否定：吹かなかった</li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>強い風が吹いてきた。</code></p><p>強我朝我吹來。</p><ul><li>強(つよ)い [2]：<code>い形容</code> 強的</li><li>風(かぜ) [0]：<code>名</code> 風</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>吹(ふ)く [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 吹<ul><li>吹いて [1]：<code>て形</code> 吹</li><li>吹いてくる [1]：<code>朝我而來</code> 吹來</li><li>吹いてきた [1]：<code>た形</code> 吹來</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;ふく [1]：&lt;code&gt;動I&lt;/code&gt; &lt;code&gt;自動&lt;/code&gt; 吹。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="自動" scheme="https://yabai.tw/tags/%E8%87%AA%E5%8B%95/"/>
-    
-    <category term="動詞I" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EI/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>動詞命令形 (交通號誌)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/verb/meirei/usage/usage04/"/>
-    <id>https://yabai.tw/nihonngo/grammar/verb/meirei/usage/usage04/</id>
-    <published>2024-04-21T10:42:58.000Z</published>
-    <updated>2024-04-21T10:43:47.930Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>動詞命令形</code> 可表示 <code>強烈效果</code>，重視用語簡潔時，如 <code>交通號誌</code> 或 <code>標語</code>。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>止まれ。</code></p><p>停！</p><ul><li>止(と)まる [0]：<code>動I</code> <code>自動</code> <code>辞書形</code> 停<ul><li>止まれ [0]：<code>命令形</code> 停</li></ul></li></ul><p><code>交通規則を守れ。</code></p><p>遵守交通規則。</p><ul><li>交通規則(こうつうきそく) [5]：<code>名</code> 交通規則</li><li>を：<code>格助</code> 接受 <code>守る</code> 的 <code>賓語</code></li><li>守(まも)る [2]：<code>動I</code> <code>他動</code> <code>辞書形</code> 遵守<ul><li>守れ [2]：<code>命令形</code> 遵守</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;動詞命令形&lt;/code&gt; 可表示 &lt;code&gt;強烈效果&lt;/code&gt;，重視用語簡潔時，如 &lt;code&gt;交通號誌&lt;/code&gt; 或 &lt;code&gt;標語&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="動詞命令形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E5%91%BD%E4%BB%A4%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>降る</title>
-    <link href="https://yabai.tw/nihonngo/vocabulary/fu/furu/"/>
-    <id>https://yabai.tw/nihonngo/vocabulary/fu/furu/</id>
-    <published>2024-04-21T10:39:13.000Z</published>
-    <updated>2024-04-21T10:39:53.304Z</updated>
-    
-    <content type="html"><![CDATA[<p>ふる [1]： <code>動I</code> <code>自動</code> 下雨、下雪。</p><a id="more"></a><h2 id="動詞活用"><a href="#動詞活用" class="headerlink" title="動詞活用"></a>動詞活用</h2><ul><li>ます形：降ります [3]</li><li>辞書形：降る [1] </li><li>ない形：降らない [2]</li><li>て形：降って [1]</li><li>た形：降った [1]</li><li>可能形：降れる [2]</li><li>意向形：降ろう [2]</li><li>命令形：降れ [1]</li><li>禁止形：降るな [1]</li><li>条件形：降れば [1]</li><li>受身形：降られる [3]</li><li>使役形：降らせる [3]</li><li>使役受身形：降らせられる [5]、降らされる [4]</li></ul><h2 id="文体"><a href="#文体" class="headerlink" title="文体"></a>文体</h2><ul><li>丁寧形現在肯定：降ります</li><li>丁寧形現在否定：降りません</li><li>丁寧形過去肯定：降りました</li><li>丁寧形過去否定：降りませんでした</li><li>普通形現在肯定：降る</li><li>普通形現在否定：降らない</li><li>普通形過去肯定：降った</li><li>普通形過去否定：降らなかった</li></ul><h2 id="下雨"><a href="#下雨" class="headerlink" title="下雨"></a>下雨</h2><p><code>雨が降る。</code></p><p>下雨。</p><ul><li>雨(あめ) [1]：<code>名</code> 雨</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>降(ふ)る [1]：<code>動I</code> <code>自動</code> 下雨</li></ul><p><code>雨が降れば、涼しくなる。</code></p><p>下雨的話，就會變涼。</p><ul><li>雨(あめ) [1]：<code>名</code> 雨</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>降(ふ)る [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 下雨<ul><li>降れば [1]：<code>条件形</code> 下雨的話</li></ul></li><li>涼(すず)しい [3]：<code>い形容</code> 涼爽的   <ul><li>涼しく [3]：<code>副</code> 涼爽地</li></ul></li><li>なる [1]：<code>動I</code> <code>自動</code> 變成</li></ul><p><code>今にも雨が降りそうだ。</code></p><p> 好像快要下雨了。</p><ul><li>今(いま)にも [1]：<code>副</code> 馬上</li><li>雨(あめ) [1]：<code>名</code> 雨</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>降(ふ)る [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 下雨<ul><li>降ります [3]：<code>ます形</code> 下雨</li><li>降りそう [3]：<code>推量</code> 好像要下雨</li></ul></li><li>だ：<code>助動</code> 是</li></ul><h2 id="下雪"><a href="#下雪" class="headerlink" title="下雪"></a>下雪</h2><p><code>明日は雪が降るそだ。</code></p><p>聽說明天會下雪。</p><ul><li>明日(あした) [3]：<code>名</code> 明天</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>雪(ゆき) [2]：<code>名</code> 雪</li><li>が：<code>助助</code> 表 <code>主語</code></li><li>降(ふ)る [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 下雪<ul><li>降るそう [3]：<code>聽說</code> 聽說下雪</li></ul></li><li>だ：<code>助動</code> 是</li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;ふる [1]： &lt;code&gt;動I&lt;/code&gt; &lt;code&gt;自動&lt;/code&gt; 下雨、下雪。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="自動" scheme="https://yabai.tw/tags/%E8%87%AA%E5%8B%95/"/>
-    
-    <category term="動詞I" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EI/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>動詞命令形 (祈願)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/verb/meirei/usage/usage03/"/>
-    <id>https://yabai.tw/nihonngo/grammar/verb/meirei/usage/usage03/</id>
-    <published>2024-04-21T10:35:49.000Z</published>
-    <updated>2024-04-21T10:36:34.251Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>動詞命令形</code> 可表示 <code>祈願</code>。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>雨よ、降れ、風よ、吹け。</code></p><p>雨啊，下吧，風啊，吹吧！</p><ul><li>雨(あめ) [1]：<code>名</code> 雨</li><li>よ：<code>終助</code> 表 <code>告知</code></li><li>降(ふ)る [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 下雨<ul><li>降れ [1]：<code>命令形</code> 下雨吧</li></ul></li><li>風(かぜ) [1]：<code>名</code> 風</li><li>よ：<code>終助</code> 表 <code>告知</code></li><li>吹(ふ)く[1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 吹風<ul><li>吹け [1]：<code>命令形</code> 吹風吧</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;動詞命令形&lt;/code&gt; 可表示 &lt;code&gt;祈願&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="動詞命令形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E5%91%BD%E4%BB%A4%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>動詞命令形 (激勵)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/verb/meirei/usage/usage02/"/>
-    <id>https://yabai.tw/nihonngo/grammar/verb/meirei/usage/usage02/</id>
-    <published>2024-04-21T08:36:59.000Z</published>
-    <updated>2024-04-21T08:42:46.959Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>動詞命令形</code> 可表示 <code>激勵</code>，如在 <code>比賽場合</code> 或 <code>緊急場合</code> 使用。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>頑張れ。</code></p><p>加油！</p><ul><li>頑張(がんば)る [3]：<code>動I</code> <code>自動</code> <code>辞書形</code> 加油<ul><li>頑張れ [3]：<code>命令形</code> 加油</li></ul></li></ul><p><code>走れ。</code></p><p>快跑。</p><ul><li>走(はし)る [2]：<code>動I</code> <code>自動</code> <code>辞書形</code> 跑<ul><li>走れ [2]：<code>命令形</code> 快跑</li></ul></li></ul><p><code>逃げろ。</code></p><p>快逃！</p><blockquote><p>發生火災或地震的緊急情況，沒有時間考慮說話方式和語氣時</p></blockquote><ul><li>逃(に)げる [2]：<code>動II</code> <code>自動</code> <code>辞書形</code> 逃<ul><li>逃げろ [2]：<code>命令形</code> 快逃</li></ul></li></ul><p>A：<code>だめだ。もう走れない。</code></p><p>B：<code>頑張れ。あと500メートルだ。</code></p><blockquote><p>運動比在加油助勢時，這一場合女性也會使用</p></blockquote><p>A：不行了，跑不動了。</p><p>B：加油，剩 500 公尺了。</p><ul><li>だめ [2]：<code>名</code> 不行</li><li>だ：<code>助動</code> 是</li><li>もう [1]：<code>副</code> 已經</li><li>走(はし)る [2]：<code>動I</code> <code>自動</code> <code>辞書形</code> 跑<ul><li>走れる [3]：<code>可能形</code> 能跑</li><li>走れない [3]：<code>ない形</code> 不能跑</li></ul></li><li>頑張(がんば)る [3]：<code>動I</code> <code>自動</code> <code>辞書形</code> 加油<ul><li>頑張れ [3]：<code>命令形</code> 加油</li></ul></li><li>あと [0]：<code>副</code> 剩下</li><li>500(ごひゃく) [0]：<code>名</code> 500</li><li>メートル [0]：<code>名</code> meter、公尺</li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;動詞命令形&lt;/code&gt; 可表示 &lt;code&gt;激勵&lt;/code&gt;，如在 &lt;code&gt;比賽場合&lt;/code&gt; 或 &lt;code&gt;緊急場合&lt;/code&gt; 使用。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="動詞命令形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E5%91%BD%E4%BB%A4%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>動詞命令形 (上對下命令)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/verb/meirei/usage/usage01/"/>
-    <id>https://yabai.tw/nihonngo/grammar/verb/meirei/usage/usage01/</id>
-    <published>2024-04-21T08:13:46.000Z</published>
-    <updated>2024-04-21T08:24:19.398Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>動詞命令形</code> 用於 <code>上對下</code> 強行要求對方做某一動作，語氣態度非常強烈，所以使用情況非常有限，幾乎只限於 <code>男性</code> 使用。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>早く寝ろ。</code></p><p>早點睡！</p><ul><li>早(はや)く [1]：<code>副</code> 早地</li><li>寝(ね)る [0]：<code>動II</code> <code>自動</code> <code>辞書形</code> 睡<ul><li>寝ろ [0]：<code>命令形</code> 早點睡</li></ul></li></ul><p><code>急げ。</code></p><p>快點。</p><blockquote><p>地位高與年齡大的男性對比自己地位低和年齡小的男性，或父親對自己的孩子</p></blockquote><ul><li>急(いそ)ぐ [2]：<code>動I</code> <code>他動</code> <code>辞書形</code> 急<ul><li>急げ [2]：<code>命令形</code> 快點</li></ul></li></ul><p><code>明日家へ来いよ。</code></p><p>明天來我家啦！</p><blockquote><p>男性朋友之間，為了緩和語氣，使用時會在句尾加上 <code>よ</code></p></blockquote><ul><li>明日(あした) [0]：<code>名</code> 明天</li><li>家(うち) [0]：<code>名</code> 家</li><li>へ：<code>格助</code> 表 <code>移動方向</code></li><li>来(く)る [1]：<code>動III</code> <code>自動</code> <code>辞書形</code> 來<ul><li>来(こ)い [1]：<code>命令形</code> 快來</li><li>来いよ [1]：<code>緩和語氣</code> 快來啦</li></ul></li></ul><p><code>休め。</code></p><blockquote><p>在集訓、學校的體育課、社團活動中發號命令時</p></blockquote><p>稍息！</p><ul><li>休(やす)む [2]：<code>動I</code> <code>自他</code> <code>辞書形</code> 休息<ul><li>休め [2]：<code>命令形</code> 休息</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;動詞命令形&lt;/code&gt; 用於 &lt;code&gt;上對下&lt;/code&gt; 強行要求對方做某一動作，語氣態度非常強烈，所以使用情況非常有限，幾乎只限於 &lt;code&gt;男性&lt;/code&gt; 使用。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="動詞命令形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E5%91%BD%E4%BB%A4%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Vる ようになっている (器械機制)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/verb/jisho/youni/youni14/"/>
-    <id>https://yabai.tw/nihonngo/grammar/verb/jisho/youni/youni14/</id>
-    <published>2024-04-21T07:57:29.000Z</published>
-    <updated>2024-04-21T08:03:45.756Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>動詞辞書形</code> <code>ようになっている</code> 可表示 <code>器械機制</code>，翻譯成 <code>設計成</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>Vる</code> + <code>ようになっている</code></li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>この時計は水中でも壊れないようになっている。</code></p><p>這個手錶被設計成即使在水中也不會壞。</p><blockquote><p><code>行為變化</code> 後的 <code>維持</code>，衍生為 <code>器械機制</code>，翻譯成 <code>設計成</code></p></blockquote><ul><li>この [0]：<code>連体</code> 這個</li><li>時計(とけい) [0]：<code>名</code> 手錶</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>水中(すいちゅう) [0]：<code>名</code> 水中</li><li>でも [1]：<code>副助</code> 即使</li><li>壊(こわ)れる [3]：<code>動II</code> <code>自動</code> <code>辞書形</code> 壞<ul><li>壊れない [3]：<code>ない形</code> 不壞</li><li>壊れないようになっている [9]：<code>設計成</code> 設計成不壞</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;動詞辞書形&lt;/code&gt; &lt;code&gt;ようになっている&lt;/code&gt; 可表示 &lt;code&gt;器械機制&lt;/code&gt;，翻譯成 &lt;code&gt;設計成&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="動詞辞書形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E8%BE%9E%E6%9B%B8%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Vる ようになっている (變化後的維持)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/verb/jisho/youni/youni13/"/>
-    <id>https://yabai.tw/nihonngo/grammar/verb/jisho/youni/youni13/</id>
-    <published>2024-04-21T07:52:55.000Z</published>
-    <updated>2024-04-21T07:53:51.569Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>動詞辞書形</code> <code>ようになっている</code> 可表示 <code>變化後的維持</code>，翻譯成 <code>持續變得能</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>Vる</code> + <code>ようになっている</code></li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>仕事ができるようになっている。</code></p><p>我持續變得工作能力強。</p><blockquote><p><code>能力變化</code> 或 <code>行為變化</code> 後的 <code>維持</code>，衍生為 <code>變化後的維持</code>，翻譯成 <code>持續變得能</code></p></blockquote><ul><li>仕事(しごと)ができる [6]：<code>慣</code> 工作能力強<ul><li>仕事がでくるよになっている [11]：持續變得工作能力強</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;動詞辞書形&lt;/code&gt; &lt;code&gt;ようになっている&lt;/code&gt; 可表示 &lt;code&gt;變化後的維持&lt;/code&gt;，翻譯成 &lt;code&gt;持續變得能&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="動詞辞書形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E8%BE%9E%E6%9B%B8%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Vできる ようになる (能力變化)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/verb/jisho/youni/youni06/"/>
-    <id>https://yabai.tw/nihonngo/grammar/verb/jisho/youni/youni06/</id>
-    <published>2024-04-21T07:45:41.000Z</published>
-    <updated>2024-04-21T07:46:23.486Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>動詞可能形</code> <code>ようになる</code> 可表示 <code>能力變化</code>，本來不會，現在變得會了，翻譯成 <code>變得能</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>Vできる</code> + <code>ようになる</code></li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>日本の新聞が読めるようになりたい。</code></p><p>我想要變得能讀日本報紙。</p><ul><li>日本(にほん) [2]：<code>名</code> 日本</li><li>の：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>新聞(しんぶん) [0]：<code>名</code> 報紙</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>読(よ)む [1]：<code>動I</code> <code>他動</code> <code>辞書形</code> 讀<ul><li>読める [2]：<code>可能形</code> 能讀</li><li>読めるようになる [7]：<code>能力變化</code> 變得能讀 </li><li>読めるようになります [9]：<code>ます形</code> 變得能讀 </li><li>読めるようになにたい [9]：<code>想做</code> 想變得能讀</li></ul></li></ul><p><code>やっと日本語が話せるようになりました。</code></p><p>終於變得能說日語了。</p><ul><li>やっと [0]：<code>副</code> 終於</li><li>日本語(にほんご) [0]：<code>名</code> 日語</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>話(はな)す [2]：<code>動I</code> <code>他動</code> <code>辞書形</code> 說<ul><li>話せる [3]：<code>可能形</code> 能說</li><li>話せるようになる [8]：<code>能力變化</code> 變得能說</li><li>話せるようになります [10]：<code>ます形</code> 變得能說</li><li>話せるようになりました [10]：<code>た形</code> 變得能說了</li></ul></li></ul><p><code>毎日練習すれば、泳げるようになる。</code></p><p>每天練習游泳的話，就能變得學會游泳。</p><ul><li>毎日(まいにち) [1]：<code>名</code> 每天</li><li>練習(れんしゅう)する [0]：<code>動III</code> <code>他動</code> <code>辞書形</code> 練習<ul><li>練習すれば [0]：<code>条件形</code> 如果練習</li></ul></li><li>泳(およ)ぐ [2]：<code>動I</code> <code>自動</code> <code>辞書形</code> 游泳<ul><li>泳げる [3]：<code>可能形</code> 會游泳</li><li>泳げるようになる [8]：<code>能力變化</code> 變得會游泳</li></ul></li></ul><p><code>やっと自転車に乗れるようになった。</code></p><p>終於變得會騎腳踏車了。</p><ul><li>やっと [0]：<code>副</code> 終於</li><li>自転車(じてんしゃ) [2]：<code>名</code> 腳踏車</li><li>に：<code>格助</code> 表 <code>進入點</code></li><li>乗(の)る [0]：<code>動I</code> <code>自動</code> <code>辞書形</code> 騎腳踏車<ul><li>乗れる [0]：<code>可能形</code> 會騎腳踏車</li><li>乗れるようになる [7]：<code>能力變化</code> 變得會騎腳踏車 </li><li>乗れるようになった [7]：<code>た形</code> 變得會騎腳踏車了</li></ul></li></ul><p><code>日本語で自分の意見が言えるようになった。</code></p><p>變得可用日語說出自己的意見了。</p><ul><li>日本語(にほんご) [0]：<code>名</code> 日語</li><li>で：<code>格助</code> 表 <code>使用工具</code></li><li>自分(じぶん) [0]：<code>名</code> 自己</li><li>の：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>意見(いけん) [1]：<code>名</code> 意見</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>言(い)う [0]：<code>動I</code> <code>自他</code> <code>辞書形</code> 說<ul><li>言える [0]：<code>可能形</code> 會說</li><li>言えるようになる [7]：<code>能力變化</code> 變得會說 </li><li>言えるようになった [7]：<code>た形</code> 變得會說了</li></ul></li></ul><p><code>インターネットで何でも調べられるようになった。</code></p><p>網路上可以查詢任何東西了。</p><ul><li>インターネット [5]：<code>名</code> internet、網路</li><li>で：<code>格助</code> 表 <code>使用工具</code></li><li>何(なん)でも [3]：<code>副</code> 什麼都</li><li>調(しら)べる [3]：<code>動II</code> <code>他動</code> <code>辞書形</code> 查詢<ul><li>調べられる [4]：<code>可能形</code> 可查詢</li><li>調べられるようになる [9]：<code>能力變化</code> 變得可查詢 </li><li>調べられるようになった [9]：<code>た形</code> 變得可查詢了</li></ul></li></ul><p><code>コンビニで色々な事ができるようになった。</code></p><p>便利商店可以做各式各樣的事了。</p><ul><li>コンビニ [0]：<code>名</code> convenience store、便利商店</li><li>で：<code>格助</code> 表 <code>發生位置</code></li><li>色々(いろいろ)：<code>な形容</code> 各式各樣的</li><li>事(こと)：<code>名</code> 事</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>できる [2]：<code>動II</code> <code>自動</code> 完成<ul><li>できるようになる [7]：<code>能力變化</code> 變得能完成</li><li>できるようになった [7]：<code>た形</code> 變得能完成</li></ul></li></ul><p>A：<code>もう日本の食べ物に慣れましたか。</code></p><p>B：<code>はい。初めは食べられませんでしたが、今は何でも食べられるようになりました。</code></p><p>A：已經習慣日本的飲食了嗎？</p><p>B：是的，剛開始吃不習慣，不過現在什麼都能吃了。</p><ul><li>もう [1]：<code>副</code> 已經</li><li>日本(にほん) [2]：<code>名</code> 日本</li><li>の：<code>格助</code> 以 <code>名詞</code>形容 <code>名詞</code></li><li>食(た)べ物(もの) [3]：<code>名</code> 食物</li><li>に：<code>格助</code> 表 <code>對象</code></li><li>慣(な)れる [2]：<code>動II</code> <code>自動</code> <code>辞書形</code> 習慣<ul><li>慣れます [3]：<code>ます形</code> 習慣</li><li>慣れました [3]：<code>過去</code> 習慣</li><li>慣れましたか [3]：<code>疑問</code> 習慣嗎？</li></ul></li><li>はい [1]：<code>慣</code> 是</li><li>始(はじ)め [0]：<code>名</code> 開始</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>食(た)べる [2]：<code>動II</code> <code>他動</code> <code>辞書形</code> 吃<ul><li>食べられる [4]：<code>可能形</code> 吃</li><li>食べられます [5]：<code>ます形</code> 吃</li><li>食べられません [5]：<code>否定</code> 不吃</li><li>食べられませんでした [5]：<code>過去</code> 不吃</li></ul></li><li>が：<code>接助</code> 表 <code>前言</code></li><li>今(いま) [1]：<code>名</code> 現在</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>何(なん)でも [3]：<code>副</code> 什麼都</li><li>食(た)べる [2]：<code>動II</code> <code>他動</code> <code>辞書形</code> 吃<ul><li>食べられる [4]：<code>可能形</code> 能吃</li><li>食べられるようになる [9]：<code>能力變化</code> 變得能吃</li><li>食べられるようになります [11]：<code>ます形</code> 變得能吃</li><li>食べられるようになりました [11]：<code>た形</code> 變得能吃了</li></ul></li></ul><p>A：<code>ショパンの曲が弾けるようになりましたか。</code></p><p>B：<code>いいえ、まだ弾けません。早く弾けるようになりたいです。</code></p><p>A：會彈蕭邦的曲子了嗎？</p><p>B：不，還不會談。真想快點學會。</p><ul><li>ショバん [1]：<code>名</code> 蕭邦</li><li>の：<code>格助</code> 表 <code>所有</code></li><li>曲(きょく) [0]：<code>名</code> 曲</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>弾(ひ)く [0]：<code>動I</code> <code>他動</code> <code>辞書形</code> 彈琴<ul><li>弾ける [0]：<code>可能形</code> 會彈琴</li><li>弾けるようになる [7]：<code>能力變化</code> 變得會彈琴</li><li>弾けるようになります [9]：<code>ます形</code> 變得會彈琴</li><li>弾けるようになりました [9]：<code>た形</code> 變得會彈琴了</li><li>弾けるようになりましたか [9]：<code>疑問</code> 變得會彈琴了嗎？</li></ul></li><li>いいえ [3]：<code>慣</code> 不</li><li>まだ [1]：<code>副</code> 還</li><li>弾(ひ)く [0]：<code>動I</code> <code>他動</code> <code>辞書形</code> 彈琴<ul><li>弾ける [0]：<code>可能形</code> 會彈琴</li><li>弾けます [3]：<code>ます形</code> 會彈琴</li><li>弾けません [3]：<code>否定</code> 不會彈琴</li></ul></li><li>早(はや)く [1]：<code>副</code> 早早地</li><li>弾(ひ)く [0]：<code>動I</code> <code>他動</code> <code>辞書形</code> 彈琴<ul><li>弾ける [0]：<code>可能形</code> 會彈琴</li><li>弾けるようになる [7]：<code>能力變化</code> 變得會彈琴</li><li>弾けるようになります [9]：<code>ます形</code> 變得會彈琴</li><li>弾けるようになにたい [9]：<code>想做</code> 想變得會彈琴</li></ul></li><li>です [0]：<code>助動</code> 是</li></ul><p>A：<code>新しい道ができたね。</code></p><p>B：<code>ええ。夫の田舎まで4時間で帰れるようになった。</code></p><p>A：新的道路建好了呢。</p><p>B：是啊。現在回丈夫老家，4 個小時內就可以到了。</p><ul><li>新(あたら)しい [4]：<code>い形容</code> 新的</li><li>道(みち) [0]：<code>名</code> 道路</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>できる [2]：<code>動II</code> <code>自動</code> <code>辞書形</code> 完成<ul><li>できた [1]：<code>た形</code> 完成</li></ul></li><li>ね：<code>終助</code> 尋求認同</li><li>ええ [1]：<code>感動</code> 是</li><li>夫(おっと) [0]：<code>名</code> 丈夫</li><li>の：<code>格助</code> 表 <code>所有</code></li><li>田舎(いなか) [0]：<code>名</code> 鄉下</li><li>まで [1]：<code>副助</code> 表 <code>地點終點</code></li><li>4時間(よじかん) [0]：<code>名</code> 四個小時</li><li>で：<code>格助</code> 表 <code>範圍</code></li><li>帰(かえ)る [1]：<code>動I</code> <code>自動</code> 回<ul><li>帰れる [3]：<code>可能形</code> 可回</li><li>帰れるようになる [8]：<code>能力變化</code> 變得可回</li><li>帰れるようになった [8]：<code>た形</code> 變得可回了</li></ul></li></ul><p><code>テレビの日本語がかなり分かるようになった。</code></p><p>變得相當懂電視裡的日語了。</p><ul><li>テレビ [1]：<code>名</code> 電視</li><li>の：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>日本語(にほんご) [0]：<code>名</code> 日語</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>かなり [1]：<code>副</code> 相當地</li><li>分(わ)かる [2]：<code>動I</code> <code>自動</code> 懂<ul><li>分かるようになる [7]：<code>能力變化</code> 變得懂</li><li>分かるようになった [7]：<code>た形</code> 變得懂了</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;動詞可能形&lt;/code&gt; &lt;code&gt;ようになる&lt;/code&gt; 可表示 &lt;code&gt;能力變化&lt;/code&gt;，本來不會，現在變得會了，翻譯成 &lt;code&gt;變得能&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="動詞可能形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E5%8F%AF%E8%83%BD%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Vる ようになる (行為變化)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/verb/jisho/youni/youni05/"/>
-    <id>https://yabai.tw/nihonngo/grammar/verb/jisho/youni/youni05/</id>
-    <published>2024-04-21T07:05:27.000Z</published>
-    <updated>2024-04-21T07:43:59.628Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>動詞辞書形</code> <code>ようになる</code> 可表示 <code>行為變化</code>，本來就有的習慣，只是不做，但現在又開始做了，翻譯成 <code>變得開始</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>Vる</code> + <code>ようになる</code></li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>社会人になってから、朝早く起きるようになった。</code></p><p>變成社會人士之後，變得開始早起了。</p><blockquote><p>本來就會早起，只是不早起，但現在又開始早起了</p></blockquote><ul><li>会社人(かいしゃにん) [0]：<code>名</code> 社會人士</li><li>に：<code>格助</code> 表 <code>結果</code></li><li>なる [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 變成<ul><li>なって [1]：<code>て形</code> 變成</li><li>なってから [1]：<code>之後</code> 變成之後</li></ul></li><li>朝(あさ) [1]：<code>早上</code></li><li>早(はや)く [1]：<code>副</code> 早早地</li><li>起(お)きる [2]：<code>動II</code> <code>自動</code> <code>辞書形</code> 起床<ul><li>起きるようになる [7]：<code>行為變化</code> 變得開始早起</li><li>起きるようになった [7]：<code>た形</code> 變得開始早起了</li></ul></li></ul><p><code>最近日本のドラマを見るようになった。</code></p><p>最近變得開始看日劇了。</p><blockquote><p>本來就會看日劇，只是不看，但現在又開始看了</p></blockquote><ul><li>最近(さいきん) [0]：<code>名</code> 最近</li><li>日本(にほん) [2]：<code>名</code> 日本</li><li>の：<code>格助</code> 表 <code>所產</code></li><li>ドラマ [1]：<code>名</code> drama、戲劇</li><li>を：<code>格助</code> 接受 <code>見る</code> 的 <code>賓語</code></li><li>見(み)る [1]：<code>動II</code> <code>他動</code> <code>辞書形</code> 看<ul><li>見るようになる [6]：<code>行為變化</code> 變得看</li><li>見るようになった [6]： <code>た形</code> 變得看了</li></ul></li></ul><p><code>日本人は１００年ぐらい前から牛肉や豚肉を食べるようになった。</code></p><p>日本人大約從 100 年以前變得開始吃牛肉和豬肉。</p><blockquote><p>本來就會吃牛肉和豬肉，只是不吃，但現在又開始吃了</p></blockquote><ul><li>日本人(にほんにん) [4]：<code>名</code> 日本人</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>１００(ひゃく) [2]：<code>名</code> 一百</li><li>年(ねん) [0]：<code>名</code> 年</li><li>ぐらい [0]：<code>名</code> 左右</li><li>前(まえ) [1]：<code>名</code> 以前</li><li>から [1]：<code>格助</code> 表 <code>時間起點</code></li><li>牛肉(ぎゅうにく) [0]：<code>名</code> 牛肉</li><li>や：<code>格助</code> 表 <code>列舉</code></li><li>豚肉(ぶたにく) [0]：<code>名</code> 豬肉</li><li>を：<code>格助</code> 接受 <code>食べる</code> 的 <code>賓語</code></li><li>食(た)べる [2]：<code>動II</code> <code>他動</code> 吃<ul><li>食べるようになる [7]： <code>行為變化</code> 變得開始吃</li><li>食べるようになった [7]： <code>た形</code> 變得開始吃了</li></ul></li></ul><p><code>最近野菜を食べるようになりました。</code></p><p>最近變得開始吃蔬菜了。</p><blockquote><p>本來就會吃蔬菜，只是不吃，但現在又開始吃了</p></blockquote><ul><li>最近(さいきん) [0]：<code>名</code> 最近</li><li>野菜(やさい) [0]：<code>名</code> 蔬菜　</li><li>を：<code>格助</code> 接受 <code>食べる</code> 的 <code>賓語</code></li><li>食(た)べる [2]：<code>動II</code> <code>他動</code> <code>辞書形</code> 吃<ul><li>食べるようになる [7]：<code>行為變化</code> 變得開始吃</li><li>食べるようになります [7]：<code>ます形</code> 變得開始吃</li><li>食べるようになりました [9]：<code>た形</code> 變得開始吃了</li></ul></li></ul><p><code>最近お酒を飲むようになりました。</code></p><p>最近變得開始喝酒了。</p><blockquote><p>本來就會喝酒，只是不喝，但現在又開始喝了</p></blockquote><ul><li>最近(さいきん) [0]：<code>名</code> 最近</li><li>お酒(さけ) [0]：<code>名</code> 酒</li><li>を：<code>格助</code> 接受 <code>飲む</code> 的 <code>賓語</code></li><li>飲(の)む [1]：<code>動I</code> <code>他動</code> <code>辞書形</code> 喝酒<ul><li>飲むようになる [6]：<code>習慣變化</code> 變得開始喝酒</li><li>飲むようになります [6]：<code>ます形</code> 變得開始喝酒</li><li>読むようになりました [8]：<code>た形</code> 變得開始喝酒了</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;動詞辞書形&lt;/code&gt; &lt;code&gt;ようになる&lt;/code&gt; 可表示 &lt;code&gt;行為變化&lt;/code&gt;，本來就有的習慣，只是不做，但現在又開始做了，翻譯成 &lt;code&gt;變得開始&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="動詞辞書形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E8%BE%9E%E6%9B%B8%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Vる といい (建議)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/verb/jisho/toii/toii02/"/>
-    <id>https://yabai.tw/nihonngo/grammar/verb/jisho/toii/toii02/</id>
-    <published>2024-04-21T06:47:34.000Z</published>
-    <updated>2024-04-21T06:55:11.102Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>Vる</code> <code>といい</code> 可表示 <code>建議</code> 。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>Vる</code> + <code>といい</code></li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>その件については山田さんに聞くといい。</code></p><p>關於這件事情建議問山田先生。</p><ul><li>その [0]：<code>連</code> 那個</li><li>件(けん) [1]：<code>名</code> 事情</li><li>について [0]：<code>接</code> 關於</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>山田(やまだ) [0]：<code>名</code> 山田</li><li>さん [0]：<code>名</code> 先生</li><li>に：<code>格助</code> 表 <code>對象</code></li><li>聞(き)く [0]：<code>動I</code> <code>他動</code> <code>辞書形</code> 問<ul><li>聞くといい [4]：<code>建議</code> 建議問</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;Vる&lt;/code&gt; &lt;code&gt;といい&lt;/code&gt; 可表示 &lt;code&gt;建議&lt;/code&gt; 。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="動詞辞書形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E8%BE%9E%E6%9B%B8%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>Vる といい (建議)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/verb/jisho/toii/toii01/"/>
-    <id>https://yabai.tw/nihonngo/grammar/verb/jisho/toii/toii01/</id>
-    <published>2024-04-21T06:45:36.000Z</published>
-    <updated>2024-04-21T06:55:11.101Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>Vる</code> <code>といい</code> 可表示 <code>建議</code> 。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>Vる</code> + <code>といい</code></li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>その件については山田さんに聞くといい。</code></p><p>關於這件事情建議問山田先生。</p><ul><li>その [0]：<code>連</code> 那個</li><li>件(けん) [1]：<code>名</code> 事情</li><li>について [0]：<code>接</code> 關於</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>山田(やまだ) [0]：<code>名</code> 山田</li><li>さん [0]：<code>名</code> 先生</li><li>に：<code>格助</code> 表 <code>對象</code></li><li>聞(き)く [0]：<code>動I</code> <code>他動</code> <code>辞書形</code> 問<ul><li>聞くといい [4]：<code>建議</code> 建議問</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;Vる&lt;/code&gt; &lt;code&gt;といい&lt;/code&gt; 可表示 &lt;code&gt;建議&lt;/code&gt; 。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="動詞辞書形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E8%BE%9E%E6%9B%B8%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ている、ことにしている</title>
-    <link href="https://yabai.tw/nihonngo/comparison/bunkei/teiru-kotonishiteiru/"/>
-    <id>https://yabai.tw/nihonngo/comparison/bunkei/teiru-kotonishiteiru/</id>
-    <published>2024-04-21T03:40:43.000Z</published>
-    <updated>2024-04-21T06:55:11.101Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>ている</code> 與 <code>ことにしている</code> 都可表示 <code>習慣</code>，但 <code>語感</code> 不太一樣。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>Vて</code> + <code>いる</code></li><li><code>Vる</code> + <code>ことにしている</code></li></ul><h2 id="ている"><a href="#ている" class="headerlink" title="ている"></a>ている</h2><p><code>毎日ジムに行っている。</code></p><p>我習慣每天去健身房。</p><blockquote><p><code>ている</code> 可單純表示 <code>習慣</code></p></blockquote><ul><li>毎日(まいにち) [1]：<code>名</code> 每天</li><li>ジム [1]：<code>名</code> gym、健身房</li><li>に：<code>格助</code> 表 <code>目的地</code></li><li>行(い)く[0]：<code>動I</code> <code>自動</code> <code>辞書形</code> 去<ul><li>行って [0]：て形 去</li><li>行っている [0]：習慣反覆 習慣去</li></ul></li></ul><h2 id="ことにしている"><a href="#ことにしている" class="headerlink" title="ことにしている"></a>ことにしている</h2><p><code>毎日ジムに行くことにしている。</code></p><p>我習慣每天去健身房。</p><blockquote><p><code>ことにしている</code> 可表示過去曾經 <code>個人決定</code>，之後繼續 <code>維持</code> 的 <code>習慣</code></p></blockquote><ul><li>毎日(まいにち) [1]：<code>名</code> 每天</li><li>ジム [1]：<code>名</code> gym、健身房</li><li>に：<code>格助</code> 表 <code>目的地</code></li><li>行(い)く[0]：<code>動I</code> <code>自動</code> <code>辞書形</code> 去<ul><li>行くことにしている [0]：<code>習慣</code> 習慣去</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;ている&lt;/code&gt; 與 &lt;code&gt;ことにしている&lt;/code&gt; 都可表示 &lt;code&gt;習慣&lt;/code&gt;，但 &lt;code&gt;語感&lt;/code&gt; 不太一樣。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="比較文型" scheme="https://yabai.tw/tags/%E6%AF%94%E8%BC%83%E6%96%87%E5%9E%8B/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>水中</title>
-    <link href="https://yabai.tw/nihonngo/vocabulary/su/suichuu/"/>
-    <id>https://yabai.tw/nihonngo/vocabulary/su/suichuu/</id>
-    <published>2024-04-21T03:26:27.000Z</published>
-    <updated>2024-04-21T06:55:11.102Z</updated>
-    
-    <content type="html"><![CDATA[<p>すいちゅう [0]：<code>名</code> 水中。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>この時計は水中でも壊れないようになっている。</code></p><p>這個手錶被設計成即使在水中也不會壞。</p><ul><li>この [0]：<code>連体</code> 這個</li><li>時計(とけい) [0]：<code>名</code> 手錶</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>水中(すいちゅう) [0]：<code>名</code> 水中</li><li>でも [1]：<code>副助</code> 即使</li><li>壊(こわ)れる [3]：<code>動II</code> <code>自動</code> <code>辞書形</code> 壞<ul><li>壊れない [3]：<code>ない形</code> 不壞</li><li>壊れないようになっている [9]：<code>設計成</code> 設計成不壞</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;すいちゅう [0]：&lt;code&gt;名&lt;/code&gt; 水中。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>仕事ができる</title>
-    <link href="https://yabai.tw/nihonngo/vocabulary/shi/shigotogadekiru/"/>
-    <id>https://yabai.tw/nihonngo/vocabulary/shi/shigotogadekiru/</id>
-    <published>2024-04-21T03:23:16.000Z</published>
-    <updated>2024-04-21T03:23:56.330Z</updated>
-    
-    <content type="html"><![CDATA[<p>しごとができる [6]：<code>慣</code> 工作能力強。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>仕事ができるようになっている。</code></p><p>我持續變得工作能力強。</p><ul><li>仕事(しごと)ができる [6]：<code>慣</code> 工作能力強<ul><li>仕事がでくるよになっている [11]：持續變得工作能力強</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;しごとができる [6]：&lt;code&gt;慣&lt;/code&gt; 工作能力強。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="慣用語" scheme="https://yabai.tw/tags/%E6%85%A3%E7%94%A8%E8%AA%9E/"/>
     
   </entry>
   
