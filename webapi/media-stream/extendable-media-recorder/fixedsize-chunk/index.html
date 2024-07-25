@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html 
+>
+  <head>
+  <meta charset="utf-8">
+  <!-- ### DNS Prefetch ### -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+  <!-- ### Preload ### -->
+  
+
+  <!-- ### Meta & Title & Info ### -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>從麥克風每次取得固定 SIZE 的 PCM 格式檔案 | 點燈坊</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff2601">
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="Web API 內建的 MediaRecorder 並無法將麥克風的聲音儲存成 PCM 格式檔案，而 extendable-media-recorder 提供與 MediaRecorder 相同的 interface，但可支援 PCM 格式，透過精確控制 start() 的時間，可取得固定 Size 的 Chunk。">
+<!-- Keywords -->
+<meta name="keywords" content=", Web API">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+  <!-- ### Import File ### -->
+  
+    <!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+  
+  <!-- ### Site Verification ### -->
+  
+
+  <!-- ### RSS ### -->
+  
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+  <!-- ### WebApp ### -->
+  <meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="點燈坊">
+<meta name="msapplication-starturl" content="https://yabai.tw">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="點燈坊">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+  <!-- ### The Open Graph & Twitter Card Protocol ### -->
+  <meta property="og:title" content="從麥克風每次取得固定 SIZE 的 PCM 格式檔案 | 點燈坊">
+<meta property="og:site_name" content="點燈坊">
+
+<meta property="og:url" content="https://yabai.tw/webapi/media-stream/extendable-media-recorder/fixedsize-chunk/">
+<meta property="og:image"
+	content="https://yabai.tw/apple-touch-icon.png">
+<meta property="og:description" content="Web API 內建的 MediaRecorder 並無法將麥克風的聲音儲存成 PCM 格式檔案，而 extendable-media-recorder 提供與 MediaRecorder 相同的 interface，但可支援 PCM 格式，透過精確控制 start() 的時間，可取得固定 Size 的 Chunk。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-02-09T04:26:23.000Z">
+<meta property="article:modified_time" content="2024-02-09T04:26:23.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", Web API">
+
+
+  <!-- ### Analytics ### -->
+  
+
+
+
+
+
+  <!-- ### Canonical link ### -->
+  <link rel="canonical" href="https://yabai.tw/webapi/media-stream/extendable-media-recorder/fixedsize-chunk/">
+  <!-- ### Structured Data ### -->
+  
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://yabai.tw/webapi/media-stream/extendable-media-recorder/fixedsize-chunk/",
+    "@type": "BlogPosting",
+    "logo": "https://yabai.tw/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://yabai.tw/webapi/media-stream/extendable-media-recorder/fixedsize-chunk/"
+    },
+    "headline": "從麥克風每次取得固定 SIZE 的 PCM 格式檔案 | 點燈坊",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://yabai.tw/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2024-02-09T04:26:23.000Z",
+    "dateModified": "2024-07-18T09:24:03.215Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/img/default_avatar.png"
+        },
+        "description": "失くすものさえない今が強くなるチャンスよ"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "點燈坊",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://yabai.tw/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", Web API",
+    "description": "Web API 內建的 MediaRecorder 並無法將麥克風的聲音儲存成 PCM 格式檔案，而 extendable-media-recorder 提供與 MediaRecorder 相同的 interface，但可支援 PCM 格式，透過精確控制 start() 的時間，可取得固定 Size 的 Chunk。"
+}
+</script>
+
+  <!-- ### Custom Head ### -->
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+  <body>
+  <header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      點燈坊
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    失くすものさえない今が強くなるチャンスよ
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">ホーム</a>
+      <a href="/series/" class="navbar-link">シリーズ</a>
+      <a href="/tags/" class="navbar-link">タグ</a>
+      <a href="/search" class="navbar-link">検索</a>
+      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+  
+<!-- ## Post ## -->
+<div class="post-container">
+  <div id="post-card" class="card">
+    <div class="card-item-container">
+      <div class="card-inner-cell">
+        <div class="card-header">
+          
+<h1 class="card-title h3 mb-2">從麥克風每次取得固定 SIZE 的 PCM 格式檔案</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2024-02-09</span>
+</div>
+
+        </div>
+        <div class="card-body">
+          <article id="post-content">
+            <p>Web API 內建的 <code>MediaRecorder</code> 並無法將麥克風的聲音儲存成 <code>PCM</code> 格式檔案，而 <code>extendable-media-recorder</code> 提供與 <code>MediaRecorder</code> 相同的 interface，但可支援 <code>PCM</code> 格式，透過精確控制 <code>start()</code> 的時間，可取得固定 Size 的 Chunk。</p>
+<a id="more"></a>
+
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.3<br>extendable-media-recorder 9.1.6<br>extendable-media-recorder-wav-encoder 7.0.101</p>
+<h2 id="Install-Package"><a href="#Install-Package" class="headerlink" title="Install Package"></a>Install Package</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ npm install extendable-media-recorder
+$ npm install extendable-media-recorder-wav-encoder
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li><code>extendable-media-recorder</code>：提供與原生 <code>MediaRecorder</code> 相同 interface 的新 <code>MediaRecorder</code></li>
+<li><code>extendable-media-recorder-wav-encoder</code>：支援 <code>WAV</code> 格式</li>
+</ul>
+<h2 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h2><p><img src="/images/webapi/media-stream/extendable-media-recorder/fixedsize-chunk/pcm001.svg" alt="pcm001"></p>
+<ul>
+<li><code>MediaStream</code>： 從麥克風取得 stream</li>
+<li><code>AudioContext</code>： 產生 16 bit stream</li>
+<li>由 <code>AudioContext</code> 產生 <code>SrcNode</code> 與 <code>DestNode</code>，需使用 <code>connect()</code> 將各 node 連結在一起</li>
+<li><code>MediaRecorder</code>：將 <code>WebM</code> 轉 <code>PCM</code></li>
+</ul>
+<h2 id="Extendable-Media-Recorder"><a href="#Extendable-Media-Recorder" class="headerlink" title="Extendable Media Recorder"></a>Extendable Media Recorder</h2><p><strong>main.js</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> createApp <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<span class="token keyword">import</span> App <span class="token keyword">from</span> <span class="token string">'./App.vue'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> register <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'extendable-media-recorder'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> connect <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'extendable-media-recorder-wav-encoder'</span>
+
+<span class="token keyword">await</span> <span class="token function">register</span><span class="token punctuation">(</span><span class="token keyword">await</span> <span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token function">createApp</span><span class="token punctuation">(</span>App<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">mount</span><span class="token punctuation">(</span><span class="token string">'#app'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>Line 7</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">await</span> <span class="token function">register</span><span class="token punctuation">(</span><span class="token keyword">await</span> <span class="token function">connect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>與原生 <code>MediaRecorder</code> 不同，<code>extendable-media-recorder</code> 所提供的 <code>MediaRecorder</code> 必須先註冊才能使用</li>
+<li><code>register()</code> 不能寫在每個頁面的 <code>mounted()</code>，只要 route 改變重新進入該 page，就會造成重複註冊的錯誤，因此只能寫在 <code>main.js</code> 只註冊一次</li>
+</ul>
+<p><strong>App.vue</strong></p>
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onStart<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Start<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onStop<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Stop<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> MediaRecorder <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'extendable-media-recorder'</span>
+
+<span class="token keyword">const</span> SAMPLE_RATE <span class="token operator">=</span> <span class="token number">16000</span>
+<span class="token keyword">const</span> CHANNEL_COUNT <span class="token operator">=</span> <span class="token number">1</span>
+<span class="token keyword">const</span> SAMPLE_INTERVAL <span class="token operator">=</span> <span class="token number">250</span>
+<span class="token keyword">const</span> CHUNK_SIZE <span class="token operator">=</span> <span class="token number">16000</span>
+<span class="token keyword">const</span> FILE_NAME <span class="token operator">=</span> <span class="token string">'sample.pcm'</span>
+
+<span class="token keyword">let</span> mediaRecorder <span class="token operator">=</span> <span class="token keyword">null</span>
+
+<span class="token keyword">let</span> onStart <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">try</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> mediaStream <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>mediaDevices<span class="token punctuation">.</span><span class="token function">getUserMedia</span><span class="token punctuation">(</span><span class="token punctuation">{</span> audio<span class="token punctuation">:</span> <span class="token boolean">true</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">let</span> audioContext <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AudioContext</span><span class="token punctuation">(</span><span class="token punctuation">{</span> sampleRate<span class="token punctuation">:</span> SAMPLE_RATE <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">let</span> srcNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MediaStreamAudioSourceNode</span><span class="token punctuation">(</span>audioContext<span class="token punctuation">,</span> <span class="token punctuation">{</span> mediaStream <span class="token punctuation">}</span><span class="token punctuation">)</span>
+    <span class="token keyword">let</span> destNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MediaStreamAudioDestinationNode</span><span class="token punctuation">(</span>audioContext<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      channelCount<span class="token punctuation">:</span> CHANNEL_COUNT<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    srcNode<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span>destNode<span class="token punctuation">)</span>
+
+    mediaRecorder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MediaRecorder</span><span class="token punctuation">(</span>destNode<span class="token punctuation">.</span>stream<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+      mimeType<span class="token punctuation">:</span> <span class="token string">'audio/wav'</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+    mediaRecorder<span class="token punctuation">.</span>ondataavailable <span class="token operator">=</span> e <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+      <span class="token keyword">let</span> size <span class="token operator">=</span> e<span class="token punctuation">.</span>data<span class="token punctuation">.</span>size
+      <span class="token keyword">let</span> chunk <span class="token operator">=</span> e<span class="token punctuation">.</span>data
+
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>size <span class="token operator">===</span> CHUNK_SIZE<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">let</span> blob <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Blob</span><span class="token punctuation">(</span><span class="token punctuation">[</span>chunk<span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+        <span class="token keyword">let</span> link <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span>
+        link<span class="token punctuation">.</span>href <span class="token operator">=</span> URL<span class="token punctuation">.</span><span class="token function">createObjectURL</span><span class="token punctuation">(</span>blob<span class="token punctuation">)</span>
+        link<span class="token punctuation">.</span>download <span class="token operator">=</span> FILE_NAME
+        link<span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+        URL<span class="token punctuation">.</span><span class="token function">revokeObjectURL</span><span class="token punctuation">(</span>link<span class="token punctuation">.</span>href<span class="token punctuation">)</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    mediaRecorder<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span>SAMPLE_INTERVAL<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">err</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">warn</span><span class="token punctuation">(</span>err<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> onStop <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  mediaRecorder<span class="token punctuation">.</span><span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>Line 9</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> MediaRecorder <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'extendable-media-recorder'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>使用 <code>extendable-media-recorder</code> 所提供的 <code>MediaRecorder</code> 取代 Web API 內建的 <code>MediaRecorder</code></li>
+</ul>
+<p><strong>Line 12</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">const</span> SAMPLE_RATE <span class="token operator">=</span> <span class="token number">16000</span>
+<span class="token keyword">const</span> CHANNEL_COUNT <span class="token operator">=</span> <span class="token number">1</span>
+<span class="token keyword">const</span> SAMPLE_INTERVAL <span class="token operator">=</span> <span class="token number">250</span>
+<span class="token keyword">const</span> CHUNK_SIZE <span class="token operator">=</span> <span class="token number">16000</span>
+<span class="token keyword">const</span> FILE_NAME <span class="token operator">=</span> <span class="token string">'sample.pcm'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>設定可改用的變數：</p>
+<ul>
+<li><code>SAMPLE_RATE</code>：取樣頻率</li>
+<li><code>CHANNEL_COUNT</code>：Mono channel</li>
+<li><code>SAMPLE_INTERVAL</code>：每次取樣時間</li>
+<li><code>CHUNK_SIZE</code>：每次取樣的 size</li>
+<li><code>FILE_NAME</code>：下載檔名</li>
+</ul>
+<p><strong>Line 19</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> mediaStream <span class="token operator">=</span> <span class="token keyword">await</span> navigator<span class="token punctuation">.</span>mediaDevices<span class="token punctuation">.</span><span class="token function">getUserMedia</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+  audio<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>使用 Web API 內建的 <code>navigator.mediaDevices.getUserMedia()</code> 取得 <code>MediaStream</code></li>
+</ul>
+<p><strong>Line 21</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> audioContext <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">AudioContext</span><span class="token punctuation">(</span><span class="token punctuation">{</span> sampleRate<span class="token punctuation">:</span> SAMPLE_RATE <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>要改變取樣頻率，必須使用 <code>AudioContext</code></li>
+</ul>
+<p><strong>Line 23</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> srcNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MediaStreamAudioSourceNode</span><span class="token punctuation">(</span>audioContext<span class="token punctuation">,</span> <span class="token punctuation">{</span> mediaStream <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> destNode <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MediaStreamAudioDestinationNode</span><span class="token punctuation">(</span>audioContext<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li><code>AudioConext</code> 必須靠 <code>node</code> 方式運行</li>
+<li>由 <code>AudioContext</code> 與 <code>MediaStream</code> 建立 <code>srcNode</code></li>
+<li>由 <code>AudioContext</code> 建立 <code>destNode</code></li>
+</ul>
+<p><strong>Line 28</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">srcNode<span class="token punctuation">.</span><span class="token function">connect</span><span class="token punctuation">(</span>destNode<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>使用 <code>connect()</code> 連結 <code>srcNode</code> 與 <code>destNode</code></li>
+</ul>
+<p><strong>Line 30</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">mediaRecorder <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">MediaRecorder</span><span class="token punctuation">(</span>destNode<span class="token punctuation">.</span>stream<span class="token punctuation">,</span> <span class="token punctuation">{</span>
+  mimeType<span class="token punctuation">:</span> <span class="token string">'audio/wav'</span><span class="token punctuation">,</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>使用 <code>extendable-media-recorder</code> 提供的 <code>MediaRecorder</code>，並改由 <code>destNode</code> 所處理過的 <code>MediaStream </code></li>
+<li>指定 <code>mineType</code> 為 <code>audio/wav</code></li>
+</ul>
+<p><strong>Line 50</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">mediaRecorder<span class="token punctuation">.</span><span class="token function">start</span><span class="token punctuation">(</span>SAMPLE_RATE<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>只要精準設定 <code>SAMPLE_RATE</code> 時間，則每次 <code>dataavailable</code> event 被觸發時，都可取得固定 size 的 chunk</li>
+</ul>
+<p><strong>Line 56</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onStop <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  mediaRecorder<span class="token punctuation">.</span><span class="token function">stop</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>啟動 <code>MediaRecoder</code> 開始錄音</li>
+</ul>
+<p><strong>Line 34</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">mediaRecorder<span class="token punctuation">.</span>ondataavailable <span class="token operator">=</span> e <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> size <span class="token operator">=</span> e<span class="token punctuation">.</span>data<span class="token punctuation">.</span>size
+  <span class="token keyword">let</span> chunk <span class="token operator">=</span> e<span class="token punctuation">.</span>data
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span>size <span class="token operator">===</span> CHUNK_SIZE<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> blob <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Blob</span><span class="token punctuation">(</span><span class="token punctuation">[</span>chunk<span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+    <span class="token keyword">let</span> link <span class="token operator">=</span> document<span class="token punctuation">.</span><span class="token function">createElement</span><span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span>
+    link<span class="token punctuation">.</span>href <span class="token operator">=</span> URL<span class="token punctuation">.</span><span class="token function">createObjectURL</span><span class="token punctuation">(</span>blob<span class="token punctuation">)</span>
+    link<span class="token punctuation">.</span>download <span class="token operator">=</span> FILE_NAME
+    link<span class="token punctuation">.</span><span class="token function">click</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+    URL<span class="token punctuation">.</span><span class="token function">revokeObjectURL</span><span class="token punctuation">(</span>link<span class="token punctuation">.</span>href<span class="token punctuation">)</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>觸發 <code>dataavaliable</code> event 取得音訊</li>
+<li>e.data：取得音訊 array</li>
+<li>e.data.size：取得 音訊 array 的大小</li>
+<li>每次 <code>dataavaliable</code> event 都將 chunk 存檔或傳進 API</li>
+</ul>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>只要精準設定 <code>period</code> 時間，則每次 <code>dataavailable</code> event 被觸發時，都可取得固定 size 的 chunk</li>
+<li>實務發現只有第一次觸發 <code>dataavailable</code> event 時，chunk size 不太準，但之後都很精準，因此可在 <code>dataavailable</code> event 內多一次檢查</li>
+</ul>
+
+          </article>
+          <p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/Web-API/'>#&nbsp;Web API</a>
+    
+  </span>
+  
+</p>
+        </div>
+        <div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/webapi/media-stream/extendable-media-recorder/pcm/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">從麥克風取得 PCM 格式檔案</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/webapi/media-stream/audio-api/wav/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">從麥克風取得 WAV 格式檔案</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="text-center">
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://yabai.tw">點燈坊</a>
+  </p>
+</footer>
+
+  <!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+  </body>
+</html>

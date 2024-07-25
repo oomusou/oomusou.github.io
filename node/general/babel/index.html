@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html 
+>
+  <head>
+  <meta charset="utf-8">
+  <!-- ### DNS Prefetch ### -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+  <!-- ### Preload ### -->
+  
+
+  <!-- ### Meta & Title & Info ### -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>使用 Babel 打造 Node 開發環境 | 點燈坊</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff2601">
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="Node 在後端除了可提供 GraphQL API，如傳統 REST API、Cron Job 也可以由 Node 開發，本文使用 Babel + Node + Docker 打造開發環境。">
+<!-- Keywords -->
+<meta name="keywords" content=", Babel, Node">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+  <!-- ### Import File ### -->
+  
+    <!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+  
+  <!-- ### Site Verification ### -->
+  
+
+  <!-- ### RSS ### -->
+  
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+  <!-- ### WebApp ### -->
+  <meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="點燈坊">
+<meta name="msapplication-starturl" content="https://yabai.tw">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="點燈坊">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+  <!-- ### The Open Graph & Twitter Card Protocol ### -->
+  <meta property="og:title" content="使用 Babel 打造 Node 開發環境 | 點燈坊">
+<meta property="og:site_name" content="點燈坊">
+
+<meta property="og:url" content="https://yabai.tw/node/general/babel/">
+<meta property="og:image"
+	content="https://yabai.tw/apple-touch-icon.png">
+<meta property="og:description" content="Node 在後端除了可提供 GraphQL API，如傳統 REST API、Cron Job 也可以由 Node 開發，本文使用 Babel + Node + Docker 打造開發環境。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-10-24T04:38:12.000Z">
+<meta property="article:modified_time" content="2021-10-24T04:38:12.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", Babel, Node">
+
+
+  <!-- ### Analytics ### -->
+  
+
+
+
+
+
+  <!-- ### Canonical link ### -->
+  <link rel="canonical" href="https://yabai.tw/node/general/babel/">
+  <!-- ### Structured Data ### -->
+  
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://yabai.tw/node/general/babel/",
+    "@type": "BlogPosting",
+    "logo": "https://yabai.tw/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://yabai.tw/node/general/babel/"
+    },
+    "headline": "使用 Babel 打造 Node 開發環境 | 點燈坊",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://yabai.tw/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2021-10-24T04:38:12.000Z",
+    "dateModified": "2024-07-18T09:24:03.152Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/img/default_avatar.png"
+        },
+        "description": "失くすものさえない今が強くなるチャンスよ"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "點燈坊",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://yabai.tw/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", Babel, Node",
+    "description": "Node 在後端除了可提供 GraphQL API，如傳統 REST API、Cron Job 也可以由 Node 開發，本文使用 Babel + Node + Docker 打造開發環境。"
+}
+</script>
+
+  <!-- ### Custom Head ### -->
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+  <body>
+  <header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      點燈坊
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    失くすものさえない今が強くなるチャンスよ
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">ホーム</a>
+      <a href="/series/" class="navbar-link">シリーズ</a>
+      <a href="/tags/" class="navbar-link">タグ</a>
+      <a href="/search" class="navbar-link">検索</a>
+      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+  
+<!-- ## Post ## -->
+<div class="post-container">
+  <div id="post-card" class="card">
+    <div class="card-item-container">
+      <div class="card-inner-cell">
+        <div class="card-header">
+          
+<h1 class="card-title h3 mb-2">使用 Babel 打造 Node 開發環境</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2021-10-24</span>
+</div>
+
+        </div>
+        <div class="card-body">
+          <article id="post-content">
+            <p>Node 在後端除了可提供 GraphQL API，如傳統 REST API、Cron Job 也可以由 Node 開發，本文使用 Babel + Node + Docker 打造開發環境。</p>
+<a id="more"></a>
+
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Node 12.4.0<br>Babel 7.6.4</p>
+<h2 id="Add-Package"><a href="#Add-Package" class="headerlink" title="Add Package"></a>Add Package</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add @babel/core @babel/cli @babel/preset-env @babel/node --dev
+$ yarn add @babel/runtime
+$ yarn add @babel/plugin-transform-runtime --dev
+$ yarn add nodemon rimraf cross-env --dev
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>安裝 Node + Babel 所需 package。</p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add @babel/core @babel/cli @babel/preset-env @babel/node --dev
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>安裝 Babel 相關 package，由於只是轉譯用，安裝成開發用的 <code>devDependency</code> 即可，將來不必包在 docker 內。</p>
+<p>其中 <code>@babel/node</code> 負責將 ES6+ 轉譯成 Node 能執行的 js。</p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add @babel/runtime
+$ yarn add @babel/plugin-transform-runtime --dev
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>為避免 regeneratorRuntime 錯誤而安裝的 package。</p>
+<p>其中 <code>@babel/runtime</code> 為 production 使用，而 <code>@babel/plugin-transform-runtime</code> 為 development 使用。</p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add nodemon rimraf cross-env --dev
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>安裝 nodemon 可監控檔案修改重新 Babel 轉譯與重啟 Node。</p>
+<p>安裝 rimraf 可令 <code>yarn clean</code> 跨平台刪除 dist 目錄。</p>
+<p>安裝 cross-env 可跨平台設定 <code>NODE_ENV</code> 環境變數。</p>
+<p><img src="/images/node/general/babel/babel000.png" alt="babel000"></p>
+<h2 id="Babel-Configuration"><a href="#Babel-Configuration" class="headerlink" title="Babel Configuration"></a>Babel Configuration</h2><p><strong>.babelrc</strong></p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"presets"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"@babel/preset-env"</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"plugins"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"@babel/transform-runtime"</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 project 根目錄下建立 <code>.babelrc</code>，使用剛剛安裝的 <code>@babel/preset-env</code> 的設定將 ES6+ 轉譯。</p>
+<p><img src="/images/node/general/babel/babel001.png" alt="babel001"></p>
+<h2 id="Nodemon-Configuration"><a href="#Nodemon-Configuration" class="headerlink" title="Nodemon Configuration"></a>Nodemon Configuration</h2><p><strong>nodemon.json</strong></p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"exec"</span><span class="token operator">:</span> <span class="token string">"yarn dev"</span><span class="token punctuation">,</span>
+  <span class="token property">"watch"</span><span class="token operator">:</span> <span class="token punctuation">[</span><span class="token string">"src/*"</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"ext"</span><span class="token operator">:</span> <span class="token string">"js, json"</span><span class="token punctuation">,</span>
+  <span class="token property">"env"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"NODE_ENV"</span><span class="token operator">:</span> <span class="token string">"development"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><strong>exec</strong>：當有變動時，將執行 <code>yarn dev</code></li>
+<li><strong>watch</strong>：Nodemon 將持續觀察的目錄</li>
+<li><strong>ext</strong>：Nodemon 將持續觀察的 extension</li>
+<li><strong>env</strong>：設定 Nodemon 執行時的 environment variable</li>
+</ul>
+<p><img src="/images/node/general/babel/babel002.png" alt="babel002"></p>
+<h2 id="NPM-Script"><a href="#NPM-Script" class="headerlink" title="NPM Script"></a>NPM Script</h2><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+  <span class="token property">"serve"</span><span class="token operator">:</span> <span class="token string">"nodemon"</span><span class="token punctuation">,</span>
+  <span class="token property">"start"</span><span class="token operator">:</span> <span class="token string">"node ./dist/index.js"</span><span class="token punctuation">,</span>
+  <span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"babel-node ./src/index.js"</span><span class="token punctuation">,</span>
+  <span class="token property">"prod"</span><span class="token operator">:</span> <span class="token string">"NODE_ENV=production yarn clean &amp;&amp; yarn build &amp;&amp; yarn start"</span><span class="token punctuation">,</span>
+  <span class="token property">"clean"</span><span class="token operator">:</span> <span class="token string">"rimraf dist"</span><span class="token punctuation">,</span>
+  <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"babel ./src --out-dir dist"</span><span class="token punctuation">,</span>
+  <span class="token property">"docker:build"</span><span class="token operator">:</span> <span class="token string">"NODE_ENV=production yarn clean &amp;&amp; yarn build &amp;&amp; docker build -t $npm_package_name:$npm_package_version ."</span><span class="token punctuation">,</span>
+  <span class="token property">"docker:up"</span><span class="token operator">:</span> <span class="token string">"docker-compose up -d"</span><span class="token punctuation">,</span>
+  <span class="token property">"docker:down"</span><span class="token operator">:</span> <span class="token string">"docker-compose down"</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>本文最關鍵的就是 Yarn script 配置。</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"serve"</span><span class="token operator">:</span> <span class="token string">"nodemon"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>yarn serve</code> 執行 <code>nodemon</code>。</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"start"</span><span class="token operator">:</span> <span class="token string">"node ./dist/index.js"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>yarn start</code> 使用 <code>node</code> 執行 Babel 轉譯後的 js。</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"babel-node ./src/index.js"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>yarn dev</code> 使用 <code>babel-node</code> 將 ES6+ 轉譯成 Node 能執行的 js 在記憶體內並執行之。</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"prod"</span><span class="token operator">:</span> <span class="token string">"yarn clean &amp;&amp; cross-env NODE_ENV=production yarn build &amp;&amp; yarn start"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>yarn prod</code> 依序執行以下步驟：</p>
+<ul>
+<li><code>yarn clean</code> 刪除 <code>dist</code> 目錄</li>
+<li><code>yarn build</code> 設定 <code>NODE_ENV</code> 為 <code>production</code>，並使用 Babel 轉譯成 Node 能執行的 js</li>
+<li><code>yarn start</code> 使用 <code>node</code> 執行 Babel 轉譯後的 js</li>
+</ul>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"clean"</span><span class="token operator">:</span> <span class="token string">"rimraf dist"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>yarn clean</code> 刪除 <code>dist</code> 目錄。</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"babel ./src --out-dir dist"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>yarn build</code> 使用 Babel 將 <code>src</code> 目錄下的 ES6+ 轉譯成 Node 能執行的 js 到 <code>dist</code> 目錄下。</p>
+<blockquote>
+<p>將來要包進 Docker 的 js 也是 <code>dist</code> 目錄，而非 <code>src</code> 目錄</p>
+</blockquote>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">"docker:build": "yarn clean && cross-env NODE_ENV=production yarn build && docker build -t $npm_package_name:$npm_package_version .",
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>yarn docker:build</code> 與 <code>yarn prod</code> 類似，差異只在最後 <code>docker:build</code> 包成 image。</p>
+<p>使用了 <code>$npm_package_name</code> 與 <code>$npm_package_version</code> 直接讀取 <code>package.json</code> 的 <code>name</code> 與 <code>version</code>。</p>
+<p><img src="/images/node/general/babel/babel003.png" alt="babel003"></p>
+<h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">FROM node:lts-alpine
+WORKDIR /usr/app
+COPY package.json .
+RUN apk add tzdata
+RUN yarn install --production
+COPY dist/* ./
+CMD [ "node", "index.js" ]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 <code>server</code> 目錄下建立 <code>dockerfile</code>，由於我們要另外安裝 package，且將自己寫的 js 包進 Docker image，因此不可直接使用 <code>docker-compose.yml</code>。</p>
+<p>第 1 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">FROM node:lts-alpine
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用最新 LTS 版的 <code>node:lts-alpine</code> 為基底建立 image。</p>
+<blockquote>
+<p>建議使用 <code>alpine</code> 為 production image，size 會小很多</p>
+</blockquote>
+<p>第 2 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">WORKDIR /usr/app
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將 working directory 切換到 <code>/usr/app</code>，相當於：</p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">mkdir /usr/app
+cd /usr/app
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>稍後 <code>COPY</code>、<code>RUN</code> 與 <code>CMD</code> 都會在此目錄下。</p>
+<p>第 3 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">COPY package.json .
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將根目錄的 <code>package.json</code> 複製到 Docker 內的 <code>/usr/app</code>，因為要使用 <code>yarn install</code> 安裝 package。</p>
+<p>第 4 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">RUN apk add tzdata
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>另外使用 <code>apk</code> 新增 <code>tzdata</code>，稍後可調整 timezone。</p>
+<p>第 5 行</p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">RUN yarn install --production
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>執行 <code>yarn install</code> 安裝 <code>dependencies</code> 下的 package。</p>
+<blockquote>
+<p>不需安裝 Babel 所需套件進 Docker，因此加上 <code>--production</code></p>
+</blockquote>
+<p>第 6 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">COPY dist/* ./
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將 Babel 編譯過的 js 複製進 Docker 內的 <code>/usr/app</code> 。</p>
+<p>第 7 行</p>
+<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">CMD [ "node", "index.js" ]
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>執行 Docker 內的 <code>/usr/app/index.js</code> 啟動 Node。</p>
+<h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3"</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token key atrule">node</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> node<span class="token punctuation">-</span>babel<span class="token punctuation">:</span>$<span class="token punctuation">{</span>TAG<span class="token punctuation">}</span>
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> MyNode
+    <span class="token key atrule">restart</span><span class="token punctuation">:</span> always
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>PORT<span class="token punctuation">}</span><span class="token punctuation">:</span><span class="token number">4000</span>
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> TZ=Asia/Taipei
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">environment</span><span class="token punctuation">:</span>
+  <span class="token punctuation">-</span> TZ=Asia/Taipei
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>設定 Docker 的 timezone 為 <code>Asia/Taipei</code>。</p>
+<p><img src="/images/node/general/babel/babel004.png" alt="babel004"></p>
+<h2 id="env"><a href="#env" class="headerlink" title=".env"></a>.env</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript">TAG<span class="token operator">=</span><span class="token number">1.0</span><span class="token punctuation">.</span><span class="token number">0</span>
+PORT<span class="token operator">=</span><span class="token number">4000</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>設定 <code>docker-compose.yml</code> 的環境變數。</p>
+<p><img src="/images/node/general/babel/babel005.png" alt="babel005"></p>
+<h2 id="Start-Node"><a href="#Start-Node" class="headerlink" title="Start Node"></a>Start Node</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn serve
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>yarn serve</code> 啟動 Node，適合 development 使用。</p>
+<p><img src="/images/node/general/babel/babel006.png" alt="babel006"></p>
+<h2 id="Babel-Transpile"><a href="#Babel-Transpile" class="headerlink" title="Babel Transpile"></a>Babel Transpile</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn build
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>yarn build</code> 命令 Babel 將 <code>src</code> 目錄下所有 js 轉譯成 Node 能執行的 js 到 <code>dist</code> 目錄下。</p>
+<p><img src="/images/node/general/babel/babel007.png" alt="babel007"></p>
+<h2 id="Build-Image"><a href="#Build-Image" class="headerlink" title="Build Image"></a>Build Image</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn docker:build
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>yarn docker:build</code> 命令 Babel 重新轉譯，並切包成 Docker image。</p>
+<p><img src="/images/node/general/babel/babel008.png" alt="babel008"></p>
+<h2 id="Run-Docker"><a href="#Run-Docker" class="headerlink" title="Run Docker"></a>Run Docker</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn docker:up
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>yarn docker:up</code> 啟動 Docker。</p>
+<p><img src="/images/node/general/babel/babel009.png" alt="babel009"></p>
+<h2 id="Stop-Docker"><a href="#Stop-Docker" class="headerlink" title="Stop Docker"></a>Stop Docker</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn docker:down
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>yarn docker:up</code> 結束 Docker。</p>
+<p><img src="/images/node/general/babel/babel010.png" alt="babel010"></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>Node 也能享受 ES6+ 最新語法與 ES Module，只要設定好 Babel 環境即可</li>
+</ul>
+
+          </article>
+          <p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/Babel/'>#&nbsp;Babel</a>
+    
+    <a class="post-tags-list-item" href='/tags/Node/'>#&nbsp;Node</a>
+    
+  </span>
+  
+</p>
+        </div>
+        <div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/node/general/cross-env/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 cross-env 解決跨平台設置 NODE_ENV 問題</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/node/feature/top-level-await/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">在 Node 使用 Top Level Await</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="text-center">
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://yabai.tw">點燈坊</a>
+  </p>
+</footer>
+
+  <!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+  </body>
+</html>
