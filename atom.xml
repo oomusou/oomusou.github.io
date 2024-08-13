@@ -6,7 +6,7 @@
   <link href="https://yabai.tw/atom.xml" rel="self"/>
   
   <link href="https://yabai.tw/"/>
-  <updated>2024-08-13T02:38:53.568Z</updated>
+  <updated>2024-08-13T14:38:41.396Z</updated>
   <id>https://yabai.tw/</id>
   
   <author>
@@ -15,6 +15,92 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>安裝 Flutter 開發環境 (macOS)</title>
+    <link href="https://yabai.tw/flutter/general/setup/macos/"/>
+    <id>https://yabai.tw/flutter/general/setup/macos/</id>
+    <published>2024-08-13T14:34:49.000Z</published>
+    <updated>2024-08-13T14:38:41.396Z</updated>
+    
+    <content type="html"><![CDATA[<p>Flutter 號稱 Build for any screen，在 macOS 除了要安裝 Flutter SDK 外，還必須同時安裝 Android Studio 與 Xcode ，最後可使用 Flutter Doctor 檢查開發環境是否安裝成功。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Sonoma<br>Flutter 3.24</p><h2 id="Prerequisites"><a href="#Prerequisites" class="headerlink" title="Prerequisites"></a>Prerequisites</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ sudo softwareupdate --install-rosetta --agree-to-license<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>安裝 Rosetta 2</li></ul><blockquote><p>由於有些 Flutter component 尚未支援 Apple Silicon，必須靠 Rosetta 2 轉譯，若已經安裝 Rosetta 2 可忽略此步驟</p></blockquote><h2 id="Install-Flutter-SDK"><a href="#Install-Flutter-SDK" class="headerlink" title="Install Flutter SDK"></a>Install Flutter SDK</h2><p><img src="/images/flutter/general/setup/macos/setup01.webp" alt="setup01"></p><ul><li>從 <a href="https://docs.flutter.dev/get-started/install/macos/mobile-ios" target="_blank" rel="noopener">Fluttter 官網</a> 下載最新版 SDK，並解壓縮到 <code>~/Flutter</code> 目錄下</li></ul><p><img src="/images/flutter/general/setup/macos/setup07.webp" alt="setup07"></p><ul><li>在 <code>Flutter</code> 目錄下依版本建立 <code>目錄</code></li></ul><h2 id="Add-Flutter-SDK-to-Path"><a href="#Add-Flutter-SDK-to-Path" class="headerlink" title="Add Flutter SDK to Path"></a>Add Flutter SDK to Path</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">export PATH=$HOME/bin:$HOME/.local/bin:/usr/local/bin:$HOME/Flutter/3.24/bin:$PATH<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>將 <code>$HOME/Flutter/3.24/bin</code> 加入 <code>PATH</code></li></ul><p><img src="/images/flutter/general/setup/macos/setup08.webp" alt="setup08"></p><h2 id="Android-Studio"><a href="#Android-Studio" class="headerlink" title="Android Studio"></a>Android Studio</h2><p><img src="/images/flutter/general/setup/macos/setup02.webp" alt="flutter002"></p><p>安裝 Android Studio 有兩種方法：</p><ul><li>使用 <a href="https://www.jetbrains.com/toolbox-app/" target="_blank" rel="noopener">JetBrains Toolbox</a> 安裝 Android Studio</li><li>到 <a href="https://developer.android.com/studio" target="_blank" rel="noopener">Android Studio 官網</a> 下載 Android Studio</li></ul><blockquote><p>若你有使用其他 JetBrains 產品，如 WebStorm … 等，則建議使用 JetBrains Toolbox 安裝 Android Studio，如此可由 JetBrains Toolbox 幫你管理 Android Studio 版本與開啟 Flutter 專案</p><p>若從官網下載 Android Studio，由於安裝目錄不同，JetBrains Toolbox 會抓不到 Android Studio 而無法管理</p></blockquote><p><img src="/images/flutter/general/setup/macos/setup03.webp" alt="flutter003"></p><ul><li>按 <code>Next</code> 繼續</li></ul><p><img src="/images/flutter/general/setup/macos/setup10.webp" alt="flutter010"></p><ul><li>選擇 <code>Standard</code> 即可，之後只要一直按 <code>Next</code> 即可</li></ul><h2 id="SDK-Manager"><a href="#SDK-Manager" class="headerlink" title="SDK Manager"></a>SDK Manager</h2><p><img src="/images/flutter/general/setup/macos/setup11.webp" alt="flutter011"></p><p><em><strong>More Action -&gt; SDK Manager</strong></em></p><p><img src="/images/flutter/general/setup/macos/setup12.webp" alt="flutter012"></p><ul><li><strong>SDK Tools</strong><ul><li><code>Android SDK Build-Tools</code>：<code>On</code> </li><li><code>Android SDK Command-line Tools (latest)</code>：<code>On</code></li></ul></li></ul><h2 id="Plugin"><a href="#Plugin" class="headerlink" title="Plugin"></a>Plugin</h2><p><img src="/images/flutter/general/setup/macos/setup04.webp" alt="flutter004"></p><ul><li><strong>Pluggins</strong><ul><li>安裝 <code>Flutter</code> pluggin，會順便安裝 <code>Dart</code> pluggin</li><li>安裝完重新啟動 Android Studio</li></ul></li></ul><pre class="line-numbers highlight language-shell"><code class="language-shell">$ flutter doctor --android-licenses<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>接受 Android license，一路上按 <code>y</code> 即可</li></ul><h2 id="Xcode"><a href="#Xcode" class="headerlink" title="Xcode"></a>Xcode</h2><p><img src="/images/flutter/general/setup/macos/setup05.webp" alt="flutter005"></p><ul><li>由 App Store 安裝 Xcode</li></ul><pre class="line-numbers highlight language-shell"><code class="language-shell">$ sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer$ sudo xcodebuild -runFirstLaunch<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><ul><li>安裝完 Xcode 立即執行</li></ul><pre class="line-numbers highlight language-shell"><code class="language-shell">$ brew install cocoapods<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>使用 Homebrew 安裝 CocoaPods</li></ul><pre class="line-numbers highlight language-shell"><code class="language-shell">$ xcodebuild -downloadPlatform iOS<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>安裝 iOS Simulator</li></ul><pre class="line-numbers highlight language-shell"><code class="language-shell">$ sudo xcodebuild -license<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>接受 Xcode license，輸入 <code>agree</code> 即可</li></ul><h2 id="VS-Code"><a href="#VS-Code" class="headerlink" title="VS Code"></a>VS Code</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ brew install --cask visual-studio-code<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>使用 Homebrew 安裝 VS Code</li></ul><p><img src="/images/flutter/general/setup/macos/setup06.webp" alt="flutter006"></p><ul><li>安裝 Flutter extension</li></ul><h2 id="Chrome"><a href="#Chrome" class="headerlink" title="Chrome"></a>Chrome</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ brew install --cask google-chrome<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>使用 Homebrew 安裝 Chrome</li></ul><h2 id="Flutter-Doctor"><a href="#Flutter-Doctor" class="headerlink" title="Flutter Doctor"></a>Flutter Doctor</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ flutter doctor -v<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li>使用 Flutter Doctor 檢查 Flutter 開發環境是否安裝成功</li></ul><p><img src="/images/flutter/general/setup/macos/setup09.webp" alt="flutter009"></p><ul><li>全打勾就表示環境安裝成功</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>安裝 Flutter 開發環境尚稱平順，唯需同時安裝 Android Studio 與 Xcode，因此需要大量 SSD 空間</li><li>Intel 的 macOS 不需安裝 Rosetta 2，但 Apple Silicon 則要安裝 Rosetta 2</li><li>本安裝流程已經整合開發 Desktop、iOS、Android 與 Web 的所有流程，安裝好可同時開發 Desktop、iOS、Android 與 Web</li><li>可隨時使用 <code>flutter doctor -v</code> 檢查是否有遺漏的工具或套件還沒安裝，安裝順序沒那麼重要，只要最後該安裝的都有安裝即可</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;Flutter 號稱 Build for any screen，在 macOS 除了要安裝 Flutter SDK 外，還必須同時安裝 Android Studio 與 Xcode ，最後可使用 Flutter Doctor 檢查開發環境是否安裝成功。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="macOS" scheme="https://yabai.tw/tags/macOS/"/>
+    
+    <category term="Android Studio" scheme="https://yabai.tw/tags/Android-Studio/"/>
+    
+    <category term="Flutter" scheme="https://yabai.tw/tags/Flutter/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用 Android Studio 啟動 AVD</title>
+    <link href="https://yabai.tw/android/avd/studio/open/"/>
+    <id>https://yabai.tw/android/avd/studio/open/</id>
+    <published>2024-08-13T14:01:01.000Z</published>
+    <updated>2024-08-13T14:02:39.263Z</updated>
+    
+    <content type="html"><![CDATA[<p>在 Android 有兩種啟動 Android Virtual Device 方式，結果稍微不一樣，但都支援 Flutter 的 Hot Reload。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Android Studio 2024.1</p><h2 id="Virtual-Device-Manager"><a href="#Virtual-Device-Manager" class="headerlink" title="Virtual Device Manager"></a>Virtual Device Manager</h2><p><img src="/images/android/avd/studio/open/open01.webp" alt="adv001"></p><ul><li>在 <code>Welcome to Android Studio</code> 下執行 <code>Virtual Device Manager</code></li></ul><p><img src="/images/android/avd/studio/open/open02.webp" alt="adv002"></p><ul><li>進入 Device Manager 後，選擇 AVD 執行</li></ul><p><img src="/images/android/avd/studio/open/open03.webp" alt="adv003"></p><ul><li>AVD 會以獨立的視窗執行</li></ul><h2 id="Device-Manager-in-Project"><a href="#Device-Manager-in-Project" class="headerlink" title="Device Manager in Project"></a>Device Manager in Project</h2><p><img src="/images/android/avd/studio/open/open04.webp" alt="adv004"></p><ul><li>進入 Device Manager 後，選擇 AVD 執行</li></ul><p><img src="/images/android/avd/studio/open/open05.webp" alt="adv005"></p><ul><li>在 Running Devices 按下 power 啟動 Android</li><li>AVD 以 Dock 形式執行在 Android Studio 內</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>若想將 AVD 放在外接螢幕時，則建議在 project 外使用 Virtual Device Manager 啟動，如此可將 AVD 放在其他螢幕</li><li>若想將 AVD 與 Android Studio 放在同一個螢幕，則建議在 project 內使用 Device Manager 啟動，如此同一個螢幕可以寫 Code 與看結果</li><li>無論使用哪種方式，都可順利搭配 Hot Reload</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;在 Android 有兩種啟動 Android Virtual Device 方式，結果稍微不一樣，但都支援 Flutter 的 Hot Reload。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Android Studio" scheme="https://yabai.tw/tags/Android-Studio/"/>
+    
+    <category term="AVD" scheme="https://yabai.tw/tags/AVD/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用 Android Studio 建立 AVD</title>
+    <link href="https://yabai.tw/android/avd/studio/create/"/>
+    <id>https://yabai.tw/android/avd/studio/create/</id>
+    <published>2024-08-13T13:49:20.000Z</published>
+    <updated>2024-08-13T13:51:46.350Z</updated>
+    
+    <content type="html"><![CDATA[<p>AVD 全名為 Android Virtual Device，為 Android 的模擬器，讓我們可測試不同 Android Device 與 API 版本，可在 Android Studio 內以 GUI 方式建立。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Android Studio 2024.1</p><h2 id="Virtual-Device-Manager"><a href="#Virtual-Device-Manager" class="headerlink" title="Virtual Device Manager"></a>Virtual Device Manager</h2><p><img src="/images/android/avd/studio/create/create01.webp" alt="avd001"></p><p><em><strong>More Actions -&gt; Virtual Device Manager</strong></em></p><ul><li>使用 Virtual Device Manager 建立 AVD</li></ul><h2 id="Device-Manager"><a href="#Device-Manager" class="headerlink" title="Device Manager"></a>Device Manager</h2><p><img src="/images/android/avd/studio/create/create02.webp" alt="avd002"></p><ul><li>AVD 管理介面</li></ul><h2 id="Create-Vitual-Device"><a href="#Create-Vitual-Device" class="headerlink" title="Create Vitual Device"></a>Create Vitual Device</h2><p><img src="/images/android/avd/studio/create/create03.webp" alt="avd003"></p><ul><li><code>+</code>：建立 AVD</li></ul><h2 id="Select-Hardware"><a href="#Select-Hardware" class="headerlink" title="Select Hardware"></a>Select Hardware</h2><p><img src="/images/android/avd/studio/create/create04.webp" alt="avd004"></p><ul><li>選擇要模擬的硬體</li></ul><h2 id="System-Image"><a href="#System-Image" class="headerlink" title="System Image"></a>System Image</h2><p><img src="/images/android/avd/studio/create/create05.webp" alt="avd005"></p><ul><li>選擇要使用的 image</li></ul><h2 id="SDK-Component-Installer"><a href="#SDK-Component-Installer" class="headerlink" title="SDK Component Installer"></a>SDK Component Installer</h2><p><img src="/images/android/avd/studio/create/create06.webp" alt="avd006"></p><ul><li>下載 image</li></ul><p><img src="/images/android/avd/studio/create/create07.webp" alt="avd007"></p><ul><li>Image 下載完畢，按 <code>Next</code> 繼續</li></ul><h2 id="Android-Virtual-Device"><a href="#Android-Virtual-Device" class="headerlink" title="Android Virtual Device"></a>Android Virtual Device</h2><p><img src="/images/android/avd/studio/create/create08.webp" alt="avd008"></p><ul><li>可自訂 AVD 名稱，按 <code>Finish</code> 完成</li></ul><h2 id="Run-Device"><a href="#Run-Device" class="headerlink" title="Run Device"></a>Run Device</h2><p><img src="/images/android/avd/studio/create/create09.webp" alt="avd009"></p><ul><li><code>|&gt;</code>：執行 AVD</li></ul><p><img src="/images/android/avd/studio/create/create10.webp" alt="avd010"></p><ul><li>Android 模擬器順利執行在 macOS</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>AVD 安裝過程尚稱平順，唯 Android Studio + AVD 同時開啟，記憶體已經接近 8GB，相當吃記憶體</li></ul><h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><ul><li><a href="https://developer.android.com/studio" target="_blank" rel="noopener">Android Studio</a>, <a href="https://developer.android.com/studio/run/managing-avds" target="_blank" rel="noopener">Create and manage virtual devices</a></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;AVD 全名為 Android Virtual Device，為 Android 的模擬器，讓我們可測試不同 Android Device 與 API 版本，可在 Android Studio 內以 GUI 方式建立。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Android Studio" scheme="https://yabai.tw/tags/Android-Studio/"/>
+    
+    <category term="AVD" scheme="https://yabai.tw/tags/AVD/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>使用 CLI 啟動 AVD</title>
+    <link href="https://yabai.tw/android/avd/cli/open/"/>
+    <id>https://yabai.tw/android/avd/cli/open/</id>
+    <published>2024-08-13T12:02:06.000Z</published>
+    <updated>2024-08-13T12:07:48.775Z</updated>
+    
+    <content type="html"><![CDATA[<p>AVD 也可直接從 CLI 啟動，不必從 Android Studio 啟動。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Android 14</p><h2 id="List-AVD"><a href="#List-AVD" class="headerlink" title="List AVD"></a>List AVD</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ cd ~/Library/Android/SDK/emulator$ ./emulator -list-avds<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre><ul><li>進入 <code>~/Library/Android/SDK/emulator</code> 目錄</li><li><code>emulator -list-avds</code>：列出所有 AVD</li></ul><p><img src="/images/android/avd/cli/open/open01.webp" alt="avd01"></p><h2 id="Open-AVD"><a href="#Open-AVD" class="headerlink" title="Open AVD"></a>Open AVD</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ ./emulator -avd Pixel8Pro35<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre><ul><li><code>emulator -avd</code>：指定 AVD 名稱並啟動</li></ul><p><img src="/images/android/avd/cli/open/open02.webp" alt="avd02"></p><h2 id="Android"><a href="#Android" class="headerlink" title="Android"></a>Android</h2><p><img src="/images/android/avd/cli/open/open03.webp" alt="avd03"></p><ul><li>Android 模擬器在 macOS 中執行</li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>由於模擬器可獨立於 Android Studio 啟動，因此亦可只是用 Visual Studio Code 開發，或者只將 Android Studio 視為 IDE，但使用 CLI 啟動 Android 模擬器</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;AVD 也可直接從 CLI 啟動，不必從 Android Studio 啟動。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Android" scheme="https://yabai.tw/tags/Android/"/>
+    
+    <category term="AVD" scheme="https://yabai.tw/tags/AVD/"/>
+    
+  </entry>
   
   <entry>
     <title>動詞受身形 (無動作者動作)</title>
@@ -345,90 +431,6 @@
     <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
     
     <category term="な形容詞" scheme="https://yabai.tw/tags/%E3%81%AA%E5%BD%A2%E5%AE%B9%E8%A9%9E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>どんな (任何的)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/interrogative/donnna/donnna02/"/>
-    <id>https://yabai.tw/nihonngo/grammar/interrogative/donnna/donnna02/</id>
-    <published>2024-08-11T23:58:16.000Z</published>
-    <updated>2024-08-12T08:02:05.712Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>連体詞</code> <code>どんな</code> 可表示 <code>任何的</code>。</p><a id="more"></a><h2 id="単語"><a href="#単語" class="headerlink" title="単語"></a>単語</h2><p>どんな [1]：<code>連体</code> 任何的。</p><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>入学試験ではどんな不正行為も見逃すわけにはいかない。</code></p><p>在入學考試上・任何違法行為都不能寬恕。</p><ul><li>入学試験(にゅうがくしけん) [5]：<code>名</code> 入學考試</li><li>で：<code>格助</code> 表 <code>發生位置</code></li><li>は：<code>副助</code> 表 <code>主題</code></li><li>どんな [1]：<code>連体</code> 任何的</li><li>不正行為(ふせいこうい) [4]：<code>名</code> 違法行為</li><li>も：<code>格助</code> 表 <code>也</code></li><li>見逃(みのが)す [3]：<code>動I</code> <code>他動</code> <code>辞書形</code> 寬恕<ul><li>見逃すわけにはいかない [3]：<code>不能</code> 不能寬恕</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;連体詞&lt;/code&gt; &lt;code&gt;どんな&lt;/code&gt; 可表示 &lt;code&gt;任何的&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="連体詞" scheme="https://yabai.tw/tags/%E9%80%A3%E4%BD%93%E8%A9%9E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>どんな (怎樣的？)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/interrogative/donnna/donnna01/"/>
-    <id>https://yabai.tw/nihonngo/grammar/interrogative/donnna/donnna01/</id>
-    <published>2024-08-11T23:54:02.000Z</published>
-    <updated>2024-08-12T08:02:05.653Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>連体詞</code> <code>どんな</code> 可表示 <code>怎樣的？</code>。</p><a id="more"></a><h2 id="単語"><a href="#単語" class="headerlink" title="単語"></a>単語</h2><p>どんな [1]：<code>連体</code> 怎樣的。</p><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>どんな問題が試験に出るか分からない。</code> </p><p>我不知道會出怎樣的考題。</p><ul><li>どんな [1]：<code>連体</code> 怎樣的 </li><li>問題(もんだい) [0]：<code>名</code> 問題</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>試験(しけん) [2]：<code>名</code> 考試</li><li>に：<code>格助</code> 表 <code>存在位置</code></li><li>出(で)る [1]：<code>動II</code> <code>自動</code> 出來</li><li>か：<code>副助</code> 表 <code>或</code></li><li>分(わ)かる [2]：<code>動I</code> <code>自動</code> <code>辞書形</code> 清楚<ul><li>分からない [3]：<code>ない形</code> 不清楚</li></ul></li></ul><p>A：<code>奈良はどんな町ですか。</code></p><p>B：<code>古い町です。</code></p><p>A：奈良是個怎樣的城市？</p><p>B：是個古老的城市。</p><ul><li>奈良(なら) [1]：<code>名</code> 奈良</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>どんな [1]：<code>連体</code> 怎樣的</li><li>町(まち) [2]：<code>名</code> 城市</li><li>です [0]：<code>助動</code> 是<ul><li>ですか [0]：<code>疑問</code> 是嗎？</li></ul></li><li>古(ふる)い [2]：<code>い形容</code> 古老的</li></ul><p><code>彼はどんな人ですか。</code></p><p>他是怎樣的人？</p><ul><li>彼(かれ) [1]：<code>代</code> 他</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>どんな [1]：<code>連体</code> 怎樣的</li><li>人(ひと) [0]：<code>名</code> 人</li><li>です [0]：<code>助動</code> 是<ul><li>ですか [0]：<code>疑問</code> 是嗎？</li></ul></li></ul><p><code>どんなスポーツが好きですか。</code></p><p>你喜歡什麼體育運動？</p><ul><li>どんな [1]：<code>連体</code> 怎樣的</li><li>スポーツ [2]：<code>名</code> 運動</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>好(す)き [2]：<code>な形容</code> 喜歡的</li><li>です [0]：<code>助動</code> 是<ul><li>ですか [0]：<code>疑問</code> 是嗎？</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;連体詞&lt;/code&gt; &lt;code&gt;どんな&lt;/code&gt; 可表示 &lt;code&gt;怎樣的？&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="連体詞" scheme="https://yabai.tw/tags/%E9%80%A3%E4%BD%93%E8%A9%9E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>発表</title>
-    <link href="https://yabai.tw/nihonngo/vocabulary/ha/happyou/"/>
-    <id>https://yabai.tw/nihonngo/vocabulary/ha/happyou/</id>
-    <published>2024-08-11T22:57:20.000Z</published>
-    <updated>2024-08-12T08:02:05.626Z</updated>
-    
-    <content type="html"><![CDATA[<p>はっぴょう [0]：<code>名</code> 發表。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>この会社は新型のスマートフォンを発表しました。</code></p><p>這家公司發布了新款智慧型手機。</p><ul><li>この [0]：<code>連体</code> 這個</li><li>会社(かいしゃ) [0]：<code>名</code> 公司</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>新型(しんがた) [0]：<code>名</code> 新型</li><li>の：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>スマートフォン [5]：<code>名</code> smart phone、智慧型手機</li><li>を：<code>格助</code> 接受 <code>発表する</code> 的 <code>賓語</code></li><li>発表(はっぴょう) [0]：<code>名</code> 發表<ul><li>発表する [0]：<code>動III</code> <code>他動</code> <code>辞書形</code> 發表</li><li>発表します [6]：<code>ます形</code> 發表</li><li>発表しました [6]：<code>た形</code> 發表了</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;はっぴょう [0]：&lt;code&gt;名&lt;/code&gt; 發表。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>スマートフォン</title>
-    <link href="https://yabai.tw/nihonngo/vocabulary/su/suma-tofonn/"/>
-    <id>https://yabai.tw/nihonngo/vocabulary/su/suma-tofonn/</id>
-    <published>2024-08-11T22:52:53.000Z</published>
-    <updated>2024-08-12T08:02:05.600Z</updated>
-    
-    <content type="html"><![CDATA[<p>スマートフォン [5]：<code>名</code> smart phone、智慧型手機。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>この会社は新型のスマートフォンを発表しました。</code></p><p>這家公司發布了新款智慧型手機。</p><ul><li>この [0]：<code>連体</code> 這個</li><li>会社(かいしゃ) [0]：<code>名</code> 公司</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>新型(しんがた) [0]：<code>名</code> 新型</li><li>の：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>スマートフォン [5]：<code>名</code> smart phone、智慧型手機</li><li>を：<code>格助</code> 接受 <code>発表する</code> 的 <code>賓語</code></li><li>発表(はっぴょう) [0]：<code>名</code> 發表<ul><li>発表する [0]：<code>動III</code> <code>他動</code> <code>辞書形</code> 發表</li><li>発表します [6]：<code>ます形</code> 發表</li><li>発表しました [6]：<code>た形</code> 發表了</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;スマートフォン [5]：&lt;code&gt;名&lt;/code&gt; smart phone、智慧型手機。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
     
   </entry>
   
