@@ -6,7 +6,7 @@
   <link href="https://yabai.tw/atom.xml" rel="self"/>
   
   <link href="https://yabai.tw/"/>
-  <updated>2024-11-19T13:24:26.528Z</updated>
+  <updated>2024-11-20T13:03:11.111Z</updated>
   <id>https://yabai.tw/</id>
   
   <author>
@@ -15,6 +15,149 @@
   </author>
   
   <generator uri="https://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>MediaQuery 取得字型放大倍率</title>
+    <link href="https://yabai.tw/flutter/helper/mediaquery/textscaler/scale/"/>
+    <id>https://yabai.tw/flutter/helper/mediaquery/textscaler/scale/</id>
+    <published>2024-11-20T13:00:29.000Z</published>
+    <updated>2024-11-20T13:03:11.111Z</updated>
+    
+    <content type="html"><![CDATA[<p>當使用者字型將字型放大後，可能造成跑版，可藉由 MediaQuery 取得字型放大倍率後，做相對應的處理。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Flutter 3.24</p><h2 id="Flutter"><a href="#Flutter" class="headerlink" title="Flutter"></a>Flutter</h2><p><img src="/images/flutter/helper/mediaquery/textscaler/scale/scale01.webp" alt="scale01"></p><ul><li>Android 成功使用 <code>mediaQuery.textScaler.scale()</code> 取得目前縮放比例為 <code>1.00</code></li></ul><p><img src="/images/flutter/helper/mediaquery/textscaler/scale/scale04.webp" alt="scale04"></p><ul><li><em><strong>設定 -&gt; 螢幕</strong></em></li></ul><p><img src="/images/flutter/helper/mediaquery/textscaler/scale/scale05.webp" alt="scale05"></p><ul><li><em><strong>顯示大小和文字</strong></em></li></ul><p><img src="/images/flutter/helper/mediaquery/textscaler/scale/scale02.webp" alt="scale02"></p><ul><li><code>字型大小</code>：將 <code>字型大小</code> 拉到 <code>最大</code></li><li><code>顯示大小</code>：<code>顯示大小</code> 隨便，<code>不會</code> 影響結果</li></ul><p><img src="/images/flutter/helper/mediaquery/textscaler/scale/scale03.webp" alt="scale03"></p><ul><li>Android 成功使用 <code>mediaQuery.textScaler.scale()</code> 取得目前縮放比例為 <code>2.00</code></li></ul><h2 id="MediaQuery"><a href="#MediaQuery" class="headerlink" title="MediaQuery"></a>MediaQuery</h2><pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">import</span> <span class="token string">'package:flutter/material.dart'</span><span class="token punctuation">;</span><span class="token keyword">class</span> <span class="token class-name">Home</span> <span class="token keyword">extends</span> <span class="token class-name">StatefulWidget</span> <span class="token punctuation">{</span>  <span class="token keyword">const</span> <span class="token function">Home</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token keyword">super</span><span class="token punctuation">.</span>key<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token metadata symbol">@override</span>  State<span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token function">createState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">_Home</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span><span class="token punctuation">}</span><span class="token keyword">class</span> <span class="token class-name">_Home</span> <span class="token keyword">extends</span> <span class="token class-name">State</span><span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token punctuation">{</span>  <span class="token keyword">var</span> _scaleRatio <span class="token operator">=</span> <span class="token number">1.0</span><span class="token punctuation">;</span>  double <span class="token function">getScaleRatio</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span> <span class="token punctuation">{</span>    <span class="token keyword">final</span> baseFontSize <span class="token operator">=</span> <span class="token number">14.0</span><span class="token punctuation">;</span>    <span class="token keyword">final</span> mediaQuery <span class="token operator">=</span> MediaQuery<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token keyword">final</span> scaledFontSize <span class="token operator">=</span> mediaQuery<span class="token punctuation">.</span>textScaler<span class="token punctuation">.</span><span class="token function">scale</span><span class="token punctuation">(</span>baseFontSize<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token keyword">return</span> scaledFontSize <span class="token operator">/</span> baseFontSize<span class="token punctuation">;</span>  <span class="token punctuation">}</span>  <span class="token metadata symbol">@override</span>  Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>    _scaleRatio <span class="token operator">=</span> <span class="token function">getScaleRatio</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token keyword">var</span> appBar <span class="token operator">=</span> <span class="token function">AppBar</span><span class="token punctuation">(</span>      title<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">'Counter'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>    <span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token keyword">var</span> body <span class="token operator">=</span> <span class="token function">Center</span><span class="token punctuation">(</span>      child<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">'Scale Ratio: ${_scaleRatio.toStringAsFixed(2)}'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>    <span class="token punctuation">)</span><span class="token punctuation">;</span>    <span class="token keyword">return</span> <span class="token function">Scaffold</span><span class="token punctuation">(</span>      appBar<span class="token punctuation">:</span> appBar<span class="token punctuation">,</span>      body<span class="token punctuation">:</span> body<span class="token punctuation">,</span>    <span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token punctuation">}</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><p><strong>Line 13</strong></p><pre class="line-numbers highlight language-dart"><code class="language-dart">double <span class="token function">getScaleRatio</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span> <span class="token punctuation">{</span>  <span class="token keyword">final</span> baseFontSize <span class="token operator">=</span> <span class="token number">14.0</span><span class="token punctuation">;</span>  <span class="token keyword">final</span> mediaQuery <span class="token operator">=</span> MediaQuery<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token keyword">final</span> scaledFontSize <span class="token operator">=</span> mediaQuery<span class="token punctuation">.</span>textScaler<span class="token punctuation">.</span><span class="token function">scale</span><span class="token punctuation">(</span>baseFontSize<span class="token punctuation">)</span><span class="token punctuation">;</span>  <span class="token keyword">return</span> scaledFontSize <span class="token operator">/</span> baseFontSize<span class="token punctuation">;</span><span class="token punctuation">}</span><span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre><ul><li><code>mediaQuery.textScaler.scale()</code>：將傳入的字型大小轉成 <code>目前放大</code> 的字型大小</li><li><code>scaledFontSize / baseFontSize</code>：相除即可得出 <code>放大倍率</code></li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>這種方式僅對 Android 有效，若在 iOS 設定 <code>放大字型</code>，使用此法依然得到放大倍率為 <code>1</code></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;當使用者字型將字型放大後，可能造成跑版，可藉由 MediaQuery 取得字型放大倍率後，做相對應的處理。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Flutter" scheme="https://yabai.tw/tags/Flutter/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>にくい、づらい、がたい</title>
+    <link href="https://yabai.tw/nihonngo/comparison/bunkei/nikui-durai-katai/"/>
+    <id>https://yabai.tw/nihonngo/comparison/bunkei/nikui-durai-katai/</id>
+    <published>2024-11-20T00:04:54.000Z</published>
+    <updated>2024-11-20T00:05:30.365Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>にくい</code>、<code>づらい</code> 與 <code>がたい</code> 都可表示 <code>難以</code>，但 <code>語感</code> 不太一樣。</p><a id="more"></a><h2 id="単語"><a href="#単語" class="headerlink" title="単語"></a>単語</h2><ul><li>憎(にく)い [2]：<code>い形容</code> 難以</li><li>辛(つら)い [2]：<code>い形容</code> 難以</li><li>難(がた)い [2]：<code>い形容</code> 難以</li></ul><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>Vます</code> <del>ます</del> + <code>にくい</code></li><li><code>Vます</code> <del>ます</del> + <code>づらい</code></li><li><code>Vます</code> <del>ます</del> + <code>がたい</code></li></ul><h2 id="にくい"><a href="#にくい" class="headerlink" title="にくい"></a>にくい</h2><p><code>彼の話し方は早口で、少し分かりにくい。</code></p><p>他說話很快，有點難懂。</p><blockquote><p><code>にくい</code> 可表示因為 <code>對象物</code> 因素而 <code>難以達成</code></p></blockquote><ul><li>彼(かれ) [1]：<code>代</code> 他</li><li>の：<code>格助</code> 表 <code>所有</code></li><li>話(はな)し方(かた) [0]：<code>名</code> 說話方式</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>早口(はやくち) [2]：<code>な形容</code> 說話快的</li><li>で：<code>接助</code> 表 <code>原因</code></li><li>少(<code>すこ</code>)し [2]：<code>副</code> 稍微</li><li>分(わ)かる [2]：<code>動I</code> <code>自動</code> <code>辞書形</code> 理解<ul><li>分かります [4]：<code>ます形</code> 理解</li><li>分かりにくい [5]：<code>難以</code> 難以理解</li></ul></li></ul><h2 id="づらい"><a href="#づらい" class="headerlink" title="づらい"></a>づらい</h2><p><code>老眼で見えないから、少し分かりづらい。</code></p><p>因為老花眼看不見，所以有點難理解。</p><blockquote><p><code>にくい</code> 可表示因為 <code>自身</code> 因素而 <code>難以達成</code></p></blockquote><ul><li>老眼(ろうがん) [0]：<code>名</code> 老花眼</li><li>で：<code>接助</code> 表 <code>原因</code></li><li>見(み)る [1]：<code>動I</code> <code>他動</code> <code>辞書形</code> 看<ul><li>見える [2]：<code>可能形</code> 看得見</li><li>見えない [2]：<code>ない形</code> 看不見</li></ul></li><li>から [1]：<code>接助</code> 表 <code>原因</code></li><li>少(<code>すこ</code>)し [2]：<code>副</code> 稍微</li><li>分(わ)かる [2]：<code>動I</code> <code>自動</code> <code>辞書形</code> 理解<ul><li>分かります [4]：<code>ます形</code> 理解</li><li>分かりづらい [5]：<code>難以</code> 難以理解</li></ul></li></ul><h2 id="がたい"><a href="#がたい" class="headerlink" title="がたい"></a>がたい</h2><p><code>この文章は専門用語が多すぎて、一般人には分かりがたい。</code></p><blockquote><p><code>がたい</code> 可表示 <code>心裡盼望</code> 卻 <code>難以達成</code></p></blockquote><p>這篇文章專業術語太多，一般人難以理解。</p><ul><li>この [0]：<code>連体</code> 這個</li><li>文章(ぶんしょう) [0]：<code>名</code> 文章</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>専門用語(せんもんようご) [5]：<code>名</code> 專業術語</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>多(おお)い [1]：<code>い形容</code> 多的<ul><li>多すぎる [4]：<code>過量</code> 過多</li><li>多すぎて [3]：<code>て形</code> 過多</li></ul></li><li>一般人(いっぱんじん) [3]：<code>名</code> 一般人</li><li>には：<code>格助</code> 表 <code>對…來說</code></li><li>分(わ)かる [2]：<code>動I</code> <code>自動</code> <code>辞書形</code> 理解<ul><li>分かります [4]：<code>ます形</code> 理解</li><li>分かりがたい [5]：<code>難以</code> 難以理解</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;code&gt;にくい&lt;/code&gt;、&lt;code&gt;づらい&lt;/code&gt; 與 &lt;code&gt;がたい&lt;/code&gt; 都可表示 &lt;code&gt;難以&lt;/code&gt;，但 &lt;code&gt;語感&lt;/code&gt; 不太一樣。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="比較文型" scheme="https://yabai.tw/tags/%E6%AF%94%E8%BC%83%E6%96%87%E5%9E%8B/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>一般人</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/i/ippannjinn/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/i/ippannjinn/</id>
+    <published>2024-11-20T00:03:03.000Z</published>
+    <updated>2024-11-20T00:03:33.045Z</updated>
+    
+    <content type="html"><![CDATA[<p>いっぱんじん [3]：<code>名</code> 一般人。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>この文章は専門用語が多すぎて、一般人には分かりがたい。</code></p><p>這篇文章專業術語太多，一般人難以理解。</p><ul><li>この [0]：<code>連体</code> 這個</li><li>文章(ぶんしょう) [0]：<code>名</code> 文章</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>専門用語(せんもんようご) [5]：<code>名</code> 專業術語</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>多(おお)い [1]：<code>い形容</code> 多的<ul><li>多すぎる [4]：<code>過量</code> 過多</li><li>多すぎて [3]：<code>て形</code> 過多</li></ul></li><li>一般人(いっぱんじん) [3]：<code>名</code> 一般人</li><li>には：<code>格助</code> 表 <code>對…來說</code></li><li>分(わ)かる [2]：<code>動I</code> <code>自動</code> <code>辞書形</code> 理解<ul><li>分かります [4]：<code>ます形</code> 理解</li><li>分かりがたい [5]：<code>難以</code> 難以理解</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;いっぱんじん [3]：&lt;code&gt;名&lt;/code&gt; 一般人。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>専門用語</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/se/sennmonnyougo/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/se/sennmonnyougo/</id>
+    <published>2024-11-19T23:58:49.000Z</published>
+    <updated>2024-11-19T23:59:17.738Z</updated>
+    
+    <content type="html"><![CDATA[<p>せんもんようご [5]：<code>名</code> 專業術語。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>この文章は専門用語が多すぎて、一般人には分かりがたい。</code></p><p>這篇文章專業術語太多，一般人難以理解。</p><ul><li>この [0]：<code>連体</code> 這個</li><li>文章(ぶんしょう) [0]：<code>名</code> 文章</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>専門用語(せんもんようご) [5]：<code>名</code> 專業術語</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>多(おお)い [1]：<code>い形容</code> 多的<ul><li>多すぎる [4]：<code>過量</code> 過多</li><li>多すぎて [3]：<code>て形</code> 過多</li></ul></li><li>一般人(いっぱんじん) [3]：<code>名</code> 一般人</li><li>には：<code>格助</code> 表 <code>對…來說</code></li><li>分(わ)かる [2]：<code>動I</code> <code>自動</code> <code>辞書形</code> 理解<ul><li>分かります [4]：<code>ます形</code> 理解</li><li>分かりがたい [5]：<code>難以</code> 難以理解</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;せんもんようご [5]：&lt;code&gt;名&lt;/code&gt; 專業術語。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>文章</title>
+    <link href="https://yabai.tw/nihonngo/vocabulary/bu/bunnshou/"/>
+    <id>https://yabai.tw/nihonngo/vocabulary/bu/bunnshou/</id>
+    <published>2024-11-19T23:56:09.000Z</published>
+    <updated>2024-11-19T23:56:41.607Z</updated>
+    
+    <content type="html"><![CDATA[<p>ぶんしょう [0]：<code>名</code> 文章。</p><a id="more"></a><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>この文章は専門用語が多すぎて、一般人には分かりがたい。</code></p><p>這篇文章專業術語太多，一般人難以理解。</p><ul><li>この [0]：<code>連体</code> 這個</li><li>文章(ぶんしょう) [0]：<code>名</code> 文章</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>専門用語(せんもんようご) [5]：<code>名</code> 專業術語</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>多(おお)い [1]：<code>い形容</code> 多的<ul><li>多すぎる [4]：<code>過量</code> 過多</li><li>多すぎて [3]：<code>て形</code> 過多</li></ul></li><li>一般人(いっぱんじん) [3]：<code>名</code> 一般人</li><li>には：<code>格助</code> 表 <code>對…來說</code></li><li>分(わ)かる [2]：<code>動I</code> <code>自動</code> <code>辞書形</code> 理解<ul><li>分かります [4]：<code>ます形</code> 理解</li><li>分かりがたい [5]：<code>難以</code> 難以理解</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;ぶんしょう [0]：&lt;code&gt;名&lt;/code&gt; 文章。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="名詞" scheme="https://yabai.tw/tags/%E5%90%8D%E8%A9%9E/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>がたい (難以)</title>
+    <link href="https://yabai.tw/nihonngo/grammar/verb/masu/gatai/"/>
+    <id>https://yabai.tw/nihonngo/grammar/verb/masu/gatai/</id>
+    <published>2024-11-19T23:52:29.000Z</published>
+    <updated>2024-11-19T23:53:16.585Z</updated>
+    
+    <content type="html"><![CDATA[<p><code>動詞ます形</code> <del>ます</del> <code>がたい</code> 可表示 <code>心裡盼望</code> 卻 <code>難以達成</code>。字源為 <code>難い</code>，但通常不寫漢字，翻譯成 <code>難以</code>。變形後可視為 <code>い形容詞</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li>Vます <del>ます</del> + <code>がたい</code></li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>この文章は専門用語が多すぎて、一般人には分かりがたい。</code></p><blockquote><p><code>がたい</code> 可表示 <code>心裡盼望</code> 卻 <code>難以達成</code></p></blockquote><p>這篇文章專業術語太多，一般人難以理解。</p><ul><li>この [0]：<code>連体</code> 這個</li><li>文章(ぶんしょう) [0]：<code>名</code> 文章</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>専門用語(せんもんようご) [5]：<code>名</code> 專業術語</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>多(おお)い [1]：<code>い形容</code> 多的<ul><li>多すぎる [4]：<code>過量</code> 過多</li><li>多すぎて [3]：<code>て形</code> 過多</li></ul></li><li>一般人(いっぱんじん) [3]：<code>名</code> 一般人</li><li>には：<code>格助</code> 表 <code>對…來說</code></li><li>分(わ)かる [2]：<code>動I</code> <code>自動</code> <code>辞書形</code> 理解<ul><li>分かります [4]：<code>ます形</code> 理解</li><li>分かりがたい [5]：<code>難以</code> 難以理解</li></ul></li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;&lt;code&gt;動詞ます形&lt;/code&gt; &lt;del&gt;ます&lt;/del&gt; &lt;code&gt;がたい&lt;/code&gt; 可表示 &lt;code&gt;心裡盼望&lt;/code&gt; 卻 &lt;code&gt;難以達成&lt;/code&gt;。字源為 &lt;code&gt;難い&lt;/code&gt;，但通常不寫漢字，翻譯成 &lt;code&gt;難以&lt;/code&gt;。變形後可視為 &lt;code&gt;い形容詞&lt;/code&gt;。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
+    
+    <category term="動詞ます形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E3%81%BE%E3%81%99%E5%BD%A2/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>在 iOS Simulator 設定放大字型</title>
+    <link href="https://yabai.tw/xcode/simulator/display-zoom/"/>
+    <id>https://yabai.tw/xcode/simulator/display-zoom/</id>
+    <published>2024-11-19T23:42:16.000Z</published>
+    <updated>2024-11-19T23:44:32.752Z</updated>
+    
+    <content type="html"><![CDATA[<p>在 iOS Simulator 雖然也可以設定 <code>放大字型</code>，但設定地方與實機不太一樣。</p><a id="more"></a><h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Xcode 16</p><h2 id="iOS-Simulator"><a href="#iOS-Simulator" class="headerlink" title="iOS Simulator"></a>iOS Simulator</h2><p><img src="/images/xcode/simulator/display-zoom/zoom01.webp" alt="zoom01"></p><ul><li><em><strong>設定 -&gt; 開發者</strong></em></li></ul><p><img src="/images/xcode/simulator/display-zoom/zoom02.webp" alt="zoom02"></p><ul><li><em><strong>檢視</strong></em></li></ul><p><img src="/images/xcode/simulator/display-zoom/zoom03.webp" alt="zoom03"></p><ul><li><em><strong>放大字型</strong></em></li></ul><h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul><li>在 iOS Simulator 雖然可以放大字型，但對於 Flutter 的 <code>mediaQueryData.textScaler.scale()</code> 卻無效</li></ul>]]></content>
+    
+    
+    <summary type="html">&lt;p&gt;在 iOS Simulator 雖然也可以設定 &lt;code&gt;放大字型&lt;/code&gt;，但設定地方與實機不太一樣。&lt;/p&gt;</summary>
+    
+    
+    
+    
+    <category term="Xcode" scheme="https://yabai.tw/tags/Xcode/"/>
+    
+  </entry>
   
   <entry>
     <title>更新 Flutter SDK 版本</title>
@@ -233,9 +376,9 @@
     
     <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
     
-    <category term="自動" scheme="https://yabai.tw/tags/%E8%87%AA%E5%8B%95/"/>
-    
     <category term="動詞II" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9EII/"/>
+    
+    <category term="自動" scheme="https://yabai.tw/tags/%E8%87%AA%E5%8B%95/"/>
     
   </entry>
   
@@ -278,157 +421,6 @@
     <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
     
     <category term="い形容詞" scheme="https://yabai.tw/tags/%E3%81%84%E5%BD%A2%E5%AE%B9%E8%A9%9E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>への (動作對象)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/particle/heno/heno02/"/>
-    <id>https://yabai.tw/nihonngo/grammar/particle/heno/heno02/</id>
-    <published>2024-11-17T14:48:20.000Z</published>
-    <updated>2024-11-17T14:51:39.914Z</updated>
-    
-    <content type="html"><![CDATA[<p>帶著 <code>格助詞</code> <code>に</code> 的詞彙要修飾 <code>名詞</code> 時，要改成 <code>へ</code> 之後加上 <code>の</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>N</code> + <code>への</code> + <code>N</code></li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>マスクの着用は感染への防止に効果的です。</code></p><p>佩戴口罩對防止感染是有效的。</p><blockquote><p>原本應該用 <code>感染にの</code> 改成 <code>感染への</code></p></blockquote><ul><li>マスク [1]：<code>名</code> 口罩</li><li>の：<code>格助</code> 表 <code>所屬</code></li><li>着用(ちゃくよう) [0]：<code>名</code> 佩戴</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>感染(かんせん) [0]：<code>名</code> 感染</li><li>への：<code>格助</code> 表 <code>動作對象</code></li><li>防止(ぼうし) [0]：<code>名</code> 防止</li><li>に：<code>格助</code> 表 <code>行動目的</code></li><li>効果的(こうかてき) [0]：<code>な形容</code> 有效的</li><li>です [1]：<code>助動</code> 是</li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;帶著 &lt;code&gt;格助詞&lt;/code&gt; &lt;code&gt;に&lt;/code&gt; 的詞彙要修飾 &lt;code&gt;名詞&lt;/code&gt; 時，要改成 &lt;code&gt;へ&lt;/code&gt; 之後加上 &lt;code&gt;の&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="格助詞" scheme="https://yabai.tw/tags/%E6%A0%BC%E5%8A%A9%E8%A9%9E/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ないだろう (否定推測)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/normal/darou/darou10/"/>
-    <id>https://yabai.tw/nihonngo/grammar/normal/darou/darou10/</id>
-    <published>2024-11-17T00:56:00.000Z</published>
-    <updated>2024-11-17T00:56:45.355Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>普通形</code> <code>ないだろう</code> 可表示 <code>否定推測</code> 的 <code>大概</code>，約 <code>70%</code> 可能性，此時結尾為 <code>句號</code> ，且語調 <code>下降</code>。翻譯成 <code>應該不會吧</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>普</code> + <code>だろう</code></li><li><code>Vない</code> + <code>だろう</code></li><li><code>いA</code> <del>い</del> <code>くない</code> + <code>だろう</code></li><li><code>なA</code> + <code>ではない</code> + <code>だろう</code></li><li><code>N</code> + <code>ではない</code> + <code>だろう</code></li></ul><h2 id="動詞"><a href="#動詞" class="headerlink" title="動詞"></a>動詞</h2><p><code>雨は降らないだろう。</code></p><p>應該不會下雨吧。</p><ul><li>雨(あめ) [1]：<code>名</code> 雨</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>降(ふ)る [1]：<code>動I</code> <code>他動</code> <code>辞書形</code> 下雨<ul><li>降らない [2]：<code>ない形</code> 不下雨</li><li>降らないだろう [2]：<code>否定推測</code> 應該不會下雨吧</li></ul></li></ul><h2 id="い形容詞"><a href="#い形容詞" class="headerlink" title="い形容詞"></a>い形容詞</h2><p><code>この問題は難しくないだろう。</code></p><p>這個問題應該不會難吧。</p><ul><li>この [0]：<code>連体</code> 這個</li><li>問題(もんだい) [0]：<code>名詞</code> 問題</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>難(むずか)しい [4]：<code>い形容</code> 困難的<ul><li>難しくない [5]：<code>ない形</code> 不困難的</li><li>難しくないだろう [5]：<code>否定推測</code> 應該不會難吧</li></ul></li></ul><h2 id="な形容詞"><a href="#な形容詞" class="headerlink" title="な形容詞"></a>な形容詞</h2><p><code>彼は元気ではないだろう。</code></p><p>他應該不會是很健康吧。</p><ul><li>彼(かれ) [1]：<code>代</code> 他</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>元気(げんき) [1]：<code>な形容</code> 健康的<ul><li>元気ではない [6]：<code>ない形</code> 不健康的</li><li>元気ではないだろう [6]：<code>否定推測</code> 應該不會是健康的</li></ul></li></ul><h2 id="名詞"><a href="#名詞" class="headerlink" title="名詞"></a>名詞</h2><p><code>彼は先生ではないだろう。</code></p><p>他應該不會是老師吧。</p><ul><li>彼(かれ) [1]：<code>代</code> 他</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>先生(せんせい) [3]：<code>名</code> 老師<ul><li>先生ではない [7]：<code>ない形</code> 不是老師</li><li>先生ではないだろう [7]：<code>否定推測</code> 應該不會是老師吧</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;普通形&lt;/code&gt; &lt;code&gt;ないだろう&lt;/code&gt; 可表示 &lt;code&gt;否定推測&lt;/code&gt; 的 &lt;code&gt;大概&lt;/code&gt;，約 &lt;code&gt;70%&lt;/code&gt; 可能性，此時結尾為 &lt;code&gt;句號&lt;/code&gt; ，且語調 &lt;code&gt;下降&lt;/code&gt;。翻譯成 &lt;code&gt;應該不會吧&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="普通形" scheme="https://yabai.tw/tags/%E6%99%AE%E9%80%9A%E5%BD%A2/"/>
-    
-    <category term="動詞ない形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E3%81%AA%E3%81%84%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>ないでしょう (否定推測)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/normal/deshou/deshou07/"/>
-    <id>https://yabai.tw/nihonngo/grammar/normal/deshou/deshou07/</id>
-    <published>2024-11-17T00:46:32.000Z</published>
-    <updated>2024-11-17T00:54:54.649Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>普通形</code> <code>ないでしょう</code> 可表示 <code>否定推測</code> 的 <code>大概</code>，約 <code>70%</code> 可能性，此時結尾為 <code>句號</code> ，且語調 <code>下降</code>。翻譯成 <code>應該不會吧</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>普</code> + <code>でしょう</code></li><li><code>Vない</code> + <code>でしょう</code></li><li><code>いA</code> <del>い</del> <code>くない</code> + <code>でしょう</code></li><li><code>なA</code> + <code>ではない</code> + <code>でしょう</code></li><li><code>N</code> + <code>ではない</code> + <code>でしょう</code></li></ul><h2 id="動詞"><a href="#動詞" class="headerlink" title="動詞"></a>動詞</h2><p><code>雨は降らないでしょう。</code></p><p>應該不會下雨吧。</p><ul><li>雨(あめ) [1]：<code>名</code> 雨</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>降(ふ)る [1]：<code>動I</code> <code>他動</code> <code>辞書形</code> 下雨<ul><li>降らない [2]：<code>ない形</code> 不下雨</li><li>降らないでしょう [2]：<code>否定推測</code> 應該不會下雨吧</li></ul></li></ul><h2 id="い形容詞"><a href="#い形容詞" class="headerlink" title="い形容詞"></a>い形容詞</h2><p><code>この問題は難しくないでしょう。</code></p><p>這個問題應該不會難吧。</p><ul><li>この [0]：<code>連体</code> 這個</li><li>問題(もんだい) [0]：<code>名詞</code> 問題</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>難(むずか)しい [4]：<code>い形容</code> 困難的<ul><li>難しくない [5]：<code>ない形</code> 不困難的</li><li>難しくないでしょう [5]：<code>否定推測</code> 應該不會難吧</li></ul></li></ul><h2 id="な形容詞"><a href="#な形容詞" class="headerlink" title="な形容詞"></a>な形容詞</h2><p><code>彼は元気ではないでしょう。</code></p><p>他應該不會是很健康吧。</p><ul><li>彼(かれ) [1]：<code>代</code> 他</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>元気(げんき) [1]：<code>な形容</code> 健康的<ul><li>元気ではない [6]：<code>ない形</code> 不健康的</li><li>元気ではないでしょう [6]：<code>否定推測</code> 應該不會是健康的</li></ul></li></ul><h2 id="名詞"><a href="#名詞" class="headerlink" title="名詞"></a>名詞</h2><p><code>彼は先生ではないでしょう。</code></p><p>他應該不會是老師吧。</p><ul><li>彼(かれ) [1]：<code>代</code> 他</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>先生(せんせい) [3]：<code>名</code> 老師<ul><li>先生ではない [7]：<code>ない形</code> 不是老師</li><li>先生ではないでしょう [7]：<code>否定推測</code> 應該不會是老師吧</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;普通形&lt;/code&gt; &lt;code&gt;ないでしょう&lt;/code&gt; 可表示 &lt;code&gt;否定推測&lt;/code&gt; 的 &lt;code&gt;大概&lt;/code&gt;，約 &lt;code&gt;70%&lt;/code&gt; 可能性，此時結尾為 &lt;code&gt;句號&lt;/code&gt; ，且語調 &lt;code&gt;下降&lt;/code&gt;。翻譯成 &lt;code&gt;應該不會吧&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="普通形" scheme="https://yabai.tw/tags/%E6%99%AE%E9%80%9A%E5%BD%A2/"/>
-    
-    <category term="動詞ない形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E3%81%AA%E3%81%84%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>だろう (推測)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/normal/darou/darou01/"/>
-    <id>https://yabai.tw/nihonngo/grammar/normal/darou/darou01/</id>
-    <published>2024-11-17T00:33:54.000Z</published>
-    <updated>2024-11-17T00:40:12.815Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>だろう</code> 當結尾為 <code>句號</code> ，且語調 <code>降低</code> 時可表示 <code>沒依據的推測</code>，約 <code>70%</code> 可能性。<code>だろう</code> 為 <code>でしょう</code> 的 <code>普通体</code> 。翻譯成 <code>應該會吧</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>普</code> + <code>だろう</code></li><li><code>V</code> + <code>だろう</code></li><li><code>いA</code> + <code>だろう</code></li><li><code>なA</code> + <code>だろう</code></li><li><code>N</code> + <code>だろう</code></li></ul><h2 id="動詞"><a href="#動詞" class="headerlink" title="動詞"></a>動詞</h2><p><code>明日は雨が降るだろう。</code></p><p>明天應該會下雨吧。</p><ul><li>明日(あした) [3]：<code>名</code> 明天</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>雨(あめ) [1]：<code>名</code> 雨</li><li>が：<code>格助</code> 表 <code>主語</code> </li><li>降(ふ)る [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 下雨<ul><li>降るだろう [1]：<code>推測</code> 應該會下雨吧</li></ul></li></ul><p><code>今夜は星が見えるだろう。</code></p><p>今晚應該會看的見星星吧。</p><ul><li>今夜(こんや) [1]：<code>名</code> 今晚</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>星(ほし) [0]：<code>名</code> 星星</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>見(み)える [2]：<code>動II</code> <code>自動</code> <code>辞書形</code> 看得見<ul><li>見えるだろう [2]：<code>推測</code> 應該會看得見吧</li></ul></li></ul><h2 id="い形容詞"><a href="#い形容詞" class="headerlink" title="い形容詞"></a>い形容詞</h2><p><code>三月の東京はまだ寒いだろう。</code></p><p>三月的東京應該會還很冷吧。</p><ul><li>三月(さんがつ) [1]：<code>名</code> 三月</li><li>の：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>東京(とうきょう) [0]：<code>名</code> 東京</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>まだ [1]：<code>副</code> 還</li><li>寒(さむ)い [2]：<code>い形容</code> 寒冷的<ul><li>寒いだろう [2]：<code>推醋</code> 應該會寒冷的吧</li></ul></li></ul><h2 id="な形容詞"><a href="#な形容詞" class="headerlink" title="な形容詞"></a>な形容詞</h2><p><code>奈良は静かだろう。</code></p><p>奈良應該會很安靜吧。</p><ul><li>奈良(なら) [1]：<code>名</code> 奈良</li><li>は：<code>助</code> 表 <code>主題</code></li><li>静(しず)か [1]：<code>な形容</code> 安靜的<ul><li>静かだろう [1]：<code>推測</code> 應該會安靜的吧</li></ul></li></ul><p><code>今夜は月が綺麗だろう。</code></p><p>今晚月亮應該會很美吧。</p><ul><li>今夜(こんや) [1]：<code>名</code> 今晚</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>月(つき) [2]：<code>名</code> 月</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>綺麗 [1]：<code>な形容</code> 美麗的<ul><li>綺麗だろう [1]：<code>推測</code> 應該會美麗的吧</li></ul></li></ul><h2 id="名詞"><a href="#名詞" class="headerlink" title="名詞"></a>名詞</h2><p><code>彼の話は本当だろう。</code></p><p>他的話應該會是真的吧。</p><ul><li>彼(かね) [1]：<code>代</code> 他</li><li>の：<code>格助</code> 表 <code>所有</code></li><li>話(はなし) [3]：<code>名</code> 話</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>本当(ほんとう) [0]：<code>名</code> 真的<ul><li>本当だろう[0]：<code>推測</code> 應該會是真的吧</li></ul></li></ul><p><code>今夜は雨だろう。</code></p><p>今晚應該會下雨吧。</p><ul><li>今夜(こんや) [1]：<code>名</code> 今晚</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>雨(あめ) [1]：<code>名</code> 雨<ul><li>雨だろう [1]：<code>推測</code> 應該會下雨吧</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;だろう&lt;/code&gt; 當結尾為 &lt;code&gt;句號&lt;/code&gt; ，且語調 &lt;code&gt;降低&lt;/code&gt; 時可表示 &lt;code&gt;沒依據的推測&lt;/code&gt;，約 &lt;code&gt;70%&lt;/code&gt; 可能性。&lt;code&gt;だろう&lt;/code&gt; 為 &lt;code&gt;でしょう&lt;/code&gt; 的 &lt;code&gt;普通体&lt;/code&gt; 。翻譯成 &lt;code&gt;應該會吧&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="普通形" scheme="https://yabai.tw/tags/%E6%99%AE%E9%80%9A%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>でしょう (推測)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/normal/deshou/deshou01/"/>
-    <id>https://yabai.tw/nihonngo/grammar/normal/deshou/deshou01/</id>
-    <published>2024-11-17T00:29:46.000Z</published>
-    <updated>2024-11-17T00:41:58.766Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>普通形</code> <code>でしょう</code> 可表示 <code>推測</code> 的 <code>大概</code>，約 <code>70%</code> 可能性，此時結尾為 <code>句號</code> ，且語調 <code>下降</code>。翻譯成 <code>應該會吧</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>普</code> + <code>でしょう</code></li><li><code>V</code> + <code>でしょう</code></li><li><code>いA</code> + <code>でしょう</code></li><li><code>なA</code> + <code>でしょう</code></li><li><code>N</code> + <code>でしょう</code></li></ul><h2 id="動詞"><a href="#動詞" class="headerlink" title="動詞"></a>動詞</h2><p><code>明日は雨が降るでしょう。</code></p><p>明天應該會下雨吧。</p><ul><li>明日(あした) [3]：<code>名</code> 明天</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>雨(あめ) [1]：<code>名</code> 雨</li><li>が：<code>格助</code> 表 <code>主語</code> </li><li>降(ふ)る [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 下雨<ul><li>降るでしょう [1]：<code>推測</code> 應該會下雨吧</li></ul></li></ul><h2 id="い形容詞"><a href="#い形容詞" class="headerlink" title="い形容詞"></a>い形容詞</h2><p><code>三月の東京はまだ寒いでしょう。</code></p><p>三月的東京應該會還很冷吧。</p><ul><li>三月(さんがつ) [1]：<code>名</code> 三月</li><li>の：<code>格助</code> 以 <code>名詞</code> 形容 <code>名詞</code></li><li>東京(とうきょう) [0]：<code>名</code> 東京</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>まだ [1]：<code>副</code> 還</li><li>寒(さむ)い [2]：<code>い形容</code> 寒冷的<ul><li>寒いでしょう [2]：<code>推測</code> 應該會寒冷吧</li></ul></li></ul><h2 id="な形容詞"><a href="#な形容詞" class="headerlink" title="な形容詞"></a>な形容詞</h2><p><code>奈良は静かでしょう。</code></p><p>奈良應該會很安靜吧。</p><ul><li>奈良(なら) [1]：<code>名</code> 奈良</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>静(しず)か [1]：<code>な形容</code> 安靜的<ul><li>静かでしょう [1]：<code>推測</code> 應該會安靜的吧</li></ul></li></ul><p><code>今夜は月が綺麗でしょう。</code></p><p>今晚月亮應該會很美吧。</p><ul><li>今夜(こんや) [1]：<code>名</code> 今晚</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>月(つき) [2]：<code>名</code> 月</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>綺麗 [1]：<code>な形容</code> 美麗的<ul><li>綺麗でしょう [1]：<code>推測</code> 應該會美麗的吧</li></ul></li></ul><h2 id="名詞"><a href="#名詞" class="headerlink" title="名詞"></a>名詞</h2><p><code>今夜は雨でしょう。</code></p><p>今晚應該會下雨吧。</p><ul><li>今夜(こんや) [1]：<code>名</code> 今晚</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>雨(あめ) [1]：<code>名</code> 雨<ul><li>雨でしょう [1]：<code>推測</code> 應該會下雨吧</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;普通形&lt;/code&gt; &lt;code&gt;でしょう&lt;/code&gt; 可表示 &lt;code&gt;推測&lt;/code&gt; 的 &lt;code&gt;大概&lt;/code&gt;，約 &lt;code&gt;70%&lt;/code&gt; 可能性，此時結尾為 &lt;code&gt;句號&lt;/code&gt; ，且語調 &lt;code&gt;下降&lt;/code&gt;。翻譯成 &lt;code&gt;應該會吧&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="普通形" scheme="https://yabai.tw/tags/%E6%99%AE%E9%80%9A%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>てくれ (強烈命令)</title>
-    <link href="https://yabai.tw/nihonngo/grammar/verb/te/tekure/tekure01/"/>
-    <id>https://yabai.tw/nihonngo/grammar/verb/te/tekure/tekure01/</id>
-    <published>2024-11-16T17:38:13.000Z</published>
-    <updated>2024-11-16T17:39:13.261Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>動詞て形</code> <code>くれ</code> 可表示 <code>強烈命令</code> 對方 <code>為自己辦事</code>，主要為 <code>男性用語</code>，僅用於地位比自己 <code>低</code> 或 <code>平輩</code>，翻譯成 <code>給我做</code>，否定為 <code>ないでくれ</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>Vて</code> + <code>くれ</code></li></ul><h2 id="例文"><a href="#例文" class="headerlink" title="例文"></a>例文</h2><p><code>早くやってくれよ。</code></p><p>快點給我弄。</p><ul><li>早(はや)く [1]：<code>副</code> 快點</li><li>やる [1]：<code>動I</code> <code>他動</code> <code>辞書形</code> 弄<ul><li>やって [1]：<code>て形</code> 弄</li><li>やってくれ [1]：<code>強烈命令</code> 給我弄</li></ul></li><li>よ：<code>終助</code> 表 <code>告知</code></li></ul><p><code>謝ってくれ。</code></p><p>給我道歉。</p><ul><li>謝(あやま)る [3]：<code>動I</code> <code>自動</code> <code>辞書形</code> 道歉<ul><li>謝って [3]：<code>て形</code> 道歉</li><li>謝ってくれ [3]：<code>強烈命令</code> 給我道歉</li></ul></li></ul><p><code>説明してくれ。</code></p><p>給我說明。</p><ul><li>説明(せつめい)する [0]：<code>動III</code> <code>他動</code> <code>辞書形</code> 說明<ul><li>説明して [0]：<code>て形</code> 說明</li><li>説明してくれ [0]：<code>強烈命令</code> 給我說明</li></ul></li></ul><p><code>そんな恥ずかしいこと、止めてくれよ。</code></p><p>那様丟人的事情，不要阿。</p><ul><li>そんな [0]：<code>連体</code> 那樣的</li><li>恥(は)ずかしい [4]：<code>い形容</code> 丟臉的</li><li>こと [2]：<code>名</code> 事情</li><li>止(や)める [0]：<code>動II</code> <code>他動</code> <code>辞書形</code> 停止<ul><li>止めて [0]：<code>て形</code> 停止</li><li>止めてくれ [0]：<code>強烈命令</code> 我我停止</li></ul></li><li>よ：<code>終助</code> 表 <code>告知</code></li></ul><p><code>みんな、聞いてくれ。大事なことがあるんだ。</code></p><p>各位，聽阿・我有很重要的事情要講。</p><ul><li>みんな [3]：<code>名</code> 大家</li><li>聞(き)く [0]：<code>動I</code> <code>他動</code> <code>辞書形</code> 聽<ul><li>聞いて [0]：<code>て形</code> 聽</li><li>聞いてくれ [0]：<code>強烈命令</code> 給我聽</li></ul></li><li>大事(だいじ) [1]：<code>な形容</code> 重要的</li><li>な：<code>格助</code> 以 <code>な形容詞</code> 形容 <code>名詞</code></li><li>こと [2]：<code>名</code> 事情</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>ある [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 有<ul><li>あるんだ [2]：<code>強調</code> 有</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;動詞て形&lt;/code&gt; &lt;code&gt;くれ&lt;/code&gt; 可表示 &lt;code&gt;強烈命令&lt;/code&gt; 對方 &lt;code&gt;為自己辦事&lt;/code&gt;，主要為 &lt;code&gt;男性用語&lt;/code&gt;，僅用於地位比自己 &lt;code&gt;低&lt;/code&gt; 或 &lt;code&gt;平輩&lt;/code&gt;，翻譯成 &lt;code&gt;給我做&lt;/code&gt;，否定為 &lt;code&gt;ないでくれ&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="動詞て形" scheme="https://yabai.tw/tags/%E5%8B%95%E8%A9%9E%E3%81%A6%E5%BD%A2/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>そうだ、ということだ、とのことだ、って</title>
-    <link href="https://yabai.tw/nihonngo/comparison/bunkei/souda-toiukotoda/"/>
-    <id>https://yabai.tw/nihonngo/comparison/bunkei/souda-toiukotoda/</id>
-    <published>2024-11-16T17:15:05.000Z</published>
-    <updated>2024-11-16T17:15:56.996Z</updated>
-    
-    <content type="html"><![CDATA[<p><code>そうだ</code>、<code>ということだ</code>、<code>んだということだ</code>、<code>とのことだ</code>、<code>って</code> 都可表示 <code>傳聞</code>，翻譯成 <code>聽說</code>、<code>據說</code>。</p><a id="more"></a><h2 id="接続"><a href="#接続" class="headerlink" title="接続"></a>接続</h2><ul><li><code>普</code> + <code>そうだ</code></li><li><code>普</code> + <code>ということだ</code></li><li><code>普</code> + <code>んだということだ</code></li><li><code>普</code> + <code>とのことだ</code></li><li><code>普</code> + <code>って</code></li></ul><h2 id="そうだ"><a href="#そうだ" class="headerlink" title="そうだ"></a>そうだ</h2><p><code>山田さんは明日東京へ行くそうだ。</code></p><p>山田先生明天聽說要去東京。</p><ul><li>山田(やまだ) [0]：<code>名</code> 山田</li><li>さん [0]：<code>名</code> 先生</li><li>は：<code>副助</code> 表 <code>主題</code></li><li>明日(あした) [3]：<code>名</code> 明天</li><li>東京(とうきょう) [0]：<code>名</code> 東京</li><li>へ：<code>格助</code> 表 <code>移動方向</code></li><li>行(い)く [0]：<code>動I</code> <code>自動</code> <code>辞書形</code> 去<ul><li>行くそうだ [3]：<code>傳聞</code> 聽說要去</li></ul></li></ul><h2 id="ということだ"><a href="#ということだ" class="headerlink" title="ということだ"></a>ということだ</h2><p><code>天気予報によると、明日降るということだ。</code></p><p>根據天氣預報的說法，聽說明天會下雨。</p><ul><li>天気予報(てんきよほう) [4]：<code>名</code> 天氣預報</li><li>によると [0]：<code>接</code> 根據</li><li>明日(あした) [3]：<code>名</code> 明天</li><li>雨(あめ) [1]：<code>名</code> 雨</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>降(ふ)る [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 下雨<ul><li>降るということだ [1]：<code>傳聞</code> 聽說下雨</li></ul></li></ul><h2 id="んだということだ"><a href="#んだということだ" class="headerlink" title="んだということだ"></a>んだということだ</h2><p><code>明日雨が降るんだということだ。</code></p><p>聽說明天會下雨。</p><ul><li>明日(あした) [3]：<code>名</code> 明天</li><li>雨(あめ) [1]：<code>名</code> 雨</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>降(ふ)る [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 下雨<ul><li>降るんだということだ [1]：<code>傳聞</code> 聽說會下雨</li></ul></li></ul><h2 id="とのことだ"><a href="#とのことだ" class="headerlink" title="とのことだ"></a>とのことだ</h2><p><code>天気予報によると、明日降るとのことだ。</code></p><p>根據天氣預報的說法，聽說明天會下雨。</p><ul><li>天気予報(てんきよほう) [4]：<code>名</code> 天氣預報</li><li>によると [0]：<code>接</code> 根據</li><li>明日(あした) [3]：<code>名</code> 明天</li><li>雨(あめ) [1]：<code>名</code> 雨</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>降(ふ)る [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 下雨<ul><li>降るとのことだ [1]：<code>傳聞</code> 聽說下雨</li></ul></li></ul><h2 id="って"><a href="#って" class="headerlink" title="って"></a>って</h2><p><code>明日雨が降るって。</code></p><p>聽說明天會下雨。</p><ul><li>明日(あした) [3]：<code>名</code> 明天</li><li>雨(あめ) [1]：<code>名</code> 雨</li><li>が：<code>格助</code> 表 <code>主語</code></li><li>降(ふ)る [1]：<code>動I</code> <code>自動</code> <code>辞書形</code> 下雨<ul><li>降るって [1]：<code>縮約</code> 聽說下雨</li></ul></li></ul>]]></content>
-    
-    
-    <summary type="html">&lt;p&gt;&lt;code&gt;そうだ&lt;/code&gt;、&lt;code&gt;ということだ&lt;/code&gt;、&lt;code&gt;んだということだ&lt;/code&gt;、&lt;code&gt;とのことだ&lt;/code&gt;、&lt;code&gt;って&lt;/code&gt; 都可表示 &lt;code&gt;傳聞&lt;/code&gt;，翻譯成 &lt;code&gt;聽說&lt;/code&gt;、&lt;code&gt;據說&lt;/code&gt;。&lt;/p&gt;</summary>
-    
-    
-    
-    
-    <category term="日本語" scheme="https://yabai.tw/tags/%E6%97%A5%E6%9C%AC%E8%AA%9E/"/>
-    
-    <category term="比較文型" scheme="https://yabai.tw/tags/%E6%AF%94%E8%BC%83%E6%96%87%E5%9E%8B/"/>
     
   </entry>
   
