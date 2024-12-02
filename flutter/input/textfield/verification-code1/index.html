@@ -211,7 +211,7 @@ a:hover {
     },
     
     "datePublished": "2024-12-02T14:49:25.000Z",
-    "dateModified": "2024-12-02T14:50:39.212Z",
+    "dateModified": "2024-12-02T23:51:56.706Z",
     "author": {
         "@type": "Person",
         "name": "Sam Xiao",
@@ -466,48 +466,59 @@ a:hover {
   <span class="token punctuation">)</span><span class="token punctuation">;</span>
 
   <span class="token metadata symbol">@override</span>
+  <span class="token keyword">void</span> <span class="token function">initState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">initState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    WidgetsBinding<span class="token punctuation">.</span>instance<span class="token punctuation">.</span><span class="token function">addPostFrameCallback</span><span class="token punctuation">(</span>
+      <span class="token punctuation">(</span>_<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> _focusNodes<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">requestFocus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token metadata symbol">@override</span>
   Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
     <span class="token keyword">var</span> appBar <span class="token operator">=</span> <span class="token function">AppBar</span><span class="token punctuation">(</span>
       title<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">'Verification Code'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
     <span class="token punctuation">)</span><span class="token punctuation">;</span>
 
-    <span class="token keyword">var</span> codes <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">generate</span><span class="token punctuation">(</span><span class="token number">6</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>index<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token keyword">return</span> <span class="token function">Container</span><span class="token punctuation">(</span>
-        margin<span class="token punctuation">:</span> <span class="token keyword">const</span> EdgeInsets<span class="token punctuation">.</span><span class="token function">symmetric</span><span class="token punctuation">(</span>
-          horizontal<span class="token punctuation">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
-        <span class="token punctuation">)</span><span class="token punctuation">,</span>
-        width<span class="token punctuation">:</span> <span class="token number">40</span><span class="token punctuation">,</span>
-        child<span class="token punctuation">:</span> <span class="token function">TextField</span><span class="token punctuation">(</span>
-          focusNode<span class="token punctuation">:</span> _focusNodes<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">,</span>
-          keyboardType<span class="token punctuation">:</span> TextInputType<span class="token punctuation">.</span>number<span class="token punctuation">,</span>
-          maxLength<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-          textAlign<span class="token punctuation">:</span> TextAlign<span class="token punctuation">.</span>center<span class="token punctuation">,</span>
-          inputFormatters<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-            FilteringTextInputFormatter<span class="token punctuation">.</span>digitsOnly<span class="token punctuation">,</span>
-          <span class="token punctuation">]</span><span class="token punctuation">,</span>
-          decoration<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">InputDecoration</span><span class="token punctuation">(</span>
-            counterText<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
-            border<span class="token punctuation">:</span> <span class="token function">OutlineInputBorder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token keyword">var</span> codes <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">generate</span><span class="token punctuation">(</span>
+      <span class="token number">6</span><span class="token punctuation">,</span>
+      <span class="token punctuation">(</span>index<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">return</span> <span class="token function">Container</span><span class="token punctuation">(</span>
+          margin<span class="token punctuation">:</span> <span class="token keyword">const</span> EdgeInsets<span class="token punctuation">.</span><span class="token function">symmetric</span><span class="token punctuation">(</span>
+            horizontal<span class="token punctuation">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
           <span class="token punctuation">)</span><span class="token punctuation">,</span>
-          onChanged<span class="token punctuation">:</span> <span class="token punctuation">(</span>value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>value<span class="token punctuation">.</span>isEmpty<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-              <span class="token keyword">return</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
+          width<span class="token punctuation">:</span> <span class="token number">40</span><span class="token punctuation">,</span>
+          child<span class="token punctuation">:</span> <span class="token function">TextField</span><span class="token punctuation">(</span>
+            focusNode<span class="token punctuation">:</span> _focusNodes<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">,</span>
+            keyboardType<span class="token punctuation">:</span> TextInputType<span class="token punctuation">.</span>number<span class="token punctuation">,</span>
+            maxLength<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+            textAlign<span class="token punctuation">:</span> TextAlign<span class="token punctuation">.</span>center<span class="token punctuation">,</span>
+            inputFormatters<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+              FilteringTextInputFormatter<span class="token punctuation">.</span>digitsOnly<span class="token punctuation">,</span>
+            <span class="token punctuation">]</span><span class="token punctuation">,</span>
+            decoration<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">InputDecoration</span><span class="token punctuation">(</span>
+              counterText<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+              border<span class="token punctuation">:</span> <span class="token function">OutlineInputBorder</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+            <span class="token punctuation">)</span><span class="token punctuation">,</span>
+            onChanged<span class="token punctuation">:</span> <span class="token punctuation">(</span>value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+              <span class="token keyword">if</span> <span class="token punctuation">(</span>value<span class="token punctuation">.</span>isEmpty<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                <span class="token keyword">return</span><span class="token punctuation">;</span>
+              <span class="token punctuation">}</span>
 
-            _codes<span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token operator">=</span> value<span class="token punctuation">;</span>
+              _codes<span class="token punctuation">[</span>index<span class="token punctuation">]</span> <span class="token operator">=</span> value<span class="token punctuation">;</span>
 
-            <span class="token keyword">if</span> <span class="token punctuation">(</span>index <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-              _focusNodes<span class="token punctuation">[</span>index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">requestFocus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+              <span class="token keyword">if</span> <span class="token punctuation">(</span>index <span class="token operator">&lt;</span> <span class="token number">5</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+                _focusNodes<span class="token punctuation">[</span>index <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">requestFocus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+                _focusNodes<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">unfocus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+              <span class="token punctuation">}</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+            onTapOutside<span class="token punctuation">:</span> <span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token punctuation">{</span>
               _focusNodes<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">unfocus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-            <span class="token punctuation">}</span>
-          <span class="token punctuation">}</span><span class="token punctuation">,</span>
-          onTapOutside<span class="token punctuation">:</span> <span class="token punctuation">(</span>event<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            _focusNodes<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">unfocus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token punctuation">)</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+            <span class="token punctuation">}</span><span class="token punctuation">,</span>
+          <span class="token punctuation">)</span><span class="token punctuation">,</span>
+        <span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">)</span><span class="token punctuation">;</span>
 
     <span class="token keyword">var</span> body <span class="token operator">=</span> <span class="token function">Center</span><span class="token punctuation">(</span>
       child<span class="token punctuation">:</span> <span class="token function">Row</span><span class="token punctuation">(</span>
@@ -530,7 +541,7 @@ a:hover {
     <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">dispose</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
   <span class="token punctuation">}</span>
 <span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>Line 12</strong></p>
 <pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">final</span> List<span class="token operator">&lt;</span>String<span class="token operator">></span> _verificationCode <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">generate</span><span class="token punctuation">(</span>
   <span class="token number">6</span><span class="token punctuation">,</span>
@@ -550,7 +561,19 @@ a:hover {
 <ul>
 <li><code>_focusNodes</code>：建立每個 <code>TextField</code> 的 <code>FocusNode</code></li>
 </ul>
-<p><strong>Line 27</strong></p>
+<p><strong>Line 21</strong></p>
+<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token metadata symbol">@override</span>
+<span class="token keyword">void</span> <span class="token function">initState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">initState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  WidgetsBinding<span class="token punctuation">.</span>instance<span class="token punctuation">.</span><span class="token function">addPostFrameCallback</span><span class="token punctuation">(</span>
+    <span class="token punctuation">(</span>_<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> _focusNodes<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">requestFocus</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><code>WidgetsBinding.instance.addPostFrameCallback()</code>：在 Widget Tree render 完時觸發，對第一個 <code>TextField</code> 進行 focus</li>
+</ul>
+<p><strong>Line 35</strong></p>
 <pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">var</span> codes <span class="token operator">=</span> List<span class="token punctuation">.</span><span class="token function">generate</span><span class="token punctuation">(</span>
   <span class="token number">6</span><span class="token punctuation">,</span>
   <span class="token punctuation">(</span>index<span class="token punctuation">)</span> <span class="token punctuation">{</span>
