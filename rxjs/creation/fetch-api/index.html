@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html 
+>
+  <head>
+  <meta charset="utf-8">
+  <!-- ### DNS Prefetch ### -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+  <!-- ### Preload ### -->
+  
+
+  <!-- ### Meta & Title & Info ### -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>使用 Observable 讀取 API | 日本語の灯り</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff2601">
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="前端的難點之一是讀取 API 時，回傳為 Promise，這是 Asynchronous 行為；若使用 RxJS 可視為 Observable，以 Stream 方式處理 API 回傳資料。">
+<!-- Keywords -->
+<meta name="keywords" content=", RxJS">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+  <!-- ### Import File ### -->
+  
+    <!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+  
+  <!-- ### Site Verification ### -->
+  
+
+  <!-- ### RSS ### -->
+  
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+  <!-- ### WebApp ### -->
+  <meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="日本語の灯り">
+<meta name="msapplication-starturl" content="https://yabai.tw">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="日本語の灯り">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+  <!-- ### The Open Graph & Twitter Card Protocol ### -->
+  <meta property="og:title" content="使用 Observable 讀取 API | 日本語の灯り">
+<meta property="og:site_name" content="日本語の灯り">
+
+<meta property="og:url" content="https://yabai.tw/rxjs/creation/fetch-api/">
+<meta property="og:image"
+	content="https://yabai.tw/apple-touch-icon.png">
+<meta property="og:description" content="前端的難點之一是讀取 API 時，回傳為 Promise，這是 Asynchronous 行為；若使用 RxJS 可視為 Observable，以 Stream 方式處理 API 回傳資料。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-06-03T05:03:31.000Z">
+<meta property="article:modified_time" content="2020-06-03T05:03:31.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", RxJS">
+
+
+  <!-- ### Analytics ### -->
+  
+
+
+
+
+
+  <!-- ### Canonical link ### -->
+  <link rel="canonical" href="https://yabai.tw/rxjs/creation/fetch-api/">
+  <!-- ### Structured Data ### -->
+  
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://yabai.tw/rxjs/creation/fetch-api/",
+    "@type": "BlogPosting",
+    "logo": "https://yabai.tw/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://yabai.tw/rxjs/creation/fetch-api/"
+    },
+    "headline": "使用 Observable 讀取 API | 日本語の灯り",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://yabai.tw/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2020-06-03T05:03:31.000Z",
+    "dateModified": "2025-01-29T14:52:34.362Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/img/default_avatar.png"
+        },
+        "description": "日本語は学べば学ぶほど面白い"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "日本語の灯り",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://yabai.tw/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", RxJS",
+    "description": "前端的難點之一是讀取 API 時，回傳為 Promise，這是 Asynchronous 行為；若使用 RxJS 可視為 Observable，以 Stream 方式處理 API 回傳資料。"
+}
+</script>
+
+  <!-- ### Custom Head ### -->
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+  <body>
+  <header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      日本語の灯り
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    日本語は学べば学ぶほど面白い
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">ホーム</a>
+      <a href="/series/" class="navbar-link">シリーズ</a>
+      <a href="/tags/" class="navbar-link">タグ</a>
+      <a href="/search" class="navbar-link">検索</a>
+<!--      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>-->
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+  
+<!-- ## Post ## -->
+<div class="post-container">
+  <div id="post-card" class="card">
+    <div class="card-item-container">
+      <div class="card-inner-cell">
+        <div class="card-header">
+          
+<h1 class="card-title h3 mb-2">使用 Observable 讀取 API</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2020-06-03</span>
+</div>
+
+        </div>
+        <div class="card-body">
+          <article id="post-content">
+            <p>前端的難點之一是讀取 API 時，回傳為 Promise，這是 Asynchronous 行為；若使用 RxJS 可視為 Observable，以 Stream 方式處理 API 回傳資料。</p>
+<a id="more"></a>
+
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.4<br>WebStorm 2020.1<br>Vue 2.6.11<br>Vue-rx 6.2<br>RxJS 6.5.5</p>
+<h2 id="Browser"><a href="#Browser" class="headerlink" title="Browser"></a>Browser</h2><p><img src="/images/rxjs/creation/fetch-api/api000.png" alt="api000"></p>
+<p>顯示 <code>title</code> 與 <code>price</code>。</p>
+<h2 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h2><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"FP in JavaScript"</span><span class="token punctuation">,</span>
+    <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
+    <span class="token property">"categoryId"</span><span class="token operator">:</span> <span class="token number">1</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"RxJS in Action"</span><span class="token punctuation">,</span>
+    <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+    <span class="token property">"categoryId"</span><span class="token operator">:</span> <span class="token number">2</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+    <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"Speaking JavaScript"</span><span class="token punctuation">,</span>
+    <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">300</span><span class="token punctuation">,</span>
+    <span class="token property">"categoryId"</span><span class="token operator">:</span> <span class="token number">3</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>API 回傳為以上 array。</p>
+<h2 id="Promise"><a href="#Promise" class="headerlink" title="Promise"></a>Promise</h2><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(x, i) in books<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        Title : {{ x.title }}, Price : {{ x.price }}
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span>
+
+<span class="token keyword">let</span> fetchBooks <span class="token operator">=</span> axios<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'http://localhost:3000/books'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> mounted <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  fetchBooks<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>books <span class="token operator">=</span> x<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  name<span class="token punctuation">:</span><span class="token string">'app'</span><span class="token punctuation">,</span>
+  data<span class="token punctuation">:</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+    books<span class="token punctuation">:</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  mounted<span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>14 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchBooks <span class="token operator">=</span> axios<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'http://localhost:3000/books'</span><span class="token punctuation">)</span>
+  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>使用 Axios 回傳 Promise。</p>
+<p>17 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> mounted <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  fetchBooks<span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>books <span class="token operator">=</span> x<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>在 <code>mounted</code> hook 呼叫 <code>fetchBooks()</code>，由於回傳的是 Promise，必須使用 <code>then()</code> 與 side effect 將資料寫進 <code>books</code> data，才能顯示在 HTML template。</p>
+<p>由於要寫進 <code>data</code>，必須使用 <code>this</code>，因此 <code>mounted()</code> 只能使用 function expression，而不能使用 arrow function。</p>
+<p>第 4 行</p>
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(x, i) in books<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  Title : {{ x.title }}, Price : {{ x.price }}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><code>v-for</code> directive 支援 <code>books</code> data，可順利顯示在 HTML template。</p>
+<h2 id="Observable"><a href="#Observable" class="headerlink" title="Observable"></a>Observable</h2><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(x, i) in books$<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        Title : {{ x.title }}, Price : {{ x.price }}
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ajax <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/ajax'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pluck <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span>
+
+<span class="token keyword">let</span> fetchBooks$ <span class="token operator">=</span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token string">'http://localhost:3000/books'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> subscriptions <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> books$ <span class="token operator">=</span> fetchBooks$
+
+  <span class="token keyword">return</span> <span class="token punctuation">{</span> books$ <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  name<span class="token punctuation">:</span><span class="token string">'app'</span><span class="token punctuation">,</span>
+  subscriptions<span class="token punctuation">,</span>
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>15 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchBooks$ <span class="token operator">=</span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token string">'http://localhost:3000/books'</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>Axios 回傳 Promise，直接使用 RxJS 所提供的 <code>ajax()</code> 回傳 Observable。</p>
+<blockquote>
+<p>實務上若 function 回傳 Observable，function 名稱會加上 <code>$</code> postfix</p>
+</blockquote>
+<blockquote>
+<p><strong>pipe()</strong><br>將多個 unary function 組合成新的 function</p>
+</blockquote>
+<p>由於資料都放在 Promise 的 <code>Response.data</code> 下，而我們真正想要的資料又放在 <code>books</code> 下，因此使用 <code>pluck()</code> 從 <code>data.books</code> 擷取出想顯示的資料。</p>
+<blockquote>
+<p><strong>pluck()</strong><br>從 object 中擷取指定 nested property</p>
+</blockquote>
+<p><img src="/images/rxjs/creation/fetch-api/api001.png" alt="api001"></p>
+<p>20 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books$ <span class="token operator">=</span> fetchBooks$
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>定義 <code>books$</code> Observable，由於 <code>fetchBooks$</code> 已經是 Observable，因此可直接指定。</p>
+<p>22 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">return</span> <span class="token punctuation">{</span> books$ <span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Vue 的 HTML template 並不支援 Promise，因此我們只能在 <code>then()</code> 以 side effect 寫入 <code>data</code>，但卻支援 Observable，只要直接在 <code>subscription()</code> 回傳 Observable 即可。</p>
+<p>第 4 行</p>
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(x, i) in books$<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+  Title : {{ x.title }}, Price : {{ x.price }}
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><code>v-for</code> 部分不變，唯從 <code>books</code> data 改成 <code>books$</code> Observable。</p>
+<p><code>v-for</code> directive 也能順利支援 Observable。</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>使用 Promise 必須搭配 <code>data</code> 才能顯示在 HTML template，因此勢必使用 <code>this</code></li>
+<li>Observable 可直接在 HTML template 顯示，不須搭配 <code>data</code>，也因此不用使用 <code>this</code>，可以讓 Vue 更接近 FP 風格，不用等 Vue 3 的 composition API 就可完全擺脫 <code>this</code></li>
+<li><code>v-for</code> directive 完美支援 Observable，因此 HTML template 部分寫法不變</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://egghead.io/instructors/john-lindquist" target="_blank" rel="noopener">John Lindquist</a>, <a href="https://egghead.io/lessons/vue-js-stream-an-api-using-rxjs-into-a-vue-js-template" target="_blank" rel="noopener">Stream an API using RxJS into a Vue.js Template</a><br><a href="https://rxjs-dev.firebaseapp.com/" target="_blank" rel="noopener">RxJS</a>, <a href="https://rxjs-dev.firebaseapp.com/api/index/function/pipe" target="_blank" rel="noopener">pipe()</a><br><a href="https://rxjs-dev.firebaseapp.com/" target="_blank" rel="noopener">RxJS</a>, <a href="https://rxjs-dev.firebaseapp.com/api/operators/pluck" target="_blank" rel="noopener">pluck()</a></p>
+
+          </article>
+          <p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/RxJS/'>#&nbsp;RxJS</a>
+    
+  </span>
+  
+</p>
+        </div>
+        <div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/pd/switch/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">如何以 Cmd + Tab 快速切換 macOS 與 Ubuntu ?</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/rxjs/cookbook/fmap/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">如何從 Observable 中的 Array 取出部分 Property ?</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="text-center">
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://yabai.tw">日本語の灯り</a>
+  </p>
+</footer>
+
+  <!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+  </body>
+</html>

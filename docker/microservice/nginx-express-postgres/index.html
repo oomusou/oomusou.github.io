@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html 
+>
+  <head>
+  <meta charset="utf-8">
+  <!-- ### DNS Prefetch ### -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+  <!-- ### Preload ### -->
+  
+
+  <!-- ### Meta & Title & Info ### -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>Nginx + Express + PostgreSQL as Microservice | 日本語の灯り</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff2601">
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="If we want to use Microservice architecture, we will build Nginx, Express, PostgreSQL images first, and then use Docker Compose to run Nginx, Express, PostgreSQL at once.">
+<!-- Keywords -->
+<meta name="keywords" content=", Docker, Nginx, PostgreSQL, Express">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+  <!-- ### Import File ### -->
+  
+    <!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+  
+  <!-- ### Site Verification ### -->
+  
+
+  <!-- ### RSS ### -->
+  
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+  <!-- ### WebApp ### -->
+  <meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="日本語の灯り">
+<meta name="msapplication-starturl" content="https://yabai.tw">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="日本語の灯り">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+  <!-- ### The Open Graph & Twitter Card Protocol ### -->
+  <meta property="og:title" content="Nginx + Express + PostgreSQL as Microservice | 日本語の灯り">
+<meta property="og:site_name" content="日本語の灯り">
+
+<meta property="og:url" content="https://yabai.tw/docker/microservice/nginx-express-postgres/">
+<meta property="og:image"
+	content="https://yabai.tw/apple-touch-icon.png">
+<meta property="og:description" content="If we want to use Microservice architecture, we will build Nginx, Express, PostgreSQL images first, and then use Docker Compose to run Nginx, Express, PostgreSQL at once.">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-11-20T10:39:03.000Z">
+<meta property="article:modified_time" content="2021-11-20T10:39:03.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", Docker, Nginx, PostgreSQL, Express">
+
+
+  <!-- ### Analytics ### -->
+  
+
+
+
+
+
+  <!-- ### Canonical link ### -->
+  <link rel="canonical" href="https://yabai.tw/docker/microservice/nginx-express-postgres/">
+  <!-- ### Structured Data ### -->
+  
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://yabai.tw/docker/microservice/nginx-express-postgres/",
+    "@type": "BlogPosting",
+    "logo": "https://yabai.tw/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://yabai.tw/docker/microservice/nginx-express-postgres/"
+    },
+    "headline": "Nginx + Express + PostgreSQL as Microservice | 日本語の灯り",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://yabai.tw/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2021-11-20T10:39:03.000Z",
+    "dateModified": "2025-01-29T14:52:34.078Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/img/default_avatar.png"
+        },
+        "description": "日本語は学べば学ぶほど面白い"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "日本語の灯り",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://yabai.tw/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", Docker, Nginx, PostgreSQL, Express",
+    "description": "If we want to use Microservice architecture, we will build Nginx, Express, PostgreSQL images first, and then use Docker Compose to run Nginx, Express, PostgreSQL at once."
+}
+</script>
+
+  <!-- ### Custom Head ### -->
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+  <body>
+  <header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      日本語の灯り
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    日本語は学べば学ぶほど面白い
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">ホーム</a>
+      <a href="/series/" class="navbar-link">シリーズ</a>
+      <a href="/tags/" class="navbar-link">タグ</a>
+      <a href="/search" class="navbar-link">検索</a>
+<!--      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>-->
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+  
+<!-- ## Post ## -->
+<div class="post-container">
+  <div id="post-card" class="card">
+    <div class="card-item-container">
+      <div class="card-inner-cell">
+        <div class="card-header">
+          
+<h1 class="card-title h3 mb-2">Nginx + Express + PostgreSQL as Microservice</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2021-11-20</span>
+</div>
+
+        </div>
+        <div class="card-body">
+          <article id="post-content">
+            <p>If we want to use Microservice architecture, we will build Nginx, Express, PostgreSQL images first, and then use Docker Compose to run Nginx, Express, PostgreSQL at once.</p>
+<a id="more"></a>
+
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.2<br>Nginx 1.21.3<br>Express 4.17.1<br>PostgreSQL 14.0</p>
+<h2 id="Architecture"><a href="#Architecture" class="headerlink" title="Architecture"></a>Architecture</h2><p><img src="/images/docker/microservice/nginx-express-postgres/postgres000.svg" alt="postgre000"></p>
+<p>Nginx and Express are all in Docker, and they expose ports <code>7979</code> and <code>8080</code> outside of Docker, but PostgreSQL is only available inside Docker.</p>
+<h2 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a>Vue</h2><p><img src="/images/docker/microservice/nginx-express-postgres/postgres001.png" alt="postgre001"></p>
+<p>Vue runs successfully on port <code>7979</code>.</p>
+<h3 id="App-vue"><a href="#App-vue" class="headerlink" title="App.vue"></a>App.vue</h3><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span>
+
+<span class="token keyword">const</span> API_SVR <span class="token operator">=</span> <span class="token keyword">import</span><span class="token punctuation">.</span>meta<span class="token punctuation">.</span>env<span class="token punctuation">.</span>VITE_API_SVR
+<span class="token keyword">let</span> articles <span class="token operator">=</span> $ref <span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token keyword">async</span> _ <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> <span class="token punctuation">{</span> data <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> axios<span class="token punctuation">.</span><span class="token keyword">get</span> <span class="token punctuation">(</span><span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>API_SVR<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/api/articles`</span></span><span class="token punctuation">)</span>
+  articles <span class="token operator">=</span> data
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Get Articles<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>x in articles<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>{{ x.id }}：{{ x.title }} / {{ x.content }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>Line 4</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">const</span> API_SVR <span class="token operator">=</span> <span class="token keyword">import</span><span class="token punctuation">.</span>meta<span class="token punctuation">.</span>env<span class="token punctuation">.</span>VITE_API_SVR
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Read <code>VITE_API_SVR</code> environment variable in <code>.env</code>.</p>
+<p><strong>LIne 5</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> articles <span class="token operator">=</span> $ref <span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Declare <code>articles</code> reactive variable with default value <code>[]</code>.</p>
+<p><strong>Line 7</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token keyword">async</span> _ <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> <span class="token punctuation">{</span> data <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> axios<span class="token punctuation">.</span><span class="token keyword">get</span> <span class="token punctuation">(</span><span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>API_SVR<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/api/articles`</span></span><span class="token punctuation">)</span>
+  articles <span class="token operator">=</span> data
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Call <code>http://localhost:8080/api/articles</code> to get articles.</p>
+<h3 id="Environment-Variable"><a href="#Environment-Variable" class="headerlink" title="Environment Variable"></a>Environment Variable</h3><p><strong>.env</strong></p>
+<pre class="line-numbers highlight language-env"><code class="language-env">VITE_API_SVR=http://localhost:8080
+DB_SVR=Postgres
+VUE_VER=0.0.0
+EX_VER=0.0.0
+NGINX_PORT=7979
+EX_PORT=8080
+HOST_DIR=.data
+POSTGRES_PORT=5432
+POSTGRES_DB=DBLab
+POSTGRES_USER=admin
+POSTGRES_PASSWORD=12345
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Environment variable for Vue and Docker Compose :</p>
+<ul>
+<li><code>VITE_API_SVR</code> : URL for API server, which Vue uses</li>
+<li><code>DB_SVR</code> : database server, which Express uses</li>
+<li><code>VUE_VER</code> : Vue build version, which Docker Compose uses</li>
+<li><code>EX_VER</code> : Express build version, which Docker Compose uses</li>
+<li><code>NGINX_PORT</code> : Nginx exposed port, which Docker Compose uses</li>
+<li><code>EX_PORT</code> : Express exposed port, which Docker Compose uses</li>
+<li><code>HOST_DIR</code> : host data directory mounted to Postgres</li>
+<li><code>POSTGRES_PORT</code> : Postgre exposed port, which Express uses</li>
+<li><code>POSTGRES_DB</code> : Postgre database, which Express and Postgre use</li>
+<li><code>POSTGRES_USER</code> : Postgre user, which Express and Postgre use</li>
+<li><code>POSTGRES_PASSWORD</code> : Postgre password, which Express and Postgre use</li>
+</ul>
+<h3 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h3><pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">FROM nginx:alpine
+COPY dist /usr/share/nginx/html
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>Build Vue image by Nginx image</li>
+<li>Copy all files in <code>dist</code> directory to <code>/usr/share/nginx/html</code> in image</li>
+</ul>
+<h3 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h3><p><strong>docker-compose.yml</strong></p>
+<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3"</span>
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token key atrule">nginx</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span>$<span class="token punctuation">{</span>VUE_VER<span class="token punctuation">}</span>
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> Nginx
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>NGINX_PORT<span class="token punctuation">}</span><span class="token punctuation">:</span><span class="token number">80</span>
+    <span class="token key atrule">restart</span><span class="token punctuation">:</span> always 
+  <span class="token key atrule">express</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> express<span class="token punctuation">:</span>$<span class="token punctuation">{</span>EX_VER<span class="token punctuation">}</span>
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> Express
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>EX_PORT<span class="token punctuation">}</span><span class="token punctuation">:</span><span class="token number">8080</span>
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> DB_SVR=$<span class="token punctuation">{</span>DB_SVR<span class="token punctuation">}</span>
+      <span class="token punctuation">-</span> DB_PORT=$<span class="token punctuation">{</span>POSTGRES_PORT<span class="token punctuation">}</span>
+      <span class="token punctuation">-</span> DB_USER=$<span class="token punctuation">{</span>POSTGRES_USER<span class="token punctuation">}</span>
+      <span class="token punctuation">-</span> DB_PASSWORD=$<span class="token punctuation">{</span>POSTGRES_PASSWORD<span class="token punctuation">}</span>
+      <span class="token punctuation">-</span> DB_DATABASE=$<span class="token punctuation">{</span>POSTGRES_DB<span class="token punctuation">}</span>
+    <span class="token key atrule">restart</span><span class="token punctuation">:</span> always
+  <span class="token key atrule">postgres</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> postgres<span class="token punctuation">:</span>latest
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> Postgres
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>HOST_DIR<span class="token punctuation">}</span><span class="token punctuation">:</span>/var/lib/postgresql/data
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> POSTGRES_USER=$<span class="token punctuation">{</span>POSTGRES_USER<span class="token punctuation">}</span>
+      <span class="token punctuation">-</span> POSTGRES_PASSWORD=$<span class="token punctuation">{</span>POSTGRES_PASSWORD<span class="token punctuation">}</span>
+      <span class="token punctuation">-</span> POSTGRES_DB=$<span class="token punctuation">{</span>POSTGRES_DB<span class="token punctuation">}</span>
+    <span class="token key atrule">restart</span><span class="token punctuation">:</span> always
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>Line 3</strong></p>
+<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">nginx</span><span class="token punctuation">:</span>
+  <span class="token key atrule">image</span><span class="token punctuation">:</span> nginx<span class="token punctuation">:</span>$<span class="token punctuation">{</span>VUE_VER<span class="token punctuation">}</span>
+  <span class="token key atrule">container_name</span><span class="token punctuation">:</span> Nginx
+  <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> $<span class="token punctuation">{</span>NGINX_PORT<span class="token punctuation">}</span><span class="token punctuation">:</span><span class="token number">80</span>
+  <span class="token key atrule">restart</span><span class="token punctuation">:</span> always 
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Run container by <code>nginx</code> image with version</li>
+<li><code>ports</code> : map port by <code>NGINX_PORT</code> environment variable with internal port <code>80</code></li>
+</ul>
+<p><strong>Line 9</strong></p>
+<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">express</span><span class="token punctuation">:</span>
+  <span class="token key atrule">image</span><span class="token punctuation">:</span> express<span class="token punctuation">:</span>$<span class="token punctuation">{</span>EX_VER<span class="token punctuation">}</span>
+  <span class="token key atrule">container_name</span><span class="token punctuation">:</span> Express
+  <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> $<span class="token punctuation">{</span>EX_PORT<span class="token punctuation">}</span><span class="token punctuation">:</span><span class="token number">8080</span>
+  <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> DB_SVR=$<span class="token punctuation">{</span>DB_SVR<span class="token punctuation">}</span>
+    <span class="token punctuation">-</span> DB_PORT=$<span class="token punctuation">{</span>POSTGRES_PORT<span class="token punctuation">}</span>
+    <span class="token punctuation">-</span> DB_USER=$<span class="token punctuation">{</span>POSTGRES_USER<span class="token punctuation">}</span>
+    <span class="token punctuation">-</span> DB_PASSWORD=$<span class="token punctuation">{</span>POSTGRES_PASSWORD<span class="token punctuation">}</span>
+    <span class="token punctuation">-</span> DB_DATABASE=$<span class="token punctuation">{</span>POSTGRES_DB<span class="token punctuation">}</span>
+  <span class="token key atrule">restart</span><span class="token punctuation">:</span> always
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li><p>Run container by the <code>express</code> image with version</p>
+</li>
+<li><p><code>ports</code> : map port by <code>EX_PORT</code> environment variable with internal port <code>8080</code></p>
+</li>
+<li><p><code>environment</code> : </p>
+<ul>
+<li><p><code>DB_SVR</code> : transfer <code>DB_SVR</code> Docker Compose environment variable to <code>DB_SVR</code> Express environment variable</p>
+</li>
+<li><p><code>DB_PORT</code> : transfer <code>POSTGRES_PORT</code> Docker Compose environment variable to <code>DB_PORT</code> Express environment variable</p>
+</li>
+<li><p><code>DB_USER</code> : transfer <code>POSTGRES_USER</code> Docker Compose environment variable to <code>DB_USER</code> Express environment variable</p>
+</li>
+<li><p><code>DB_PASSWORD</code> : transfer <code>POSTGRES_PASSWORD</code> Docker Compose environment variable to <code>DB_PASSWORD</code> Express environment variable</p>
+</li>
+<li><p><code>DB_DATABASE</code> : transfer <code>POSTGRES_DB</code> Docker Compose environment variable to <code>DB_DATABASE</code> Express environment variable</p>
+</li>
+</ul>
+</li>
+</ul>
+<p><strong>Line 21</strong></p>
+<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">postgres</span><span class="token punctuation">:</span>
+  <span class="token key atrule">image</span><span class="token punctuation">:</span> postgres<span class="token punctuation">:</span>latest
+  <span class="token key atrule">container_name</span><span class="token punctuation">:</span> Postgres
+  <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> $<span class="token punctuation">{</span>HOST_DIR<span class="token punctuation">}</span><span class="token punctuation">:</span>/var/lib/postgresql/data
+  <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+    <span class="token punctuation">-</span> POSTGRES_USER=$<span class="token punctuation">{</span>POSTGRES_USER<span class="token punctuation">}</span>
+    <span class="token punctuation">-</span> POSTGRES_PASSWORD=$<span class="token punctuation">{</span>POSTGRES_PASSWORD<span class="token punctuation">}</span>
+    <span class="token punctuation">-</span> POSTGRES_DB=$<span class="token punctuation">{</span>POSTGRES_DB<span class="token punctuation">}</span>
+  <span class="token key atrule">restart</span><span class="token punctuation">:</span> always
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Run container by latest <code>postgres</code> image</li>
+<li><code>volumns</code> : map host directory to store data</li>
+<li><code>environment</code> : <ul>
+<li><code>POSTGRES_USER</code> : transfer <code>POSTGRES_USER</code> Docker Compose environment variable to <code>POSTGRES_USER</code> PostgreSQL environment variable</li>
+<li><code>POSTGRES_PASSWORD</code> : transfer <code>POSTGRES_PASSWORD</code> Docker Compose environment variable to <code>POSTGRES_PASSWORD</code> PostgreSQL environment variable</li>
+<li><code>POSTGRES_DB</code> :   transfer <code>POSTGRES_DB</code> Docker Compose environment variable to <code>POSTGRES_DB</code> PostgreSQL environment variable</li>
+</ul>
+</li>
+</ul>
+<h3 id="NPM-Config"><a href="#NPM-Config" class="headerlink" title="NPM Config"></a>NPM Config</h3><p><strong>package.json</strong></p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"vue-express-postgre"</span><span class="token punctuation">,</span>
+  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"0.0.0"</span><span class="token punctuation">,</span>
+  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"vite"</span><span class="token punctuation">,</span>
+    <span class="token property">"serve"</span><span class="token operator">:</span> <span class="token string">"vite preview"</span><span class="token punctuation">,</span>
+    <span class="token property">"build-vue"</span><span class="token operator">:</span> <span class="token string">"vite build"</span><span class="token punctuation">,</span>
+    <span class="token property">"build-nginx"</span><span class="token operator">:</span> <span class="token string">"yarn build-vue &amp;&amp; docker build -t nginx:$npm_package_version ."</span><span class="token punctuation">,</span>
+    <span class="token property">"build-express"</span><span class="token operator">:</span> <span class="token string">"docker build -t express:$npm_package_version ./express"</span><span class="token punctuation">,</span>
+    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"yarn build-nginx &amp;&amp; yarn build-express"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"axios"</span><span class="token operator">:</span> <span class="token string">"^0.24.0"</span><span class="token punctuation">,</span>
+    <span class="token property">"vue"</span><span class="token operator">:</span> <span class="token string">"^3.2.6"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"@vitejs/plugin-vue"</span><span class="token operator">:</span> <span class="token string">"^1.6.0"</span><span class="token punctuation">,</span>
+    <span class="token property">"@vue/compiler-sfc"</span><span class="token operator">:</span> <span class="token string">"^3.0.5"</span><span class="token punctuation">,</span>
+    <span class="token property">"vite"</span><span class="token operator">:</span> <span class="token string">"^2.5.1"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>LIne 7</strong></p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"build-vue"</span><span class="token operator">:</span> <span class="token string">"vite build"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Build Vue to the <code>dist</code> directory.</p>
+<p><strong>Line 8</strong></p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"build-nginx"</span><span class="token operator">:</span> <span class="token string">"yarn build-vue &amp;&amp; docker build -t nginx:$npm_package_version ."</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Build Vue to the <code>dist</code> directory and make Vue as Nginx image.</p>
+<p><strong>LIne 9</strong></p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"build-express"</span><span class="token operator">:</span> <span class="token string">"docker build -t express:$npm_package_version ./express"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Build Express to image.</p>
+<p><strong>Line 10</strong></p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"yarn build-nginx &amp;&amp; yarn build-express"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Build Nginx and Express image at once.</p>
+<h2 id="Express"><a href="#Express" class="headerlink" title="Express"></a>Express</h2><p><img src="/images/docker/microservice/nginx-express-postgres/postgres002.png" alt="postgres002"></p>
+<p>Express runs successfully on port <code>8080</code>.</p>
+<h3 id="App-js"><a href="#App-js" class="headerlink" title="App.js"></a>App.js</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> express <span class="token keyword">from</span> <span class="token string">'express'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> config <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'dotenv'</span>
+<span class="token keyword">import</span> cors <span class="token keyword">from</span> <span class="token string">'cors'</span>
+<span class="token keyword">import</span> Knex <span class="token keyword">from</span> <span class="token string">'knex'</span>
+
+<span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">!==</span> <span class="token string">'production'</span><span class="token punctuation">)</span>
+  config <span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> app <span class="token operator">=</span> express <span class="token punctuation">(</span><span class="token punctuation">)</span>
+app<span class="token punctuation">.</span>use <span class="token punctuation">(</span>cors <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+app<span class="token punctuation">.</span>use <span class="token punctuation">(</span>express<span class="token punctuation">.</span>json <span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> knex <span class="token operator">=</span> Knex <span class="token punctuation">(</span><span class="token punctuation">{</span>
+  client<span class="token punctuation">:</span> <span class="token string">'pg'</span><span class="token punctuation">,</span>
+  connection<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    host<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>DB_SVR<span class="token punctuation">,</span>
+    port<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>DB_PORT<span class="token punctuation">,</span>
+    user<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>DB_USER<span class="token punctuation">,</span>
+    password<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>DB_PASSWORD<span class="token punctuation">,</span>
+    database<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>DB_DATABASE
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  searchPath<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'public'</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+app<span class="token punctuation">.</span><span class="token keyword">get</span> <span class="token punctuation">(</span><span class="token string">'/api/articles'</span><span class="token punctuation">,</span> <span class="token keyword">async</span> <span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> <span class="token punctuation">{</span> rows <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> knex<span class="token punctuation">.</span>raw <span class="token punctuation">(</span><span class="token string">'SELECT * FROM articles'</span><span class="token punctuation">)</span>
+  res<span class="token punctuation">.</span>send <span class="token punctuation">(</span>rows<span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+
+app<span class="token punctuation">.</span>listen <span class="token punctuation">(</span><span class="token number">8080</span><span class="token punctuation">,</span> _ <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span>log <span class="token punctuation">(</span><span class="token string">'Express listen on port: 8080'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>Line 6</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">!==</span> <span class="token string">'production'</span><span class="token punctuation">)</span>
+  config <span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p> If not in <code>production</code> mode, Express will read the environment variable from <code>.env</code> in the <code>express</code> directory.</p>
+<p><strong>Line 13</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> knex <span class="token operator">=</span> Knex <span class="token punctuation">(</span><span class="token punctuation">{</span>
+  client<span class="token punctuation">:</span> <span class="token string">'pg'</span><span class="token punctuation">,</span>
+  connection<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    host<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>DB_SVR<span class="token punctuation">,</span>
+    port<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>DB_PORT<span class="token punctuation">,</span>
+    user<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>DB_USER<span class="token punctuation">,</span>
+    password<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>DB_PASSWORD<span class="token punctuation">,</span>
+    database<span class="token punctuation">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>DB_DATABASE
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  searchPath<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">'public'</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Connect to Postgres by Knex, all environment variables are derived from Docker Compose.</p>
+<p><strong>Line 25</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">app<span class="token punctuation">.</span><span class="token keyword">get</span> <span class="token punctuation">(</span><span class="token string">'/api/articles'</span><span class="token punctuation">,</span> <span class="token keyword">async</span> <span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> <span class="token punctuation">{</span> rows <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">await</span> knex<span class="token punctuation">.</span>raw <span class="token punctuation">(</span><span class="token string">'SELECT * FROM articles'</span><span class="token punctuation">)</span>
+  res<span class="token punctuation">.</span>send <span class="token punctuation">(</span>rows<span class="token punctuation">)</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Use <code>knex. raw</code> to run raw SQL to Postgres.</p>
+<h3 id="Environment-Variable-1"><a href="#Environment-Variable-1" class="headerlink" title="Environment Variable"></a>Environment Variable</h3><p><strong>.env</strong></p>
+<pre class="line-numbers highlight language-env"><code class="language-env">DB_SVR=localhost
+DB_PORT=5432
+DB_USER=admin
+DB_PASSWORD=12345
+DB_DATABASE=DBLab
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Environment variable used by development mode.</p>
+<h3 id="Dockerfile-1"><a href="#Dockerfile-1" class="headerlink" title="Dockerfile"></a>Dockerfile</h3><pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">FROM node:lts-alpine
+ENV NODE_ENV=production
+WORKDIR /usr/src/app
+COPY package.json ./package.json
+RUN yarn install
+COPY app.js .
+CMD [ "node", "app.js" ]
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>Build Express image by Node image</li>
+<li>Copy <code>app.js</code> to image</li>
+<li>Set <code>NODE_ENV</code> environment variable to <code>production</code> to indicate <code>production</code> mode</li>
+</ul>
+<h3 id="NPM-Config-1"><a href="#NPM-Config-1" class="headerlink" title="NPM Config"></a>NPM Config</h3><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"module"</span><span class="token punctuation">,</span>
+  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"express"</span><span class="token punctuation">,</span>
+  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"0.0.0"</span><span class="token punctuation">,</span>
+  <span class="token property">"main"</span><span class="token operator">:</span> <span class="token string">"index.js"</span><span class="token punctuation">,</span>
+  <span class="token property">"license"</span><span class="token operator">:</span> <span class="token string">"MIT"</span><span class="token punctuation">,</span>
+  <span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"cors"</span><span class="token operator">:</span> <span class="token string">"^2.8.5"</span><span class="token punctuation">,</span>
+    <span class="token property">"dotenv"</span><span class="token operator">:</span> <span class="token string">"^10.0.0"</span><span class="token punctuation">,</span>
+    <span class="token property">"express"</span><span class="token operator">:</span> <span class="token string">"^4.17.1"</span><span class="token punctuation">,</span>
+    <span class="token property">"knex"</span><span class="token operator">:</span> <span class="token string">"^0.95.13"</span><span class="token punctuation">,</span>
+    <span class="token property">"pg"</span><span class="token operator">:</span> <span class="token string">"^8.7.1"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"nodemon"</span><span class="token operator">:</span> <span class="token string">"^2.0.14"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"nodemon app.js"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>Line 18</strong></p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"nodemon app.js"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Run Express in development mode.</p>
+<h2 id="PostgreSQL"><a href="#PostgreSQL" class="headerlink" title="PostgreSQL"></a>PostgreSQL</h2><h3 id="Environment-Variable-2"><a href="#Environment-Variable-2" class="headerlink" title="Environment Variable"></a>Environment Variable</h3><p><strong>.env</strong></p>
+<pre class="line-numbers highlight language-env"><code class="language-env">HOST_DIR=.data
+POSTGRE_PORT=5432
+POSTGRE_DB=DBLab
+POSTGRE_USER=admin
+POSTGRE_PASSWORD=12345
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Environment variable used by development mode.</p>
+<h3 id="Docker-Compose-1"><a href="#Docker-Compose-1" class="headerlink" title="Docker Compose"></a>Docker Compose</h3><p><strong>docker-compose.yml</strong></p>
+<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3"</span>
+
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+  <span class="token key atrule">postgres</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> postgres<span class="token punctuation">:</span>latest
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> Postgres
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>HOST_DIR<span class="token punctuation">}</span><span class="token punctuation">:</span>/var/lib/postgresql/data
+    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>POSTGRES_PORT<span class="token punctuation">}</span><span class="token punctuation">:</span><span class="token number">5432</span>
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> POSTGRES_DB=$<span class="token punctuation">{</span>POSTGRES_DB<span class="token punctuation">}</span>
+      <span class="token punctuation">-</span> POSTGRES_USER=$<span class="token punctuation">{</span>POSTGRES_USER<span class="token punctuation">}</span>
+      <span class="token punctuation">-</span> POSTGRES_PASSWORD=$<span class="token punctuation">{</span>POSTGRES_PASSWORD<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Postgres container used by development mode.</p>
+<h2 id="Development"><a href="#Development" class="headerlink" title="Development"></a>Development</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn dev
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Run <code>yarn dev</code> in the root directory to run the dev server for Vue.</p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn dev
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Run <code>yarn dev</code> in the <code>express</code> directory to run Express by Node.</p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">$ docker-compose up -d
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p><code>run docker-compose up -d</code> in the <code>postgres</code> directory to run Postgres.</p>
+<h2 id="Production"><a href="#Production" class="headerlink" title="Production"></a>Production</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn build
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Run <code>yarn build</code> to build Nginx image and Express image at once.</p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">$ docker-compose up -d
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Run <code>docker-compose up -d</code> in the root directory to run Nginx, Express, Postgres at once.</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>Nginx and Express expose their ports outside of Docker, but Postgres only expose its port inside of Docker, which Express only uses</li>
+<li>In the recommended architecture in this post, we can both have development mode and production mode at the same time</li>
+</ul>
+
+          </article>
+          <p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/Docker/'>#&nbsp;Docker</a>
+    
+    <a class="post-tags-list-item" href='/tags/Nginx/'>#&nbsp;Nginx</a>
+    
+    <a class="post-tags-list-item" href='/tags/PostgreSQL/'>#&nbsp;PostgreSQL</a>
+    
+    <a class="post-tags-list-item" href='/tags/Express/'>#&nbsp;Express</a>
+    
+  </span>
+  
+</p>
+        </div>
+        <div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/ecmascript/function/pass-object-to-function/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">Always Passing Object to Function</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/wsl/overview/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">WSL2 Overview</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="text-center">
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://yabai.tw">日本語の灯り</a>
+  </p>
+</footer>
+
+  <!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+  </body>
+</html>

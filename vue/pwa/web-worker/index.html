@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html 
+>
+  <head>
+  <meta charset="utf-8">
+  <!-- ### DNS Prefetch ### -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+  <!-- ### Preload ### -->
+  
+
+  <!-- ### Meta & Title & Info ### -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>Web Worker 初體驗 | 日本語の灯り</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff2601">
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="由於 Browser 只有一個 UI Thread 特性，若同時在此 Thread 執行很耗 CPU 運算，將使得 UI 有 Freeze 感覺，若能改用 Web Worker 執行耗 CPU 部分，將大幅提升使用者體驗。">
+<!-- Keywords -->
+<meta name="keywords" content=", Vue, PWA, Web Worker">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+  <!-- ### Import File ### -->
+  
+    <!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+  
+  <!-- ### Site Verification ### -->
+  
+
+  <!-- ### RSS ### -->
+  
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+  <!-- ### WebApp ### -->
+  <meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="日本語の灯り">
+<meta name="msapplication-starturl" content="https://yabai.tw">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="日本語の灯り">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+  <!-- ### The Open Graph & Twitter Card Protocol ### -->
+  <meta property="og:title" content="Web Worker 初體驗 | 日本語の灯り">
+<meta property="og:site_name" content="日本語の灯り">
+
+<meta property="og:url" content="https://yabai.tw/vue/pwa/web-worker/">
+<meta property="og:image"
+	content="https://yabai.tw/apple-touch-icon.png">
+<meta property="og:description" content="由於 Browser 只有一個 UI Thread 特性，若同時在此 Thread 執行很耗 CPU 運算，將使得 UI 有 Freeze 感覺，若能改用 Web Worker 執行耗 CPU 部分，將大幅提升使用者體驗。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-04-15T09:39:18.000Z">
+<meta property="article:modified_time" content="2021-04-15T09:39:18.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", Vue, PWA, Web Worker">
+
+
+  <!-- ### Analytics ### -->
+  
+
+
+
+
+
+  <!-- ### Canonical link ### -->
+  <link rel="canonical" href="https://yabai.tw/vue/pwa/web-worker/">
+  <!-- ### Structured Data ### -->
+  
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://yabai.tw/vue/pwa/web-worker/",
+    "@type": "BlogPosting",
+    "logo": "https://yabai.tw/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://yabai.tw/vue/pwa/web-worker/"
+    },
+    "headline": "Web Worker 初體驗 | 日本語の灯り",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://yabai.tw/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2021-04-15T09:39:18.000Z",
+    "dateModified": "2025-01-29T14:52:34.383Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/img/default_avatar.png"
+        },
+        "description": "日本語は学べば学ぶほど面白い"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "日本語の灯り",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://yabai.tw/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", Vue, PWA, Web Worker",
+    "description": "由於 Browser 只有一個 UI Thread 特性，若同時在此 Thread 執行很耗 CPU 運算，將使得 UI 有 Freeze 感覺，若能改用 Web Worker 執行耗 CPU 部分，將大幅提升使用者體驗。"
+}
+</script>
+
+  <!-- ### Custom Head ### -->
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+  <body>
+  <header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      日本語の灯り
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    日本語は学べば学ぶほど面白い
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">ホーム</a>
+      <a href="/series/" class="navbar-link">シリーズ</a>
+      <a href="/tags/" class="navbar-link">タグ</a>
+      <a href="/search" class="navbar-link">検索</a>
+<!--      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>-->
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+  
+<!-- ## Post ## -->
+<div class="post-container">
+  <div id="post-card" class="card">
+    <div class="card-item-container">
+      <div class="card-inner-cell">
+        <div class="card-header">
+          
+<h1 class="card-title h3 mb-2">Web Worker 初體驗</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2021-04-15</span>
+</div>
+
+        </div>
+        <div class="card-body">
+          <article id="post-content">
+            <p>由於 Browser 只有一個 UI Thread 特性，若同時在此 Thread 執行很耗 CPU 運算，將使得 UI 有 Freeze 感覺，若能改用 Web Worker 執行耗 CPU 部分，將大幅提升使用者體驗。</p>
+<a id="more"></a>
+
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 2.6.11<br>Comlink 4.3.0</p>
+<h2 id="Web-Worker"><a href="#Web-Worker" class="headerlink" title="Web Worker"></a>Web Worker</h2><p><img src="/images/vue/pwa/web-worker/worker000.png" alt="worker000"></p>
+<p>輸入為 <code>Sam</code>，按下 <code>Uppercase</code> button 後輸出全大寫的 <code>SAM</code>。</p>
+<p>假設 <code>toUpper()</code> 是一個很耗 CPU 的 synchronous function，這使得按下 button 後，整個畫面會 freeze。</p>
+<blockquote>
+<p>由於 Browser 只有一個 UI thread，若將很耗 CPU 的邏輯也執行在 UI thread，勢必造成整個畫面 freeze，必較好的方式是將很耗 CPU 部分改寫在 Web Worker thread，如此將不會影響 UI thread 執行</p>
+</blockquote>
+<h2 id="Add-Worker-Loader"><a href="#Add-Worker-Loader" class="headerlink" title="Add Worker Loader"></a>Add Worker Loader</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add worker-loader --dev
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>由於 Vue CLI 是基於 Webpack，因此安裝 <code>worker-loader</code> 讓 Web Worker 能在 Webpack 下使用。</p>
+<p><strong>App.vue</strong></p>
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">v-model</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>message<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Uppercase<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    {{ result }}
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> WebWorker <span class="token keyword">from</span> <span class="token string">'worker-loader!./webWorker'</span>
+
+<span class="token keyword">let</span> webWorker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WebWorker</span>
+
+<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  webWorker<span class="token punctuation">.</span><span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>message<span class="token punctuation">)</span>
+  webWorker<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'message'</span><span class="token punctuation">,</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>result <span class="token operator">=</span> x<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  data<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+    message<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+    result<span class="token punctuation">:</span> <span class="token string">''</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    onClick
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>10 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> WebWorker <span class="token keyword">from</span> <span class="token string">'worker-loader!./webWorker'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>引入 <code>webWorker.js</code>，稍後會將 Web Worker thread 的 code 寫在此。</p>
+<p>12 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> webWorker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WebWorker</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>建立 Web Worker。</p>
+<p>14 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  webWorker<span class="token punctuation">.</span><span class="token function">postMessage</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>message<span class="token punctuation">)</span>
+  webWorker<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'message'</span><span class="token punctuation">,</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>result <span class="token operator">=</span> x<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<ul>
+<li>使用 <code>postMessage()</code> 將 data 傳入 Web Worker</li>
+<li>使用 <code>addEventListener(&#39;message&#39;)</code> 聆聽 <code>message</code> event，Web Worker 將藉此 <code>message</code> event 從 Web Worker thread 傳出資料</li>
+</ul>
+<blockquote>
+<p>由於 Web Worker 為 asynchronous，因此藉由 event 傳遞 data 可以理解，但 event 畢竟還是沒 Promise 好用，若能使用 Promise 就太好了</p>
+</blockquote>
+<p><strong>webWorker.js</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">self<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'message'</span><span class="token punctuation">,</span>
+  x <span class="token operator">=</span><span class="token operator">></span> self<span class="token punctuation">.</span><span class="token function">postMessage</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span>data<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>在 Web Worker thread 一律使用 <code>self</code> 存取 Web Worker。</p>
+<p>由於 Vue 使用 <code>postMessage()</code> 對 Web Worker 傳送 data，因此 Web Worker 也要聆聽 <code>message</code> event 接收 data。</p>
+<p>在 callback 內就可執行假設 <code>很耗時</code> 的 <code>toUpperCase()</code>，最後再以 <code>postMessage()</code> 將結果傳回 Vue。</p>
+<blockquote>
+<p>可發現 Web Worker 基本上就是使用 <code>postMessage()</code> 與 <code>addEventListener(&#39;message&#39;)</code> 彼此傳遞 data，雖然能達成在另一個 thread 執行耗 CPU 運算，但其 event-based API 實在很難用</p>
+</blockquote>
+<h2 id="Comlink"><a href="#Comlink" class="headerlink" title="Comlink"></a>Comlink</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add comlink
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>安裝 GoogleChromeLabs 的 comlink，讓我們以 promise-based API 使用 Web Worker。</p>
+<p><strong>App.vue</strong></p>
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">v-model</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>message<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Uppercase<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    {{ result }}
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> WebWorker <span class="token keyword">from</span> <span class="token string">'worker-loader!./webWorker'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> wrap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'comlink'</span>
+
+<span class="token keyword">let</span> <span class="token punctuation">{</span> toUpper <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">wrap</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">WebWorker</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">toUpper</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>
+    x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>result <span class="token operator">=</span> x
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  data<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+    message<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+    result<span class="token punctuation">:</span> <span class="token string">''</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    onClick
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>11 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> wrap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'comlink'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>從 comlink 引入 <code>wrap()</code>。</p>
+<p>13 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> toUpper <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">wrap</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">WebWorker</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>wrap()</code> 將 Web Worker Object 包成 comlink 自己的 object，並且 destructure 出自行提供的 <code>toUpper()</code>。</p>
+<p>15 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">toUpper</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>
+    x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>result <span class="token operator">=</span> x
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由於 comlink 會使 function 都從 event-based 改成 promise-based，因此 <code>toUpper()</code> 回傳 Promise，可在 <code>then()</code> 寫入 side effect 在 HTML template 顯示。</p>
+<p><strong>webWorker.js</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> expose <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'comlink'</span>
+
+<span class="token keyword">let</span> toUpper <span class="token operator">=</span> msg <span class="token operator">=</span><span class="token operator">></span> msg<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+
+<span class="token function">expose</span><span class="token punctuation">(</span><span class="token punctuation">{</span> toUpper <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 1 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> expose <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'comlink'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>從 comlink 引入 <code>expose()</code>。</p>
+<p>第 3 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> toUpper <span class="token operator">=</span> msg <span class="token operator">=</span><span class="token operator">></span> msg<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>定義自己很耗 CPU 的 function。</p>
+<p>第 5 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">expose</span><span class="token punctuation">(</span><span class="token punctuation">{</span> toUpperCase <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>expose()</code> 將自定義 funciton 包成 Object 傳入，<code>expose()</code> 將回傳 Web Worker。</p>
+<h2 id="Function-Pipeline"><a href="#Function-Pipeline" class="headerlink" title="Function Pipeline"></a>Function Pipeline</h2><p><strong>App.vue</strong></p>
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">v-model</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>message<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Uppercase<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    {{ result }}
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span class="token keyword">import</span> WebWorker <span class="token keyword">from</span> <span class="token string">'worker-loader!./webWorker'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> wrap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'comlink'</span>
+
+<span class="token keyword">let</span> <span class="token punctuation">{</span> toUpper <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">wrap</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">WebWorker</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">always</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    toUpper<span class="token punctuation">,</span>
+    <span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>result <span class="token operator">=</span> x<span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  data<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+    message<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
+    result<span class="token punctuation">:</span> <span class="token string">''</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
+    onClick
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>16 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">always</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>message<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    toUpper<span class="token punctuation">,</span>
+    <span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>result <span class="token operator">=</span> x<span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>由於 <code>toUpper()</code> 回傳為 Promise，因此可輕易整合在 Function Pipeline 中。</p>
+<p><strong>webWorker.js</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> expose <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'comlink'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> toUpper <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token function">expose</span><span class="token punctuation">(</span><span class="token punctuation">{</span> toUpper <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>toUpper()</code> 也可改用 Ramda 版本。</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>本範例僅用簡單的 <code>toUpper()</code> 示意，實務上可以改成自定義很耗 CPU 的 function</li>
+<li>Comlink 明顯比 Web Worker 原生 API 好用，且由於是回傳 Promise 可輕易 Function Pipeline</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://morioh.com/@5ec36214d90af23043eefe53/posts" target="_blank" rel="noopener">Игорь Харченко</a>, <a href="https://morioh.com/p/ceeada0a2a5f?f=5c21fb01c16e2556b555ab32&fbclid=IwAR2ajoKI_Qt4GICzhIW2lah2JCMvlAEgQQVyOs4IqFBqPOXo_T1M23s0tYA" target="_blank" rel="noopener">Vue Performance Optimization Using a Web Worker</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API" target="_blank" rel="noopener">Web Worker API</a><br><a href="https://webpack.js.org/" target="_blank" rel="noopener">Webpack</a>, <a href="https://webpack.js.org/loaders/worker-loader/" target="_blank" rel="noopener">worker-loader</a><br><a href="https://github.com/GoogleChromeLabs" target="_blank" rel="noopener">GoogleChromeLabs</a>, <a href="https://github.com/GoogleChromeLabs/comlink" target="_blank" rel="noopener">comlink</a></p>
+
+          </article>
+          <p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/Vue/'>#&nbsp;Vue</a>
+    
+    <a class="post-tags-list-item" href='/tags/PWA/'>#&nbsp;PWA</a>
+    
+    <a class="post-tags-list-item" href='/tags/Web-Worker/'>#&nbsp;Web Worker</a>
+    
+  </span>
+  
+</p>
+        </div>
+        <div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/vue3/pwa/web-worker/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">Web Worker 初體驗</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/vue/library/vuelidate/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 Vuelidate 驗證 Form</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="text-center">
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://yabai.tw">日本語の灯り</a>
+  </p>
+</footer>
+
+  <!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+  </body>
+</html>

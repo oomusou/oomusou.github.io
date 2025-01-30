@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html 
+>
+  <head>
+  <meta charset="utf-8">
+  <!-- ### DNS Prefetch ### -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+  <!-- ### Preload ### -->
+  
+
+  <!-- ### Meta & Title & Info ### -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>使用 switchMap() 與 mergeMap() 實現分頁 | 日本語の灯り</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff2601">
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="由於 DOM Event 為 Observable，API Request 亦為 Observable，若 Table 亦必須由 N + 1 Query 呼叫其他 API 取得資料，這就造成了 Observable of Observable of Observable 的三層 Higher Order Observable，這該如何使用 RxJS 實現呢 ?">
+<!-- Keywords -->
+<meta name="keywords" content=", RxJS">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+  <!-- ### Import File ### -->
+  
+    <!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+  
+  <!-- ### Site Verification ### -->
+  
+
+  <!-- ### RSS ### -->
+  
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+  <!-- ### WebApp ### -->
+  <meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="日本語の灯り">
+<meta name="msapplication-starturl" content="https://yabai.tw">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="日本語の灯り">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+  <!-- ### The Open Graph & Twitter Card Protocol ### -->
+  <meta property="og:title" content="使用 switchMap() 與 mergeMap() 實現分頁 | 日本語の灯り">
+<meta property="og:site_name" content="日本語の灯り">
+
+<meta property="og:url" content="https://yabai.tw/rxjs/transformation/switchmap/paging/">
+<meta property="og:image"
+	content="https://yabai.tw/apple-touch-icon.png">
+<meta property="og:description" content="由於 DOM Event 為 Observable，API Request 亦為 Observable，若 Table 亦必須由 N + 1 Query 呼叫其他 API 取得資料，這就造成了 Observable of Observable of Observable 的三層 Higher Order Observable，這該如何使用 RxJS 實現呢 ?">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2020-06-29T00:03:02.000Z">
+<meta property="article:modified_time" content="2020-06-29T00:03:02.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", RxJS">
+
+
+  <!-- ### Analytics ### -->
+  
+
+
+
+
+
+  <!-- ### Canonical link ### -->
+  <link rel="canonical" href="https://yabai.tw/rxjs/transformation/switchmap/paging/">
+  <!-- ### Structured Data ### -->
+  
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://yabai.tw/rxjs/transformation/switchmap/paging/",
+    "@type": "BlogPosting",
+    "logo": "https://yabai.tw/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://yabai.tw/rxjs/transformation/switchmap/paging/"
+    },
+    "headline": "使用 switchMap() 與 mergeMap() 實現分頁 | 日本語の灯り",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://yabai.tw/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2020-06-29T00:03:02.000Z",
+    "dateModified": "2025-01-29T14:52:34.363Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/img/default_avatar.png"
+        },
+        "description": "日本語は学べば学ぶほど面白い"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "日本語の灯り",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://yabai.tw/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", RxJS",
+    "description": "由於 DOM Event 為 Observable，API Request 亦為 Observable，若 Table 亦必須由 N + 1 Query 呼叫其他 API 取得資料，這就造成了 Observable of Observable of Observable 的三層 Higher Order Observable，這該如何使用 RxJS 實現呢 ?"
+}
+</script>
+
+  <!-- ### Custom Head ### -->
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+  <body>
+  <header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      日本語の灯り
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    日本語は学べば学ぶほど面白い
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">ホーム</a>
+      <a href="/series/" class="navbar-link">シリーズ</a>
+      <a href="/tags/" class="navbar-link">タグ</a>
+      <a href="/search" class="navbar-link">検索</a>
+<!--      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>-->
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+  
+<!-- ## Post ## -->
+<div class="post-container">
+  <div id="post-card" class="card">
+    <div class="card-item-container">
+      <div class="card-inner-cell">
+        <div class="card-header">
+          
+<h1 class="card-title h3 mb-2">使用 switchMap() 與 mergeMap() 實現分頁</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2020-06-29</span>
+</div>
+
+        </div>
+        <div class="card-body">
+          <article id="post-content">
+            <p>由於 DOM Event 為 Observable，API Request 亦為 Observable，若 Table 亦必須由 N + 1 Query 呼叫其他 API 取得資料，這就造成了 Observable of Observable of Observable 的三層 Higher Order Observable，這該如何使用 RxJS 實現呢 ?</p>
+<a id="more"></a>
+
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.5<br>WebStorm 2020.1.2<br>Vue 2.6.11<br>RxJS 6.5.5</p>
+<h2 id="Single-Column"><a href="#Single-Column" class="headerlink" title="Single Column"></a>Single Column</h2><h3 id="Browser"><a href="#Browser" class="headerlink" title="Browser"></a>Browser</h3><p><img src="/images/rxjs/transformation/switchmap/paging/paging000.png" alt="paging000"></p>
+<p><code>Page 1</code>、<code>Page 2</code>、<code>Page 3</code> 可以直接跳到指定 page。</p>
+<h3 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h3><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"page"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"FP in JavaScript"</span><span class="token punctuation">,</span>
+        <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
+        <span class="token property">"categoryId"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+        <span class="token property">"publisherId"</span><span class="token operator">:</span> <span class="token number">1</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+        <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"RxJS in Action"</span><span class="token punctuation">,</span>
+        <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
+        <span class="token property">"categoryId"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+        <span class="token property">"publisherId"</span><span class="token operator">:</span> <span class="token number">1</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+        <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"Speaking JavaScript"</span><span class="token punctuation">,</span>
+        <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">300</span><span class="token punctuation">,</span>
+        <span class="token property">"categoryId"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+        <span class="token property">"publisherId"</span><span class="token operator">:</span> <span class="token number">2</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token property">"page"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
+        <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"Domain Modeling Made Functional"</span><span class="token punctuation">,</span>
+        <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">400</span><span class="token punctuation">,</span>
+        <span class="token property">"categoryId"</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
+        <span class="token property">"publisherId"</span><span class="token operator">:</span> <span class="token number">3</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
+        <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"Impatient JavaScript"</span><span class="token punctuation">,</span>
+        <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">500</span><span class="token punctuation">,</span>
+        <span class="token property">"categoryId"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+        <span class="token property">"publisherId"</span><span class="token operator">:</span> <span class="token number">4</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">6</span><span class="token punctuation">,</span>
+        <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"Exploring ReasonML"</span><span class="token punctuation">,</span>
+        <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">600</span><span class="token punctuation">,</span>
+        <span class="token property">"categoryId"</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
+        <span class="token property">"publisherId"</span><span class="token operator">:</span> <span class="token number">4</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+    <span class="token property">"page"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+    <span class="token property">"data"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">7</span><span class="token punctuation">,</span>
+        <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"Node.js in Action"</span><span class="token punctuation">,</span>
+        <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">700</span><span class="token punctuation">,</span>
+        <span class="token property">"categoryId"</span><span class="token operator">:</span> <span class="token number">6</span><span class="token punctuation">,</span>
+        <span class="token property">"publisherId"</span><span class="token operator">:</span> <span class="token number">2</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">8</span><span class="token punctuation">,</span>
+        <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"JavaScript The Good Part"</span><span class="token punctuation">,</span>
+        <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">800</span><span class="token punctuation">,</span>
+        <span class="token property">"categoryId"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+        <span class="token property">"publisherId"</span><span class="token operator">:</span> <span class="token number">2</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token punctuation">{</span>
+        <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">9</span><span class="token punctuation">,</span>
+        <span class="token property">"title"</span><span class="token operator">:</span> <span class="token string">"Get Programming with Haskell"</span><span class="token punctuation">,</span>
+        <span class="token property">"price"</span><span class="token operator">:</span> <span class="token number">900</span><span class="token punctuation">,</span>
+        <span class="token property">"categoryId"</span><span class="token operator">:</span> <span class="token number">7</span><span class="token punctuation">,</span>
+        <span class="token property">"publisherId"</span><span class="token operator">:</span> <span class="token number">1</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">]</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>http://localhost:3000/books/:page</code> 會回傳指定 <code>page</code> 的書籍，其中 <code>category</code> 僅回傳 <code>categoryId</code>，必須再呼叫其他 API 取得 <code>category</code>。</p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"category"</span><span class="token operator">:</span> <span class="token string">"FP"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token property">"category"</span><span class="token operator">:</span> <span class="token string">"FRP"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+    <span class="token property">"category"</span><span class="token operator">:</span> <span class="token string">"JS"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
+    <span class="token property">"category"</span><span class="token operator">:</span> <span class="token string">"DDD"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
+    <span class="token property">"category"</span><span class="token operator">:</span> <span class="token string">"ReasonML"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">6</span><span class="token punctuation">,</span>
+    <span class="token property">"category"</span><span class="token operator">:</span> <span class="token string">"Node"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">7</span><span class="token punctuation">,</span>
+    <span class="token property">"category"</span><span class="token operator">:</span> <span class="token string">"Haskell"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>http://localhost:3000/categories/:categoryId</code> 會回傳 <code>category</code>。</p>
+<h3 id="switchMap-mergeMap"><a href="#switchMap-mergeMap" class="headerlink" title="switchMap() + mergeMap()"></a>switchMap() + mergeMap()</h3><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 1 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 2 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 3 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 3<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(x, i) in books$<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        {{ x.title }} / {{ x.price }} / {{ x.category }}
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ajax <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/ajax'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> forkJoin <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pluck<span class="token punctuation">,</span> map<span class="token punctuation">,</span> mergeMap<span class="token punctuation">,</span> switchMap<span class="token punctuation">,</span> delay <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span>
+
+<span class="token keyword">let</span> fetchBooks$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/books/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> fetchCategory$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/categories/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>categoryId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'category'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span>category <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span>x<span class="token punctuation">,</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> subscriptions <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> books$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>flipPage$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">switchMap</span><span class="token punctuation">(</span>fetchBooks$<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">mergeMap</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">forkJoin</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>fetchCategory$<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">{</span> books$ <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  name<span class="token punctuation">:</span> <span class="token string">'app'</span><span class="token punctuation">,</span>
+  domStreams<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    <span class="token string">'flipPage$'</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  subscriptions
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 3 行</p>
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 1 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 2 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 3 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 3<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><code>v-stream:click</code> 使用 <code>data</code> 帶入指定 page。</p>
+<p>第 6 行</p>
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(x, i) in books$<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+    {{ x.title }} / {{ x.price }} / {{ x.category }}
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>只使用單一 <code>books$</code> 顯示。</p>
+<p>19 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchBooks$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/books/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>呼叫 <code>http://localhost:3000/books/:page</code>，並加上 delay <code>1</code> 秒讓效果更明顯。</p>
+<p>24 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchCategory$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/categories/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>categoryId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'category'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span>category <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span>x<span class="token punctuation">,</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>呼叫 <code>http://localhost:3000/categories/:categoryId</code>，並加上 delay <code>5</code> 秒鐘讓效果更為明顯。</p>
+<p>特別以 <code>map()</code> 將 <code>book</code> 與 <code>category</code> 合併成新 object。</p>
+<p>31 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>flipPage$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">switchMap</span><span class="token punctuation">(</span>fetchBooks$<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">mergeMap</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">forkJoin</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>fetchCategory$<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>分別使用了 <code>switchMap()</code> 與 <code>mergeMap()</code>。</p>
+<p><code>switchMap()</code> 是為了攤平 <code>flipPage$</code> 與 <code>fetchBooks$</code> 所產生的 Higher Order Observable，且只取最新的 Inner Observable。</p>
+<p><code>mergeMap()</code> 是為了攤平 <code>fetchBooks$</code> 與 <code>fetchCategory$</code> 所產生的 Higher Order Observable，由於沒有特殊需求，因此使用最原始的 <code>mergeMap()</code>。</p>
+<p>由 <code>x.map(fetchCategory$)</code> 回傳為 Observable Array，因此使用了 <code>forkJoin()</code> 取得內部值。</p>
+<h3 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h3><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 1 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 2 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 3 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 3<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(x, i) in books$<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        {{ x.title }} / {{ x.price }} / {{ x.category }}
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ajax <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/ajax'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> forkJoin<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pluck<span class="token punctuation">,</span> map<span class="token punctuation">,</span> mergeMap<span class="token punctuation">,</span> switchMap<span class="token punctuation">,</span> delay <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> map <span class="token keyword">as</span> fmap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> fetchBooks$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/books/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> fetchCategory$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/categories/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>categoryId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'category'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span>category <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span>x<span class="token punctuation">,</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> subscriptions <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> books$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>flipPage$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">switchMap</span><span class="token punctuation">(</span>fetchBooks$<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">mergeMap</span><span class="token punctuation">(</span><span class="token function">pipe</span><span class="token punctuation">(</span><span class="token function">fmap</span><span class="token punctuation">(</span>fetchCategory$<span class="token punctuation">)</span><span class="token punctuation">,</span> forkJoin<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">{</span> books$ <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  name<span class="token punctuation">:</span> <span class="token string">'app'</span><span class="token punctuation">,</span>
+  domStreams<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    <span class="token string">'flipPage$'</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  subscriptions
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>32 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>flipPage$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">switchMap</span><span class="token punctuation">(</span>fetchBooks$<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">mergeMap</span><span class="token punctuation">(</span><span class="token function">pipe</span><span class="token punctuation">(</span><span class="token function">fmap</span><span class="token punctuation">(</span>fetchCategory$<span class="token punctuation">)</span><span class="token punctuation">,</span> forkJoin<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>forkJoin()</code> 較特殊之處是他不是 RxJS 的 operator，而隸屬於 <code>rxjs</code> 之下，因此使用上無法 <code>pipe()</code> 串其他 operator，而出現 <code>forkJoin(x.map(fetchCategory$))</code> 類似 <code>f(g(x))</code> 狀況。</p>
+<p>此外，因為 <code>x</code> 為 Array，因此使用了原生的 <code>map()</code>，這使的 <code>mergeMap()</code> 無法 point-free。</p>
+<p>18 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map <span class="token keyword">as</span> fmap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>引用了 Ramda 的 <code>map()</code>，因為與 RxJS 的 <code>map()</code> 同名，因此 alias 成 <code>fmap()</code>。</p>
+<p>35 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">mergeMap</span><span class="token punctuation">(</span><span class="token function">pipe</span><span class="token punctuation">(</span><span class="token function">fmap</span><span class="token punctuation">(</span>fetchCategory$<span class="token punctuation">)</span><span class="token punctuation">,</span> forkJoin<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>如此 <code>fmap()</code> 可使 <code>mergeMap()</code> 能 point-free， 也能使用 <code>pipe()</code> 將 <code>fmap()</code> 與 <code>forkJoin()</code> 串起來。</p>
+<h3 id="Asynchronous-Update"><a href="#Asynchronous-Update" class="headerlink" title="Asynchronous Update"></a>Asynchronous Update</h3><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 1 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 2 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 3 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 3<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(x, i) in books<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        {{ x.title }} / {{ x.price }} / {{ x.category }}
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ajax <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/ajax'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> pluck<span class="token punctuation">,</span> map<span class="token punctuation">,</span> mergeMap<span class="token punctuation">,</span> switchMap<span class="token punctuation">,</span> delay<span class="token punctuation">,</span> tap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> map <span class="token keyword">as</span> fmap<span class="token punctuation">,</span> addIndex<span class="token punctuation">,</span> forEach <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> fetchBooks$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/books/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> fetchCategory$ <span class="token operator">=</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/categories/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>categoryId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'category'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span>category <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span>x<span class="token punctuation">,</span> i<span class="token punctuation">,</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> subscriptions <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>flipPage$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">switchMap</span><span class="token punctuation">(</span>fetchBooks$<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">tap</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>books <span class="token operator">=</span> x<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">mergeMap</span><span class="token punctuation">(</span><span class="token function">addIndex</span><span class="token punctuation">(</span>fmap<span class="token punctuation">)</span><span class="token punctuation">(</span>fetchCategory$<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">tap</span><span class="token punctuation">(</span><span class="token function">forEach</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>$<span class="token keyword">set</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>books<span class="token punctuation">,</span> x<span class="token punctuation">.</span>i<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  name<span class="token punctuation">:</span> <span class="token string">'app'</span><span class="token punctuation">,</span>
+  domStreams<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    <span class="token string">'flipPage$'</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  data<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+    books<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  subscriptions
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>前例使用了 <code>forkJoin()</code>，若 <code>fetchCategory$()</code> 特別慢，會明顯感覺 button 按下後，要等一段時間才會全部出現 <code>title</code>、<code>price</code> 與 <code>category</code>。</p>
+<p>若想要 books 的 <code>title</code>、<code>price</code> 先出現，而 <code>category</code> 再 asynchronous 慢慢出現，則要使用 asynchronous update 寫法。</p>
+<p>45 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">data<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+  books<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>因為 <code>fetchCategory$()</code> 要 asynchronous 更新，因此 <code>books</code> 從 Observable 改成 Data。</p>
+<p>24 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchCategory$ <span class="token operator">=</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/categories/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>categoryId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'category'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">map</span><span class="token punctuation">(</span>category <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span>x<span class="token punctuation">,</span> i<span class="token punctuation">,</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>特別加上了 <code>i</code> 傳入 <code>index</code>，稍後 <code>this.$set()</code> 更新 <code>books</code> 會使用。</p>
+<p>31 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">this</span><span class="token punctuation">.</span>flipPage$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">switchMap</span><span class="token punctuation">(</span>fetchBooks$<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">tap</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>books <span class="token operator">=</span> x<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">mergeMap</span><span class="token punctuation">(</span><span class="token function">addIndex</span><span class="token punctuation">(</span>fmap<span class="token punctuation">)</span><span class="token punctuation">(</span>fetchCategory$<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">tap</span><span class="token punctuation">(</span><span class="token function">forEach</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>$<span class="token keyword">set</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>books<span class="token punctuation">,</span> x<span class="token punctuation">.</span>i<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>因為不再回傳 Observable，因此 <code>flipPage$()</code> 要加上 <code>subscribe()</code> 才會啟動 stream。</p>
+<p>33 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"> <span class="token function">switchMap</span><span class="token punctuation">(</span>fetchBooks$<span class="token punctuation">)</span><span class="token punctuation">,</span>
+ <span class="token function">tap</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>books <span class="token operator">=</span> x<span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p><code>switchMap(fetchBooks$)</code> 主要在於獲得 <code>title</code> 與 <code>price</code> 先顯示，因此要使用 <code>tap()</code> 先寫入 <code>books</code>。</p>
+<p>35 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">mergeMap</span><span class="token punctuation">(</span><span class="token function">addIndex</span><span class="token punctuation">(</span>fmap<span class="token punctuation">)</span><span class="token punctuation">(</span>fetchCategory$<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+<span class="token function">tap</span><span class="token punctuation">(</span><span class="token function">forEach</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>$<span class="token keyword">set</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>books<span class="token punctuation">,</span> x<span class="token punctuation">.</span>i<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>Ramda 的 <code>fmap()</code> 的 callback 只有 <code>x</code>，但目前 <code>fetchCategory$</code> 還需要有 <code>index</code>，因此使用 <code>addIndex(fmap)</code> 產生有 <code>(x, i)</code> 的 callback。</p>
+<p>最後使用 <code>tap()</code> 配合 Ramda 的 <code>forEach()</code> 與 Vue 的 <code>this.$set()</code> 寫入 <code>books</code>。</p>
+<h2 id="Multiple-Column"><a href="#Multiple-Column" class="headerlink" title="Multiple Column"></a>Multiple Column</h2><h3 id="Browser-1"><a href="#Browser-1" class="headerlink" title="Browser"></a>Browser</h3><p><img src="/images/rxjs/transformation/switchmap/paging/paging001.png" alt="paging001"></p>
+<p>除了 <code>category</code> 外，顯示多了 <code>publisher</code> 。</p>
+<p>看似只多了一個 field，但寫法卻不太一樣。</p>
+<h3 id="Data-1"><a href="#Data-1" class="headerlink" title="Data"></a>Data</h3><pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">[</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+    <span class="token property">"publisher"</span><span class="token operator">:</span> <span class="token string">"Manning"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+    <span class="token property">"publisher"</span><span class="token operator">:</span> <span class="token string">"O'Reilly"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+    <span class="token property">"publisher"</span><span class="token operator">:</span> <span class="token string">"Pragmatic"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
+    <span class="token property">"publisher"</span><span class="token operator">:</span> <span class="token string">"eBook"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
+    <span class="token property">"publisher"</span><span class="token operator">:</span> <span class="token string">"ReasonML"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">6</span><span class="token punctuation">,</span>
+    <span class="token property">"publisher"</span><span class="token operator">:</span> <span class="token string">"Node"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token punctuation">{</span>
+    <span class="token property">"id"</span><span class="token operator">:</span> <span class="token number">7</span><span class="token punctuation">,</span>
+    <span class="token property">"publisher"</span><span class="token operator">:</span> <span class="token string">"Haskell"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">]</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>http://localhost:3000/publishers/:publisherId</code> 會回傳 <code>publisher</code>。</p>
+<h3 id="zip"><a href="#zip" class="headerlink" title="zip()"></a>zip()</h3><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 1 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 2 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 3 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 3<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(x, i) in books$<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        {{ x.title }} / {{ x.price }} / {{ x.category }} / {{ x.publisher }}
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ajax <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/ajax'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> zip<span class="token punctuation">,</span> forkJoin <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> pluck<span class="token punctuation">,</span> switchMap<span class="token punctuation">,</span> delay<span class="token punctuation">,</span> mergeMap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span>
+
+<span class="token keyword">let</span> fetchBooks$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/books/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> fetchCategory$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/categories/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>categoryId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'category'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> fetchPublisher$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/publishers/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>publisherId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'publisher'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">6000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> fetchChild$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> category$ <span class="token operator">=</span> <span class="token function">fetchCategory$</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">map</span><span class="token punctuation">(</span>category <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+
+  <span class="token keyword">let</span> publisher$ <span class="token operator">=</span> <span class="token function">fetchPublisher$</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">map</span><span class="token punctuation">(</span>publisher <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span> publisher <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+
+  <span class="token keyword">return</span> <span class="token function">zip</span><span class="token punctuation">(</span>category$<span class="token punctuation">,</span> publisher$<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">[</span> <span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> publisher <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span>x<span class="token punctuation">,</span> category<span class="token punctuation">,</span> publisher <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> subscriptions <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> books$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>flipPage$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">switchMap</span><span class="token punctuation">(</span>fetchBooks$<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">mergeMap</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">forkJoin</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>fetchChild$<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">{</span> books$ <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  name<span class="token punctuation">:</span> <span class="token string">'app'</span><span class="token punctuation">,</span>
+  domStreams<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    <span class="token string">'flipPage$'</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  subscriptions
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>29 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchPublisher$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/publishers/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>publisherId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'publisher'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">6000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<p>呼叫 <code>http://localhost:3000/publishers/:publisherId</code>，並加上 delay <code>6</code> 秒與 <code>fetchCategory$()</code> 有所差異。</p>
+<p>49 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>flipPage$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">switchMap</span><span class="token punctuation">(</span>fetchBooks$<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">mergeMap</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">forkJoin</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>fetchChild$<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>一樣使用 <code>swtichMap()</code> 與 <code>mergeMap()</code> 組合，差異只在 <code>fetchChild$()</code>。</p>
+<p>34 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fetchChild$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> category$ <span class="token operator">=</span> <span class="token function">fetchCategory$</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">map</span><span class="token punctuation">(</span>category <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+
+  <span class="token keyword">let</span> publisher$ <span class="token operator">=</span> <span class="token function">fetchPublisher$</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">map</span><span class="token punctuation">(</span>publisher <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span> publisher <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+
+  <span class="token keyword">return</span> <span class="token function">zip</span><span class="token punctuation">(</span>category$<span class="token punctuation">,</span> publisher$<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">[</span> <span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> publisher <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span>x<span class="token punctuation">,</span> category<span class="token punctuation">,</span> publisher <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>單獨取得 <code>category$</code> 與 <code>publisher$</code>，最後使用 <code>zip()</code> 組合 <code>category$</code> 與 <code>publisher$</code>。</p>
+<h3 id="Point-free-1"><a href="#Point-free-1" class="headerlink" title="Point-free"></a>Point-free</h3><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 1 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 2 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 3 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 3<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(x, i) in books$<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        {{ x.title }} / {{ x.price }} / {{ x.category }} / {{ x.publisher }}
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ajax <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/ajax'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> zip<span class="token punctuation">,</span> forkJoin<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> pluck<span class="token punctuation">,</span> switchMap<span class="token punctuation">,</span> delay<span class="token punctuation">,</span> mergeMap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> map <span class="token keyword">as</span> fmap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> fetchBooks$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/books/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> fetchCategory$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/categories/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>categoryId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'category'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> fetchPublisher$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/publishers/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>publisherId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'publisher'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">6000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> fetchChild$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> category$ <span class="token operator">=</span> <span class="token function">fetchCategory$</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">map</span><span class="token punctuation">(</span>category <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+
+  <span class="token keyword">let</span> publisher$ <span class="token operator">=</span> <span class="token function">fetchPublisher$</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">map</span><span class="token punctuation">(</span>publisher <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span> publisher <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+
+  <span class="token keyword">return</span> <span class="token function">zip</span><span class="token punctuation">(</span>category$<span class="token punctuation">,</span> publisher$<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">[</span> <span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> publisher <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span>x<span class="token punctuation">,</span> category<span class="token punctuation">,</span> publisher <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> subscriptions <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> books$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>flipPage$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">switchMap</span><span class="token punctuation">(</span>fetchBooks$<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">mergeMap</span><span class="token punctuation">(</span><span class="token function">pipe</span><span class="token punctuation">(</span><span class="token function">fmap</span><span class="token punctuation">(</span>fetchChild$<span class="token punctuation">)</span><span class="token punctuation">,</span> forkJoin<span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+
+  <span class="token keyword">return</span> <span class="token punctuation">{</span> books$ <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  name<span class="token punctuation">:</span> <span class="token string">'app'</span><span class="token punctuation">,</span>
+  domStreams<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    <span class="token string">'flipPage$'</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  subscriptions
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>50 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books$ <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>flipPage$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">switchMap</span><span class="token punctuation">(</span>fetchBooks$<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">mergeMap</span><span class="token punctuation">(</span><span class="token function">pipe</span><span class="token punctuation">(</span><span class="token function">fmap</span><span class="token punctuation">(</span>fetchChild$<span class="token punctuation">)</span><span class="token punctuation">,</span> forkJoin<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>一樣使用 Ramda 的 <code>fmap()</code> 取代 <code>x.map()</code>，最後使用 <code>pipe()</code> 組合 <code>fmap()</code> 與 <code>forkJoin()</code>。</p>
+<h3 id="Asynchronous-Update-1"><a href="#Asynchronous-Update-1" class="headerlink" title="Asynchronous Update"></a>Asynchronous Update</h3><pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 1 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 1<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 2 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 2<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name"><span class="token namespace">v-stream:</span>click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>{ subject: flipPage$, data: 3 }<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Page 3<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(x, i) in books<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>i<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        {{ x.title }} / {{ x.price }} / {{ x.category }} / {{ x.publisher }}
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> ajax <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/ajax'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> zip <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> pluck<span class="token punctuation">,</span> switchMap<span class="token punctuation">,</span> tap<span class="token punctuation">,</span> delay<span class="token punctuation">,</span> mergeMap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'rxjs/operators'</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> map <span class="token keyword">as</span> fmap<span class="token punctuation">,</span> addIndex<span class="token punctuation">,</span> forEach <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+
+<span class="token keyword">let</span> fetchBooks$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/books/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> fetchCategory$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/categories/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>categoryId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'category'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">5000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> fetchPublisher$ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ajax</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`http://localhost:3000/publishers/</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>x<span class="token punctuation">.</span>publisherId<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'response'</span><span class="token punctuation">,</span> <span class="token string">'publisher'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">delay</span><span class="token punctuation">(</span><span class="token number">6000</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> fetchChild$ <span class="token operator">=</span> <span class="token punctuation">(</span>x<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> category$ <span class="token operator">=</span> <span class="token function">fetchCategory$</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">map</span><span class="token punctuation">(</span>category <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+
+  <span class="token keyword">let</span> publisher$ <span class="token operator">=</span> <span class="token function">fetchPublisher$</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">map</span><span class="token punctuation">(</span>publisher <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span> publisher <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+
+  <span class="token keyword">return</span> <span class="token function">zip</span><span class="token punctuation">(</span>category$<span class="token punctuation">,</span> publisher$<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">map</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">[</span> <span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> publisher <span class="token punctuation">}</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token operator">...</span>x<span class="token punctuation">,</span> i<span class="token punctuation">,</span> category<span class="token punctuation">,</span> publisher <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">let</span> subscriptions <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">this</span><span class="token punctuation">.</span>flipPage$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+    <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">switchMap</span><span class="token punctuation">(</span>fetchBooks$<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">tap</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>books <span class="token operator">=</span> x<span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">mergeMap</span><span class="token punctuation">(</span><span class="token function">addIndex</span><span class="token punctuation">(</span>fmap<span class="token punctuation">)</span><span class="token punctuation">(</span>fetchChild$<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    <span class="token function">tap</span><span class="token punctuation">(</span><span class="token function">forEach</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>$<span class="token keyword">set</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>books<span class="token punctuation">,</span> x<span class="token punctuation">.</span>i<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+  <span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  name<span class="token punctuation">:</span> <span class="token string">'app'</span><span class="token punctuation">,</span>
+  domStreams<span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    <span class="token string">'flipPage$'</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  data<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+    books<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  subscriptions
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>50 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">this</span><span class="token punctuation">.</span>flipPage$<span class="token punctuation">.</span><span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">switchMap</span><span class="token punctuation">(</span>fetchBooks$<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">tap</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>books <span class="token operator">=</span> x<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">mergeMap</span><span class="token punctuation">(</span><span class="token function">addIndex</span><span class="token punctuation">(</span>fmap<span class="token punctuation">)</span><span class="token punctuation">(</span>fetchChild$<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">tap</span><span class="token punctuation">(</span><span class="token function">forEach</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">this</span><span class="token punctuation">.</span>$<span class="token keyword">set</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>books<span class="token punctuation">,</span> x<span class="token punctuation">.</span>i<span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">subscribe</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>一樣使用 <code>addIndex(fmap)</code> 產生有 <code>index</code> 的 callback，最後使用 Ramda 的 <code>forEach()</code> 與 Vue 的 <code>this.$set()</code> 寫入 <code>books</code>。</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>本例融合了 <code>switchMap()</code> 與 <code>mergeMap()</code>，其中 <code>switchMap()</code> 是為了攤平 DOM Event 與 API request 造成的 Higher Order Observable；而 <code>mergeMap()</code> 是為了攤平 N+1 Query 所造成的 Higher Order Observable</li>
+<li>因為實務上 user 可以快速按下 <code>Next</code> button 或指定頁數換頁，因此使用 <code>switchMap()</code> 只取最新 Inner Observable</li>
+<li>N + 1 Query 為傳統 Higher Order Observable，因此使用最基礎的 <code>mergeMap()</code> 即可</li>
+</ul>
+<h2 id="Sample-Code"><a href="#Sample-Code" class="headerlink" title="Sample Code"></a>Sample Code</h2><p>完整範例可在我的 <a href="https://github.com/oomusou/vue-paging" target="_blank" rel="noopener">GitHub</a> 上找到</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://rxjs.dev/" target="_blank" rel="noopener">RxJS</a>, <a href="https://rxjs.dev/api/operators/switchMap" target="_blank" rel="noopener">switchMap()</a><br><a href="https://rxjs.dev/" target="_blank" rel="noopener">RxJS</a>, <a href="https://rxjs.dev/api/operators/mergeMap" target="_blank" rel="noopener">mergeMap()</a><br><a href="https://rxjs.dev/" target="_blank" rel="noopener">RxJS</a>, <a href="https://rxjs.dev/api/index/function/forkJoin" target="_blank" rel="noopener">forkJon()</a><br><a href="https://rxjs.dev/" target="_blank" rel="noopener">RxJS</a>, <a href="https://rxjs.dev/api/index/function/zip" target="_blank" rel="noopener">zip()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#map" target="_blank" rel="noopener">map()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#addIndex" target="_blank" rel="noopener">addIndex()</a></p>
+
+          </article>
+          <p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/RxJS/'>#&nbsp;RxJS</a>
+    
+  </span>
+  
+</p>
+        </div>
+        <div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/rxjs/vue-rx/v-model/number/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">如何讓 RxJS 只處理 Number ?</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/rxjs/transformation/exhaustmap/interval-request/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 exhaustMap() 每隔一段時間重新讀取 API</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="text-center">
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://yabai.tw">日本語の灯り</a>
+  </p>
+</footer>
+
+  <!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+  </body>
+</html>

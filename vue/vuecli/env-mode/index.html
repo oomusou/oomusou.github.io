@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html 
+>
+  <head>
+  <meta charset="utf-8">
+  <!-- ### DNS Prefetch ### -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+  <!-- ### Preload ### -->
+  
+
+  <!-- ### Meta & Title & Info ### -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>Vue CLI 之 Mode 與 .env | 日本語の灯り</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff2601">
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="實務上一定會遇到在不同 server ( development、lab、staging 與 production) ，且各有各的 環境變數，該如何設定這些環境變數並且自動切換呢 ?">
+<!-- Keywords -->
+<meta name="keywords" content=", Vue">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+  <!-- ### Import File ### -->
+  
+    <!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+  
+  <!-- ### Site Verification ### -->
+  
+
+  <!-- ### RSS ### -->
+  
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+  <!-- ### WebApp ### -->
+  <meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="日本語の灯り">
+<meta name="msapplication-starturl" content="https://yabai.tw">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="日本語の灯り">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+  <!-- ### The Open Graph & Twitter Card Protocol ### -->
+  <meta property="og:title" content="Vue CLI 之 Mode 與 .env | 日本語の灯り">
+<meta property="og:site_name" content="日本語の灯り">
+
+<meta property="og:url" content="https://yabai.tw/vue/vuecli/env-mode/">
+<meta property="og:image"
+	content="https://yabai.tw/apple-touch-icon.png">
+<meta property="og:description" content="實務上一定會遇到在不同 server ( development、lab、staging 與 production) ，且各有各的 環境變數，該如何設定這些環境變數並且自動切換呢 ?">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-01-14T02:09:38.000Z">
+<meta property="article:modified_time" content="2023-01-14T02:09:38.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", Vue">
+
+
+  <!-- ### Analytics ### -->
+  
+
+
+
+
+
+  <!-- ### Canonical link ### -->
+  <link rel="canonical" href="https://yabai.tw/vue/vuecli/env-mode/">
+  <!-- ### Structured Data ### -->
+  
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://yabai.tw/vue/vuecli/env-mode/",
+    "@type": "BlogPosting",
+    "logo": "https://yabai.tw/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://yabai.tw/vue/vuecli/env-mode/"
+    },
+    "headline": "Vue CLI 之 Mode 與 .env | 日本語の灯り",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://yabai.tw/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2023-01-14T02:09:38.000Z",
+    "dateModified": "2025-01-29T14:52:34.384Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/img/default_avatar.png"
+        },
+        "description": "日本語は学べば学ぶほど面白い"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "日本語の灯り",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://yabai.tw/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", Vue",
+    "description": "實務上一定會遇到在不同 server ( development、lab、staging 與 production) ，且各有各的 環境變數，該如何設定這些環境變數並且自動切換呢 ?"
+}
+</script>
+
+  <!-- ### Custom Head ### -->
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+  <body>
+  <header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      日本語の灯り
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    日本語は学べば学ぶほど面白い
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">ホーム</a>
+      <a href="/series/" class="navbar-link">シリーズ</a>
+      <a href="/tags/" class="navbar-link">タグ</a>
+      <a href="/search" class="navbar-link">検索</a>
+<!--      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>-->
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+  
+<!-- ## Post ## -->
+<div class="post-container">
+  <div id="post-card" class="card">
+    <div class="card-item-container">
+      <div class="card-inner-cell">
+        <div class="card-header">
+          
+<h1 class="card-title h3 mb-2">Vue CLI 之 Mode 與 .env</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2023-01-14</span>
+</div>
+
+        </div>
+        <div class="card-body">
+          <article id="post-content">
+            <p>實務上一定會遇到在不同 server ( <code>development</code>、<code>lab</code>、<code>staging</code> 與 <code>production</code>) ，且各有各的 <code>環境變數</code>，該如何設定這些環境變數並且自動切換呢 ?</p>
+<a id="more"></a>
+
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 2.5.17<br>Vue CLI 3.0.3</p>
+<h2 id="Modes"><a href="#Modes" class="headerlink" title="Modes"></a>Modes</h2><p>Vue CLI 內建 3 種 mode：</p>
+<ul>
+<li><strong>development</strong>：執行 <code>yarn serve</code> 與 <code>yarn lint</code> 時使用此模式</li>
+<li><strong>production</strong>：<code>yarn build</code> 與 <code>yarn test:e2e</code> 使用此模式</li>
+<li><strong>test</strong>：<code>yarn test:unit</code> 使用此模式</li>
+</ul>
+<p>我們也可以自行新增 mode，如 <code>lab</code> 與 <code>staging</code>。</p>
+<h2 id="env"><a href="#env" class="headerlink" title=".env"></a>.env</h2><ul>
+<li><strong>.env</strong>：所有 mode 都會載入</li>
+<li><strong>env.local</strong>：所有 mode 都會載入，但不會進 Git，適合每個人本機自行設定</li>
+<li>**env.[mode]**：特定 mode 會載入</li>
+<li><strong>env.[mode].local</strong>：特定 mode 會載入，但不會進 Git，適合每個人本機自行設定</li>
+</ul>
+<blockquote>
+<p>若 key 同時存在 <code>.env</code>、<code>.env.[mode]</code> 與 <code>env.[mode].local</code> 時，則其載入順序為：</p>
+<p><code>.env</code> &#x3D;&gt; <code>env.[mode]</code> &#x3D;&gt; <code>env.[mode].local</code></p>
+<p>也就是其優先權為：</p>
+<p><code>env.[mode].local</code> &gt; <code>env.[mode]</code> &gt; <code>.env</code></p>
+</blockquote>
+<p><strong>.env.development.local</strong></p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">NODE_ENV=development
+VUE_APP_API="https://jsonplaceholder.typicode.com"
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li><strong>NODE_ENV</strong>：指定使用 Vue CLI 內建的 3 個 mode 之一</li>
+<li><strong>VUE_APP_API</strong>：所有變數以 <code>VUE_APP_</code> 為開頭</li>
+</ul>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>VUE_APP_API<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>任何在 <code>.env</code> 所設定的變數，可以使用 <code>process.env.VUE_APP_xxx</code> 讀取。</p>
+<h2 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h2><blockquote>
+<ol>
+<li>前後端分離後，當 API spec 定義好，前後端就可以同時進行開發，此時後端的 API 還沒開發好，前端可根據 API spec 的 example 製造 <code>假 API</code> 先行開發</li>
+<li>執行 e2e testing 時，由於實際打 <code>真 API</code> 的測試速度較慢，因此會希望只打 local 的 <code>假 API</code>，加快測試速度</li>
+<li>希望開發時期的 <code>假 API</code> 能留下來進 Git，將來就能透過 CLI 切換使用 <code>真 API</code> 或 <code>假 API</code>，不用修改 code</li>
+</ol>
+</blockquote>
+<ul>
+<li>使用 Node.js 建立假 API</li>
+<li>使用 <code>.env</code> 切換 API</li>
+</ul>
+<h2 id="Node-js-for-Fake-API"><a href="#Node-js-for-Fake-API" class="headerlink" title="Node.js for Fake API"></a>Node.js for Fake API</h2><h3 id="Install-Packages"><a href="#Install-Packages" class="headerlink" title="Install Packages"></a>Install Packages</h3><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add express cors
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>安裝 express framework。</li>
+<li>安裝 express 的解 CORS 套件。</li>
+</ul>
+<h3 id="Fake-API"><a href="#Fake-API" class="headerlink" title="Fake API"></a>Fake API</h3><p><strong>node&#x2F;index.js</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> express <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'express'</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> cors <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'cors'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./todos.json'</span><span class="token punctuation">)</span>
+
+<span class="token keyword">let</span> app <span class="token operator">=</span> <span class="token function">express</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span><span class="token function">cors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span class="token keyword">let</span> hostname <span class="token operator">=</span> <span class="token string">'127.0.0.1'</span>
+<span class="token keyword">let</span> port <span class="token operator">=</span> <span class="token number">3000</span>
+
+app<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'/todos'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> res<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
+
+app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span>port<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Serving running at http://</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>hostname<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>port<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>Line 1</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> express <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'express'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Import <code>express</code> module。</p>
+<p><strong>Line 2</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> cors <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'cors'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Import <code>cors</code> module。</p>
+<p><strong>Line 4</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./todos.json'</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Import 假 API 回傳的 JSON。</p>
+<p><strong>Line 6</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> app <span class="token operator">=</span> <span class="token function">express</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span><span class="token function">cors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>express()</code> 建立 <code>app</code>，並且 use <code>cors()</code> 所建立的物件。</p>
+<p><strong>Line 7</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> hostname <span class="token operator">=</span> <span class="token string">'127.0.0.1'</span>
+<span class="token keyword">let</span> port <span class="token operator">=</span> <span class="token number">3000</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>定義 <code>hostname</code> 位置與 port。</p>
+<p><strong>Line 10</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">app<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'/todos'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> res<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將 <code>/todos</code> 設定為 GET，其回傳資料由 JSON 所提供。</p>
+<p><strong>Line 12</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span>port<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Serving running at http://</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>hostname<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>port<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>使用 <code>app.listen()</code> 啟動 Node.js 服務。</p>
+<p><strong>node&#x2F;todos.json</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token punctuation">{</span>
+  <span class="token string">"todos"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token string">"userId"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"delectus aut autem"</span><span class="token punctuation">,</span>
+      <span class="token string">"completed"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      <span class="token string">"userId"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
+      <span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"quis ut nam facilis"</span><span class="token punctuation">,</span>
+      <span class="token string">"completed"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      <span class="token string">"userId"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
+      <span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"fugiat veniam minus"</span><span class="token punctuation">,</span>
+      <span class="token string">"completed"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      <span class="token string">"userId"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
+      <span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"et porro tempora"</span><span class="token punctuation">,</span>
+      <span class="token string">"completed"</span><span class="token punctuation">:</span> <span class="token boolean">true</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      <span class="token string">"userId"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
+      <span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"laboriosam mollitia et enim quasi"</span><span class="token punctuation">,</span>
+      <span class="token string">"completed"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">{</span>
+      <span class="token string">"userId"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
+      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">6</span><span class="token punctuation">,</span>
+      <span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"qui ullam ratione quibusda"</span><span class="token punctuation">,</span>
+      <span class="token string">"completed"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Switch-API"><a href="#Switch-API" class="headerlink" title="Switch API"></a>Switch API</h2><h3 id="Environment-Variables"><a href="#Environment-Variables" class="headerlink" title="Environment Variables"></a>Environment Variables</h3><p><strong>.env</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">NODE_ENV<span class="token operator">=</span>production
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li><p>整個專案的 <code>.env</code>，會進 Git</p>
+</li>
+<li><p><code>NODE_ENV</code> 預設為 Vue CLI 的 <code>production</code> mode</p>
+</li>
+</ul>
+<p><strong>.env.development</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">NODE_ENV<span class="token operator">=</span>development
+VUE_APP_API<span class="token operator">=</span><span class="token string">"https://jsonplaceholder.typicode.com"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li><p>設定 <code>development</code> mode 的 <code>.env</code>，會進 Git</p>
+</li>
+<li><p><code>NODE_ENV</code> 設定為 Vue CLI 的 <code>development</code> mode</p>
+</li>
+<li><p><code>VUE_APP_API</code> 變數為 <code>真 API</code> 位址</p>
+</li>
+</ul>
+<p><strong>.env.development.local</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">NODE_ENV<span class="token operator">=</span>development
+VUE_APP_API<span class="token operator">=</span><span class="token string">"http://localhost:3000"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li><p>設定 <code>development</code> mode 的 <code>env</code>，<code>不會</code> 進 Git</p>
+</li>
+<li><p><code>NODE_ENV</code> 設定為 Vue CLI 的 <code>development</code> mode</p>
+</li>
+<li><p><code>VUE_APP_API</code> 變數為 <code>假 API</code> 位址</p>
+</li>
+</ul>
+<blockquote>
+<p>因為 <code>.env.development.local</code> 不會進 Git，自己開發用的環境變數可以設定在此</p>
+</blockquote>
+<p><strong>.env.lab</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript">NODE_ENV<span class="token operator">=</span>development
+VUE_APP_API<span class="token operator">=</span><span class="token string">"https://jsonplaceholder.typicode.com"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<ul>
+<li>設定 <code>lab</code> mode，此為自訂的新 mode，會進 Git</li>
+<li><code>NODE_ENV</code> 設定為 Vue CLI 的 <code>production</code> mode</li>
+<li><code>VUE_APP_API</code> 變數為 <code>真 API</code> 位址</li>
+</ul>
+<h3 id="Read-env"><a href="#Read-env" class="headerlink" title="Read .env"></a>Read .env</h3><p><strong>api&#x2F;todo.api.js</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span>
+
+<span class="token keyword">let</span> API <span class="token operator">=</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>VUE_APP_API
+
+<span class="token keyword">export</span> <span class="token keyword">let</span> fetchTodos <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> axios<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>API<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/todos`</span></span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>Line 3</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> API <span class="token operator">=</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>VUE_APP_API<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>process.env.VUE_APP_API</code> 讀取 <code>.env</code> 的 <code>VUE_APP_API</code> 變數。</p>
+<h3 id="Use-Fake-API"><a href="#Use-Fake-API" class="headerlink" title="Use Fake API"></a>Use Fake API</h3><p><strong>package.json</strong></p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"vue-todo-lis-api"</span><span class="token punctuation">,</span>
+  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"0.1.0"</span><span class="token punctuation">,</span>
+  <span class="token property">"private"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"serve"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service serve"</span><span class="token punctuation">,</span>
+    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service build"</span><span class="token punctuation">,</span>
+    <span class="token property">"lint"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service lint"</span><span class="token punctuation">,</span>
+    <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"node ./node/index.js"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"axios"</span><span class="token operator">:</span> <span class="token string">"^0.18.0"</span><span class="token punctuation">,</span>
+    <span class="token property">"cors"</span><span class="token operator">:</span> <span class="token string">"^2.8.4"</span><span class="token punctuation">,</span>
+    <span class="token property">"express"</span><span class="token operator">:</span> <span class="token string">"^4.16.4"</span><span class="token punctuation">,</span>
+    <span class="token property">"vue"</span><span class="token operator">:</span> <span class="token string">"^2.5.17"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"@vue/cli-plugin-babel"</span><span class="token operator">:</span> <span class="token string">"^3.0.3"</span><span class="token punctuation">,</span>
+    <span class="token property">"@vue/cli-plugin-eslint"</span><span class="token operator">:</span> <span class="token string">"^3.0.3"</span><span class="token punctuation">,</span>
+    <span class="token property">"@vue/cli-service"</span><span class="token operator">:</span> <span class="token string">"^3.0.3"</span><span class="token punctuation">,</span>
+    <span class="token property">"@vue/eslint-config-airbnb"</span><span class="token operator">:</span> <span class="token string">"^3.0.5"</span><span class="token punctuation">,</span>
+    <span class="token property">"vue-template-compiler"</span><span class="token operator">:</span> <span class="token string">"^2.5.17"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><strong>Line 9</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token string">"api"</span><span class="token punctuation">:</span> <span class="token string">"node ./node/index.js"</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>輸入 <code>yarn api</code> 將執行 Node.js 的 <code>假 API</code>。</p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn api
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li>執行 <code>假 API</code></li>
+</ul>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn serve
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li><code>yarn serve</code> 會使用 <code>development</code> mode，因為有提供 <code>.env.development.local</code>，所以 <code>VUE_APP_API</code> 應為 <code>http://localhost:3000</code>，也就是 <code>假 API</code></li>
+</ul>
+<h3 id="Use-Real-API"><a href="#Use-Real-API" class="headerlink" title="Use Real API"></a>Use Real API</h3><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn serve --mode lab
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<ul>
+<li><code>yarn serve</code> 使用 <code>lab </code> mode，也就是 <code>真 API</code></li>
+</ul>
+<p><strong>.env.development.local.sample</strong></p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">NODE_ENV=development
+VUE_APP_API="http://localhost:3000"
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>由於 <code>env.local.sample</code> 沒有進 Git，其他人直接 <code>git clone</code> 下整個專案時，會因為不會設定 <code>.env.development.local</code>，導致無法執行 <code>假 API</code> 模式，可另外提供 <code>.env.development.local.sample</code>，此檔會進 Git，在自行由 <code>.env.development.local.sample</code> 命名為 <code>.env.development.local</code> 即可。</p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>透過 Node.js，就可解決 JSON Server 無法建立 POST 回傳資料的問題，因為 JSON Server 是純 RESTful</li>
+<li>靈活的運用 <code>.env.development.local</code> 與 <code> yarn serve --mode</code>，就可靈活的切換 <code>假 API</code> 與 <code>真 API</code></li>
+<li>可將 <code>.env.development.local.sample</code> 也存進 Git，如此其他人 <code>git clone</code> 下來，可根據此檔建立 <code>.env.development.local</code></li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://cli.vuejs.org/" target="_blank" rel="noopener">Vue CLI</a>, <a href="https://cli.vuejs.org/guide/mode-and-env.html#modes" target="_blank" rel="noopener">Environment Variables and Modes</a></p>
+
+          </article>
+          <p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/Vue/'>#&nbsp;Vue</a>
+    
+  </span>
+  
+</p>
+        </div>
+        <div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/nihonngo/vocabulary/ga/gaido/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">ガイド</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/vue3/cookbook/read-package-ver/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">如何讀取 package.json 的 Property？</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="text-center">
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://yabai.tw">日本語の灯り</a>
+  </p>
+</footer>
+
+  <!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+  </body>
+</html>

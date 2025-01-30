@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html 
+>
+  <head>
+  <meta charset="utf-8">
+  <!-- ### DNS Prefetch ### -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+  <!-- ### Preload ### -->
+  
+
+  <!-- ### Meta & Title & Info ### -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>ECMAScript 之 Generic Method | 日本語の灯り</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff2601">
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="ECMAScript 有個很有趣特性：Generic Method 可被其他型別透過 call() 使用，宛如自己的 Method 一般，這種 借用 Method 特性，使得該型別也擁有其他型別能力。">
+<!-- Keywords -->
+<meta name="keywords" content=", ECMAScript">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+  <!-- ### Import File ### -->
+  
+    <!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+  
+  <!-- ### Site Verification ### -->
+  
+
+  <!-- ### RSS ### -->
+  
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+  <!-- ### WebApp ### -->
+  <meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="日本語の灯り">
+<meta name="msapplication-starturl" content="https://yabai.tw">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="日本語の灯り">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+  <!-- ### The Open Graph & Twitter Card Protocol ### -->
+  <meta property="og:title" content="ECMAScript 之 Generic Method | 日本語の灯り">
+<meta property="og:site_name" content="日本語の灯り">
+
+<meta property="og:url" content="https://yabai.tw/ecmascript/function/generic-method/">
+<meta property="og:image"
+	content="https://yabai.tw/apple-touch-icon.png">
+<meta property="og:description" content="ECMAScript 有個很有趣特性：Generic Method 可被其他型別透過 call() 使用，宛如自己的 Method 一般，這種 借用 Method 特性，使得該型別也擁有其他型別能力。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2019-07-26T22:58:30.000Z">
+<meta property="article:modified_time" content="2019-07-26T22:58:30.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", ECMAScript">
+
+
+  <!-- ### Analytics ### -->
+  
+
+
+
+
+
+  <!-- ### Canonical link ### -->
+  <link rel="canonical" href="https://yabai.tw/ecmascript/function/generic-method/">
+  <!-- ### Structured Data ### -->
+  
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://yabai.tw/ecmascript/function/generic-method/",
+    "@type": "BlogPosting",
+    "logo": "https://yabai.tw/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://yabai.tw/ecmascript/function/generic-method/"
+    },
+    "headline": "ECMAScript 之 Generic Method | 日本語の灯り",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://yabai.tw/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2019-07-26T22:58:30.000Z",
+    "dateModified": "2025-01-29T14:52:34.083Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/img/default_avatar.png"
+        },
+        "description": "日本語は学べば学ぶほど面白い"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "日本語の灯り",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://yabai.tw/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", ECMAScript",
+    "description": "ECMAScript 有個很有趣特性：Generic Method 可被其他型別透過 call() 使用，宛如自己的 Method 一般，這種 借用 Method 特性，使得該型別也擁有其他型別能力。"
+}
+</script>
+
+  <!-- ### Custom Head ### -->
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+  <body>
+  <header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      日本語の灯り
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    日本語は学べば学ぶほど面白い
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">ホーム</a>
+      <a href="/series/" class="navbar-link">シリーズ</a>
+      <a href="/tags/" class="navbar-link">タグ</a>
+      <a href="/search" class="navbar-link">検索</a>
+<!--      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>-->
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+  
+<!-- ## Post ## -->
+<div class="post-container">
+  <div id="post-card" class="card">
+    <div class="card-item-container">
+      <div class="card-inner-cell">
+        <div class="card-header">
+          
+<h1 class="card-title h3 mb-2">ECMAScript 之 Generic Method</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2019-07-27</span>
+</div>
+
+        </div>
+        <div class="card-body">
+          <article id="post-content">
+            <p>ECMAScript 有個很有趣特性：Generic Method 可被其他型別透過 <code>call()</code> 使用，宛如自己的 Method 一般，這種 <code>借用 Method</code> 特性，使得該型別也擁有其他型別能力。</p>
+<a id="more"></a>
+
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.14.5<br>VS Code 1.36.1<br>Quokka 1.0.238<br>ECMAScript 5<br>Ramda 0.26.1</p>
+<h2 id="Function-prototype-call"><a href="#Function-prototype-call" class="headerlink" title="Function.prototype.call()"></a>Function.prototype.call()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> usrFn <span class="token operator">=</span> str <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">.</span>map<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> x <span class="token operator">=</span><span class="token operator">></span> String<span class="token punctuation">.</span><span class="token function">fromCharCode</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span><span class="token function">charCodeAt</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">usrFn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>data</code> 為 string，我們希望將每個 char 的 ASCII code 加 <code>1</code> 後再轉為 string。</p>
+<p>若將 string 看成 array，這是很簡單的 <code>map()</code> 而已，但可惜 string 沒有 <code>map()</code> 可用。</p>
+<p>因為 <code>Array.prototype.map()</code> 為 generic method，可透過 <code>call()</code> 被 string 借用，宛如 <code>String.prototype.map()</code> 一般。</p>
+<p>至於 ASCII code 加 <code>1</code>，可透過 <code>fromCharCode()</code> 與 <code>charCodeAt()</code> 實現。</p>
+<p>最後再使用 <code>join(&#39;&#39;)</code> 將 array 轉回 string。</p>
+<p><img src="/images/ecmascript/function/generic-method/generic000.png" alt="generic000"></p>
+<p>根據 ECMAScript spec，以下 method 均為 generic method，可使用 <code>call()</code> 被其他型別借用，因此稱為 <code>generic</code>。</p>
+<ul>
+<li>Array.prototype<ul>
+<li>concat()</li>
+<li>every()</li>
+<li>filter()</li>
+<li>forEach()</li>
+<li>indexOf()</li>
+<li>join()</li>
+<li>lastIndexOf()</li>
+<li>map()</li>
+<li>pop()</li>
+<li>push()</li>
+<li>reduce()</li>
+<li>reduceRight()</li>
+<li>reverse()</li>
+<li>shift()</li>
+<li>slice()</li>
+<li>some()</li>
+<li>sort()</li>
+<li>splice()</li>
+<li>toLocaleString()</li>
+<li>toString()</li>
+<li>unshift()</li>
+</ul>
+</li>
+<li>Date.prototype<ul>
+<li>toJSON()</li>
+</ul>
+</li>
+<li>Object.prototype</li>
+<li>String.prototype <ul>
+<li>charAt()</li>
+<li>charCodeAt()</li>
+<li>concat()</li>
+<li>indexOf()</li>
+<li>lastIndexOf()</li>
+<li>localeCompare()</li>
+<li>match()</li>
+<li>replace()</li>
+<li>search()</li>
+<li>slice()</li>
+<li>split()</li>
+<li>substring()</li>
+<li>toLocaleLowerCase()</li>
+<li>toLocaleUpperCase()</li>
+<li>toLowerCase()</li>
+<li>toUpperCase()</li>
+<li>trim()</li>
+</ul>
+</li>
+</ul>
+<h2 id="Functional"><a href="#Functional" class="headerlink" title="Functional"></a>Functional</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> join<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// toAscii :: String -> Number</span>
+<span class="token keyword">let</span> toAscii <span class="token operator">=</span> str <span class="token operator">=</span><span class="token operator">></span> str<span class="token punctuation">.</span><span class="token function">charCodeAt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// fromAscii :: Number -> String</span>
+<span class="token keyword">let</span> fromAscii <span class="token operator">=</span> String<span class="token punctuation">.</span>fromCharCode<span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// mapFn :: String -> String</span>
+<span class="token keyword">let</span> mapFn <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  toAscii<span class="token punctuation">,</span>
+  <span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  fromAscii
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// usrFn :: String -> String</span>
+<span class="token keyword">let</span> usrFn <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">map</span><span class="token punctuation">(</span>mapFn<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">join</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token function">usrFn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>String 雖然如願以償得到了 <code>map()</code>，但會發現 <code>usrFn()</code> 可讀性並不高，code 風格呈橫向發展。</p>
+<p>原因在於 OOP 將 data 與 function 合一，function 必須掛在 data 下，而不能使用 pure function 與 pipeline 解決問題。</p>
+<p>18 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// usrFn :: String -> String</span>
+<span class="token keyword">let</span> usrFn <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  <span class="token function">map</span><span class="token punctuation">(</span>mapFn<span class="token punctuation">)</span><span class="token punctuation">,</span>
+  <span class="token function">join</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其實 <code>usrFn()</code> 的大架構就是先用 <code>map()</code> 處理，最後再使用 <code>join()</code> 轉回 array，至於  <code>map()</code> 細節則由 <code>mapFn()</code> 處理。</p>
+<p>11 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// mapFn :: String -> String</span>
+<span class="token keyword">let</span> mapFn <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
+  toAscii<span class="token punctuation">,</span>
+  <span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  fromAscii
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>mapFn()</code> 流程為：</p>
+<ul>
+<li><code>toAscii()</code> 負責將 char 轉 ascii 值</li>
+<li><code>add(1)</code> 負責將 ascii 值加 <code>1</code></li>
+<li><code>fromAscii()</code> 負責將 ascii 轉回 char</li>
+</ul>
+<p>最後用 <code>pipe()</code> 整合所有 function，非常清楚。</p>
+<p>第 5 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// toAscii :: String -> Number</span>
+<span class="token keyword">let</span> toAscii <span class="token operator">=</span> str <span class="token operator">=</span><span class="token operator">></span> str<span class="token punctuation">.</span><span class="token function">charCodeAt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token comment" spellcheck="true">// fromAscii :: Number -> String</span>
+<span class="token keyword">let</span> fromAscii <span class="token operator">=</span> String<span class="token punctuation">.</span>fromCharCode<span class="token punctuation">;</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>將 <code>charCodeAt()</code> 與 <code>fromCharCode()</code> 重新以 pure function 形式改寫，適合 FP 使用 pipeline。</p>
+<blockquote>
+<p>可以發現 FP 會不斷建立自訂 function，但卻看不到自訂 variable，因為 FP 會以 pipeline 處理，中繼 variable 都不見了</p>
+</blockquote>
+<p><img src="/images/ecmascript/function/generic-method/generic001.png" alt="generic001"></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li><code>借用 method</code> 是 ECMAScript 獨門概念，藉由 <code>call()</code> 可傳入 <code>thisArg</code> 取代 <code>this</code>，使得 generic method 可被其他 object 使用</li>
+<li>OOP 強調 data 與 function 合一，因此 function 會以 method 形式掛在 data 上，若該型別 data 想使用其他型別的 method，且該 method 已經被認定是 generic method，就可使用 <code>call()</code> 去 <code>借用 method</code>，如同自己的 method 一般</li>
+<li>FP 並不存在 <code>借用 method</code> 概念，因為 FP 是 data 與 function 分離，function 並不是掛在 data 上的 method，只要 function 接受該型別 data 就可使用，比 OOP 彈性且更容易理解</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://twitter.com/rauschma" target="_blank" rel="noopener">Dr. Axel Rauschdayer</a>, <a href="http://speakingjs.com/es5/ch17.html#array-like_objects" target="_blank" rel="noopener">Array-Like Objects and Generic Methods</a></p>
+
+          </article>
+          <p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/ECMAScript/'>#&nbsp;ECMAScript</a>
+    
+  </span>
+  
+</p>
+        </div>
+        <div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/ramda/array/drop/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">使用 drop() 刪除 Array 前幾筆資料</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/ecmascript/type/detect/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">如何判斷變數型別 ?</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="text-center">
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://yabai.tw">日本語の灯り</a>
+  </p>
+</footer>
+
+  <!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+  </body>
+</html>

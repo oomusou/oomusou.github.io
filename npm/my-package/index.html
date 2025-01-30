@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html 
+>
+  <head>
+  <meta charset="utf-8">
+  <!-- ### DNS Prefetch ### -->
+  <meta http-equiv="x-dns-prefetch-control" content="on">
+<!-- busuanzi -->
+
+<!-- comment -->
+
+
+
+
+
+
+<!-- analytics -->
+
+
+
+
+
+
+  <!-- ### Preload ### -->
+  
+
+  <!-- ### Meta & Title & Info ### -->
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge, chrome=1">
+<meta name="renderer" content="webkit">
+<meta name="viewport"
+  content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<!-- Title -->
+<title>開發前後端都能使用 Package | 日本語の灯り</title>
+<!-- favicon -->
+<!-- Favicons -->
+
+<link rel="shortcut icon" type="image/ico" href="/favicon.ico">
+
+
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+
+
+
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+
+
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+
+<link rel="mask-icon" href="/safari-pinned-tab.svg" color="#ff2601">
+<!-- Android Chrome Color -->
+
+<meta name="format-detection" content="telephone=no">
+<!-- Description -->
+<meta name="description" content="ECMAScript 最迷人的地方除了 First Class Function 外，可以前後端共用相同語言與 Package 也是一大特色，本文將使用 ECMAScript 2015+ 建立 ES Module，並透過 Babel 轉譯成 CommonJS Module，讓前後端都能使用相同 。">
+<!-- Keywords -->
+<meta name="keywords" content=", Node, NPM">
+<!-- Disable Fucking Bloody Baidu Tranformation -->
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+  <!-- ### Import File ### -->
+  
+    <!-- spectre.css -->
+
+<link rel="stylesheet" href="/lib/spectre/spectre.min.css">
+
+<style>
+body {
+  background-color: #f8f9fa
+}
+
+a,
+a:visited {
+  color: #0070ff
+}
+
+a:active,
+a:focus,
+a:hover {
+  color: #0070ff;
+  opacity: .75;
+}
+
+.avatar {
+  background: #444
+}
+
+.navbar-link,
+.navbar-link:visited,
+.timeline .timeline-item .timeline-icon.icon-lg {
+  color: #0070ff
+}
+
+.navbar-link:hover {
+  color: #0070ff;
+  opacity: .8;
+}
+
+#search-input .btn,
+#disqus_click_btn,
+#disqus-switch-to-direct,
+#disqus-loadmore-button {
+  background: #727e96;
+  border-color: #727e96;
+  color: #fff;
+}
+
+#post-toc a.post-toc-link,
+#post-toc a.post-toc-link:visited,
+.share-menu.menu .menu-item > a {
+  color: #727e96
+}
+
+.share-menu.menu .menu-item > a:hover,
+.share-menu.menu .menu-item > a:focus,
+.share-menu.menu .menu-item > a:visited {
+  color: #50596c;
+  background: #f8f9fa;
+  opacity: .85;
+}
+</style>
+
+<!-- style.css -->
+
+<link rel="stylesheet" href="/css/style.min.css">
+
+
+<!-- prism.css -->
+
+    <!-- prism.line_number -->
+    
+        
+            <link rel="stylesheet" href="/lib/prism/prism-line-numbers.min.css">
+        
+    
+    <!-- prism.theme -->
+    
+        <link rel="stylesheet" href="/lib/prism/prism-darcula.min.css">
+    
+
+
+
+
+  
+  <!-- ### Site Verification ### -->
+  
+
+  <!-- ### RSS ### -->
+  
+
+<link rel="alternate" type="application/atom+xml" href="/atom.xml">
+
+
+  <!-- ### WebApp ### -->
+  <meta name="mobile-web-app-capable" content="yes">
+<meta name="application-name" content="日本語の灯り">
+<meta name="msapplication-starturl" content="https://yabai.tw">
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="日本語の灯り">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<!-- Manifest Import -->
+
+<link rel="manifest" href="/site.webmanifest">
+
+<!-- Open Search -->
+
+  <!-- ### The Open Graph & Twitter Card Protocol ### -->
+  <meta property="og:title" content="開發前後端都能使用 Package | 日本語の灯り">
+<meta property="og:site_name" content="日本語の灯り">
+
+<meta property="og:url" content="https://yabai.tw/npm/my-package/">
+<meta property="og:image"
+	content="https://yabai.tw/apple-touch-icon.png">
+<meta property="og:description" content="ECMAScript 最迷人的地方除了 First Class Function 外，可以前後端共用相同語言與 Package 也是一大特色，本文將使用 ECMAScript 2015+ 建立 ES Module，並透過 Babel 轉譯成 CommonJS Module，讓前後端都能使用相同 。">
+<meta name="twitter:card" content="summary">
+
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2021-10-24T13:20:12.000Z">
+<meta property="article:modified_time" content="2021-10-24T13:20:12.000Z">
+<meta property="article:author" content="Sam Xiao">
+<meta property="og:article:tag" content=", Node, NPM">
+
+
+  <!-- ### Analytics ### -->
+  
+
+
+
+
+
+  <!-- ### Canonical link ### -->
+  <link rel="canonical" href="https://yabai.tw/npm/my-package/">
+  <!-- ### Structured Data ### -->
+  
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "url": "https://yabai.tw/npm/my-package/",
+    "@type": "BlogPosting",
+    "logo": "https://yabai.tw/apple-touch-icon.png",
+    "mainEntityOfPage": {
+        "@type": "WebPage",
+        "@id": "https://yabai.tw/npm/my-package/"
+    },
+    "headline": "開發前後端都能使用 Package | 日本語の灯り",
+    
+    "image": {
+        "@type": "ImageObject",
+        "url": "https://yabai.tw/apple-touch-icon.png"
+    },
+    
+    "datePublished": "2021-10-24T13:20:12.000Z",
+    "dateModified": "2025-01-29T14:52:34.346Z",
+    "author": {
+        "@type": "Person",
+        "name": "Sam Xiao",
+        "image": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/img/default_avatar.png"
+        },
+        "description": "日本語は学べば学ぶほど面白い"
+    },
+    "publisher": {
+        "@type": "Organization",
+        "name": "日本語の灯り",
+        "logo": {
+            "@type": "ImageObject",
+            "url": "https://yabai.tw/apple-touch-icon.png"
+        }
+    },
+    
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://yabai.tw/search?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    },
+    
+    "keywords": ", Node, NPM",
+    "description": "ECMAScript 最迷人的地方除了 First Class Function 外，可以前後端共用相同語言與 Package 也是一大特色，本文將使用 ECMAScript 2015+ 建立 ES Module，並透過 Babel 轉譯成 CommonJS Module，讓前後端都能使用相同 。"
+}
+</script>
+
+  <!-- ### Custom Head ### -->
+  
+<meta name="generator" content="Hexo 4.2.1"></head>
+  <body>
+  <header>
+  <h1 class="header-title text-center">
+    <a href="/">
+      日本語の灯り
+    </a>
+  </h1>
+  <p class="text-center header-slogan">
+    日本語は学べば学ぶほど面白い
+  </p>
+  <script>
+  let titleFontSizes;
+  let bodyFontSizes;
+  let contentFontSizes;
+  let archiveFontSizes;
+  let searchTitleFontSizes;
+  let searchBodyFontSizes;
+
+  let getFontSize = ({ selector }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let oriFontSize = window.getComputedStyle(element).fontSize;
+      let incFontSize = parseInt(oriFontSize) * 1.2 + 'px';
+
+      return [
+        oriFontSize,
+        incFontSize
+      ];
+    }
+
+    return [0, 0];
+  };
+
+  let setFontSize = ({ selector, fontSize }) => document.querySelectorAll(selector).forEach(
+    x => x.style['font-size'] = fontSize
+  );
+
+  let readFontSize = ({ key, value }) => {
+    if (localStorage.getItem(key) !== null) {
+      return localStorage.getItem(key);
+    }
+    else {
+      return value;
+    }
+  };
+
+  let writeFontSize = ({ key, fontSize }) => localStorage.setItem(key, fontSize);
+
+  let loadFontSize = () => {
+    // home
+    setFontSize({
+      selector: '.post-entry a.card-title',
+      fontSize: readFontSize({ key: 'title', value: titleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.post-entry .card-body' ,
+      fontSize: readFontSize({ key: 'body', value: bodyFontSizes[0] })
+    });
+
+    // post
+    setFontSize({
+      selector: '#post-content',
+      fontSize: readFontSize({ key: 'content', value: contentFontSizes[0] })
+    });
+
+    // archive
+    setFontSize({
+      selector: '.tile-title',
+      fontSize: readFontSize({ key: 'archive', value: archiveFontSizes[0] })
+    });
+
+    // search
+    setFontSize({
+      selector: '.search-title',
+      fontSize: readFontSize({ key: 'search-title', value: searchTitleFontSizes[0] })
+    });
+
+    setFontSize({
+      selector: '.search-result-summary',
+      fontSize: readFontSize({ key: 'search-body', value: searchBodyFontSizes[0] })
+    });
+  }
+
+  let toggleFontSize = ({ selector, key, fontSizes }) => {
+    let element = document.querySelector(selector);
+
+    if (element !== null) {
+      let fontSize = window.getComputedStyle(element).fontSize;
+
+      if (fontSize === fontSizes[0]) {
+        setFontSize({ selector, fontSize: fontSizes[1] });
+        writeFontSize({ key, fontSize: fontSizes[1]})
+      } else {
+        setFontSize({ selector, fontSize: fontSizes[0] });
+        writeFontSize({ key, fontSize: fontSizes[0] });
+      }
+    }
+  };
+
+  let increaseFontSize = () => {
+    // home
+    toggleFontSize({
+      selector: '.post-entry a.card-title',
+      key: 'title',
+      fontSizes: titleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.post-entry .card-body',
+      key: 'body',
+      fontSizes: bodyFontSizes
+    });
+
+    // post
+    toggleFontSize({
+      selector: '#post-content',
+      key: 'content',
+      fontSizes: contentFontSizes
+    });
+
+    // archive
+    toggleFontSize({
+      selector: '.tile-title',
+      key: 'archive',
+      fontSizes: archiveFontSizes
+    });
+
+    // search
+    toggleFontSize({
+      selector: '.search-title',
+      key: 'search-title',
+      fontSizes: searchTitleFontSizes
+    });
+
+    toggleFontSize({
+      selector: '.search-result-summary',
+      key: 'search-body',
+      fontSizes: searchBodyFontSizes
+    });
+  };
+
+  window.onload = function () {
+    titleFontSizes = getFontSize({ selector: '.post-entry a.card-title' });
+    bodyFontSizes = getFontSize({ selector: '.post-entry .card-body' });
+    contentFontSizes = getFontSize({ selector: '#post-content' });
+    archiveFontSizes = getFontSize({ selector: '.tile-title' });
+    searchTitleFontSizes = getFontSize({ selector: '.search-title'});
+    searchBodyFontSizes = getFontSize({ selector: '.search-result-summary'});
+
+    loadFontSize();
+  };
+</script>
+<nav class="navbar-section text-center">
+  <div class="columns">
+    <div class="column col-1"></div>
+    <div class="column col-10 col-sm-12 align-content-center">
+      <a href="/" class="navbar-link">ホーム</a>
+      <a href="/series/" class="navbar-link">シリーズ</a>
+      <a href="/tags/" class="navbar-link">タグ</a>
+      <a href="/search" class="navbar-link">検索</a>
+<!--      <a href="/atom.xml" target="_blank" class="navbar-link">RSS</a>-->
+    </div>
+    <div class="column col-1 increase-font-size">
+      <a class="hide-sm" style="cursor: pointer;" onclick="increaseFontSize()"><img
+          src="/images/svg/font-size.svg"
+          alt="font size" class="font-size"></a>
+    </div>
+  </div>
+</nav>
+
+</header>
+  
+<!-- ## Post ## -->
+<div class="post-container">
+  <div id="post-card" class="card">
+    <div class="card-item-container">
+      <div class="card-inner-cell">
+        <div class="card-header">
+          
+<h1 class="card-title h3 mb-2">開發前後端都能使用 Package</h1>
+
+
+<div class="post-header-info">
+	<img class="author-thumb lazyload" data-src="/img/default_avatar.png" src="/img/suka-lazyload.gif"
+		alt="Sam Xiao's Avatar">
+	<span>2021-10-24</span>
+</div>
+
+        </div>
+        <div class="card-body">
+          <article id="post-content">
+            <p>ECMAScript 最迷人的地方除了 First Class Function 外，可以前後端共用相同語言與 Package 也是一大特色，本文將使用 ECMAScript 2015+ 建立 ES Module，並透過 Babel 轉譯成 CommonJS Module，讓前後端都能使用相同 。</p>
+<a id="more"></a>
+
+<h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Node 14.18.1</p>
+<h2 id="Add-Package"><a href="#Add-Package" class="headerlink" title="Add Package"></a>Add Package</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ mkdir my-package
+$ cd my-package
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<p>建立 <code>my-package</code> 目錄。</p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn init --yes
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 Yarn 建立 <code>package.json</code>。</p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add @babel/core @babel/cli @babel/preset-env --dev
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>安裝 Babel 相關 package，負責將 ES module 轉譯成 CommonJS module。</p>
+<blockquote>
+<p>僅管 ES module 才是標準，但目前後端 Node 支援 ES module 程度仍然有限，但前端 Webpack 已經支援 CommonJS module，因此只能在開發階段使用 ES module，再透過 Babel 轉譯成現在前後端都能接受的 CommonJS module</p>
+<p>日後等 Node 支援 ES Module 成熟，就可不必再使用 Babel，完全使用 ES Module 即可</p>
+</blockquote>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add ramda
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>安裝 package 本身所相依的 package。</p>
+<blockquote>
+<p>本例會使用到 Ramda</p>
+</blockquote>
+<p><img src="/images/npm/my-package/own000.png" alt="own000"></p>
+<p><strong>.babelrc</strong></p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"presets"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"@babel/preset-env"</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>在 project 根目錄下建立 <code>.babelrc</code>，使用剛剛安裝的 <code>@babel/preset-env</code> 的設定將 ES6+ 轉譯。</p>
+<p><img src="/images/npm/my-package/own001.png" alt="own001"></p>
+<h2 id="My-First-Package"><a href="#My-First-Package" class="headerlink" title="My First Package"></a>My First Package</h2><p><strong>src&#x2F;index.js</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">export</span> <span class="token punctuation">{</span> isOdd <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'./isOdd'</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>建立 <code>src</code> 目錄，package 所有的 source code 都在此目錄下。</p>
+<p><code>index.js</code> 主要用於統整所有 module。</p>
+<p>從 <code>isOdd.js</code> 引入的 <code>isOdd</code> 馬上 export 出去。</p>
+<p><strong>src&#x2F;isOdd.js</strong></p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> equals<span class="token punctuation">,</span> flip<span class="token punctuation">,</span> modulo <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"ramda"</span>
+
+<span class="token keyword">export</span> <span class="token keyword">let</span> isOdd <span class="token operator">=</span> compose <span class="token punctuation">(</span>equals <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span> flip <span class="token punctuation">(</span>modulo<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p>引用了 Ramda 的 function 組合出 <code>isOdd()</code>。</p>
+<p><strong>package.json</strong></p>
+<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
+  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"wink-test"</span><span class="token punctuation">,</span>
+  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"1.0.0"</span><span class="token punctuation">,</span>
+  <span class="token property">"main"</span><span class="token operator">:</span> <span class="token string">"dist/index.js"</span><span class="token punctuation">,</span>
+  <span class="token property">"files"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token string">"dist"</span>
+  <span class="token punctuation">]</span><span class="token punctuation">,</span>
+  <span class="token property">"license"</span><span class="token operator">:</span> <span class="token string">"MIT"</span><span class="token punctuation">,</span>
+  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"babel src --out-dir dist"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"ramda"</span><span class="token operator">:</span> <span class="token string">"^0.26.1"</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token property">"@babel/cli"</span><span class="token operator">:</span> <span class="token string">"^7.7.0"</span><span class="token punctuation">,</span>
+    <span class="token property">"@babel/core"</span><span class="token operator">:</span> <span class="token string">"^7.7.2"</span><span class="token punctuation">,</span>
+    <span class="token property">"@babel/preset-env"</span><span class="token operator">:</span> <span class="token string">"^7.7.1"</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>第 9 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token string">"scripts"</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
+  <span class="token string">"build"</span><span class="token punctuation">:</span> <span class="token string">"babel src --out-dir dist"</span>
+<span class="token punctuation">}</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><code>yarn build</code> 將使用 Babel 編譯 <code>src</code> 目錄下所有 <code>.js</code> 到 <code>dist</code> 目錄。</p>
+<p>第 4 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token string">"main"</span><span class="token punctuation">:</span> <span class="token string">"dist/index.js"</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>Package 的起始檔案改成解譯後 <code>dist</code> 目錄下的 <code>index.js</code>。</p>
+<p>第 5 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token string">"files"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
+  <span class="token string">"dist"</span>
+<span class="token punctuation">]</span><span class="token punctuation">,</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<p><code>dist</code> 目錄下所有檔案將安裝到 user 的 <code>node_modules</code> 目錄下。</p>
+<p><img src="/images/npm/my-package/own002.png" alt="own002"></p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn build
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>將 ES Module 轉譯成 CommonJS Module。</p>
+<p><img src="/images/npm/my-package/own003.png" alt="own003"></p>
+<p><strong>dist&#x2F;index.js</strong></p>
+<p><img src="/images/npm/my-package/own004.png" alt="own004"></p>
+<p><code>dist/index.js</code> 為轉譯後的 CommonJS module。</p>
+<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn publish
+<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<p>使用 <code>yarn publish</code> 發布 package 到 NPM。</p>
+<p><img src="/images/npm/my-package/own005.png" alt="own005"></p>
+<h2 id="Quokka"><a href="#Quokka" class="headerlink" title="Quokka"></a>Quokka</h2><p><img src="/images/npm/my-package/own006.png" alt="own006"></p>
+<p>Quokka 可正常使用剛發佈 <code>wink-test</code> 的 <code>isOdd()</code>。</p>
+<h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><p><img src="/images/npm/my-package/own007.png" alt="own007"></p>
+<p>Node 也可正常使用剛發佈 <code>wink-test</code> 的 <code>isOdd()</code>。</p>
+<h2 id="Vue"><a href="#Vue" class="headerlink" title="Vue"></a>Vue</h2><p><strong>App.vue</strong></p>
+<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span>
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(item, index) in result<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>index<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
+        {{ item }}
+      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
+<span class="token keyword">import</span> <span class="token punctuation">{</span> filter <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> isOdd <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-test'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> mounted <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">this</span><span class="token punctuation">.</span>result <span class="token operator">=</span> <span class="token function">filter</span><span class="token punctuation">(</span>isOdd<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
+  name<span class="token punctuation">:</span> <span class="token string">'app'</span><span class="token punctuation">,</span>
+  data<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
+    result<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+  mounted
+<span class="token punctuation">}</span>
+</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>12 行</p>
+<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> filter <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
+<span class="token keyword">import</span> <span class="token punctuation">{</span> isOdd <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-test'</span><span class="token punctuation">;</span>
+
+<span class="token keyword">let</span> mounted <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">this</span><span class="token punctuation">.</span>result <span class="token operator">=</span> <span class="token function">filter</span><span class="token punctuation">(</span>isOdd<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Vue 也可正常使用剛發佈 <code>wink-test</code> 的 <code>isOdd()</code>。</p>
+<p><img src="/images/npm/my-package/own008.png" alt="own008"></p>
+<h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
+<li>若要使用 ECMAScript 開發同時 Vue 與 Node 都能使用的 package，且使用 ES Module 語法，現階段只能透過 Babel 轉譯成 CommonJS module，等日後 Node 支援 ES module 更完整，則可不使用 Babel</li>
+</ul>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://medium.com/@TeeFouad" target="_blank" rel="noopener">Mostafa Fouad</a>, <a href="https://medium.com/@TeeFouad/a-simple-guide-to-publishing-an-npm-package-506dd7f3c47a" target="_blank" rel="noopener">A Simple Guide to Publishing an NPM Package</a></p>
+
+          </article>
+          <p class="post-footer-info mb-0 pt-2">
+  
+  
+  <span class="post-tags-list mt-2">
+    
+    
+    <a class="post-tags-list-item" href='/tags/Node/'>#&nbsp;Node</a>
+    
+    <a class="post-tags-list-item" href='/tags/NPM/'>#&nbsp;NPM</a>
+    
+  </span>
+  
+</p>
+        </div>
+        <div class="post-nav px-2 bg-gray">
+	<ul class="pagination">
+		<!-- Prev Nav -->
+		
+		<li class="page-item page-prev">
+			<a href="/npm/read-property/">
+				<div class="page-item-title"><i class="icon icon-back" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">讀取 Package.json 的 Property</div>
+			</a>
+		</li>
+		
+		<!-- Next Nav -->
+		
+		<li class="page-item page-next">
+			<a href="/node/feature/esm/">
+				<div class="page-item-title"><i class="icon icon-forward" aria-hidden="true"></i></div>
+				<div class="page-item-subtitle">Node 使用 ES Module</div>
+			</a>
+		</li>
+		
+	</ul>
+</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  <footer class="text-center">
+  <p class="footer-copyright mb-0">Copyright&nbsp;©&nbsp;<span data-year></span>
+    <a href="mailto:oomusou@gmail.com" class="footer-copyright-a" href="https://yabai.tw">日本語の灯り</a>
+  </p>
+</footer>
+
+  <!-- ### Footer JS Import ### -->
+<script>
+  window.lazyLoadOptions = {
+    elements_selector: ".lazyload",
+    threshold: 50
+  };
+
+  /* Copyright */
+  var copyrightNow = new Date().getFullYear();
+  var copyrightContent = document.querySelector('span[data-year]')
+  copyrightSince = 2015;
+  copyrightContent.textContent = copyrightSince + ' - ' + copyrightNow;
+</script>
+<!-- vanilla-lazyload -->
+
+<script src="/lib/vanilla-lazyload/lazyload.min.js" async></script>
+
+
+
+
+<!-- gallery.js -->
+
+<!-- Comment -->
+
+<!-- ### Custom Footer ### -->
+
+  </body>
+</html>
