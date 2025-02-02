@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,50 +438,33 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Pipeline Operator 是 ECMAScript 最受期待新功能，它將完全改變 ECMAScript 寫法，唯目前只是 Stage 1，只要在 Babel 另外安裝 Plugin，就可提早享受類似 F# 的 <code>|&gt;</code>。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.1<br>WebStorm 2019.3<br>Node 13.2.0<br>Babel 7.6.4</p>
-<h2 id="Plugin-Installation"><a href="#Plugin-Installation" class="headerlink" title="Plugin Installation"></a>Plugin Installation</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add @babel/core @babel/cli @babel/preset-env @babel/node --dev
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Plugin-Installation"><a href="#Plugin-Installation" class="headerlink" title="Plugin Installation"></a>Plugin Installation</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yarn add @babel/core @babel/cli @babel/preset-env @babel/node --dev</span></span><br></pre></td></tr></table></figure>
+
 <p>安裝 Babel 所需 package。</p>
-<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add @babel/plugin-proposal-pipeline-operator --dev
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yarn add @babel/plugin-proposal-pipeline-operator --dev</span></span><br></pre></td></tr></table></figure>
+
 <p>安裝 <code>@babel/plugin-proposal-pipeline-operator</code>，由於是 Babel 使用，安裝成 <code>devDependencies</code> 即可。</p>
 <p><img src="/images/babel/pipeline/pipe000.png" alt="pipe000"></p>
 <p><strong>package.json</strong></p>
 <p><img src="/images/babel/pipeline/pipe001.png" alt="pipe001"></p>
 <h2 id="Babel-Configuration"><a href="#Babel-Configuration" class="headerlink" title="Babel Configuration"></a>Babel Configuration</h2><p><strong>.babelrc</strong></p>
-<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
-  <span class="token property">"presets"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-    <span class="token string">"@babel/preset-env"</span>
-  <span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token property">"plugins"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
-    <span class="token punctuation">[</span>
-      <span class="token string">"@babel/plugin-proposal-pipeline-operator"</span><span class="token punctuation">,</span>
-      <span class="token punctuation">{</span>
-        <span class="token property">"proposal"</span><span class="token operator">:</span> <span class="token string">"minimal"</span>
-      <span class="token punctuation">}</span>
-    <span class="token punctuation">]</span>
-  <span class="token punctuation">]</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;presets&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="string">&quot;@babel/preset-env&quot;</span></span><br><span class="line">  <span class="punctuation">]</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;plugins&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">    <span class="punctuation">[</span></span><br><span class="line">      <span class="string">&quot;@babel/plugin-proposal-pipeline-operator&quot;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;proposal&quot;</span><span class="punctuation">:</span> <span class="string">&quot;minimal&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>在 project 根目錄新增 <code>.babelrc</code> 設定 plugin。</p>
 <p>目前 pipeline operator 有三種 proposal，可設定成 <code>minimal</code>、<code>start</code> 或 <code>fsharp</code>。</p>
 <p><img src="/images/babel/pipeline/pipe002.png" alt="pipe002"></p>
-<h2 id="Pipeline-Operator"><a href="#Pipeline-Operator" class="headerlink" title="Pipeline Operator"></a>Pipeline Operator</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> double <span class="token operator">=</span> n <span class="token operator">=</span><span class="token operator">></span> n <span class="token operator">*</span> <span class="token number">2</span><span class="token punctuation">;</span>
-<span class="token keyword">let</span> inc <span class="token operator">=</span> n <span class="token operator">=</span><span class="token operator">></span> n <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">;</span>
+<h2 id="Pipeline-Operator"><a href="#Pipeline-Operator" class="headerlink" title="Pipeline Operator"></a>Pipeline Operator</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">double</span> = n =&gt; n * <span class="number">2</span>;</span><br><span class="line"><span class="keyword">let</span> <span class="title function_">inc</span> = n =&gt; n + <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="title function_">inc</span>(<span class="title function_">double</span>(<span class="number">5</span>)))</span><br><span class="line"></span><br><span class="line"><span class="number">5</span> |&gt; double |&gt; inc |&gt; <span class="variable language_">console</span>.<span class="property">log</span></span><br></pre></td></tr></table></figure>
 
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token function">inc</span><span class="token punctuation">(</span><span class="token function">double</span><span class="token punctuation">(</span><span class="token number">5</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-<span class="token number">5</span> <span class="token operator">|</span><span class="token operator">></span> double <span class="token operator">|</span><span class="token operator">></span> inc <span class="token operator">|</span><span class="token operator">></span> console<span class="token punctuation">.</span>log
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>傳統 <code>f(g(x))</code>，可以改用 <code>g |&gt; f</code> 寫法，可讀性更高，更能體現 pipeline 精神。</p>
 <p><img src="/images/babel/pipeline/pipe003.png" alt="pipe003"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li><code>|&gt;</code> 為 F# 所創，能省略中繼變數，其由左向右比 <code>f(g(x))</code> 的由右向左可讀性更高</li>
 </ul>
-<h2 id="Sample-Code"><a href="#Sample-Code" class="headerlink" title="Sample Code"></a>Sample Code</h2><p>完整範例可在我的 <a href="https://github.com/oomusou/babel-pipeline" target="_blank" rel="noopener">GitHub</a> 上找到</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://babeljs.io/" target="_blank" rel="noopener">Babel</a>, <a href="https://babeljs.io/docs/en/babel-plugin-proposal-pipeline-operator" target="_blank" rel="noopener">@babel&#x2F;plugin-proposal-pipeline-operator</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Pipeline_operator" target="_blank" rel="noopener">Pipeline operator</a></p>
+<h2 id="Sample-Code"><a href="#Sample-Code" class="headerlink" title="Sample Code"></a>Sample Code</h2><p>完整範例可在我的 <a target="_blank" rel="noopener" href="https://github.com/oomusou/babel-pipeline">GitHub</a> 上找到</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://babeljs.io/">Babel</a>, <a target="_blank" rel="noopener" href="https://babeljs.io/docs/en/babel-plugin-proposal-pipeline-operator">@babel&#x2F;plugin-proposal-pipeline-operator</a><br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/">MDN</a>, <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Pipeline_operator">Pipeline operator</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,54 +438,27 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p><code>sum</code> 是實務上常見需求，這在 Knex 該如何寫呢 ?</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Knex 0.20.2<br>Knex-fp 0.0.8</p>
-<h2 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h2><pre class="line-numbers highlight language-sql"><code class="language-sql"><span class="token keyword">select</span> <span class="token function">sum</span><span class="token punctuation">(</span>price<span class="token punctuation">)</span>
-<span class="token keyword">from</span> books
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">select</span> <span class="built_in">sum</span>(price)</span><br><span class="line"><span class="keyword">from</span> books</span><br></pre></td></tr></table></figure>
+
 <p><code>sum</code> 最常見的應用是對特定欄位做加總。</p>
 <p><img src="/images/knex/dql/sum/sum000.png" alt="sum000"></p>
-<h2 id="Knex"><a href="#Knex" class="headerlink" title="Knex"></a>Knex</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript">mySQL <span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>sum <span class="token punctuation">(</span><span class="token string">'price as sum'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>then <span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>sum<span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>then <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Knex"><a href="#Knex" class="headerlink" title="Knex"></a>Knex</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">mySQL</span> (<span class="string">&#x27;books&#x27;</span>)</span><br><span class="line">  .<span class="property">sum</span> (<span class="string">&#x27;price as sum&#x27;</span>)</span><br><span class="line">  .<span class="property">then</span> (<span class="function"><span class="params">x</span> =&gt;</span> x[<span class="number">0</span>].<span class="property">sum</span>)</span><br><span class="line">  .<span class="property">then</span> (log)</span><br></pre></td></tr></table></figure>
+
 <p>但由於 SQL 是將 <code>sum</code> 放在 result set 內，因此必須在 <code>then</code> 中先以 <code>[0]</code> 取得第一筆資料，再使用 <code>sum</code> 取得。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">mySQL <span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>sum <span class="token punctuation">(</span><span class="token punctuation">{</span> sum<span class="token punctuation">:</span> <span class="token string">'price'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>then <span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">.</span>sum<span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>then <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">mySQL</span> (<span class="string">&#x27;books&#x27;</span>)</span><br><span class="line">  .<span class="property">sum</span> (&#123; <span class="attr">sum</span>: <span class="string">&#x27;price&#x27;</span> &#125;)</span><br><span class="line">  .<span class="property">then</span> (<span class="function"><span class="params">x</span> =&gt;</span> x[<span class="number">0</span>].<span class="property">sum</span>)</span><br><span class="line">  .<span class="property">then</span> (log)</span><br></pre></td></tr></table></figure>
+
 <p><code>sum</code> 也可改用 Object 形式較符合 ECMAScript 習慣。</p>
-<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pluck<span class="token punctuation">,</span> head <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pluck, head &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; log &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">mySQL</span> (<span class="string">&#x27;books&#x27;</span>)</span><br><span class="line">  .<span class="property">sum</span> (&#123; <span class="attr">sum</span>: <span class="string">&#x27;price&#x27;</span> &#125;)</span><br><span class="line">  .<span class="property">then</span> (<span class="title function_">pluck</span> (<span class="string">&#x27;sum&#x27;</span>))</span><br><span class="line">  .<span class="property">then</span> (head)</span><br><span class="line">  .<span class="property">then</span> (log)</span><br></pre></td></tr></table></figure>
 
-mySQL <span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>sum <span class="token punctuation">(</span><span class="token punctuation">{</span> sum<span class="token punctuation">:</span> <span class="token string">'price'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>then <span class="token punctuation">(</span>pluck <span class="token punctuation">(</span><span class="token string">'sum'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>then <span class="token punctuation">(</span>head<span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>then <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可在 <code>then</code> 中使用 Ramda 產生 pure function，首先 <code>pluck</code> 出 <code>sum</code> field 資料，再使用 <code>head</code> 將 <code>[0]</code> 取出。</p>
-<h2 id="Wink-fp"><a href="#Wink-fp" class="headerlink" title="Wink-fp"></a>Wink-fp</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> tug<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h2 id="Wink-fp"><a href="#Wink-fp" class="headerlink" title="Wink-fp"></a>Wink-fp</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; tug, log &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">mySQL</span> (<span class="string">&#x27;books&#x27;</span>)</span><br><span class="line">  .<span class="property">sum</span> (&#123; <span class="attr">sum</span>: <span class="string">&#x27;price&#x27;</span> &#125;)</span><br><span class="line">  .<span class="property">then</span> (<span class="title function_">tug</span>(<span class="string">&#x27;sum&#x27;</span>))</span><br><span class="line">  .<span class="property">then</span> (log)</span><br></pre></td></tr></table></figure>
 
-mySQL <span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>sum <span class="token punctuation">(</span><span class="token punctuation">{</span> sum<span class="token punctuation">:</span> <span class="token string">'price'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>then <span class="token punctuation">(</span><span class="token function">tug</span><span class="token punctuation">(</span><span class="token string">'sum'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>then <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於 <code>pluck</code> 與 <code>head</code> 的組合經常使用，Wink-fp 提供了 <code>tug</code>，只要傳入 <code>sum</code> field 即可。</p>
-<h2 id="Knex-fp"><a href="#Knex-fp" class="headerlink" title="Knex-fp"></a>Knex-fp</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipeK<span class="token punctuation">,</span> sum <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'knex-fp'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> tug<span class="token punctuation">,</span> log <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h2 id="Knex-fp"><a href="#Knex-fp" class="headerlink" title="Knex-fp"></a>Knex-fp</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipeK, sum &#125; <span class="keyword">from</span> <span class="string">&#x27;knex-fp&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; tug, log &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">pipeK</span> (</span><br><span class="line">  <span class="title function_">sum</span> (&#123; <span class="attr">sum</span>: <span class="string">&#x27;price&#x27;</span> &#125;)</span><br><span class="line">)(</span><br><span class="line">  <span class="title function_">tug</span> (<span class="string">&#x27;sum&#x27;</span>),</span><br><span class="line">  log</span><br><span class="line">) (<span class="title function_">mySQL</span> (<span class="string">&#x27;books&#x27;</span>))</span><br></pre></td></tr></table></figure>
 
-pipeK <span class="token punctuation">(</span>
-  sum <span class="token punctuation">(</span><span class="token punctuation">{</span> sum<span class="token punctuation">:</span> <span class="token string">'price'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">(</span>
-  tug <span class="token punctuation">(</span><span class="token string">'sum'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  log
-<span class="token punctuation">)</span> <span class="token punctuation">(</span>mySQL <span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可使用 Knex-fp 的 <code>sum</code>，如此就可使用 <code>pipeK()</code> 同時組合 Knex-fp 與 Wink-fp 的 function。</p>
 <p><img src="/images/knex/dql/sum/sum001.png" alt="sum001"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>

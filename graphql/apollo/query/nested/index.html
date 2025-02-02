@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,125 +438,32 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>JSON 天生就有 Nested Object，而 GraphQL 亦提供 Nested Query，且非常優雅。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15<br>WebStorm 2019.2.3<br>Node 10.16.3<br>Apollo GraphQL 2.9.6</p>
 <h2 id="Apollo-GraphQL"><a href="#Apollo-GraphQL" class="headerlink" title="Apollo GraphQL"></a>Apollo GraphQL</h2><p><strong>src&#x2F;index.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> apolloServer<span class="token punctuation">,</span> gql <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'apollo-server'</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; apolloServer, gql &#125; <span class="keyword">from</span> <span class="string">&#x27;apollo-server&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>,</span><br><span class="line">    <span class="attr">price</span>: <span class="number">100</span>,</span><br><span class="line">    <span class="attr">photo</span>: &#123;</span><br><span class="line">      <span class="attr">full</span>: <span class="string">&#x27;fpjs-full.png&#x27;</span>,</span><br><span class="line">      <span class="attr">thumb</span>: <span class="string">&#x27;fpjs-small.png&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">title</span>: <span class="string">&#x27;RxJS in Action&#x27;</span>,</span><br><span class="line">    <span class="attr">price</span>: <span class="number">200</span>,</span><br><span class="line">    <span class="attr">photo</span>: &#123;</span><br><span class="line">      <span class="attr">full</span>: <span class="string">&#x27;rxjs-full.png&#x27;</span>,</span><br><span class="line">      <span class="attr">thumb</span>: <span class="string">&#x27;rxjs-small.png&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">title</span>: <span class="string">&#x27;Speaking JavaScript&#x27;</span>,</span><br><span class="line">    <span class="attr">price</span>: <span class="number">300</span>,</span><br><span class="line">    <span class="attr">photo</span>: &#123;</span><br><span class="line">      <span class="attr">full</span>: <span class="string">&#x27;spjs-full.png&#x27;</span>,</span><br><span class="line">      <span class="attr">thumb</span>: <span class="string">&#x27;spjs-small.png&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> typeDefs = gql`<span class="language-graphql"></span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">type</span> <span class="keyword">Query</span> <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">books</span><span class="punctuation">:</span> <span class="punctuation">[</span>Book<span class="punctuation">]</span></span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql"></span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">type</span> Book <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">title</span><span class="punctuation">:</span> String</span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">price</span><span class="punctuation">:</span> Int</span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">photo</span><span class="punctuation">:</span> Photo</span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql"></span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">type</span> Photo <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">full</span><span class="punctuation">:</span> String</span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">thumb</span><span class="punctuation">:</span> String</span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql">`</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">books</span> = (<span class="params"></span>) =&gt; data</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> resolvers = &#123;</span><br><span class="line">  <span class="title class_">Query</span>: &#123;</span><br><span class="line">    books</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> apolloServer = <span class="keyword">new</span> <span class="title class_">ApolloServer</span>(&#123; typeDefs, resolvers &#125;)</span><br><span class="line"></span><br><span class="line">apolloServer.<span class="title function_">listen</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">&#123; url &#125;</span>) =&gt;</span> <span class="string">`GraphQL Server ready at <span class="subst">$&#123; url &#125;</span>`</span>)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>)</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span>
-    title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span>
-    price<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
-    photo<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-      full<span class="token punctuation">:</span> <span class="token string">'fpjs-full.png'</span><span class="token punctuation">,</span>
-      thumb<span class="token punctuation">:</span> <span class="token string">'fpjs-small.png'</span>
-    <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span>
-    title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span>
-    price<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
-    photo<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-      full<span class="token punctuation">:</span> <span class="token string">'rxjs-full.png'</span><span class="token punctuation">,</span>
-      thumb<span class="token punctuation">:</span> <span class="token string">'rxjs-small.png'</span>
-    <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span>
-    title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span>
-    price<span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">,</span>
-    photo<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-      full<span class="token punctuation">:</span> <span class="token string">'spjs-full.png'</span><span class="token punctuation">,</span>
-      thumb<span class="token punctuation">:</span> <span class="token string">'spjs-small.png'</span>
-    <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> typeDefs <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`
-  type Query {
-    books: [Book]
-  }
-
-  type Book {
-    title: String
-    price: Int
-    photo: Photo
-  }
-
-  type Photo {
-    full: String
-    thumb: String
-  }
-`</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data
-
-<span class="token keyword">let</span> resolvers <span class="token operator">=</span> <span class="token punctuation">{</span>
-  Query<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    books
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> apolloServer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-apolloServer<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">{</span> url <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`GraphQL Server ready at </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> url <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 3 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span>
-    title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span>
-    price<span class="token punctuation">:</span> <span class="token number">100</span><span class="token punctuation">,</span>
-    photo<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-      full<span class="token punctuation">:</span> <span class="token string">'fpjs-full.png'</span><span class="token punctuation">,</span>
-      thumb<span class="token punctuation">:</span> <span class="token string">'fpjs-small.png'</span>
-    <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span>
-    title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span>
-    price<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span>
-    photo<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-      full<span class="token punctuation">:</span> <span class="token string">'rxjs-full.png'</span><span class="token punctuation">,</span>
-      thumb<span class="token punctuation">:</span> <span class="token string">'rxjs-small.png'</span>
-    <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span>
-    title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span>
-    price<span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">,</span>
-    photo<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-      full<span class="token punctuation">:</span> <span class="token string">'spjs-full.png'</span><span class="token punctuation">,</span>
-      thumb<span class="token punctuation">:</span> <span class="token string">'spjs-small.png'</span>
-    <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>,</span><br><span class="line">    <span class="attr">price</span>: <span class="number">100</span>,</span><br><span class="line">    <span class="attr">photo</span>: &#123;</span><br><span class="line">      <span class="attr">full</span>: <span class="string">&#x27;fpjs-full.png&#x27;</span>,</span><br><span class="line">      <span class="attr">thumb</span>: <span class="string">&#x27;fpjs-small.png&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">title</span>: <span class="string">&#x27;RxJS in Action&#x27;</span>,</span><br><span class="line">    <span class="attr">price</span>: <span class="number">200</span>,</span><br><span class="line">    <span class="attr">photo</span>: &#123;</span><br><span class="line">      <span class="attr">full</span>: <span class="string">&#x27;rxjs-full.png&#x27;</span>,</span><br><span class="line">      <span class="attr">thumb</span>: <span class="string">&#x27;rxjs-small.png&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">  &#123;</span><br><span class="line">    <span class="attr">title</span>: <span class="string">&#x27;Speaking JavaScript&#x27;</span>,</span><br><span class="line">    <span class="attr">price</span>: <span class="number">300</span>,</span><br><span class="line">    <span class="attr">photo</span>: &#123;</span><br><span class="line">      <span class="attr">full</span>: <span class="string">&#x27;spjs-full.png&#x27;</span>,</span><br><span class="line">      <span class="attr">thumb</span>: <span class="string">&#x27;spjs-small.png&#x27;</span></span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
 <p>除了 <code>title</code> 與 <code>price</code> 外，還多了 <code>photo</code>，且 data 本身就是 nested object。</p>
 <p>41 行</p>
-<pre class="line-numbers highlight language-graphql"><code class="language-graphql">type Photo <span class="token punctuation">{</span>
-  <span class="token attr-name">full</span><span class="token punctuation">:</span> String
-  <span class="token attr-name">thumb</span><span class="token punctuation">:</span> String
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Photo <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="symbol">full</span><span class="punctuation">:</span> String</span><br><span class="line">  <span class="symbol">thumb</span><span class="punctuation">:</span> String</span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>其中 <code>photo</code> 為 object，因此需要新的 <code>Photo</code> type。</p>
 <p>47 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">books</span> = (<span class="params"></span>) =&gt; data</span><br></pre></td></tr></table></figure>
+
 <p>在 resolver 定義 <code>books()</code> query 實作。</p>
-<h2 id="GraphQL-Playground"><a href="#GraphQL-Playground" class="headerlink" title="GraphQL Playground"></a>GraphQL Playground</h2><pre class="line-numbers highlight language-graphql"><code class="language-graphql"><span class="token keyword">query</span> <span class="token punctuation">{</span>
-  books <span class="token punctuation">{</span>
-    title
-    photo <span class="token punctuation">{</span>
-      full
-    <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span>  
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="GraphQL-Playground"><a href="#GraphQL-Playground" class="headerlink" title="GraphQL Playground"></a>GraphQL Playground</h2><figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">query</span> <span class="punctuation">&#123;</span></span><br><span class="line">  books <span class="punctuation">&#123;</span></span><br><span class="line">    title</span><br><span class="line">    photo <span class="punctuation">&#123;</span></span><br><span class="line">      full</span><br><span class="line">    <span class="punctuation">&#125;</span></span><br><span class="line">  <span class="punctuation">&#125;</span>  </span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>books</code> query，只回傳 <code>title</code> 與 <code>photo</code>，由於 <code>photo</code> 為 object，又可再指定只要 <code>full</code> property，此為 nested GraphQL query。</p>
 <p><img src="/images/graphql/apollo/query/nested/nested000.png" alt="nested000"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>原本看似複雜的 nested query，可是 GraphQL 寫起來卻十分優雅</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://egghead.io/instructors/eve-porcello" target="_blank" rel="noopener">Eve Porcello</a>, <a href="https://egghead.io/lessons/graphql-send-a-nested-graphql-query" target="_blank" rel="noopener">Send a Nested GraphQL Query</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://egghead.io/instructors/eve-porcello">Eve Porcello</a>, <a target="_blank" rel="noopener" href="https://egghead.io/lessons/graphql-send-a-nested-graphql-query">Send a Nested GraphQL Query</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

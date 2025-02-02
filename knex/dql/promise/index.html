@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,67 +438,41 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>ECAMAcript 2015 提供了 Promise 與 <code>then</code>，而 ECMAScript 2017 更支援了 <code>async await</code>，這兩種寫法可彼此交換，但常有人只看得懂其中一種寫法，維護其他 Codebase 就看不懂了，本文特別說明之。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Knex 0.20.9</p>
-<h2 id="Promise-vs-Async-Await"><a href="#Promise-vs-Async-Await" class="headerlink" title="Promise vs. Async Await"></a>Promise vs. Async Await</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> price <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> mySQL <span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>select <span class="token punctuation">(</span><span class="token string">'*'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>where <span class="token punctuation">(</span><span class="token punctuation">{</span> price <span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p><code>books</code> 沒宣告為 <code>async</code> function。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> price <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token keyword">await</span> mySQL <span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
-    <span class="token punctuation">.</span>select <span class="token punctuation">(</span><span class="token string">'*'</span><span class="token punctuation">)</span>
-    <span class="token punctuation">.</span>where <span class="token punctuation">(</span><span class="token punctuation">{</span> price <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<h2 id="Promise-vs-Async-Await"><a href="#Promise-vs-Async-Await" class="headerlink" title="Promise vs. Async Await"></a>Promise vs. Async Await</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">books</span> = (<span class="params">_, &#123; price &#125;</span>) =&gt; <span class="title function_">mySQL</span> (<span class="string">&#x27;books&#x27;</span>)</span><br><span class="line">  .<span class="property">select</span> (<span class="string">&#x27;*&#x27;</span>)</span><br><span class="line">  .<span class="property">where</span> (&#123; price &#125;)</span><br></pre></td></tr></table></figure>
 
-  <span class="token keyword">return</span> result<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p><code>books</code> 沒宣告為 <code>async</code> function。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">books</span> = <span class="keyword">async</span> (<span class="params">_, &#123; price &#125;</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> result = <span class="keyword">await</span> <span class="title function_">mySQL</span> (<span class="string">&#x27;books&#x27;</span>)</span><br><span class="line">    .<span class="property">select</span> (<span class="string">&#x27;*&#x27;</span>)</span><br><span class="line">    .<span class="property">where</span> (&#123; price &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result[<span class="number">0</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>但 <code>books</code> 卻宣告為 <code>async</code> function。</p>
 <p>同樣是 Apollo GraphQL 搭配 Knex，為什麼有兩種完全不同寫法呢 ?</p>
 <h2 id="Knex"><a href="#Knex" class="headerlink" title="Knex"></a>Knex</h2><p>首先釐清一個觀念，Knex 回傳為 Promise，且 <code>books</code> query 回傳也是 Promise。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> price <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> mySQL <span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>select <span class="token punctuation">(</span><span class="token string">'*'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>where <span class="token punctuation">(</span><span class="token punctuation">{</span> price <span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
-<p>Knex 回傳為 Promise，且沒經過任何處理，一路就是只有回傳 Promise 而已。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> price <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token keyword">await</span> mySQL <span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
-    <span class="token punctuation">.</span>select <span class="token punctuation">(</span><span class="token string">'*'</span><span class="token punctuation">)</span>
-    <span class="token punctuation">.</span>where <span class="token punctuation">(</span><span class="token punctuation">{</span> price <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">books</span> = (<span class="params">_, &#123; price &#125;</span>) =&gt; <span class="title function_">mySQL</span> (<span class="string">&#x27;books&#x27;</span>)</span><br><span class="line">  .<span class="property">select</span> (<span class="string">&#x27;*&#x27;</span>)</span><br><span class="line">  .<span class="property">where</span> (&#123; price &#125;)</span><br></pre></td></tr></table></figure>
 
-  <span class="token keyword">return</span> result<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>Knex 回傳為 Promise，且沒經過任何處理，一路就是只有回傳 Promise 而已。</p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">books</span> = <span class="keyword">async</span> (<span class="params">_, &#123; price &#125;</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> result = <span class="keyword">await</span> <span class="title function_">mySQL</span> (<span class="string">&#x27;books&#x27;</span>)</span><br><span class="line">    .<span class="property">select</span> (<span class="string">&#x27;*&#x27;</span>)</span><br><span class="line">    .<span class="property">where</span> (&#123; price &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result[<span class="number">0</span>]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>但經過 <code>await</code> 處理之後又不太一樣。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token keyword">await</span> mySQL <span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>select <span class="token punctuation">(</span><span class="token string">'*'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>where <span class="token punctuation">(</span><span class="token punctuation">{</span> price <span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> result = <span class="keyword">await</span> <span class="title function_">mySQL</span> (<span class="string">&#x27;books&#x27;</span>)</span><br><span class="line">  .<span class="property">select</span> (<span class="string">&#x27;*&#x27;</span>)</span><br><span class="line">  .<span class="property">where</span> (&#123; price &#125;)</span><br></pre></td></tr></table></figure>
+
 <p><code>result</code> 透過 <code>await</code> 從 Promise 取出，如此 <code>result</code> 就不是 Promise 了，而是普通的 Array。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">return</span> result<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">return</span> result[<span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+
 <p>也因為 <code>result</code> 是 Array，因此可使用 <code>[]</code> 方式取出第一筆 element。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> price <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">books</span> = <span class="keyword">async</span> (<span class="params">_, &#123; price &#125;</span>) =&gt; &#123;</span><br></pre></td></tr></table></figure>
+
 <p>但因為 <code>books</code> 必須回傳 Promise，所以最後又必須加上 <code>async</code> 包成 Promise。</p>
 <blockquote>
 <p>也可發現只要使用 <code>await</code>，就必須搭配 <code>async</code>，這是 ECMAScript 語法規定</p>
 <p><code>await</code> 只是暫時從 Promise 取出值，最後還是得重新包回 Promise</p>
 </blockquote>
-<h2 id="then"><a href="#then" class="headerlink" title="then"></a>then</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> price <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> mySQL <span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>select <span class="token punctuation">(</span><span class="token string">'*'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>where <span class="token punctuation">(</span><span class="token punctuation">{</span> price <span class="token punctuation">}</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>then <span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
-<p>其實比較好寫法是直接提供 pure function 給 <code>then</code>，讓我們直接去改 Promise 內部的資料，如此就不必透過 <code>await</code> 取出資料，再透過 <code>async</code> 重新包成 Promise。</p>
-<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> nth <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="then"><a href="#then" class="headerlink" title="then"></a>then</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">books</span> = <span class="keyword">async</span> (<span class="params">_, &#123; price &#125;</span>) =&gt; <span class="title function_">mySQL</span> (<span class="string">&#x27;books&#x27;</span>)</span><br><span class="line">  .<span class="property">select</span> (<span class="string">&#x27;*&#x27;</span>)</span><br><span class="line">  .<span class="property">where</span> (&#123; price &#125;)</span><br><span class="line">  .<span class="property">then</span> (<span class="function"><span class="params">x</span> =&gt;</span> x[<span class="number">0</span>])</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token keyword">async</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> price <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> mySQL <span class="token punctuation">(</span><span class="token string">'books'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>select <span class="token punctuation">(</span><span class="token string">'*'</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>where <span class="token punctuation">(</span><span class="token punctuation">{</span> price <span class="token punctuation">}</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>then <span class="token punctuation">(</span><span class="token function">nth</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<p>其實比較好寫法是直接提供 pure function 給 <code>then</code>，讓我們直接去改 Promise 內部的資料，如此就不必透過 <code>await</code> 取出資料，再透過 <code>async</code> 重新包成 Promise。</p>
+<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; nth &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">books</span> = <span class="keyword">async</span> (<span class="params">_, &#123; price &#125;</span>) =&gt; <span class="title function_">mySQL</span> (<span class="string">&#x27;books&#x27;</span>)</span><br><span class="line">  .<span class="property">select</span> (<span class="string">&#x27;*&#x27;</span>)</span><br><span class="line">  .<span class="property">where</span> (&#123; price &#125;)</span><br><span class="line">  .<span class="property">then</span> (<span class="title function_">nth</span>(<span class="number">0</span>))</span><br></pre></td></tr></table></figure>
+
 <p>若你想讓 <code>then</code> 的 callback 也 Point-free，也可使用 Ramda 的 <code>nth</code>。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>別忘了 Promise 具有 functor 特性，且 <code>then</code> 也相當於 <code>map</code>，因此可直接提供 pure function 修改 Promise 內部資料</li>

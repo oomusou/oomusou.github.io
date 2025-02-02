@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,16 +438,11 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p><code>ap</code> 除了用來將 Apply 與包進 Apply 的 Function 綁定外，也常用來平行執行 Side Effect。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
-<h2 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> log<span class="token punctuation">,</span> error <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h2 id="Array"><a href="#Array" class="headerlink" title="Array"></a>Array</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; ap &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; log, error &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>]</span><br><span class="line"></span><br><span class="line"><span class="title function_">ap</span> ([log, error]) (data) </span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span>
-
-ap <span class="token punctuation">(</span><span class="token punctuation">[</span>log<span class="token punctuation">,</span> error<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若是單一 value 想平行執行 side effect，需將 value 包進 Array 內，且 function 也要包在 Array 內一起傳進 <code>ap</code>。</p>
 <blockquote>
 <p><strong>ap</strong><br><code>Apply f =&gt; f (a -&gt; b) -&gt; f a -&gt; f b</code><br>將 Apply 與包進 Apply 的 function 綁定改變 Apply</p>
@@ -459,13 +454,8 @@ ap <span class="token punctuation">(</span><span class="token punctuation">[</sp
 <p>之所以要將 value 包進 Array，是為了配合 function 要包進 Array，且 <code>ap</code> 要求 value 與 function 都需包在 Apply 內，也就是相同 typeclass</p>
 </blockquote>
 <p><img src="/images/ramda/function/ap/parallel-side-effect/ap000.png" alt="ap000"></p>
-<h2 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> log<span class="token punctuation">,</span> error <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h2 id="Object"><a href="#Object" class="headerlink" title="Object"></a>Object</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; ap &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; log, error &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = &#123; <span class="attr">x</span>: <span class="number">1</span>, <span class="attr">y</span>: <span class="number">2</span> &#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">ap</span> (&#123; <span class="attr">x</span>: log, <span class="attr">y</span>: error &#125;) (data) </span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span> x<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> y<span class="token punctuation">:</span> <span class="token number">2</span> <span class="token punctuation">}</span>
-
-ap <span class="token punctuation">(</span><span class="token punctuation">{</span> x<span class="token punctuation">:</span> log<span class="token punctuation">,</span> y<span class="token punctuation">:</span> error <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若有多個 value，且欲各自平行執行不同 side effect，理論上需將 value 包進 Object，且 function 也要包在 Object 內一起傳進 <code>ap</code>，function 只會影響相同 key 的 property。</p>
 <p>此在 Sanctuary 可正常執行，可惜在 Ramda 無法使用。</p>
 <p><img src="/images/ramda/function/ap/parallel-side-effect/ap001.png" alt="ap001"></p>
@@ -473,7 +463,7 @@ ap <span class="token punctuation">(</span><span class="token punctuation">{</sp
 <li>一般為了平行執行 side effect 會使用 <code>tap</code>，但使用 <code>ap</code> 更為精簡</li>
 <li>Sanctuary 的 <code>ap</code> 可使用 Array 或 Object，但 Ramda 只能用於 Array</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#ap" target="_blank" rel="noopener">ap</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#ap">ap</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

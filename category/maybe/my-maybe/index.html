@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,50 +438,11 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Maybe 也是看似很玄的概念，讓我們不用處理 <code>undefined</code>，且可使用 <code>map</code>、<code>ap</code> 與 <code>chain</code> 直接改變 Maybe 內部 Value，其實只要 20 行左右就可自行實作 Maybe，讓我們對 Maybe 更加了解。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Fantasy Land 5.0.0</p>
-<h2 id="Maybe"><a href="#Maybe" class="headerlink" title="Maybe"></a>Maybe</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> map<span class="token punctuation">,</span> ap<span class="token punctuation">,</span> chain<span class="token punctuation">,</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Maybe"><a href="#Maybe" class="headerlink" title="Maybe"></a>Maybe</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; compose, map, ap, chain, inc &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">Maybe</span> = x =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> _isNothing = !x</span><br><span class="line">  <span class="keyword">let</span> _x = x</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> <span class="title function_">map</span> = f =&gt; _isNothing ? <span class="title class_">Maybe</span> () : <span class="title class_">Maybe</span> (<span class="title function_">f</span> (_x))</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> <span class="title function_">ap</span> = x =&gt; _isNothing ? <span class="title class_">Maybe</span> () : x.<span class="property">map</span> (<span class="function"><span class="params">f</span> =&gt;</span> <span class="title function_">f</span> (_x)) </span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> <span class="title function_">chain</span> = f =&gt; _isNothing ? <span class="title class_">Maybe</span> () : <span class="title function_">f</span> (_x)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> <span class="title function_">getValue</span> = _ =&gt; _isNothing ? <span class="string">&#x27;Nothing&#x27;</span> : _x</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    map,</span><br><span class="line">    ap,</span><br><span class="line">    chain,</span><br><span class="line">    getValue</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">of_</span> = x =&gt; <span class="title class_">Maybe</span> (x)</span><br><span class="line"><span class="keyword">let</span> <span class="title function_">getValue</span> = x =&gt; x.<span class="property">getValue</span> ()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">Just</span> = x =&gt; <span class="title function_">of_</span> (x)</span><br><span class="line"><span class="keyword">let</span> <span class="title class_">Nothing</span> = <span class="title function_">of_</span> ()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> inc_ = <span class="title function_">of_</span> (inc)</span><br><span class="line"><span class="keyword">let</span> inc__ = <span class="title function_">compose</span> (of_, inc)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data0 = <span class="title class_">Just</span> (<span class="number">1</span>)</span><br><span class="line"><span class="title function_">compose</span> (getValue, <span class="title function_">map</span> (inc)) (data0) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">compose</span> (getValue, <span class="title function_">ap</span> (data0)) (inc_) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">compose</span> (getValue, <span class="title function_">chain</span> (inc__)) (data0) <span class="comment">// ?</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data1 = <span class="title class_">Nothing</span></span><br><span class="line"><span class="title function_">compose</span> (getValue, <span class="title function_">map</span> (inc)) (data1) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">compose</span> (getValue, <span class="title function_">ap</span> (data1)) (inc_) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">compose</span> (getValue, <span class="title function_">chain</span> (inc__)) (data1) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> Maybe <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> _isNothing <span class="token operator">=</span> <span class="token operator">!</span>x
-  <span class="token keyword">let</span> _x <span class="token operator">=</span> x
-
-  <span class="token keyword">let</span> map <span class="token operator">=</span> f <span class="token operator">=</span><span class="token operator">></span> _isNothing <span class="token operator">?</span> Maybe <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> Maybe <span class="token punctuation">(</span>f <span class="token punctuation">(</span>_x<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-  <span class="token keyword">let</span> ap <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> _isNothing <span class="token operator">?</span> Maybe <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> x<span class="token punctuation">.</span>map <span class="token punctuation">(</span>f <span class="token operator">=</span><span class="token operator">></span> f <span class="token punctuation">(</span>_x<span class="token punctuation">)</span><span class="token punctuation">)</span> 
-
-  <span class="token keyword">let</span> chain <span class="token operator">=</span> f <span class="token operator">=</span><span class="token operator">></span> _isNothing <span class="token operator">?</span> Maybe <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> f <span class="token punctuation">(</span>_x<span class="token punctuation">)</span>
-
-  <span class="token keyword">let</span> getValue <span class="token operator">=</span> _ <span class="token operator">=</span><span class="token operator">></span> _isNothing <span class="token operator">?</span> <span class="token string">'Nothing'</span> <span class="token punctuation">:</span> _x
-
-  <span class="token keyword">return</span> <span class="token punctuation">{</span>
-    map<span class="token punctuation">,</span>
-    ap<span class="token punctuation">,</span>
-    chain<span class="token punctuation">,</span>
-    getValue
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> of_ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> Maybe <span class="token punctuation">(</span>x<span class="token punctuation">)</span>
-<span class="token keyword">let</span> getValue <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>getValue <span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> Just <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> of_ <span class="token punctuation">(</span>x<span class="token punctuation">)</span>
-<span class="token keyword">let</span> Nothing <span class="token operator">=</span> of_ <span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> inc_ <span class="token operator">=</span> of_ <span class="token punctuation">(</span>inc<span class="token punctuation">)</span>
-<span class="token keyword">let</span> inc__ <span class="token operator">=</span> compose <span class="token punctuation">(</span>of_<span class="token punctuation">,</span> inc<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> data0 <span class="token operator">=</span> Just <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-compose <span class="token punctuation">(</span>getValue<span class="token punctuation">,</span> map <span class="token punctuation">(</span>inc<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data0<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-compose <span class="token punctuation">(</span>getValue<span class="token punctuation">,</span> ap <span class="token punctuation">(</span>data0<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>inc_<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-compose <span class="token punctuation">(</span>getValue<span class="token punctuation">,</span> chain <span class="token punctuation">(</span>inc__<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data0<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-
-<span class="token keyword">let</span> data1 <span class="token operator">=</span> Nothing
-compose <span class="token punctuation">(</span>getValue<span class="token punctuation">,</span> map <span class="token punctuation">(</span>inc<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data1<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-compose <span class="token punctuation">(</span>getValue<span class="token punctuation">,</span> ap <span class="token punctuation">(</span>data1<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>inc_<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-compose <span class="token punctuation">(</span>getValue<span class="token punctuation">,</span> chain <span class="token punctuation">(</span>inc__<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data1<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Maybe 是 Monad，因此需滿足 4 個 typeclass：</p>
 <ul>
 <li><strong>Functor</strong>：實現 <code>map</code> 將 Functor 與 function 綁定</li>
@@ -490,24 +451,23 @@ compose <span class="token punctuation">(</span>getValue<span class="token punct
 <li><strong>Chain</strong>：實現 <code>chain</code> 將 Chain 與回傳 Chain 的 function 綁定</li>
 </ul>
 <p>第 4 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> _isNothing <span class="token operator">=</span> <span class="token operator">!</span>x
-<span class="token keyword">let</span> _x <span class="token operator">=</span> x
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> _isNothing = !x</span><br><span class="line"><span class="keyword">let</span> _x = x</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>若沒傳入任何值，則 <code>_isNothing</code> 為 <code>true</code>，否則為 <code>false</code></li>
 <li>將 <code>x</code> 值存進 <code>_x</code> 內</li>
 </ul>
 <p>第 7 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> map <span class="token operator">=</span> f <span class="token operator">=</span><span class="token operator">></span> _isNothing <span class="token operator">?</span> Maybe <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> Maybe <span class="token punctuation">(</span>f <span class="token punctuation">(</span>_x<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">map</span> = f =&gt; _isNothing ? <span class="title class_">Maybe</span> () : <span class="title class_">Maybe</span> (<span class="title function_">f</span> (_x))</span><br></pre></td></tr></table></figure>
+
 <p>Monad 必須實現 Functor。</p>
 <p>根據 Fantasy Land 定義：</p>
 <p><code>fantasy-land/map :: Functor f =&gt; f a ~&gt; (a → b) → f a → f b</code></p>
 <p>Object 必須有 <code>map</code> 才是 Functor。</p>
 <p>若 Object 內 value 為 Nothing，則回傳 Nothing，否則將 Object 內部 <code>_x</code> 透過傳入 <code>f</code> 運算後，使用 <code>Maybe</code> 包成新 Maybe 回傳。</p>
 <p>第 9 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> ap <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> _isNothing <span class="token operator">?</span> Maybe <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> x<span class="token punctuation">.</span>map <span class="token punctuation">(</span>f <span class="token operator">=</span><span class="token operator">></span> f <span class="token punctuation">(</span>_x<span class="token punctuation">)</span><span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">ap</span> = x =&gt; _isNothing ? <span class="title class_">Maybe</span> () : x.<span class="property">map</span> (<span class="function"><span class="params">f</span> =&gt;</span> <span class="title function_">f</span> (_x)) </span><br></pre></td></tr></table></figure>
+
 <p>Monad 必須實現 Apply。</p>
 <p>根據 Fantasy Land 定義：</p>
 <p><code>fantasy-land/ap :: Apply f =&gt; f a ~&gt; f (a -&gt; b) -&gt; f b</code></p>
@@ -517,21 +477,21 @@ compose <span class="token punctuation">(</span>getValue<span class="token punct
 <p>由於 <code>ap</code> 需呼叫 <code>map</code> 取得 <code>f</code>，因此 Apply 必須先實現 Functor 的 <code>map</code></p>
 </blockquote>
 <p>11 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> chain <span class="token operator">=</span> f <span class="token operator">=</span><span class="token operator">></span> _isNothing <span class="token operator">?</span> Maybe <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">:</span> f <span class="token punctuation">(</span>_x<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">chain</span> = f =&gt; _isNothing ? <span class="title class_">Maybe</span> () : <span class="title function_">f</span> (_x)</span><br></pre></td></tr></table></figure>
+
 <p>Monad 必須實現 Chain。</p>
 <p>根據 Fantasy Land 定義：</p>
 <p><code>fantasy-land/chain :: Chain m =&gt; m a ~&gt; (a -&gt; m b) -&gt; m b</code></p>
 <p>Object 必須有 <code>chain</code> 才是 Chain。</p>
 <p>若 Object 內 value 為 Nothing，則回傳 Nothing，否則將傳入回傳 Monad 的 function 套用 Object 內部 value 回傳。</p>
 <p>13 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> getValue <span class="token operator">=</span> _ <span class="token operator">=</span><span class="token operator">></span> _isNothing <span class="token operator">?</span> <span class="token string">'Nothing'</span> <span class="token punctuation">:</span> _x
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">getValue</span> = _ =&gt; _isNothing ? <span class="string">&#x27;Nothing&#x27;</span> : _x</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>getValue</code> 取出 Maybe 內部 value。</p>
 <p>若 Object 內 value 為 Nothing，則回傳 Nothing，否則回傳 Maybe 內部 value。</p>
 <p>23 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> of_ <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> Maybe <span class="token punctuation">(</span>x<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">of_</span> = x =&gt; <span class="title class_">Maybe</span> (x)</span><br></pre></td></tr></table></figure>
+
 <p>Monad 必須實現 Applicative。</p>
 <p>根據 Fantasy Land 定義：</p>
 <p><code>fantasy-land/of :: Applicative f =&gt; a -&gt; f a</code></p>
@@ -540,35 +500,30 @@ compose <span class="token punctuation">(</span>getValue<span class="token punct
 <p>由於 <code>of</code> 在 ECMAScript 為 keyword 無法使用 arrow function 建立 <code>of</code> function，故改由 <code>of_</code> 取代</p>
 </blockquote>
 <p>24 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> getValue <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>getValue <span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">getValue</span> = x =&gt; x.<span class="property">getValue</span> ()</span><br></pre></td></tr></table></figure>
+
 <p>提供 free function 方便使用：</p>
 <ul>
 <li><code>getValue</code>：呼叫 Maybe 的 <code>getValue</code></li>
 </ul>
 <p>26 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> Just <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> of_ <span class="token punctuation">(</span>x<span class="token punctuation">)</span>
-<span class="token keyword">let</span> Nothing <span class="token operator">=</span> of_ <span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">Just</span> = x =&gt; <span class="title function_">of_</span> (x)</span><br><span class="line"><span class="keyword">let</span> <span class="title class_">Nothing</span> = <span class="title function_">of_</span> ()</span><br></pre></td></tr></table></figure>
+
 <p>提供 free function 建立 Maybe：</p>
 <ul>
 <li><code>Just</code>：建立 Just</li>
 <li><code>Nothing</code>：建立 Nothing</li>
 </ul>
 <p>29 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> inc_ <span class="token operator">=</span> of_ <span class="token punctuation">(</span>inc<span class="token punctuation">)</span>
-<span class="token keyword">let</span> inc__ <span class="token operator">=</span> compose <span class="token punctuation">(</span>of_<span class="token punctuation">,</span> inc<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> inc_ = <span class="title function_">of_</span> (inc)</span><br><span class="line"><span class="keyword">let</span> inc__ = <span class="title function_">compose</span> (of_, inc)</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>inc_</code>：將 <code>inc</code> 包在 Maybe 內</li>
 <li><code>inc__</code>：<code>inc</code> 回傳 Maybe</li>
 </ul>
 <p>32 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data0 <span class="token operator">=</span> Just <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-compose <span class="token punctuation">(</span>getValue<span class="token punctuation">,</span> map <span class="token punctuation">(</span>inc<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data0<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-compose <span class="token punctuation">(</span>getValue<span class="token punctuation">,</span> ap <span class="token punctuation">(</span>data0<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>inc_<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-compose <span class="token punctuation">(</span>getValue<span class="token punctuation">,</span> chain <span class="token punctuation">(</span>inc__<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data0<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data0 = <span class="title class_">Just</span> (<span class="number">1</span>)</span><br><span class="line"><span class="title function_">compose</span> (getValue, <span class="title function_">map</span> (inc)) (data0) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">compose</span> (getValue, <span class="title function_">ap</span> (data0)) (inc_) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">compose</span> (getValue, <span class="title function_">chain</span> (inc__)) (data0) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>data0</code> 為 Just</li>
 <li>使用 Ramda 的 <code>map</code> 將 Maybe 與 <code>inc</code> 綁定，確認自行建立的 Maybe 符合 Fantasy Land 規格</li>

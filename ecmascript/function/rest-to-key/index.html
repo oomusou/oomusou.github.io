@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,26 +438,16 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>ECMAScript 的 Object 可當成 Key &#x2F; Value 的 Container 使用，若想將 Function 的任意 Argument 變成 Key，這該如何實現呢 ?</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.5<br>VS Code 1.46.1<br>Quokka 1.0.289<br>ECMAScript 2015</p>
-<h2 id="Arguments-Array-like-Object"><a href="#Arguments-Array-like-Object" class="headerlink" title="Arguments Array-like Object"></a>Arguments Array-like Object</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> Array<span class="token punctuation">.</span><span class="token keyword">from</span><span class="token punctuation">(</span>arguments<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">'-'</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
+<h2 id="Arguments-Array-like-Object"><a href="#Arguments-Array-like-Object" class="headerlink" title="Arguments Array-like Object"></a>Arguments Array-like Object</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> f = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="title class_">Array</span>.<span class="title function_">from</span>(<span class="variable language_">arguments</span>).<span class="title function_">join</span>(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(<span class="number">0</span>) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">f</span>(<span class="number">0</span>, <span class="number">1</span>) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">f</span>(<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若要使 argument 變成 Object 的 key，可使用 <code>join(&#39;-&#39;)</code> 將眾多 argument 整合成單一 String 成為 key。</p>
 <p>Function expression 可使用 ES5 的 <code>arguments</code> 取得所有 argument，唯 <code>arguments</code> 只是 Array-like Object，並不是 Array，因此必須使用 <code>Array.from()</code> 將 <code>arguments</code> 轉成 Array。</p>
 <p><img src="/images/ecmascript/function/rest-to-key/key000.png" alt="key000"></p>
-<h2 id="Rest-Parameter"><a href="#Rest-Parameter" class="headerlink" title="Rest Parameter"></a>Rest Parameter</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token operator">...</span>x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">'-'</span><span class="token punctuation">)</span>
+<h2 id="Rest-Parameter"><a href="#Rest-Parameter" class="headerlink" title="Rest Parameter"></a>Rest Parameter</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">f</span> = (<span class="params">...x</span>) =&gt; x.<span class="title function_">join</span>(<span class="string">&#x27;-&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(<span class="number">0</span>) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">f</span>(<span class="number">0</span>, <span class="number">1</span>) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">f</span>(<span class="number">0</span>, <span class="number">2</span>, <span class="number">3</span>) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">f</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若使用 ES6 的 arrow function，則有更簡單用法，可直接使用 <code>...</code> 展開，由於 rest parameter 已經是 Array，而非 Array-like Object，可直接使用 <code>join(&#39;-&#39;)</code> 成為 key。</p>
 <blockquote>
 <p>Arrow function 不支援 <code>arguments</code> Array-like Object</p>
@@ -466,7 +456,7 @@ a:hover {
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>ES6 的 rest parameter 明顯比 ES5 的 <code>arguments</code> 優異，建議全面使用 rest parameter 取代 <code>arguments</code></li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters" target="_blank" rel="noopener">Rest Parameters</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/">MDN</a>, <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/rest_parameters">Rest Parameters</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

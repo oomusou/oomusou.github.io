@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,60 +438,28 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Vue 並沒有包括所有 DOM Event，但我們可使用 <code>addEventListener()</code> 與  <code>removeEventListener()</code> 自行註冊 DOM Event 到 Vue。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 2.6.11</p>
 <h2 id="addEventListener"><a href="#addEventListener" class="headerlink" title="addEventListener()"></a>addEventListener()</h2><p><img src="/images/vue/component/register-event/dom000.png" alt="dom000"></p>
 <p>對 browser 做 resize 時，在 Vue 也能處理 resize event。</p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>Vue<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span>Vue<span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> onResize = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">console</span>.<span class="title function_">log</span>(innerWidth, innerHeight)</span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> mounted = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">addEventListener</span>(<span class="string">&#x27;resize&#x27;</span>, <span class="variable language_">this</span>.<span class="property">onResize</span>)</span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> beforeDestroy = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">removeEventListener</span>(<span class="string">&#x27;resize&#x27;</span>, <span class="variable language_">this</span>.<span class="property">onResize</span>)</span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">methods</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">    onResize</span></span><br><span class="line"><span class="language-javascript">  &#125;,</span></span><br><span class="line"><span class="language-javascript">  mounted,</span></span><br><span class="line"><span class="language-javascript">  beforeDestroy</span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">let</span> onResize <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>innerWidth<span class="token punctuation">,</span> innerHeight<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> mounted <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'resize'</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>onResize<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> beforeDestroy <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token function">removeEventListener</span><span class="token punctuation">(</span><span class="token string">'resize'</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>onResize<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
-  methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    onResize
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  mounted<span class="token punctuation">,</span>
-  beforeDestroy
-<span class="token punctuation">}</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>19 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-  onResize
-<span class="token punctuation">}</span><span class="token punctuation">,</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">methods</span>: &#123;</span><br><span class="line">  onResize</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
 <p>在 <code>methods</code> 宣告 <code>onResize()</code> 處理 <code>resize</code> event。</p>
 <p>10 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> mounted <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'resize'</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>onResize<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> mounted = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="title function_">addEventListener</span>(<span class="string">&#x27;resize&#x27;</span>, <span class="variable language_">this</span>.<span class="property">onResize</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>在 <code>mounted</code> hook 使用 <code>addEventListener()</code> 將 <code>onResize()</code> 註冊到 <code>resize</code> event。</p>
 <p>14 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> beforeDestroy <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token function">removeEventListener</span><span class="token punctuation">(</span><span class="token string">'resize'</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>onResize<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> beforeDestroy = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="title function_">removeEventListener</span>(<span class="string">&#x27;resize&#x27;</span>, <span class="variable language_">this</span>.<span class="property">onResize</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>在 <code>beforeDestroy</code> hook 使用 <code>removeEventListener()</code> 將 <code>onResize()</code> 從 <code>resize</code> event 註銷。</p>
 <p>第 6 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onResize <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>innerWidth<span class="token punctuation">,</span> innerHeight<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> onResize = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(innerWidth, innerHeight)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>可在 <code>onResize()</code> 處理 <code>resize</code> event，可直接使用 <code>innerWidth</code> 與 <code>innerHeight</code> 讀取 resize 後的寬高。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>儘管 Vue 沒有包含所有 DOM event，但透過此種方式我們也可在 Vue 處理</li>

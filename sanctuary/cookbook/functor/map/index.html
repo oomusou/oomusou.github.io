@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,15 +438,11 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p><code>map</code> 是 FP 最重要 Function，若以不同觀點來思考 <code>map</code> 就會有不同結果：除了本身的 <code>map</code> 外，還可當成 <code>lift</code> 與 <code>compose</code> 使用。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Sanctuary 3.1.0</p>
-<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; map, add &#125; <span class="keyword">from</span> <span class="string">&#x27;sanctuary&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="title function_">map</span> (<span class="title function_">add</span> (<span class="number">1</span>)) (data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-
-map <span class="token punctuation">(</span>add <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>map :: Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b</code></p>
 <ul>
 <li><code>(a -&gt; b) -&gt; f a</code>：將 <code>a -&gt; b</code> 與 <code>f a</code> 綁定</li>
@@ -454,12 +450,8 @@ map <span class="token punctuation">(</span>add <span class="token punctuation">
 </ul>
 <p>這是最典型的 <code>map</code>，將一般 function 與 Functor 綁定後，改變 Functor 並會傳新 Functor。</p>
 <p><img src="/images/sanctuary/cookbook/functor/map/map000.png" alt="map000"></p>
-<h2 id="lift"><a href="#lift" class="headerlink" title="lift"></a>lift</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Just<span class="token punctuation">,</span> map<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<h2 id="lift"><a href="#lift" class="headerlink" title="lift"></a>lift</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Just</span>, map, add &#125; <span class="keyword">from</span> <span class="string">&#x27;sanctuary&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="title class_">Just</span> (<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="title function_">map</span> (<span class="title function_">add</span> (<span class="number">1</span>)) (data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> Just <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-
-map <span class="token punctuation">(</span>add <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>map :: Apply f =&gt; (a -&gt; b) -&gt; f a -&gt; f b</code></p>
 <ul>
 <li><code>(a -&gt; b)</code>：一般 function </li>
@@ -468,12 +460,8 @@ map <span class="token punctuation">(</span>add <span class="token punctuation">
 <p>Apply 也必須實現 Functor，因此 Apply 也可使用 <code>map</code>。</p>
 <p>這也是為什麼 Sanctuary 有提供 <code>lift2</code> 與 <code>lift3</code>，卻沒有 <code>lift</code> 或 <code>lift1</code> 原因，因為 <code>map</code> 亦可當 <code>lift</code> 使用。</p>
 <p><img src="/images/sanctuary/cookbook/functor/map/map001.png" alt="map001"></p>
-<h2 id="compose"><a href="#compose" class="headerlink" title="compose"></a>compose</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> map<span class="token punctuation">,</span> add<span class="token punctuation">,</span> mult <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<h2 id="compose"><a href="#compose" class="headerlink" title="compose"></a>compose</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; compose, map, add, mult &#125; <span class="keyword">from</span> <span class="string">&#x27;sanctuary&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">map</span> (<span class="title function_">add</span> (<span class="number">1</span>)) (<span class="title function_">mult</span> (<span class="number">2</span>)) (data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">1</span>
-
-map <span class="token punctuation">(</span>add <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>mult <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>map :: Functor f =&gt; (a -&gt; b) -&gt; f a -&gt; f b</code></p>
 <ul>
 <li><code>(a -&gt; b)</code>：一般 function</li>
@@ -485,7 +473,7 @@ map <span class="token punctuation">(</span>add <span class="token punctuation">
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>由於 <code>map</code> 是 curry function，因此類似文言文一樣，標點標在不同地方就有不同意義，除了原本 <code>map</code> 外，亦可當成 <code>lift</code> 與 <code>compose</code> 使用</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://fsharpforfunandprofit.com/" target="_blank" rel="noopener">F# for Fun and Profit</a>, <a href="https://fsharpforfunandprofit.com/posts/elevated-world/#map" target="_blank" rel="noopener">The map function</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://fsharpforfunandprofit.com/">F# for Fun and Profit</a>, <a target="_blank" rel="noopener" href="https://fsharpforfunandprofit.com/posts/elevated-world/#map">The map function</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

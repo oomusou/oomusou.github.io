@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,99 +438,33 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>實務上難免會出現 Runtime Exception，此時可使用 Ramda 的 <code>tryCatch()</code> 產生新的 Function。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.3<br>VS Code 1.43.0<br>Quokka 1.0.277<br>Ramda 0.27.0</p>
-<h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><h3 id="Object-Literal"><a href="#Object-Literal" class="headerlink" title="Object Literal"></a>Object Literal</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
-  title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span>
-  price<span class="token punctuation">:</span> <span class="token number">100</span>
-<span class="token punctuation">}</span>
+<h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><h3 id="Object-Literal"><a href="#Object-Literal" class="headerlink" title="Object Literal"></a>Object Literal</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = &#123;</span><br><span class="line">  <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>,</span><br><span class="line">  <span class="attr">price</span>: <span class="number">100</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">f</span> = obj =&gt; obj.<span class="property">title</span>.<span class="title function_">toUpperCase</span>()</span><br><span class="line">  </span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> obj <span class="token operator">=</span><span class="token operator">></span> obj<span class="token punctuation">.</span>title<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-  
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>f()</code> 想從 object 取得 <code>title</code> property 並轉成大寫。</p>
 <p><img src="/images/ramda/function/trycatch/trycatch000.png" alt="trycatch000"></p>
-<h3 id="Null"><a href="#Null" class="headerlink" title="Null"></a>Null</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
-  title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span>
-  price<span class="token punctuation">:</span> <span class="token number">100</span>
-<span class="token punctuation">}</span>
+<h3 id="Null"><a href="#Null" class="headerlink" title="Null"></a>Null</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = &#123;</span><br><span class="line">  <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>,</span><br><span class="line">  <span class="attr">price</span>: <span class="number">100</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">f</span> = obj =&gt; obj.<span class="property">title</span>.<span class="title function_">toUpperCase</span>()</span><br><span class="line">  </span><br><span class="line"><span class="title function_">f</span>(<span class="literal">null</span>) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> obj <span class="token operator">=</span><span class="token operator">></span> obj<span class="token punctuation">.</span>title<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-  
-<span class="token function">f</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若傳入 <code>null</code>，由於沒有 <code>title</code> property，因此出現 runtime exception。</p>
 <p><img src="/images/ramda/function/trycatch/trycatch001.png" alt="trycatch001"></p>
-<h3 id="Try-Catch"><a href="#Try-Catch" class="headerlink" title="Try Catch"></a>Try Catch</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
-  title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span>
-  price<span class="token punctuation">:</span> <span class="token number">100</span>
-<span class="token punctuation">}</span>
+<h3 id="Try-Catch"><a href="#Try-Catch" class="headerlink" title="Try Catch"></a>Try Catch</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = &#123;</span><br><span class="line">  <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>,</span><br><span class="line">  <span class="attr">price</span>: <span class="number">100</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">f</span> = obj =&gt; &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> obj.<span class="property">title</span>.<span class="title function_">toUpperCase</span>()</span><br><span class="line">  &#125; <span class="keyword">catch</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&#x27;N/A&#x27;</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br><span class="line"> </span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">f</span>(<span class="literal">null</span>) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> obj <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">try</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> obj<span class="token punctuation">.</span>title<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token string">'N/A'</span>
-  <span class="token punctuation">}</span>
-
-<span class="token punctuation">}</span>
- 
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">f</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用 <code>try catch</code> 攔截，若出現 exception 就顯示 <code>N/A</code>。</p>
 <p><img src="/images/ramda/function/trycatch/trycatch002.png" alt="trycatch002"></p>
-<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><h3 id="prop"><a href="#prop" class="headerlink" title="prop()"></a>prop()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> prop<span class="token punctuation">,</span> toUpper<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><h3 id="prop"><a href="#prop" class="headerlink" title="prop()"></a>prop()</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; prop, toUpper, pipe &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = &#123;</span><br><span class="line">  <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>,</span><br><span class="line">  <span class="attr">price</span>: <span class="number">100</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">prop</span>(<span class="string">&#x27;title&#x27;</span>),</span><br><span class="line">  toUpper</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
-  title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span>
-  price<span class="token punctuation">:</span> <span class="token number">100</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  toUpper
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Ramda 會使用 <code>pipe()</code> 將 <code>prop()</code> 與 <code>toUpper()</code> 組合，這對正常 object 不是問題。</p>
 <p><img src="/images/ramda/function/trycatch/trycatch003.png" alt="trycatch003"></p>
-<h3 id="Null-1"><a href="#Null-1" class="headerlink" title="Null"></a>Null</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> prop<span class="token punctuation">,</span> toUpper<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h3 id="Null-1"><a href="#Null-1" class="headerlink" title="Null"></a>Null</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; prop, toUpper, pipe &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = &#123;</span><br><span class="line">  <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>,</span><br><span class="line">  <span class="attr">price</span>: <span class="number">100</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">prop</span>(<span class="string">&#x27;title&#x27;</span>),</span><br><span class="line">  toUpper</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(<span class="literal">null</span>) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
-  title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span>
-  price<span class="token punctuation">:</span> <span class="token number">100</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  toUpper
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若傳入 null，<code>f()</code> 就爆了。</p>
 <p>不過 <code>prop(&#39;title&#39;)</code> 與 <code>obj.title</code> 情況又不一樣。</p>
 <p><code>prop(&#39;title&#39;)</code> 若取不到 property 會回傳 <code>undefined</code>，使的 <code>toUpper()</code> 產生 exception，但 <code>obj.title</code> 是直接產生 exception。</p>
 <p><img src="/images/ramda/function/trycatch/trycatch004.png" alt="trycatch004"></p>
-<h3 id="tryCatch"><a href="#tryCatch" class="headerlink" title="tryCatch()"></a>tryCatch()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> prop<span class="token punctuation">,</span> toUpper<span class="token punctuation">,</span> pipe<span class="token punctuation">,</span> tryCatch<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h3 id="tryCatch"><a href="#tryCatch" class="headerlink" title="tryCatch()"></a>tryCatch()</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; prop, toUpper, pipe, tryCatch, always &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = &#123;</span><br><span class="line">  <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>,</span><br><span class="line">  <span class="attr">price</span>: <span class="number">100</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">prop</span>(<span class="string">&#x27;title&#x27;</span>),</span><br><span class="line">  <span class="title function_">tryCatch</span>(toUpper, <span class="title function_">always</span>(<span class="string">&#x27;N/A&#x27;</span>))</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">f</span>(<span class="literal">null</span>) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">{</span>
-  title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span>
-  price<span class="token punctuation">:</span> <span class="token number">100</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">tryCatch</span><span class="token punctuation">(</span>toUpper<span class="token punctuation">,</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'N/A'</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">f</span><span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也因為 exception 只出現在 <code>toUpper()</code>，因此將 <code>tryCatch()</code> 用在 <code>toUpper()</code> 即可。</p>
 <blockquote>
 <p><strong>toCatch()</strong><br><code>(…x → a) → ((e, …x) → a) → (…x → a)</code><br>若第一個 function 產生 exception，則回傳第二個 function，否則回傳第一個 function</p>
@@ -539,7 +473,7 @@ a:hover {
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>傳統 <code>try catch</code> 是 imperative 用在處理 variable，而 <code>tryCatch()</code> 是用在處理 function，若有 exception 則回傳另一個 function，適合 function composition</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#tryCatch" target="_blank" rel="noopener">tryCatch()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#prop" target="_blank" rel="noopener">prop()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#toUpper" target="_blank" rel="noopener">toUpper()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#pipe" target="_blank" rel="noopener">pipe()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#always" target="_blank" rel="noopener">always()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#tryCatch">tryCatch()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#prop">prop()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#toUpper">toUpper()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#pipe">pipe()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#always">always()</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

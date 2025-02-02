@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,7 +438,7 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>有些時候二進位表示法非常好用，如要設定 User 權限是否有 <code>新增</code>、<code>修改</code>、<code>刪除</code>、<code>查詢</code>權限，若每個權限都用二進位的 1 個 bit 表示，<code>0b1111</code> 就表示 4 種權限都有，而 <code>0b1010</code> 則表示只有 <code>新增</code> 與 <code>刪除</code> 權限，以此類推，但這種二進位表示法，該如何在 ECMAScript 使用呢 ?</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.1<br>VS Code 1.40.1<br>Quokka 1.0.261<br>ECMAScript 2015</p>
 <h2 id="Bitwise-Operator"><a href="#Bitwise-Operator" class="headerlink" title="Bitwise Operator"></a>Bitwise Operator</h2><ul>
@@ -466,20 +466,12 @@ a:hover {
 <p>判斷 user 是否<code>有</code> <code>修改</code> 權限 ?</p>
 </blockquote>
 <p>白話 : 判斷第 2 bit 是否為 <code>1</code> ?</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">0b0101</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="number">0b0101</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">fn</span> = flag =&gt; (flag &amp; <span class="number">0b0100</span>) ? <span class="string">&#x27;Bit 2 is enable&#x27;</span> : <span class="string">&#x27;Bit 2 is disable&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">fn</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> fn <span class="token operator">=</span> flag <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>flag <span class="token operator">&amp;</span> <span class="token number">0b0100</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token string">'Bit 2 is enable'</span> <span class="token punctuation">:</span> <span class="token string">'Bit 2 is disable'</span><span class="token punctuation">;</span>
-
-<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>(flag &amp; 0b0100)</code> 之後，只有第 2 bit 被 mask 過濾出來，若該 bit 為 <code>1</code>，則過濾後為 <code>0b0100</code>，基於 truthy value，所以 <code>(flag &amp; 0b0100)</code> 為 <code>true</code>。</p>
 <p><img src="/images/ecmascript/operator/bitwise/bit001.png" alt="bit001"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">0b0101</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="number">0b0101</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">fn</span> = flag =&gt; (flag &amp; (<span class="number">1</span> &lt;&lt; <span class="number">2</span>)) ? <span class="string">&#x27;Bit 2 is enable&#x27;</span> : <span class="string">&#x27;Bit 2 is disable&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">fn</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> fn <span class="token operator">=</span> flag <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>flag <span class="token operator">&amp;</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;</span><span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token string">'Bit 2 is enable'</span> <span class="token punctuation">:</span> <span class="token string">'Bit 2 is disable'</span><span class="token punctuation">;</span>
-
-<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可使用 <code>(1 &lt;&lt; 2)</code> 動態產生 mask，再與 flag 做 mask。</p>
 <p><img src="/images/ecmascript/operator/bitwise/bit002.png" alt="bit002"></p>
 <p>無論使用 mask 或 shift operator 寫法都必須了解，實務上兩種都會看到</p>
@@ -487,89 +479,55 @@ a:hover {
 <p>判斷 user 是否<code>無</code> <code>修改</code> 權限 ?</p>
 </blockquote>
 <p>白話 : 判斷第 2 bit 是否為 <code>0</code> ?</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">0b0001</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="number">0b0001</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">fn</span> = flag =&gt; (flag &amp; <span class="number">0b0100</span>) ? <span class="string">&#x27;Bit 2 is enable&#x27;</span> : <span class="string">&#x27;Bit 2 is disable&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">fn</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> fn <span class="token operator">=</span> flag <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>flag <span class="token operator">&amp;</span> <span class="token number">0b0100</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token string">'Bit 2 is enable'</span> <span class="token punctuation">:</span> <span class="token string">'Bit 2 is disable'</span><span class="token punctuation">;</span>
-
-<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>(flag &amp; 0b0100)</code> 之後，只有第 2 bit 被 mask 過濾出來，若該 bit 為 0，則過濾後為 <code>0b0000</code>，將 <code>0</code> 做 <code>!</code> not 之後為 <code>1</code>，基於 truthy value，所以 <code> !(flag &amp; 0b0001)</code> 為 <code>true</code>。</p>
 <p><img src="/images/ecmascript/operator/bitwise/bit003.png" alt="bit003"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">0b0001</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="number">0b0001</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">fn</span> = flag =&gt; (flag &amp; (<span class="number">1</span> &lt;&lt; <span class="number">2</span>)) ? <span class="string">&#x27;Bit 2 is enable&#x27;</span> : <span class="string">&#x27;Bit 2 is disable&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="title function_">fn</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> fn <span class="token operator">=</span> flag <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>flag <span class="token operator">&amp;</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;</span><span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token operator">?</span> <span class="token string">'Bit 2 is enable'</span> <span class="token punctuation">:</span> <span class="token string">'Bit 2 is disable'</span><span class="token punctuation">;</span>
-
-<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可使用 <code>(1 &lt;&lt; 2)</code> 動態產生 mask，再與 flag 做 mask。</p>
 <p><img src="/images/ecmascript/operator/bitwise/bit004.png" alt="bit004"></p>
 <h2 id="Write"><a href="#Write" class="headerlink" title="Write"></a>Write</h2><blockquote>
 <p>讓 user <code>有</code> <code>修改</code> 權限</p>
 </blockquote>
 <p>白話 : 讓第 2 bit 為 <code>1</code>，且其他 bit 不能被修改</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">0b0001</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="number">0b0001</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">fn</span> = flag =&gt; (flag |= <span class="number">0b0100</span>).<span class="title function_">toString</span>(<span class="number">2</span>).<span class="title function_">padStart</span>(<span class="number">4</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="title function_">fn</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> fn <span class="token operator">=</span> flag <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>flag <span class="token operator">|</span><span class="token operator">=</span> <span class="token number">0b0100</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">padStart</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token string">'0'</span><span class="token punctuation">)</span>
-
-<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img src="/images/ecmascript/operator/bitwise/bit005.png" alt="bit005"></p>
 <p>根據真值表得知，任何值 OR <code>1</code>，其結果必為 <code>1</code>；任何值 OR <code>0</code>，其結果不變。</p>
 <p>因此 flag 只要與 mask 做 OR 運算，該 bit 一定為 <code>1</code>，其餘 bit 不變。</p>
 <p>所以 <code>flag = flag | mask</code>，再簡化成 <code>flag |= mask</code>。</p>
 <p><img src="/images/ecmascript/operator/bitwise/bit006.png" alt="bit006"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">0b0001</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="number">0b0001</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">fn</span> = flag =&gt; (flag |= (<span class="number">1</span> &lt;&lt; <span class="number">2</span>)).<span class="title function_">toString</span>(<span class="number">2</span>).<span class="title function_">padStart</span>(<span class="number">4</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="title function_">fn</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> fn <span class="token operator">=</span> flag <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>flag <span class="token operator">|</span><span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;</span><span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">padStart</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token string">'0'</span><span class="token punctuation">)</span>
-
-<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若沒用 mask，也可使用 <code>(1 &lt;&lt; 2)</code> 動態產生 mask，再與 flag 做 mask。</p>
 <p><img src="/images/ecmascript/operator/bitwise/bit007.png" alt="bit007"></p>
 <blockquote>
 <p>讓 user <code>無</code> <code>修改</code> 權限</p>
 </blockquote>
 <p>白話 : 讓第 2 bit 為 <code>0</code>，且其他 bit 不能被修改</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">0b0101</span>
-
-<span class="token keyword">let</span> fn <span class="token operator">=</span> flag <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>flag <span class="token operator">&amp;</span><span class="token operator">=</span> <span class="token operator">~</span><span class="token punctuation">(</span><span class="token number">0b0100</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">padStart</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token string">'0'</span><span class="token punctuation">)</span>
-
-<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="number">0b0101</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">fn</span> = flag =&gt; (flag &amp;= ~(<span class="number">0b0100</span>)).<span class="title function_">toString</span>(<span class="number">2</span>).<span class="title function_">padStart</span>(<span class="number">4</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="title function_">fn</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 <p><img src="/images/ecmascript/operator/bitwise/bit008.png" alt="bit008"></p>
 <p>根據真值表得知，任何值 AND <code>0</code>，其結果必為 <code>0</code>；任何值 AND <code>1</code>，其結果不變。</p>
 <p>因此 flag 只要與 mask 做 AND 運算，該 bit 一定為 <code>1</code>，其餘 bit 不變。</p>
 <p>所以 <code>flag = flag &amp;= ~mask</code>，再簡化成 <code>flag &amp;= ~mask</code>。</p>
 <p><img src="/images/ecmascript/operator/bitwise/bit009.png" alt="bit009"></p>
-<pre class="line-numbers highlight language-typescript"><code class="language-typescript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">0b0101</span>
-
-<span class="token keyword">let</span> fn <span class="token operator">=</span> flag <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>flag <span class="token operator">&amp;</span><span class="token operator">=</span> <span class="token operator">~</span><span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;</span><span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">padStart</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token string">'0'</span><span class="token punctuation">)</span>
-
-<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="number">0b0101</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">fn</span> = flag =&gt; (flag &amp;= ~(<span class="number">1</span> &lt;&lt; <span class="number">2</span>)).<span class="title function_">toString</span>(<span class="number">2</span>).<span class="title function_">padStart</span>(<span class="number">4</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="title function_">fn</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 <p>若沒用 mask，也可使用 <code>(1 &lt;&lt; 2)</code> 動態產生 mask，再與 flag 做 mask。</p>
 <p><img src="/images/ecmascript/operator/bitwise/bit010.png" alt="bit010"></p>
 <blockquote>
 <p>若 user <code>有</code>修改權限，則改成 <code>無</code> 修改權限，若 <code>無</code> 修改權限，則改成 <code>有</code> 修改權限</p>
 </blockquote>
 <p>白話 : 若第 2 bit 為 <code>0</code>，則 toggle 為 <code>1</code>，若為 <code>1</code>，則 toggle 為 <code>0</code></p>
-<pre class="line-numbers highlight language-typescript"><code class="language-typescript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">0b0101</span>
+<figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="number">0b0101</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">fn</span> = flag =&gt; (flag ^= <span class="number">0b0100</span>).<span class="title function_">toString</span>(<span class="number">2</span>).<span class="title function_">padStart</span>(<span class="number">4</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="title function_">fn</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> fn <span class="token operator">=</span> flag <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>flag <span class="token operator">^</span><span class="token operator">=</span> <span class="token number">0b0100</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">padStart</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token string">'0'</span><span class="token punctuation">)</span>
-
-<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><img src="/images/ecmascript/operator/bitwise/bit012.png" alt="bit012"></p>
 <p><code>0</code> ^ <code>1</code> 為 <code>0</code>，<code>1</code> ^ <code>1</code> 為 <code>0</code>，也就是任何數與 <code>1</code> XOR，剛好都 toggle 成另外一個值。</p>
 <p> <code>0</code> ^ <code>0</code> 為<code>0</code>，<code>1</code> ^ <code>0</code> 為 <code>0</code>，也就是任何數與 <code>0</code> XOR，結果都不變。</p>
 <p>因此 flag 只要與 mask 做 XOR 運算，該 bit 一定為 toggle，其餘 bit 不變。</p>
 <p><img src="/images/ecmascript/operator/bitwise/bit011.png" alt="bit011"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token number">0b0101</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="number">0b0101</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">fn</span> = flag =&gt; (flag ^= (<span class="number">1</span> &lt;&lt; <span class="number">2</span>)).<span class="title function_">toString</span>(<span class="number">2</span>).<span class="title function_">padStart</span>(<span class="number">4</span>, <span class="string">&#x27;0&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="title function_">fn</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> fn <span class="token operator">=</span> flag <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>flag <span class="token operator">^</span><span class="token operator">=</span> <span class="token punctuation">(</span><span class="token number">1</span> <span class="token operator">&lt;</span><span class="token operator">&lt;</span> <span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toString</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">padStart</span><span class="token punctuation">(</span><span class="token number">4</span><span class="token punctuation">,</span> <span class="token string">'0'</span><span class="token punctuation">)</span>
-
-<span class="token function">fn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若沒用 mask，也可使用 <code>(1 &lt;&lt; 2)</code> 動態產生 mask，再與 flag 做 mask。</p>
 <p><img src="/images/ecmascript/operator/bitwise/bit013.png" alt="bit013"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>

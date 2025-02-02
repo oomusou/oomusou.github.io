@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,200 +438,67 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>傳統若要實現 Browser 不用 Refresh 即時更新，會使用 WebSocket 實作，但 GraphQL Subscription 已經整合 WebSocket，只要使用類似 Query 語法，就能完成相同效果。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.2<br>WebStorm 2019.2.3<br>Node 13.2.0<br>Apollo GraphQL 2.9.6</p>
 <h2 id="Apollo-GraphQL"><a href="#Apollo-GraphQL" class="headerlink" title="Apollo GraphQL"></a>Apollo GraphQL</h2><p><strong>src&#x2F;index.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql<span class="token punctuation">,</span> PubSub <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'apollo-server'</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">ApolloServer</span>, gql, <span class="title class_">PubSub</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;apollo-server&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">100</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;RxJS in Action&#x27;</span>, <span class="attr">price</span>: <span class="number">200</span> &#125;,</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> pubsub = <span class="keyword">new</span> <span class="title class_">PubSub</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> typeDefs = gql`<span class="language-graphql"></span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">type</span> <span class="keyword">Query</span> <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">books</span><span class="punctuation">:</span> <span class="punctuation">[</span>Book<span class="punctuation">]</span></span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql">  </span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">type</span> <span class="keyword">Mutation</span> <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    addBook<span class="punctuation">(</span><span class="symbol">book</span><span class="punctuation">:</span> BookInput<span class="punctuation">!</span><span class="punctuation">)</span><span class="punctuation">:</span> Book</span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql"></span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">type</span> <span class="keyword">Subscription</span> <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">newBook</span><span class="punctuation">:</span> Book</span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql"></span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">type</span> Book <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">title</span><span class="punctuation">:</span> String</span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">price</span><span class="punctuation">:</span> Int</span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql"></span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">input</span> BookInput <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">title</span><span class="punctuation">:</span> String<span class="punctuation">!</span></span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">price</span><span class="punctuation">:</span> Int<span class="punctuation">!</span></span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql">`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">books</span> = (<span class="params"></span>) =&gt; data</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">addBook</span> = (<span class="params">_, &#123; book &#125;, &#123; pubsub &#125;</span>) =&gt; &#123;</span><br><span class="line">  data.<span class="title function_">push</span>(book)</span><br><span class="line"></span><br><span class="line">  pubsub.<span class="title function_">publish</span>(<span class="string">&#x27;bookAdded&#x27;</span>, &#123; <span class="attr">newBook</span>: book &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> book</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> newBook = &#123;</span><br><span class="line">  <span class="attr">subscribe</span>: <span class="function">(<span class="params">_, __, &#123; pubsub &#125;</span>) =&gt;</span> pubsub.<span class="title function_">asyncIterator</span>(<span class="string">&#x27;bookAdded&#x27;</span>)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> resolvers = &#123;</span><br><span class="line">  <span class="title class_">Query</span>: &#123;</span><br><span class="line">    books</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title class_">Mutation</span>: &#123;</span><br><span class="line">    addBook</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title class_">Subscription</span>: &#123;</span><br><span class="line">    newBook</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">context</span> = (<span class="params"></span>) =&gt; (&#123; pubsub &#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">ApolloServer</span>(&#123; typeDefs, resolvers, context &#125;)</span><br><span class="line">  .<span class="title function_">listen</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">&#123; url &#125;</span>) =&gt;</span> <span class="string">`GraphQL Server ready at <span class="subst">$&#123; url &#125;</span>`</span>)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>)</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> pubsub <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PubSub</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> typeDefs <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`
-  type Query {
-    books: [Book]
-  }
-  
-  type Mutation {
-    addBook(book: BookInput!): Book
-  }
-
-  type Subscription {
-    newBook: Book
-  }
-
-  type Book {
-    title: String
-    price: Int
-  }
-
-  input BookInput {
-    title: String!
-    price: Int!
-  }
-`</span></span>
-
-<span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data
-
-<span class="token keyword">let</span> addBook <span class="token operator">=</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> book <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> pubsub <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  data<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>book<span class="token punctuation">)</span>
-
-  pubsub<span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span><span class="token string">'bookAdded'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> newBook<span class="token punctuation">:</span> book <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-  <span class="token keyword">return</span> book
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> newBook <span class="token operator">=</span> <span class="token punctuation">{</span>
-  subscribe<span class="token punctuation">:</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> __<span class="token punctuation">,</span> <span class="token punctuation">{</span> pubsub <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> pubsub<span class="token punctuation">.</span><span class="token function">asyncIterator</span><span class="token punctuation">(</span><span class="token string">'bookAdded'</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> resolvers <span class="token operator">=</span> <span class="token punctuation">{</span>
-  Query<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    books
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  Mutation<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    addBook
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  Subscription<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    newBook
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> context <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span> pubsub <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-<span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers<span class="token punctuation">,</span> context <span class="token punctuation">}</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">{</span> url <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`GraphQL Server ready at </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> url <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 1 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql<span class="token punctuation">,</span> PubSub <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'apollo-server'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">ApolloServer</span>, gql, <span class="title class_">PubSub</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;apollo-server&#x27;</span></span><br></pre></td></tr></table></figure>
+
 <p>若要使用 subscription，除了 import <code>ApolloServer</code> 與 <code>gql</code> 外，還需要 <code>PubSub</code>。</p>
 <p><code>PubSub</code> 用來發布 event 與訂閱 event。</p>
 <p>第 3 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">100</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;RxJS in Action&#x27;</span>, <span class="attr">price</span>: <span class="number">200</span> &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
 <p>原始只有 2 筆資料，第 3 筆將由 mutation 新增並通知 subscription。</p>
 <p>第 8 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> pubsub <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">PubSub</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> pubsub = <span class="keyword">new</span> <span class="title class_">PubSub</span>()</span><br></pre></td></tr></table></figure>
+
 <p><code>PubSub</code> 為 factory class，實作了 <code>PubSubEngine</code> interface，稍後會以 <code>publish()</code> 發布 event。</p>
 <p>11 行</p>
-<pre class="line-numbers highlight language-graphql"><code class="language-graphql">type Query <span class="token punctuation">{</span>
-  <span class="token attr-name">books</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>Book<span class="token punctuation">]</span>
-<span class="token punctuation">}</span>
-  
-type Mutation <span class="token punctuation">{</span>
-  addBook<span class="token punctuation">(</span><span class="token attr-name">book</span><span class="token punctuation">:</span> BookInput<span class="token operator">!</span><span class="token punctuation">)</span><span class="token punctuation">:</span> Book
-<span class="token punctuation">}</span>
+<figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="keyword">Query</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="symbol">books</span><span class="punctuation">:</span> <span class="punctuation">[</span>Book<span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line">  </span><br><span class="line"><span class="keyword">type</span> <span class="keyword">Mutation</span> <span class="punctuation">&#123;</span></span><br><span class="line">  addBook<span class="punctuation">(</span><span class="symbol">book</span><span class="punctuation">:</span> BookInput<span class="punctuation">!</span><span class="punctuation">)</span><span class="punctuation">:</span> Book</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> <span class="keyword">Subscription</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="symbol">newBook</span><span class="punctuation">:</span> Book</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> Book <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="symbol">title</span><span class="punctuation">:</span> String</span><br><span class="line">  <span class="symbol">price</span><span class="punctuation">:</span> Int</span><br><span class="line"><span class="punctuation">&#125;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">input</span> BookInput <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="symbol">title</span><span class="punctuation">:</span> String<span class="punctuation">!</span></span><br><span class="line">  <span class="symbol">price</span><span class="punctuation">:</span> Int<span class="punctuation">!</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
 
-type Subscription <span class="token punctuation">{</span>
-  <span class="token attr-name">newBook</span><span class="token punctuation">:</span> Book
-<span class="token punctuation">}</span>
-
-type Book <span class="token punctuation">{</span>
-  <span class="token attr-name">title</span><span class="token punctuation">:</span> String
-  <span class="token attr-name">price</span><span class="token punctuation">:</span> Int
-<span class="token punctuation">}</span>
-
-input BookInput <span class="token punctuation">{</span>
-  <span class="token attr-name">title</span><span class="token punctuation">:</span> String<span class="token operator">!</span>
-  <span class="token attr-name">price</span><span class="token punctuation">:</span> Int<span class="token operator">!</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>在 schema 宣告 <code>books</code> query、<code>addBook</code> mutation 與 <code>newBook</code> subscription，值得注意的是 subscription 宣告方式與 query 與 mutation 並無差異。</p>
 <p>51 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> resolvers <span class="token operator">=</span> <span class="token punctuation">{</span>
-  Query<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    books
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  Mutation<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    addBook
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  Subscription<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    newBook
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> resolvers = &#123;</span><br><span class="line">  <span class="title class_">Query</span>: &#123;</span><br><span class="line">    books</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title class_">Mutation</span>: &#123;</span><br><span class="line">    addBook</span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="title class_">Subscription</span>: &#123;</span><br><span class="line">    newBook</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>在 <code>resolvers</code> 宣告 <code>books</code> query、<code>addBook</code> mutation 與 <code>newBook</code> subscription，值得注意的是 subscription 宣告方式與 query 與 mutation 並無差異。</p>
 <p>34 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">books</span> = (<span class="params"></span>) =&gt; data</span><br></pre></td></tr></table></figure>
+
 <p>實踐 <code>books</code> query，目前只是回傳所有資料。</p>
 <p>36 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> addBook <span class="token operator">=</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> book <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> pubsub <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  data<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>book<span class="token punctuation">)</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">addBook</span> = (<span class="params">_, &#123; book &#125;, &#123; pubsub &#125;</span>) =&gt; &#123;</span><br><span class="line">  data.<span class="title function_">push</span>(book)</span><br><span class="line"></span><br><span class="line">  pubsub.<span class="title function_">publish</span>(<span class="string">&#x27;bookAdded&#x27;</span>, &#123; <span class="attr">newBook</span>: book &#125;)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> book</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-  pubsub<span class="token punctuation">.</span><span class="token function">publish</span><span class="token punctuation">(</span><span class="token string">'bookAdded'</span><span class="token punctuation">,</span> <span class="token punctuation">{</span> newBook<span class="token punctuation">:</span> book <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-  <span class="token keyword">return</span> book
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>實踐 <code>addBook</code> mutation，重點在 mutation 內使用 <code>pubsub.publish()</code> 發布 <code>bookAdded</code> event。</p>
 <p><code>pubsub</code> 直接從 <code>context</code> argument 解構，稍後會建立 context。</p>
 <p><code>publish()</code> 的第一個 argument 為 event 名稱。</p>
 <p>第二個 argument 為要發到 event 的資料，<code>newBook</code> 為 subscription 名稱，<code>book</code> 為要傳給 subscription 的資料。</p>
 <p>44 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> newBook <span class="token operator">=</span> <span class="token punctuation">{</span>
-  subscribe<span class="token punctuation">:</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> __<span class="token punctuation">,</span> <span class="token punctuation">{</span> pubsub <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> pubsub<span class="token punctuation">.</span><span class="token function">asyncIterator</span><span class="token punctuation">(</span><span class="token string">'bookAdded'</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> newBook = &#123;</span><br><span class="line">  <span class="attr">subscribe</span>: <span class="function">(<span class="params">_, __, &#123; pubsub &#125;</span>) =&gt;</span> pubsub.<span class="title function_">asyncIterator</span>(<span class="string">&#x27;bookAdded&#x27;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>實踐 <code>newBook</code> subscription，實作 <code>subscribe()</code> 時由 <code>context</code> argument 直接解構出 <code>pubsub</code>，再由 <code>pubsub.asyncIterator()</code> 訂閱 <code>bookAdded</code> event。</p>
 <p>60 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> context <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span> pubsub <span class="token punctuation">}</span><span class="token punctuation">)</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">context</span> = (<span class="params"></span>) =&gt; (&#123; pubsub &#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">ApolloServer</span>(&#123; typeDefs, resolvers, context &#125;)</span><br><span class="line">  .<span class="title function_">listen</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">&#123; url &#125;</span>) =&gt;</span> <span class="string">`GraphQL Server ready at <span class="subst">$&#123; url &#125;</span>`</span>)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>)</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers<span class="token punctuation">,</span> context <span class="token punctuation">}</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">{</span> url <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`GraphQL Server ready at </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> url <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於各 resolver 都要使用 <code>pubsub</code>，因此特別將 <code>pubsub</code> 放到 context 內。</p>
 <p>在 <code>context()</code> 內回傳包含 <code>pubsub</code> 的 object，然後再 <code>new ApolloServer</code> 時傳入。</p>
-<h2 id="GraphQL-Playground"><a href="#GraphQL-Playground" class="headerlink" title="GraphQL Playground"></a>GraphQL Playground</h2><h3 id="Query"><a href="#Query" class="headerlink" title="Query"></a>Query</h3><pre class="line-numbers highlight language-graphql"><code class="language-graphql"><span class="token keyword">query</span> <span class="token punctuation">{</span>
-  books <span class="token punctuation">{</span>
-    title
-    price
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="GraphQL-Playground"><a href="#GraphQL-Playground" class="headerlink" title="GraphQL Playground"></a>GraphQL Playground</h2><h3 id="Query"><a href="#Query" class="headerlink" title="Query"></a>Query</h3><figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">query</span> <span class="punctuation">&#123;</span></span><br><span class="line">  books <span class="punctuation">&#123;</span></span><br><span class="line">    title</span><br><span class="line">    price</span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>執行 <code>books</code> query 回傳目前所有資料，共兩筆。</p>
 <p><img src="/images/graphql/apollo/subscription/simple/pubsub000.png" alt="pubsub000"></p>
-<h3 id="Subscription"><a href="#Subscription" class="headerlink" title="Subscription"></a>Subscription</h3><pre class="line-numbers highlight language-graphql"><code class="language-graphql">subscription <span class="token punctuation">{</span>
-  newBook <span class="token punctuation">{</span>
-    title
-    price
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="Subscription"><a href="#Subscription" class="headerlink" title="Subscription"></a>Subscription</h3><figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">subscription</span> <span class="punctuation">&#123;</span></span><br><span class="line">  newBook <span class="punctuation">&#123;</span></span><br><span class="line">    title</span><br><span class="line">    price</span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>執行 <code>newBook</code> subscription，由於還沒被觸發，因此處在 listening 狀態。</p>
 <p><img src="/images/graphql/apollo/subscription/simple/pubsub001.png" alt="pubsub001"></p>
-<h3 id="Mutation"><a href="#Mutation" class="headerlink" title="Mutation"></a>Mutation</h3><pre class="line-numbers highlight language-graphql"><code class="language-graphql"><span class="token keyword">mutation</span> <span class="token punctuation">{</span>
-  addBook<span class="token punctuation">(</span><span class="token attr-name">book</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    <span class="token attr-name">title</span><span class="token punctuation">:</span> <span class="token string">"Speaking JavaScript"</span>
-    <span class="token attr-name">price</span><span class="token punctuation">:</span> <span class="token number">300</span>
-  <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    title
-    price
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="Mutation"><a href="#Mutation" class="headerlink" title="Mutation"></a>Mutation</h3><figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">mutation</span> <span class="punctuation">&#123;</span></span><br><span class="line">  addBook<span class="punctuation">(</span><span class="symbol">book</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="symbol">title</span><span class="punctuation">:</span> <span class="string">&quot;Speaking JavaScript&quot;</span></span><br><span class="line">    <span class="symbol">price</span><span class="punctuation">:</span> <span class="number">300</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">)</span> <span class="punctuation">&#123;</span></span><br><span class="line">    title</span><br><span class="line">    price</span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>執行 <code>addBook</code> mutation，由此 mutation 觸發 <code>newBook</code> subscription。</p>
 <p><img src="/images/graphql/apollo/subscription/simple/pubsub002.png" alt="pubsub002"></p>
-<h3 id="Subscription-1"><a href="#Subscription-1" class="headerlink" title="Subscription"></a>Subscription</h3><pre class="line-numbers highlight language-graphql"><code class="language-graphql">subscription <span class="token punctuation">{</span>
-  newBook <span class="token punctuation">{</span>
-    title
-    price
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="Subscription-1"><a href="#Subscription-1" class="headerlink" title="Subscription"></a>Subscription</h3><figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">subscription</span> <span class="punctuation">&#123;</span></span><br><span class="line">  newBook <span class="punctuation">&#123;</span></span><br><span class="line">    title</span><br><span class="line">    price</span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>原本 <code>newBook</code> subscription 由 listening 得到回傳資料。</p>
 <p><img src="/images/graphql/apollo/subscription/simple/pubsub003.png" alt="pubsub003"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
@@ -640,8 +507,8 @@ input BookInput <span class="token punctuation">{</span>
 <li>Subscription 會在 resolver 內使用 <code>pubsub</code>，因此特別適合將 <code>pubsub</code> 放在 context 內讓多個 resolver 共用</li>
 <li>Subscription 底層使用了 WebSocket，但在使用上完全感覺不到 WebSocket 存在</li>
 </ul>
-<h2 id="Sample-Code"><a href="#Sample-Code" class="headerlink" title="Sample Code"></a>Sample Code</h2><p>完整範例可在我的 <a href="https://github.com/oomusou/apollo-subscription" target="_blank" rel="noopener">GitHub</a> 上找到</p>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.apollographql.com/docs/" target="_blank" rel="noopener">Apollo Docs</a>, <a href="https://www.apollographql.com/docs/apollo-server/data/subscriptions/" target="_blank" rel="noopener">Subscriptions</a><br><a href="https://www.apollographql.com/docs/graphql-subscriptions/" target="_blank" rel="noopener">Apollo Docs</a>, <a href="https://www.apollographql.com/docs/graphql-subscriptions/" target="_blank" rel="noopener">GraphQL Subscriptions Guide</a><br>Alex Banks &amp; Eve Porcello, <a href="https://www.amazon.com/Learning-GraphQL-Declarative-Fetching-Modern/dp/1492030716" target="_blank" rel="noopener">Learning GraphQL</a></p>
+<h2 id="Sample-Code"><a href="#Sample-Code" class="headerlink" title="Sample Code"></a>Sample Code</h2><p>完整範例可在我的 <a target="_blank" rel="noopener" href="https://github.com/oomusou/apollo-subscription">GitHub</a> 上找到</p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.apollographql.com/docs/">Apollo Docs</a>, <a target="_blank" rel="noopener" href="https://www.apollographql.com/docs/apollo-server/data/subscriptions/">Subscriptions</a><br><a target="_blank" rel="noopener" href="https://www.apollographql.com/docs/graphql-subscriptions/">Apollo Docs</a>, <a target="_blank" rel="noopener" href="https://www.apollographql.com/docs/graphql-subscriptions/">GraphQL Subscriptions Guide</a><br>Alex Banks &amp; Eve Porcello, <a target="_blank" rel="noopener" href="https://www.amazon.com/Learning-GraphQL-Declarative-Fetching-Modern/dp/1492030716">Learning GraphQL</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

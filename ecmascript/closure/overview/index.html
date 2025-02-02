@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,34 +438,18 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Closure 是 ECMAScript 的一大特色，但由於對其不了解，因此很多人不敢使用 Closure；或者雖然會使用 Closure，但仍然對其原理一知半解。本文以 Runtime 角度深入探討 Closure 底層機制，讓我們徹底了解 Closure 的黑魔法。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15<br>VS Code 1.38.1<br>Quokka 1.0.254<br>ECMAScript 5<br>ECMAScript 2015</p>
 <h2 id="Definition"><a href="#Definition" class="headerlink" title="Definition"></a>Definition</h2><blockquote>
 <p><strong>Closure</strong><br>Function 會將其 lexical scope 與 local scope 的變數封裝成新的 function scope，儘管該 function 已經離開原本定義的 scope，依然能夠抓到的 lexical scope 的變數成功執行</p>
 </blockquote>
-<h2 id="ECMAScript-5"><a href="#ECMAScript-5" class="headerlink" title="ECMAScript 5"></a>ECMAScript 5</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">makeCount</span><span class="token punctuation">(</span>init<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span>step<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> init <span class="token operator">+</span><span class="token operator">=</span> step<span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<h2 id="ECMAScript-5"><a href="#ECMAScript-5" class="headerlink" title="ECMAScript 5"></a>ECMAScript 5</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">makeCount</span>(<span class="params">init</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params">step</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> init += step;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> count = <span class="title function_">makeCount</span>(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_">count</span>(<span class="number">1</span>); <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">count</span>(<span class="number">2</span>); <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">count</span>(<span class="number">3</span>); <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">var</span> count <span class="token operator">=</span> <span class="token function">makeCount</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token function">count</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">count</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">count</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>ES5 以 function declaration 定義 <code>makeCount()</code>，回傳 anonymous function 給 <code>count</code>。</p>
 <p><img src="/images/ecmascript/closure/overview/scope004.png" alt="scope004"></p>
-<h2 id="ECMAScript-2015"><a href="#ECMAScript-2015" class="headerlink" title="ECMAScript 2015"></a>ECMAScript 2015</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> makeCount <span class="token operator">=</span> init <span class="token operator">=</span><span class="token operator">></span> step <span class="token operator">=</span><span class="token operator">></span> init <span class="token operator">+</span><span class="token operator">=</span> step<span class="token punctuation">;</span>
+<h2 id="ECMAScript-2015"><a href="#ECMAScript-2015" class="headerlink" title="ECMAScript 2015"></a>ECMAScript 2015</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">makeCount</span> = init =&gt; <span class="function"><span class="params">step</span> =&gt;</span> init += step;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> count = <span class="title function_">makeCount</span>(<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_">count</span>(<span class="number">1</span>); <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">count</span>(<span class="number">2</span>); <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">count</span>(<span class="number">3</span>); <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">makeCount</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token function">count</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">count</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">count</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>這是最簡單的 closure，雖然 ES5 與 ES6 的寫法有一點點差異。</p>
 <p><code>init</code> 為 <code>makeCount()</code> 的 argument，定義在 <code>makeCount()</code> 的 local scope 內，最後 return anonymous function 給 <code>count</code>。</p>
 <p>當 <code>count()</code> 執行時，還能抓到 <code>init</code>，這就是 <strong>Closure</strong>。</p>
@@ -473,29 +457,25 @@ a:hover {
 <h2 id="Myth-of-Stack"><a href="#Myth-of-Stack" class="headerlink" title="Myth of Stack"></a>Myth of Stack</h2><p>我們知道 function 的 parameter 屬 local scope，在執行時期都是存放在 stack。</p>
 <p>執行 <code>makeCount()</code> 時，<code>init</code> parameter 是存放在 stack，當 <code>makeCount()</code> 回傳 anonymous function 給 <code>count</code> 後，stack 會釋放，因此 <code>init</code> parameter 也會被釋放，也就是 <code>makeCount()</code> 的 local scope 已經不存在，為什麼再次執行 <code>count()</code> 時，還會抓到 <code>init</code> parameter 呢 ?</p>
 <h2 id="Scope-Chain"><a href="#Scope-Chain" class="headerlink" title="Scope Chain"></a>Scope Chain</h2><p>在 ECMAScript 中，所有的 variable 都是定義在 <code>scope</code> object 內，由 key &#x2F; value 構成，也因為是 object，<code>scope</code> 是在 heap 內。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">function</span> <span class="token function">makeCount</span><span class="token punctuation">(</span>init<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token keyword">function</span><span class="token punctuation">(</span>step<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> init <span class="token operator">+</span><span class="token operator">=</span> step<span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">makeCount</span>(<span class="params">init</span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="keyword">function</span>(<span class="params">step</span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> init += step;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
 <p><img src="/images/ecmascript/closure/overview/scope000.svg" alt="scope000"></p>
 <p>在 code 執行前，ECMAScript 會將所有 variable 存在 global scope object 內。</p>
 <p>因此我們有 key 為 <code>makeCount</code>，而 value 指向 function 的定義 object。</p>
 <p>比較特別的是：每個 function object 有 hidden property <code>[[scope]]</code> 指向定義該 function 的 scope object。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">makeCount</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">makeCount</span>(<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+
 <p><img src="/images/ecmascript/closure/overview/scope001.svg" alt="scope001"></p>
 <p>當執行 <code>makeCount(2)</code> 時，會有自己新的 function scope，因此會建立新的 scope object。</p>
 <p>新的 scope object 一樣是由 key &#x2F; value 構成，除了有 function 該有的 <code>this</code>、<code>arguments</code> 外，還有 <code>init</code> parameter。</p>
 <p>雖然我們是直接 return anonymous function，仍然可以想成有一個 key 為 <code>f</code> ，而 value 指向 function 的定義 object，他也有<code>[[scope]]</code> 指回 <code>makeCount()</code> 的 scope object。</p>
 <p>比較特別的是：新的 function scope object 有一個 property :  <code>outer</code> 指向定義<code>makeCount()</code> 的 global scope object，這個 reference 正是由 <code>[[scope]]</code> 複製而來。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">makeCount</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> count = <span class="title function_">makeCount</span>(<span class="number">2</span>);</span><br></pre></td></tr></table></figure>
+
 <p><img src="/images/ecmascript/closure/overview/scope002.svg" alt="scope002"></p>
 <p>在 global scope object 的 key 新增 <code>count</code>，其 value 指向所 return 的 anonymous function。</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">count</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">count</span>(<span class="number">1</span>);</span><br></pre></td></tr></table></figure>
+
 <p><img src="/images/ecmascript/closure/overview/scope003.svg" alt="scope003"></p>
 <p>當執行 <code>count(1)</code> 時，又有新的 scope object 建立，一樣有 <code>this</code> 與 <code>arguments</code>，也有 <code>step</code> parameter 為 <code>1</code>。</p>
 <p>且 <code>outer</code> property 亦由 <code>[[scope]]</code> 複製而來，因此可以指向 <code>makeCount()</code> 的 scope object。</p>
@@ -507,7 +487,7 @@ a:hover {
 <li>只要 scope object <code>有</code> 被其他 scope object 的 <code>outer</code> property 所參考，則 ECMAScript runtime 的 garbage collection 就不會釋放該 scope object，因此 closure 可以正常執行</li>
 <li>closure 能讀取 function 外部的變數，也稱為 lexical scope</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Adam Breindel, <a href="https://www.youtube.com/watch?v=zRZNb4GDOPI&list=FLIvtCs7mOQ9Zx8F9weHCgWQ&index=22&t=2473s" target="_blank" rel="noopener">JavaScript Scope Chains and Closures</a><br><a href="https://twitter.com/rauschma" target="_blank" rel="noopener">Dr.Axel Ranschmayer</a>, <a href="https://www.amazon.com/Speaking-JavaScript-Depth-Guide-Programmers/dp/1449365035" target="_blank" rel="noopener">Speaking JavaScript</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Adam Breindel, <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=zRZNb4GDOPI&list=FLIvtCs7mOQ9Zx8F9weHCgWQ&index=22&t=2473s">JavaScript Scope Chains and Closures</a><br><a target="_blank" rel="noopener" href="https://twitter.com/rauschma">Dr.Axel Ranschmayer</a>, <a target="_blank" rel="noopener" href="https://www.amazon.com/Speaking-JavaScript-Depth-Guide-Programmers/dp/1449365035">Speaking JavaScript</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

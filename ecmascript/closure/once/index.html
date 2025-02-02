@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,52 +438,26 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>實務上某些 Function 會傳入 <code>Array.prototype.forEach()</code>，但我們只想執行一次而已，如符合條件就只執行一次，其餘僅管符合條件，但都不執行，我們該怎麼做呢 ?</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15<br>VS Code 1.38.1<br>Quokka 1.0.254<br>ECMAScript 5<br>ECMAScript 2015</p>
-<h2 id="Array-prototype-forEach"><a href="#Array-prototype-forEach" class="headerlink" title="Array.prototype.forEach()"></a>Array.prototype.forEach()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Array-prototype-forEach"><a href="#Array-prototype-forEach" class="headerlink" title="Array.prototype.forEach()"></a>Array.prototype.forEach()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].<span class="title function_">forEach</span>(<span class="function"><span class="params">x</span> =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(x));</span><br></pre></td></tr></table></figure>
+
 <p> 很明顯會印出 <code>1</code>、<code>2</code> 與 <code>3</code>。</p>
 <p>但我們想只印出 <code>1</code> 即可，<code>2</code> 與 <code>3</code> 都不要印。</p>
-<h2 id="Closure"><a href="#Closure" class="headerlink" title="Closure"></a>Closure</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fn <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+<h2 id="Closure"><a href="#Closure" class="headerlink" title="Closure"></a>Closure</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">fn</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">x</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (count++) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(x);</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].<span class="title function_">forEach</span>(<span class="title function_">fn</span>());</span><br></pre></td></tr></table></figure>
 
-  <span class="token keyword">return</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>count<span class="token operator">++</span><span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
-
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-
-<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>一個很直覺的思考方式，希望有個 <code>count</code> variable 幫我們統計，若 <code>count</code> 為 <code>0</code> 就印，其他都不要印。</p>
 <p>ECMAScript 要達成這種 private variable，必須依賴 closure，所以特別另外建立 <code>fn()</code> ｔ產生 callback，使 <code>count</code> 成為其 local variable，然後 return 新 function，使其與 <code>count</code> 做連結。</p>
 <p><code>count</code> 為 <code>0</code> 時為 falsy value，因此印出 <code>1</code>，但 <code>count</code> 為 <code>1</code> 之後就為 truth value，就不再繼續執行。</p>
 <p><img src="/images/ecmascript/closure/once/once000.png" alt="once000"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fn <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> once <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">fn</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> once = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> <span class="function"><span class="params">x</span> =&gt;</span> &#123;</span><br><span class="line">    <span class="keyword">if</span> (once) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">    <span class="variable language_">console</span>.<span class="title function_">log</span>(x);</span><br><span class="line">    once = <span class="literal">true</span>;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].<span class="title function_">forEach</span>(<span class="title function_">fn</span>());</span><br></pre></td></tr></table></figure>
 
-  <span class="token keyword">return</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>once<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
-
-    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    once <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-
-<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token function">fn</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>一樣使用 closure，但既然只執行一次，其實不必使用 counter，只需一個 boolean flag 即可。</p>
 <p>一開始令 <code>once</code> 為 <code>false</code>，因此會印出 <code>1</code>，印完馬上令 <code>once</code> 為 <code>true</code>，從此就不會再印出任何值。</p>
 <p><img src="/images/ecmascript/closure/once/once001.png" alt="once001"></p>
-<h2 id="Dynamic-Property"><a href="#Dynamic-Property" class="headerlink" title="Dynamic Property"></a>Dynamic Property</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fn <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  fn<span class="token punctuation">.</span>once <span class="token operator">||</span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  fn<span class="token punctuation">.</span>once <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<h2 id="Dynamic-Property"><a href="#Dynamic-Property" class="headerlink" title="Dynamic Property"></a>Dynamic Property</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">fn</span> = x =&gt; &#123;</span><br><span class="line">  fn.<span class="property">once</span> || <span class="variable language_">console</span>.<span class="title function_">log</span>(x);</span><br><span class="line">  fn.<span class="property">once</span> = <span class="literal">true</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">[<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>].<span class="title function_">forEach</span>(fn);</span><br></pre></td></tr></table></figure>
 
-<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span>fn<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>ECMAScript 是動態語言，可以動態建立 property，利用這個語言特性，其實可把動態建立 property 當成 private variable 使用。</p>
 <p>一開始沒有 <code>once</code> property，為 Falsy Value，因此 <code>||</code> 會印出 <code>1</code>。</p>
 <p>然後馬上建立 <code>once</code> property，並令其為 <code>false</code>，之後就再也不會印出任何值。</p>

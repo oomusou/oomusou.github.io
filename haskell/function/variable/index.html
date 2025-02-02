@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,17 +438,11 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>在 Haskell 中的 Variable 因為是 Immutable，所以算是 Definition，由於 Haskell 支援 First Class Function，因此 Variable 也能是 Function。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Haskell for Mac 1.8.2</p>
-<h2 id="Function"><a href="#Function" class="headerlink" title="Function"></a>Function</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token hvariable">f</span> <span class="token hvariable">x</span> <span class="token hvariable">y</span> <span class="token operator">=</span> 
-  <span class="token keyword">if</span> <span class="token hvariable">x</span> <span class="token operator">-</span> <span class="token hvariable">y</span> <span class="token operator">></span> <span class="token number">0</span> 
-  <span class="token keyword">then</span> <span class="token hvariable">x</span> <span class="token operator">-</span> <span class="token hvariable">y</span> 
-  <span class="token keyword">else</span> <span class="token number">0</span>
+<h2 id="Function"><a href="#Function" class="headerlink" title="Function"></a>Function</h2><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">f</span> x y = </span><br><span class="line">  <span class="keyword">if</span> x - y &gt; <span class="number">0</span> </span><br><span class="line">  <span class="keyword">then</span> x - y </span><br><span class="line">  <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="title">f</span> <span class="number">3</span> <span class="number">1</span></span><br><span class="line"><span class="title">f</span> <span class="number">1</span> <span class="number">3</span>  </span><br></pre></td></tr></table></figure>
 
-<span class="token hvariable">f</span> <span class="token number">3</span> <span class="token number">1</span>
-<span class="token hvariable">f</span> <span class="token number">1</span> <span class="token number">3</span>  
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>以上簡單的 function，我們發現幾個問題：</p>
 <ul>
 <li><code>x - y</code> 不易閱讀，應該取一個有意義的名稱代表其意義</li>
@@ -464,37 +458,16 @@ a:hover {
 <p>Haskell 中 everything is expression，因此 <code>if then else</code> 也是 expression，相當於 ECMAScript 的 <code>?:</code></p>
 </blockquote>
 <p><img src="/images/haskell/function/variable/variable000.png" alt="variable000"></p>
-<h2 id="Where-Clause"><a href="#Where-Clause" class="headerlink" title="Where Clause"></a>Where Clause</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token hvariable">f</span> <span class="token hvariable">x</span> <span class="token hvariable">y</span> <span class="token operator">=</span> 
-  <span class="token keyword">if</span> <span class="token hvariable">z</span> <span class="token operator">></span> <span class="token number">0</span> 
-  <span class="token keyword">then</span> <span class="token hvariable">z</span> 
-  <span class="token keyword">else</span> <span class="token number">0</span> 
-  <span class="token keyword">where</span> <span class="token hvariable">z</span> <span class="token operator">=</span> <span class="token hvariable">x</span> <span class="token operator">-</span> <span class="token hvariable">y</span>
+<h2 id="Where-Clause"><a href="#Where-Clause" class="headerlink" title="Where Clause"></a>Where Clause</h2><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">f</span> x y = </span><br><span class="line">  <span class="keyword">if</span> z &gt; <span class="number">0</span> </span><br><span class="line">  <span class="keyword">then</span> z </span><br><span class="line">  <span class="keyword">else</span> <span class="number">0</span> </span><br><span class="line">  <span class="keyword">where</span> z = x - y</span><br><span class="line"></span><br><span class="line"><span class="title">f</span> <span class="number">3</span> <span class="number">1</span></span><br><span class="line"><span class="title">f</span> <span class="number">1</span> <span class="number">3</span>  </span><br></pre></td></tr></table></figure>
 
-<span class="token hvariable">f</span> <span class="token number">3</span> <span class="token number">1</span>
-<span class="token hvariable">f</span> <span class="token number">1</span> <span class="token number">3</span>  
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用 <code>where</code> 定義 <code>z</code>，如此 <code>if</code> 與 <code>then</code> 之後都可使用 <code>z</code> 。</p>
 <p><img src="/images/haskell/function/variable/variable001.png" alt="variable001"></p>
-<h2 id="Let-Expression"><a href="#Let-Expression" class="headerlink" title="Let Expression"></a>Let Expression</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token hvariable">f</span> <span class="token hvariable">x</span> <span class="token hvariable">y</span> <span class="token operator">=</span> 
-  <span class="token keyword">let</span> <span class="token hvariable">z</span> <span class="token operator">=</span> <span class="token hvariable">x</span> <span class="token operator">-</span> <span class="token hvariable">y</span> 
-  <span class="token keyword">in</span> 
-    <span class="token keyword">if</span> <span class="token hvariable">z</span> <span class="token operator">></span> <span class="token number">0</span> 
-    <span class="token keyword">then</span> <span class="token hvariable">z</span>
-    <span class="token keyword">else</span> <span class="token number">0</span>
+<h2 id="Let-Expression"><a href="#Let-Expression" class="headerlink" title="Let Expression"></a>Let Expression</h2><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">f</span> x y = </span><br><span class="line">  <span class="keyword">let</span> z = x - y </span><br><span class="line">  <span class="keyword">in</span> </span><br><span class="line">    <span class="keyword">if</span> z &gt; <span class="number">0</span> </span><br><span class="line">    <span class="keyword">then</span> z</span><br><span class="line">    <span class="keyword">else</span> <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="title">f</span> <span class="number">3</span> <span class="number">1</span></span><br><span class="line"><span class="title">f</span> <span class="number">1</span> <span class="number">3</span>    </span><br></pre></td></tr></table></figure>
 
-<span class="token hvariable">f</span> <span class="token number">3</span> <span class="token number">1</span>
-<span class="token hvariable">f</span> <span class="token number">1</span> <span class="token number">3</span>    
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>where</code> 是定義在最後面，但也可使用 <code>let</code> 將 variable 在一開始定義，然後在 <code>in</code> 之後補上原本 expression。</p>
 <p><img src="/images/haskell/function/variable/variable002.png" alt="variable002"></p>
-<h2 id="Lambda-Function"><a href="#Lambda-Function" class="headerlink" title="Lambda Function"></a>Lambda Function</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token hvariable">f</span> <span class="token hvariable">x</span> <span class="token hvariable">y</span> <span class="token operator">=</span>
-  <span class="token punctuation">(</span><span class="token operator">\</span><span class="token hvariable">z</span> <span class="token operator">-></span> <span class="token keyword">if</span> <span class="token hvariable">z</span> <span class="token operator">></span> <span class="token number">0</span> 
-         <span class="token keyword">then</span> <span class="token hvariable">z</span> 
-         <span class="token keyword">else</span> <span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token hvariable">x</span> <span class="token operator">-</span> <span class="token hvariable">y</span><span class="token punctuation">)</span>
+<h2 id="Lambda-Function"><a href="#Lambda-Function" class="headerlink" title="Lambda Function"></a>Lambda Function</h2><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">f</span> x y =</span><br><span class="line">  (\z -&gt; <span class="keyword">if</span> z &gt; <span class="number">0</span> </span><br><span class="line">         <span class="keyword">then</span> z </span><br><span class="line">         <span class="keyword">else</span> <span class="number">0</span>)(x - y)</span><br><span class="line"></span><br><span class="line"><span class="title">f</span> <span class="number">3</span> <span class="number">1</span></span><br><span class="line"><span class="title">f</span> <span class="number">1</span> <span class="number">3</span>         </span><br></pre></td></tr></table></figure>
 
-<span class="token hvariable">f</span> <span class="token number">3</span> <span class="token number">1</span>
-<span class="token hvariable">f</span> <span class="token number">1</span> <span class="token number">3</span>         
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可將 variable 改以 lambda function 的 parameter 定義，將 <code>x - y</code> 以 argument 傳入。</p>
 <blockquote>
 <p>其實這就是 ECMAScript 的 IIFE</p>

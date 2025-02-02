@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,78 +438,56 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>As long as we install Docker and Docker Compose on AWS EC2, we can run Node by Docker on AWS EC2.</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Node 16.13.0</p>
 <h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><p><strong>index.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">console<span class="token punctuation">.</span>log <span class="token punctuation">(</span><span class="token string">'Hello World'</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="property">log</span> (<span class="string">&#x27;Hello World&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
 <p>Only one line <code>Hello World</code> to print on screen.</p>
 <h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p><strong>dockerfile</strong></p>
-<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">FROM node:lts-alpine
-ENV NODE_ENV=production
-WORKDIR /usr/src/app
-COPY package.json ./package.json
-RUN yarn install
-COPY index.js .
-CMD [ "node", "index.js" ]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:lts-alpine</span><br><span class="line"><span class="keyword">ENV</span> NODE_ENV=production</span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /usr/src/app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> package.json ./package.json</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> yarn install</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> index.js .</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [ <span class="string">&quot;node&quot;</span>, <span class="string">&quot;index.js&quot;</span> ]</span></span><br></pre></td></tr></table></figure>
+
 <p>Build image by <code>dockerfile</code>.</p>
 <h2 id="NPM-Config"><a href="#NPM-Config" class="headerlink" title="NPM Config"></a>NPM Config</h2><p><strong>package.json</strong></p>
-<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
-  <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"module"</span><span class="token punctuation">,</span>
-  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"node-lab"</span><span class="token punctuation">,</span>
-  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"1.0.0"</span><span class="token punctuation">,</span>
-  <span class="token property">"main"</span><span class="token operator">:</span> <span class="token string">"index.js"</span><span class="token punctuation">,</span>
-  <span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token property">"nodemon"</span><span class="token operator">:</span> <span class="token string">"^2.0.14"</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"nodemon index.js"</span><span class="token punctuation">,</span>
-    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"docker build -t node-lab:$npm_package_version ."</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;module&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node-lab&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;1.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;main&quot;</span><span class="punctuation">:</span> <span class="string">&quot;index.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;devDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;nodemon&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.0.14&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;dev&quot;</span><span class="punctuation">:</span> <span class="string">&quot;nodemon index.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;docker build -t node-lab:$npm_package_version .&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>dev</code> : run Node on development</li>
 <li><code>build</code> : build image by <code>version</code></li>
 </ul>
-<h2 id="Start-Node"><a href="#Start-Node" class="headerlink" title="Start Node"></a>Start Node</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn dev
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Start-Node"><a href="#Start-Node" class="headerlink" title="Start Node"></a>Start Node</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yarn dev</span></span><br></pre></td></tr></table></figure>
+
 <p>Run <code>yarn dev</code> to start Node on local machine.</p>
 <p><img src="/images/aws/docker/node/node000.png" alt="push000"></p>
-<h2 id="Build-Node-Image"><a href="#Build-Node-Image" class="headerlink" title="Build Node Image"></a>Build Node Image</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn build
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Build-Node-Image"><a href="#Build-Node-Image" class="headerlink" title="Build Node Image"></a>Build Node Image</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yarn build</span></span><br></pre></td></tr></table></figure>
+
 <p>Run <code>yarn build</code> to build image.</p>
 <p><img src="/images/aws/docker/node/node001.png" alt="push001"></p>
-<pre class="line-numbers highlight language-shell"><code class="language-shell">$ docker images
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker images</span></span><br></pre></td></tr></table></figure>
+
 <p>List all image we made.</p>
 <p><img src="/images/aws/docker/node/node002.png" alt="push002"></p>
-<h2 id="Tag-Image"><a href="#Tag-Image" class="headerlink" title="Tag Image"></a>Tag Image</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ docker tag node-lab:1.0.0 oomusou/node-lab
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Tag-Image"><a href="#Tag-Image" class="headerlink" title="Tag Image"></a>Tag Image</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker tag node-lab:1.0.0 oomusou/node-lab</span></span><br></pre></td></tr></table></figure>
+
 <p>Use <code>docker tag</code> to create a tag refers to source image.</p>
 <p><img src="/images/aws/docker/node/node003.png" alt="push003"></p>
-<h2 id="Push-Image"><a href="#Push-Image" class="headerlink" title="Push Image"></a>Push Image</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ docker push oomusou/node-lab
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Push-Image"><a href="#Push-Image" class="headerlink" title="Push Image"></a>Push Image</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker push oomusou/node-lab</span></span><br></pre></td></tr></table></figure>
+
 <p>Use <code>docker push</code> to push image to Docker Hub.</p>
 <p><img src="/images/aws/docker/node/node004.png" alt="push004"></p>
 <h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><p><strong>docker-compose.yml</strong></p>
-<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3"</span>
-<span class="token key atrule">services</span><span class="token punctuation">:</span>
-  <span class="token key atrule">node</span><span class="token punctuation">:</span>
-    <span class="token key atrule">image</span><span class="token punctuation">:</span> oomusou/node<span class="token punctuation">-</span>lab
-    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> Node
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">node:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">oomusou/node-lab</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">Node</span></span><br></pre></td></tr></table></figure>
+
 <p>Use <code>docker-compose.yml</code> to describe container.</p>
-<h2 id="Start-Container"><a href="#Start-Container" class="headerlink" title="Start Container"></a>Start Container</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ docker compose up
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Start-Container"><a href="#Start-Container" class="headerlink" title="Start Container"></a>Start Container</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker compose up</span></span><br></pre></td></tr></table></figure>
+
 <p>Use <code>docker compose up</code> to start container.</p>
 <p><img src="/images/aws/docker/node/node005.png" alt="push005"></p>
 <h2 id="EC2"><a href="#EC2" class="headerlink" title="EC2"></a>EC2</h2><p><img src="/images/aws/docker/node/node006.png" alt="push006"></p>
 <p>Transfer <code>docker-compose.yml</code> to EC2.</p>
-<pre class="line-numbers highlight language-shell"><code class="language-shell">$ docker-compose up
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker-compose up</span></span><br></pre></td></tr></table></figure>
+
 <p>Use <code>docker-compose up</code> to start container on EC2.</p>
 <p><img src="/images/aws/docker/node/node007.png" alt="push007"></p>
 <p>Node runs successfully by Docker on EC2.</p>

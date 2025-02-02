@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,26 +438,22 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p><code>cycle</code> 能產生無限 List 看似無用，但與 <code>zip</code> 搭配卻產生有趣化學反應。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Haskell for Mac 1.8.2</p>
-<h2 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token hvariable">f</span> <span class="token hvariable">n</span> <span class="token hvariable">aList</span> <span class="token operator">=</span> 
-  <span class="token builtin">zip</span> <span class="token hvariable">groups</span> <span class="token hvariable">aList</span> 
-  <span class="token keyword">where</span> <span class="token hvariable">groups</span> <span class="token operator">=</span> <span class="token builtin">cycle</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token operator">..</span><span class="token hvariable">n</span><span class="token punctuation">]</span>
-  
-<span class="token hvariable">f</span> <span class="token number">3</span> <span class="token punctuation">[</span><span class="token string">"aa"</span><span class="token punctuation">,</span> <span class="token string">"bb"</span><span class="token punctuation">,</span> <span class="token string">"cc"</span><span class="token punctuation">]</span>  
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="zip"><a href="#zip" class="headerlink" title="zip"></a>zip</h2><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">f</span> n aList = </span><br><span class="line">  zip groups aList </span><br><span class="line">  <span class="keyword">where</span> groups = cycle [<span class="number">1</span>..n]</span><br><span class="line">  </span><br><span class="line"><span class="title">f</span> <span class="number">3</span> [<span class="string">&quot;aa&quot;</span>, <span class="string">&quot;bb&quot;</span>, <span class="string">&quot;cc&quot;</span>]  </span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>zip</code>：將傳入 List 與無限 List 合併成 List Pair</li>
 <li><code>where groups = cycle [1..n]</code>：使用 <code>cycle</code> 建立無限 List</li>
 </ul>
 <p><img src="/images/haskell/list/zip-cycle/zip000.png" alt="zip000"></p>
-<h2 id="Refactoring"><a href="#Refactoring" class="headerlink" title="Refactoring"></a>Refactoring</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token hvariable">f</span> <span class="token hvariable">n</span> <span class="token hvariable">aList</span> <span class="token operator">=</span> <span class="token builtin">zip</span> <span class="token punctuation">(</span><span class="token builtin">cycle</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token operator">..</span><span class="token hvariable">n</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token hvariable">aList</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Refactoring"><a href="#Refactoring" class="headerlink" title="Refactoring"></a>Refactoring</h2><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">f</span> n aList = zip (cycle [<span class="number">1</span>..n]) aList</span><br></pre></td></tr></table></figure>
+
 <p>省略 <code>groups</code> 直接代入 <code>zip</code>。</p>
 <p><img src="/images/haskell/list/zip-cycle/zip001.png" alt="zip001"></p>
-<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token hvariable">f</span> <span class="token hvariable">n</span> <span class="token operator">=</span> <span class="token builtin">zip</span> <span class="token punctuation">(</span><span class="token builtin">cycle</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token operator">..</span><span class="token hvariable">n</span><span class="token punctuation">]</span><span class="token punctuation">)</span> 
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">f</span> n = zip (cycle [<span class="number">1</span>..n]) </span><br></pre></td></tr></table></figure>
+
 <p>左右兩側將 <code>aList</code> 給 Point-free。</p>
 <p><img src="/images/haskell/list/zip-cycle/zip002.png" alt="zip002"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>

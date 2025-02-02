@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,131 +438,24 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Flutter 並沒有提供 <code>DropdownBottomSheet</code> 顯示下方有捲軸選單，必須自行使用 <code>ModalBottomSheet</code> 、 <code>ListView</code> 與 <code>Scrollbar</code> 實現。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Flutter 3.24</p>
 <h2 id="Flutter"><a href="#Flutter" class="headerlink" title="Flutter"></a>Flutter</h2><p><img src="/images/flutter/feedback/dropdownbottomsheet/scrollable/scrollable01.gif" alt="scrollable01"></p>
 <ul>
 <li>Android 與 iOS 都成功使用 <code>DropdownBottomSheet</code> 顯示下方有捲軸選單</li>
 </ul>
-<h2 id="DropdownBottomSheet"><a href="#DropdownBottomSheet" class="headerlink" title="DropdownBottomSheet"></a>DropdownBottomSheet</h2><pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">import</span> <span class="token string">'package:flutter/material.dart'</span><span class="token punctuation">;</span>
+<h2 id="DropdownBottomSheet"><a href="#DropdownBottomSheet" class="headerlink" title="DropdownBottomSheet"></a>DropdownBottomSheet</h2><figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Home</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> Home(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;Home&gt; createState() =&gt; _Home();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_Home</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">Home</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> _selectedText = <span class="string">&#x27;Select Option&#x27;</span>;</span><br><span class="line">  <span class="keyword">var</span> options = [</span><br><span class="line">    <span class="string">&#x27;Option 1&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Option 2&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Option 3&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Option 4&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Option 5&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Option 6&#x27;</span>,</span><br><span class="line">  ];</span><br><span class="line"></span><br><span class="line">  <span class="built_in">List</span>&lt;Widget&gt; _buildListTiles() &#123;</span><br><span class="line">    <span class="keyword">return</span> options.map(</span><br><span class="line">      (option) &#123;</span><br><span class="line">        <span class="keyword">return</span> ListTile(</span><br><span class="line">          title: Text(option),</span><br><span class="line">          onTap: () &#123;</span><br><span class="line">            setState(() =&gt; _selectedText = option);</span><br><span class="line">            Navigator.pop(context);</span><br><span class="line">          &#125;,</span><br><span class="line">        );</span><br><span class="line">      &#125;,</span><br><span class="line">    ).toList();</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> _showModalBottomSheet(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">var</span> deviceHeight = MediaQuery.of(context).size.height;</span><br><span class="line"></span><br><span class="line">    showModalBottomSheet(</span><br><span class="line">      context: context,</span><br><span class="line">      shape: <span class="keyword">const</span> RoundedRectangleBorder(</span><br><span class="line">        borderRadius: BorderRadius.vertical(</span><br><span class="line">          top: Radius.circular(<span class="number">16</span>),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">      builder: (BuildContext context) &#123;</span><br><span class="line">        <span class="keyword">return</span> SizedBox(</span><br><span class="line">          height: deviceHeight * <span class="number">0.25</span>,</span><br><span class="line">          child: Scrollbar(</span><br><span class="line">            thumbVisibility: <span class="keyword">true</span>,</span><br><span class="line">            child: ListView(</span><br><span class="line">              shrinkWrap: <span class="keyword">true</span>,</span><br><span class="line">              children: _buildListTiles(),</span><br><span class="line">            ),</span><br><span class="line">          ),</span><br><span class="line">        );</span><br><span class="line">      &#125;,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">var</span> appBar = AppBar(</span><br><span class="line">      title: <span class="keyword">const</span> Text(<span class="string">&#x27;DropdownBottomSheet&#x27;</span>),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> dropdownButton = GestureDetector(</span><br><span class="line">      onTap: () =&gt; _showModalBottomSheet(context),</span><br><span class="line">      child: Container(</span><br><span class="line">        margin: <span class="keyword">const</span> EdgeInsets.all(<span class="number">16.0</span>),</span><br><span class="line">        padding: <span class="keyword">const</span> EdgeInsets.symmetric(horizontal: <span class="number">16.0</span>, vertical: <span class="number">12.0</span>),</span><br><span class="line">        decoration: BoxDecoration(</span><br><span class="line">          border: Border.all(color: Colors.grey),</span><br><span class="line">          borderRadius: BorderRadius.circular(<span class="number">8.0</span>),</span><br><span class="line">        ),</span><br><span class="line">        child: Row(</span><br><span class="line">          mainAxisAlignment: MainAxisAlignment.spaceBetween,</span><br><span class="line">          children: [</span><br><span class="line">            Text(_selectedText),</span><br><span class="line">            <span class="keyword">const</span> Icon(Icons.arrow_drop_down),</span><br><span class="line">          ],</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: appBar,</span><br><span class="line">      body: dropdownButton,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">class</span> <span class="token class-name">Home</span> <span class="token keyword">extends</span> <span class="token class-name">StatefulWidget</span> <span class="token punctuation">{</span>
-  <span class="token keyword">const</span> <span class="token function">Home</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token keyword">super</span><span class="token punctuation">.</span>key<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token metadata symbol">@override</span>
-  State<span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token function">createState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">_Home</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">class</span> <span class="token class-name">_Home</span> <span class="token keyword">extends</span> <span class="token class-name">State</span><span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">var</span> _selectedText <span class="token operator">=</span> <span class="token string">'Select Option'</span><span class="token punctuation">;</span>
-  <span class="token keyword">var</span> options <span class="token operator">=</span> <span class="token punctuation">[</span>
-    <span class="token string">'Option 1'</span><span class="token punctuation">,</span>
-    <span class="token string">'Option 2'</span><span class="token punctuation">,</span>
-    <span class="token string">'Option 3'</span><span class="token punctuation">,</span>
-    <span class="token string">'Option 4'</span><span class="token punctuation">,</span>
-    <span class="token string">'Option 5'</span><span class="token punctuation">,</span>
-    <span class="token string">'Option 6'</span><span class="token punctuation">,</span>
-  <span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-  List<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token function">_buildListTiles</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> options<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>
-      <span class="token punctuation">(</span>option<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token function">ListTile</span><span class="token punctuation">(</span>
-          title<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span>option<span class="token punctuation">)</span><span class="token punctuation">,</span>
-          onTap<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> _selectedText <span class="token operator">=</span> option<span class="token punctuation">)</span><span class="token punctuation">;</span>
-            Navigator<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token punctuation">}</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-
-  <span class="token keyword">void</span> <span class="token function">_showModalBottomSheet</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">var</span> deviceHeight <span class="token operator">=</span> MediaQuery<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">.</span>size<span class="token punctuation">.</span>height<span class="token punctuation">;</span>
-
-    <span class="token function">showModalBottomSheet</span><span class="token punctuation">(</span>
-      context<span class="token punctuation">:</span> context<span class="token punctuation">,</span>
-      shape<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">RoundedRectangleBorder</span><span class="token punctuation">(</span>
-        borderRadius<span class="token punctuation">:</span> BorderRadius<span class="token punctuation">.</span><span class="token function">vertical</span><span class="token punctuation">(</span>
-          top<span class="token punctuation">:</span> Radius<span class="token punctuation">.</span><span class="token function">circular</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token punctuation">)</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-      builder<span class="token punctuation">:</span> <span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token keyword">return</span> <span class="token function">SizedBox</span><span class="token punctuation">(</span>
-          height<span class="token punctuation">:</span> deviceHeight <span class="token operator">*</span> <span class="token number">0.25</span><span class="token punctuation">,</span>
-          child<span class="token punctuation">:</span> <span class="token function">Scrollbar</span><span class="token punctuation">(</span>
-            thumbVisibility<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-            child<span class="token punctuation">:</span> <span class="token function">ListView</span><span class="token punctuation">(</span>
-              shrinkWrap<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-              children<span class="token punctuation">:</span> <span class="token function">_buildListTiles</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-            <span class="token punctuation">)</span><span class="token punctuation">,</span>
-          <span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token punctuation">}</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-
-  <span class="token metadata symbol">@override</span>
-  Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">var</span> appBar <span class="token operator">=</span> <span class="token function">AppBar</span><span class="token punctuation">(</span>
-      title<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">'DropdownBottomSheet'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> dropdownButton <span class="token operator">=</span> <span class="token function">GestureDetector</span><span class="token punctuation">(</span>
-      onTap<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">_showModalBottomSheet</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">,</span>
-      child<span class="token punctuation">:</span> <span class="token function">Container</span><span class="token punctuation">(</span>
-        margin<span class="token punctuation">:</span> <span class="token keyword">const</span> EdgeInsets<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token number">16.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-        padding<span class="token punctuation">:</span> <span class="token keyword">const</span> EdgeInsets<span class="token punctuation">.</span><span class="token function">symmetric</span><span class="token punctuation">(</span>horizontal<span class="token punctuation">:</span> <span class="token number">16.0</span><span class="token punctuation">,</span> vertical<span class="token punctuation">:</span> <span class="token number">12.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-        decoration<span class="token punctuation">:</span> <span class="token function">BoxDecoration</span><span class="token punctuation">(</span>
-          border<span class="token punctuation">:</span> Border<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span>color<span class="token punctuation">:</span> Colors<span class="token punctuation">.</span>grey<span class="token punctuation">)</span><span class="token punctuation">,</span>
-          borderRadius<span class="token punctuation">:</span> BorderRadius<span class="token punctuation">.</span><span class="token function">circular</span><span class="token punctuation">(</span><span class="token number">8.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token punctuation">)</span><span class="token punctuation">,</span>
-        child<span class="token punctuation">:</span> <span class="token function">Row</span><span class="token punctuation">(</span>
-          mainAxisAlignment<span class="token punctuation">:</span> MainAxisAlignment<span class="token punctuation">.</span>spaceBetween<span class="token punctuation">,</span>
-          children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-            <span class="token function">Text</span><span class="token punctuation">(</span>_selectedText<span class="token punctuation">)</span><span class="token punctuation">,</span>
-            <span class="token keyword">const</span> <span class="token function">Icon</span><span class="token punctuation">(</span>Icons<span class="token punctuation">.</span>arrow_drop_down<span class="token punctuation">)</span><span class="token punctuation">,</span>
-          <span class="token punctuation">]</span><span class="token punctuation">,</span>
-        <span class="token punctuation">)</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">return</span> <span class="token function">Scaffold</span><span class="token punctuation">(</span>
-      appBar<span class="token punctuation">:</span> appBar<span class="token punctuation">,</span>
-      body<span class="token punctuation">:</span> dropdownButton<span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>Line 12</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">var</span> options <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token string">'Option 1'</span><span class="token punctuation">,</span>
-  <span class="token string">'Option 2'</span><span class="token punctuation">,</span>
-  <span class="token string">'Option 3'</span><span class="token punctuation">,</span>
-  <span class="token string">'Option 4'</span><span class="token punctuation">,</span>
-  <span class="token string">'Option 5'</span><span class="token punctuation">,</span>
-  <span class="token string">'Option 6'</span><span class="token punctuation">,</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> options = [</span><br><span class="line">  <span class="string">&#x27;Option 1&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Option 2&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Option 3&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Option 4&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Option 5&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Option 6&#x27;</span>,</span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>options</code>：定義下拉選單所顯示的資料</li>
 </ul>
 <p><strong>Line 36</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart">builder<span class="token punctuation">:</span> <span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token function">SizedBox</span><span class="token punctuation">(</span>
-    height<span class="token punctuation">:</span> deviceHeight <span class="token operator">*</span> <span class="token number">0.25</span><span class="token punctuation">,</span>
-    child<span class="token punctuation">:</span> <span class="token function">Scrollbar</span><span class="token punctuation">(</span>
-      thumbVisibility<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-      child<span class="token punctuation">:</span> <span class="token function">ListView</span><span class="token punctuation">(</span>
-        shrinkWrap<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-        children<span class="token punctuation">:</span> <span class="token function">_buildListTiles</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line">builder: (BuildContext context) &#123;</span><br><span class="line">  <span class="keyword">return</span> SizedBox(</span><br><span class="line">    height: deviceHeight * <span class="number">0.25</span>,</span><br><span class="line">    child: Scrollbar(</span><br><span class="line">      thumbVisibility: <span class="keyword">true</span>,</span><br><span class="line">      child: ListView(</span><br><span class="line">        shrinkWrap: <span class="keyword">true</span>,</span><br><span class="line">        children: _buildListTiles(),</span><br><span class="line">      ),</span><br><span class="line">    ),</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>SizedBox</code>：<code>ListView</code> 本身並沒有 <code>height</code> 設定高度，需在外層使用 <code>SizeBox</code> 定義 height<ul>
 <li><code>height</code>：可使用 <code>MediaQuery</code> 取得裝置高度動態決定 height 不寫死</li>
@@ -574,20 +467,8 @@ a:hover {
 </li>
 </ul>
 <p><strong>Line 21</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart">List<span class="token operator">&lt;</span>Widget<span class="token operator">></span> <span class="token function">_buildListTiles</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> options<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>
-    <span class="token punctuation">(</span>option<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token keyword">return</span> <span class="token function">ListTile</span><span class="token punctuation">(</span>
-        title<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span>option<span class="token punctuation">)</span><span class="token punctuation">,</span>
-        onTap<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-          <span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> _selectedText <span class="token operator">=</span> option<span class="token punctuation">)</span><span class="token punctuation">;</span>
-          Navigator<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="built_in">List</span>&lt;Widget&gt; _buildListTiles() &#123;</span><br><span class="line">  <span class="keyword">return</span> options.map(</span><br><span class="line">    (option) &#123;</span><br><span class="line">      <span class="keyword">return</span> ListTile(</span><br><span class="line">        title: Text(option),</span><br><span class="line">        onTap: () &#123;</span><br><span class="line">          setState(() =&gt; _selectedText = option);</span><br><span class="line">          Navigator.pop(context);</span><br><span class="line">        &#125;,</span><br><span class="line">      );</span><br><span class="line">    &#125;,</span><br><span class="line">  ).toList();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>由 <code>options</code> 產生 <code>ListTile</code></li>
 </ul>

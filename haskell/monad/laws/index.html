@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,14 +438,11 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Monad 遵循 3 個 Monad Laws，專門描述 <code>&gt;&gt;=</code> 的 3 個特性。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Haskell for Mac 1.8.2</p>
-<h2 id="Left-Identity"><a href="#Left-Identity" class="headerlink" title="Left Identity"></a>Left Identity</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript">f <span class="token operator">=</span> Just <span class="token punctuation">.</span> <span class="token punctuation">(</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>
+<h2 id="Left-Identity"><a href="#Left-Identity" class="headerlink" title="Left Identity"></a>Left Identity</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">f = <span class="title class_">Just</span> . (+<span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="title class_">Just</span> <span class="number">1</span> &gt;&gt;= f</span><br><span class="line">f <span class="number">1</span></span><br></pre></td></tr></table></figure>
 
-Just <span class="token number">1</span> <span class="token operator">></span><span class="token operator">>=</span> f
-f <span class="token number">1</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>當存在回傳 Monad 的 function 時：</p>
 <ul>
 <li>使用 <code>&gt;&gt;=</code> 將 Monad 與回傳 Monad 的 function 綁定</li>
@@ -462,9 +459,8 @@ f <span class="token number">1</span>
 <li><code>===</code>：兩者結果相同</li>
 </ul>
 <p><img src="/images/haskell/monad/laws/laws000.png" alt="laws000"></p>
-<h2 id="Right-Identity"><a href="#Right-Identity" class="headerlink" title="Right Identity"></a>Right Identity</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token constant">Just</span> <span class="token number">1</span> <span class="token operator">>>=</span> <span class="token constant">Just</span>
-<span class="token constant">Just</span> <span class="token number">1</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="Right-Identity"><a href="#Right-Identity" class="headerlink" title="Right Identity"></a>Right Identity</h2><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="type">Just</span> <span class="number">1</span> &gt;&gt;= <span class="type">Just</span></span><br><span class="line"><span class="type">Just</span> <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
 <p>當存在 <code>return</code> 時：</p>
 <ul>
 <li>使用 <code>&gt;&gt;=</code> 將 Monad 與 <code>return</code> 綁定</li>
@@ -481,12 +477,8 @@ f <span class="token number">1</span>
 <li><code>===</code>：兩者結果相同</li>
 </ul>
 <p><img src="/images/haskell/monad/laws/laws001.png" alt="laws001"></p>
-<h2 id="Associativity"><a href="#Associativity" class="headerlink" title="Associativity"></a>Associativity</h2><pre class="line-numbers highlight language-haskell"><code class="language-haskell"><span class="token hvariable">f</span> <span class="token operator">=</span> <span class="token constant">Just</span><span class="token operator"> . </span><span class="token punctuation">(</span><span class="token operator">+</span><span class="token number">1</span><span class="token punctuation">)</span>
-<span class="token hvariable">g</span> <span class="token operator">=</span> <span class="token constant">Just</span><span class="token operator"> . </span><span class="token punctuation">(</span><span class="token operator">*</span><span class="token number">2</span><span class="token punctuation">)</span>
+<h2 id="Associativity"><a href="#Associativity" class="headerlink" title="Associativity"></a>Associativity</h2><figure class="highlight haskell"><table><tr><td class="code"><pre><span class="line"><span class="title">f</span> = <span class="type">Just</span> . (+<span class="number">1</span>)</span><br><span class="line"><span class="title">g</span> = <span class="type">Just</span> . (*<span class="number">2</span>)</span><br><span class="line"></span><br><span class="line"><span class="type">Just</span> <span class="number">1</span> &gt;&gt;= f &gt;&gt;= g</span><br><span class="line"><span class="title">f</span> <span class="number">1</span> &gt;&gt;= g &gt;&gt;= <span class="type">Just</span></span><br></pre></td></tr></table></figure>
 
-<span class="token constant">Just</span> <span class="token number">1</span> <span class="token operator">>>=</span> <span class="token hvariable">f</span> <span class="token operator">>>=</span> <span class="token hvariable">g</span>
-<span class="token hvariable">f</span> <span class="token number">1</span> <span class="token operator">>>=</span> <span class="token hvariable">g</span> <span class="token operator">>>=</span> <span class="token constant">Just</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>將 value 先包進 Monad，再連續透過 <code>&gt;&gt;=</code> 使用 <code>f</code> 與 <code>g</code> 運算</li>
 <li>將 value 先經過 <code>f</code>  運算，再透過 <code>&gt;&gt;=</code> 使用 <code>g</code> 運算，最後再包進 Monad</li>

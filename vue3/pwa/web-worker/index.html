@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,7 +438,7 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>由於 Browser 只有一個 UI Thread 特性，若同時在此 Thread 執行很耗 CPU 運算，將使得 UI 有 Freeze 感覺，若能改用 Web Worker 執行耗 CPU 部分，將大幅提升使用者體驗。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.0.11<br>Comlink 4.3.0</p>
 <h2 id="Web-Worker"><a href="#Web-Worker" class="headerlink" title="Web Worker"></a>Web Worker</h2><p><img src="/images/vue3/pwa/web-worker/worker000.png" alt="worker000"></p>
@@ -447,44 +447,23 @@ a:hover {
 <blockquote>
 <p>由於 Browser 只有一個 UI thread，若將很耗 CPU 的邏輯也執行在 UI thread，勢必造成整個畫面 freeze，必較好的方式是將很耗 CPU 部分改寫在 Web Worker thread，如此將不會影響 UI thread 執行</p>
 </blockquote>
-<h2 id="Add-Woker-Loader"><a href="#Add-Woker-Loader" class="headerlink" title="Add Woker Loader"></a>Add Woker Loader</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add worker-loader --dev
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Add-Woker-Loader"><a href="#Add-Woker-Loader" class="headerlink" title="Add Woker Loader"></a>Add Woker Loader</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yarn add worker-loader --dev</span></span><br></pre></td></tr></table></figure>
+
 <p>由於 Vue CLI 是基於 Webpack，因此安裝 <code>worker-loader</code> 讓 Web Worker 能在 Webpack 下使用。</p>
 <h2 id="Component"><a href="#Component" class="headerlink" title="Component"></a>Component</h2><p><strong>App.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
-input(v-model='message')/
-button(@click='onClick') Uppercase
-spa {{ result }}
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">lang</span>=<span class="string">&#x27;pug&#x27;</span>&gt;</span></span><br><span class="line">input(v-model=&#x27;message&#x27;)/</span><br><span class="line">button(@click=&#x27;onClick&#x27;) Uppercase</span><br><span class="line">spa &#123;&#123; result &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">WebWorker</span> <span class="keyword">from</span> <span class="string">&#x27;worker-loader!./webWorker&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> webWorker = <span class="keyword">new</span> <span class="title class_">WebWorker</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="attr">ref</span>: message = <span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="attr">ref</span>: result = <span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> <span class="title function_">onClick</span> = (<span class="params"></span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">  webWorker.<span class="title function_">postMessage</span>(message)</span></span><br><span class="line"><span class="language-javascript">  webWorker.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function"><span class="params">x</span> =&gt;</span> result = x.<span class="property">data</span>)</span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> WebWorker <span class="token keyword">from</span> <span class="token string">'worker-loader!./webWorker'</span>
-
-<span class="token keyword">let</span> webWorker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WebWorker</span>
-
-ref<span class="token punctuation">:</span> message <span class="token operator">=</span> <span class="token string">''</span>
-ref<span class="token punctuation">:</span> result <span class="token operator">=</span> <span class="token string">''</span>
-
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  webWorker<span class="token punctuation">.</span><span class="token function">postMessage</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span>
-  webWorker<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'message'</span><span class="token punctuation">,</span> x <span class="token operator">=</span><span class="token operator">></span> result <span class="token operator">=</span> x<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 9 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> WebWorker <span class="token keyword">from</span> <span class="token string">'worker-loader!./webWorker'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">WebWorker</span> <span class="keyword">from</span> <span class="string">&#x27;worker-loader!./webWorker&#x27;</span></span><br></pre></td></tr></table></figure>
+
 <p>引入 <code>webWorker.js</code>，稍後會將 Web Worker thread 的 code 寫在此。</p>
 <p>11 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> webWorker <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">WebWorker</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> webWorker = <span class="keyword">new</span> <span class="title class_">WebWorker</span></span><br></pre></td></tr></table></figure>
+
 <p>建立 Web Worker。</p>
 <p>16 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  webWorker<span class="token punctuation">.</span><span class="token function">postMessage</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span>
-  webWorker<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'message'</span><span class="token punctuation">,</span> x <span class="token operator">=</span><span class="token operator">></span> result <span class="token operator">=</span> x<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">onClick</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  webWorker.<span class="title function_">postMessage</span>(message)</span><br><span class="line">  webWorker.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>, <span class="function"><span class="params">x</span> =&gt;</span> result = x.<span class="property">data</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>使用 <code>postMessage()</code> 將 data 傳入 Web Worker</li>
 <li>使用 <code>addEventListener(&#39;message&#39;)</code> 聆聽 <code>message</code> event，Web Worker 將藉此 <code>message</code> event 從 Web Worker thread 傳出資料</li>
@@ -493,105 +472,55 @@ ref<span class="token punctuation">:</span> result <span class="token operator">
 <p>由於 Web Worker 為 asynchronous，因此藉由 event 傳遞 data 可以理解，但 event 畢竟還是沒 Promise 好用，若能使用 Promise 就太好了</p>
 </blockquote>
 <p><strong>webWorker.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">self<span class="token punctuation">.</span><span class="token function">addEventListener</span><span class="token punctuation">(</span><span class="token string">'message'</span><span class="token punctuation">,</span>
-  x <span class="token operator">=</span><span class="token operator">></span> self<span class="token punctuation">.</span><span class="token function">postMessage</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span>data<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">self.<span class="title function_">addEventListener</span>(<span class="string">&#x27;message&#x27;</span>,</span><br><span class="line">  <span class="function"><span class="params">x</span> =&gt;</span> self.<span class="title function_">postMessage</span>(x.<span class="property">data</span>.<span class="title function_">toUpperCase</span>())</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <p>在 Web Worker thread 一律使用 <code>self</code> 存取 Web Worker。</p>
 <p>由於 Vue 使用 <code>postMessage()</code> 對 Web Worker 傳送 data，因此 Web Worker 也要聆聽 <code>message</code>event 接收 data。</p>
 <p>在 callback 內就可執行假設 <code>很耗時</code> 的 <code>toUpperCase()</code>，最後再以 <code>postMessage()</code> 將結果傳回 Vue。</p>
 <blockquote>
 <p>可發現 Web Worker 基本上就是使用 <code>postMessage()</code> 與 <code>addEventListener(&#39;message&#39;)</code> 彼此傳遞 data，雖然能達成在另一個 thread 執行耗 CPU 運算，但其 event-based API 實在很難用</p>
 </blockquote>
-<h2 id="Comlink"><a href="#Comlink" class="headerlink" title="Comlink"></a>Comlink</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add comlink
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Comlink"><a href="#Comlink" class="headerlink" title="Comlink"></a>Comlink</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yarn add comlink</span></span><br></pre></td></tr></table></figure>
+
 <p>安裝 GoogleChromeLabs 的 comlink，讓我們以 promise-based API 使用 Web Worker。</p>
 <p><strong>App.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
-input(v-model='message')/
-button(@click='onClick') Uppercase
-span {{ result }}
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">lang</span>=<span class="string">&#x27;pug&#x27;</span>&gt;</span></span><br><span class="line">input(v-model=&#x27;message&#x27;)/</span><br><span class="line">button(@click=&#x27;onClick&#x27;) Uppercase</span><br><span class="line">span &#123;&#123; result &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; ref &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">WebWorker</span> <span class="keyword">from</span> <span class="string">&#x27;worker-loader!./webWorker&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; wrap &#125; <span class="keyword">from</span> <span class="string">&#x27;comlink&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> &#123; toUpper &#125; = <span class="title function_">wrap</span>(<span class="keyword">new</span> <span class="title class_">WebWorker</span>)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="attr">ref</span>: message = <span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="attr">ref</span>: result = <span class="string">&#x27;&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> <span class="title function_">onClick</span> = (<span class="params"></span>) =&gt; <span class="title function_">toUpper</span>(message).<span class="title function_">then</span>(<span class="function"><span class="params">x</span> =&gt;</span> result = x)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
-<span class="token keyword">import</span> WebWorker <span class="token keyword">from</span> <span class="token string">'worker-loader!./webWorker'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> wrap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'comlink'</span>
-
-<span class="token keyword">let</span> <span class="token punctuation">{</span> toUpper <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">wrap</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">WebWorker</span><span class="token punctuation">)</span>
-
-ref<span class="token punctuation">:</span> message <span class="token operator">=</span> <span class="token string">''</span>
-ref<span class="token punctuation">:</span> result <span class="token operator">=</span> <span class="token string">''</span>
-
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">toUpper</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> result <span class="token operator">=</span> x<span class="token punctuation">)</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>11 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> wrap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'comlink'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; wrap &#125; <span class="keyword">from</span> <span class="string">&#x27;comlink&#x27;</span></span><br></pre></td></tr></table></figure>
+
 <p>從 comlink 引入 <code>wrap()</code>。</p>
 <p>13 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> toUpper <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">wrap</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">WebWorker</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> &#123; toUpper &#125; = <span class="title function_">wrap</span>(<span class="keyword">new</span> <span class="title class_">WebWorker</span>)</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>wrap()</code> 將 Web Worker Object 包成 comlink 自己的 object，並且 destructure 出自行提供的 <code>toUpper()</code>。</p>
 <p>18 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">toUpper</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> result <span class="token operator">=</span> x<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">onClick</span> = (<span class="params"></span>) =&gt; <span class="title function_">toUpper</span>(message).<span class="title function_">then</span>(<span class="function"><span class="params">x</span> =&gt;</span> result = x)</span><br></pre></td></tr></table></figure>
+
 <p>由於 comlink 會使 function 都從 event-based 改成 promise-based，因此 <code>toUpper()</code> 回傳 Promise，可在 <code>then()</code> 寫入 side effect 在 HTML template 顯示。</p>
 <p><strong>webWorker.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> expose <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'comlink'</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; expose &#125; <span class="keyword">from</span> <span class="string">&#x27;comlink&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">toUpper</span> = msg =&gt; msg.<span class="title function_">toUpperCase</span>()</span><br><span class="line"></span><br><span class="line"><span class="title function_">expose</span>(&#123; toUpper &#125;)</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> toUpper <span class="token operator">=</span> msg <span class="token operator">=</span><span class="token operator">></span> msg<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-<span class="token function">expose</span><span class="token punctuation">(</span><span class="token punctuation">{</span> toUpper <span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 1 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> expose <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'comlink'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; expose &#125; <span class="keyword">from</span> <span class="string">&#x27;comlink&#x27;</span></span><br></pre></td></tr></table></figure>
+
 <p>從 comlink 引入 <code>expose()</code>。</p>
 <p>第 3 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> toUpper <span class="token operator">=</span> msg <span class="token operator">=</span><span class="token operator">></span> msg<span class="token punctuation">.</span><span class="token function">toUpperCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">toUpper</span> = msg =&gt; msg.<span class="title function_">toUpperCase</span>()</span><br></pre></td></tr></table></figure>
+
 <p>定義自己很耗 CPU 的 function。</p>
 <p>第 5 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">expose</span><span class="token punctuation">(</span><span class="token punctuation">{</span> toUpperCase <span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">expose</span>(&#123; toUpperCase &#125;)</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>expose()</code> 將自定義 funciton 包成 Object 傳入，<code>expose()</code> 將回傳 Web Worker。</p>
 <h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><p><img src="/images/vue3/pwa/web-worker/worker000.png" alt="worker000"></p>
 <p>結果不變，但使用 Point-free 改寫。</p>
 <p><strong>App.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
-input(v-model='message')/
-button(@click='onClick') Uppercase
-span {{ result }}
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">lang</span>=<span class="string">&#x27;pug&#x27;</span>&gt;</span></span><br><span class="line">input(v-model=&#x27;message&#x27;)/</span><br><span class="line">button(@click=&#x27;onClick&#x27;) Uppercase</span><br><span class="line">span &#123;&#123; result &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; pipe, andThen <span class="keyword">as</span> then &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; ref &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; read, write &#125; <span class="keyword">from</span> <span class="string">&#x27;vue3-fp&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">WebWorker</span> <span class="keyword">from</span> <span class="string">&#x27;worker-loader!./webWorker&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; wrap &#125; <span class="keyword">from</span> <span class="string">&#x27;comlink&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> &#123; toUpper &#125; = <span class="title function_">wrap</span>(<span class="keyword">new</span> <span class="title class_">WebWorker</span>)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> message = <span class="title function_">ref</span>(<span class="string">&#x27;&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> result = <span class="title function_">ref</span>(<span class="string">&#x27;&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> onClick = <span class="title function_">pipe</span>(</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">read</span>(message),</span></span><br><span class="line"><span class="language-javascript">  <span class="function"><span class="params">x</span> =&gt;</span> <span class="title function_">toUpper</span>(x),</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">then</span>(<span class="title function_">write</span>(result))</span></span><br><span class="line"><span class="language-javascript">)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> read<span class="token punctuation">,</span> write <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
-<span class="token keyword">import</span> WebWorker <span class="token keyword">from</span> <span class="token string">'worker-loader!./webWorker'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> wrap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'comlink'</span>
-
-<span class="token keyword">let</span> <span class="token punctuation">{</span> toUpper <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">wrap</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">WebWorker</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> message <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">read</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">toUpper</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>19 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">read</span><span class="token punctuation">(</span>message<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  x <span class="token operator">=</span><span class="token operator">></span> <span class="token function">toUpper</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> onClick = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">read</span>(message),</span><br><span class="line">  <span class="function"><span class="params">x</span> =&gt;</span> <span class="title function_">toUpper</span>(x),</span><br><span class="line">  <span class="title function_">then</span>(<span class="title function_">write</span>(result))</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>pipe()</code> 組合出 <code>onClick()</code>：</p>
 <ul>
 <li><code>read()</code>：讀取 <code>message</code> state</li>
@@ -602,17 +531,14 @@ span {{ result }}
 <p>這裏 <code>x =&gt; toUpper(x)</code> 無法使用 point-free 版本的 <code>toUpper()</code></p>
 </blockquote>
 <p><strong>webWorker.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> expose <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'comlink'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> toUpper <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; expose &#125; <span class="keyword">from</span> <span class="string">&#x27;comlink&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; toUpper &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">expose</span>(&#123; toUpper &#125;)</span><br></pre></td></tr></table></figure>
 
-<span class="token function">expose</span><span class="token punctuation">(</span><span class="token punctuation">{</span> toUpper <span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>toUpper()</code> 也可改用 Ramda 版本。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>本範例僅用簡單的 <code>toUpper()</code> 示意，實務上可以改成自定義很耗 CPU 的 function</li>
 <li>Comlink 明顯比 Web Worker 原生 API 好用，且由於是回傳 Promise 可輕易 Point-free</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://morioh.com/@5ec36214d90af23043eefe53/posts" target="_blank" rel="noopener">Игорь Харченко</a>, <a href="https://morioh.com/p/ceeada0a2a5f?f=5c21fb01c16e2556b555ab32&fbclid=IwAR2ajoKI_Qt4GICzhIW2lah2JCMvlAEgQQVyOs4IqFBqPOXo_T1M23s0tYA" target="_blank" rel="noopener">Vue Performance Optimization Using a Web Worker</a><br><a href="https://developer.mozilla.org/en-US/" target="_blank" rel="noopener">MDN</a>, <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API" target="_blank" rel="noopener">Web Worker API</a><br><a href="https://webpack.js.org/" target="_blank" rel="noopener">Webpack</a>, <a href="https://webpack.js.org/loaders/worker-loader/" target="_blank" rel="noopener">worker-loader</a><br><a href="https://github.com/GoogleChromeLabs" target="_blank" rel="noopener">GoogleChromeLabs</a>, <a href="https://github.com/GoogleChromeLabs/comlink" target="_blank" rel="noopener">comlink</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://morioh.com/@5ec36214d90af23043eefe53/posts">Игорь Харченко</a>, <a target="_blank" rel="noopener" href="https://morioh.com/p/ceeada0a2a5f?f=5c21fb01c16e2556b555ab32&fbclid=IwAR2ajoKI_Qt4GICzhIW2lah2JCMvlAEgQQVyOs4IqFBqPOXo_T1M23s0tYA">Vue Performance Optimization Using a Web Worker</a><br><a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/">MDN</a>, <a target="_blank" rel="noopener" href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API">Web Worker API</a><br><a target="_blank" rel="noopener" href="https://webpack.js.org/">Webpack</a>, <a target="_blank" rel="noopener" href="https://webpack.js.org/loaders/worker-loader/">worker-loader</a><br><a target="_blank" rel="noopener" href="https://github.com/GoogleChromeLabs">GoogleChromeLabs</a>, <a target="_blank" rel="noopener" href="https://github.com/GoogleChromeLabs/comlink">comlink</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

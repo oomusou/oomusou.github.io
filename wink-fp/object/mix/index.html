@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,90 +438,45 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>若想一次寫入多個 Property 且 Immutable，ECMAScript 的 Property Shorthand 與 Ramda 的 <code>assoc()</code> 與 <code>set()</code> 都有其極限，Wink-fp 的 <code>mix()</code> 可讓我們一次滿足兩個願望。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.4<br>VS Code 1.43.2<br>Quokka 1.0.284<br>ECMAScript 2015<br>Ramda 0.27.0<br>Wink-fp 1.20.60</p>
-<h2 id="ECMAScript"><a href="#ECMAScript" class="headerlink" title="ECMAScript"></a>ECMAScript</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span>
-  price<span class="token punctuation">:</span> <span class="token number">100</span>
-<span class="token punctuation">}</span>
+<h2 id="ECMAScript"><a href="#ECMAScript" class="headerlink" title="ECMAScript"></a>ECMAScript</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">  <span class="attr">price</span>: <span class="number">100</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> title = <span class="string">&#x27;Speaking JavaScript&#x27;</span></span><br><span class="line"><span class="keyword">let</span> price = <span class="number">200</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> result = &#123; ...obj, title, price &#125; <span class="comment">// ? </span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> title <span class="token operator">=</span> <span class="token string">'Speaking JavaScript'</span>
-<span class="token keyword">let</span> price <span class="token operator">=</span> <span class="token number">200</span>
-
-<span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token punctuation">{</span> <span class="token operator">...</span>obj<span class="token punctuation">,</span> title<span class="token punctuation">,</span> price <span class="token punctuation">}</span> <span class="token comment" spellcheck="true">// ? </span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若 <code>obj</code> 原有 <code>price</code> property，我們希望以原來 object 為基礎修改 <code>price</code> property 並新增 <code>title</code> property，並且原來 object 維持 immutable。</p>
 <p>ES6 可使用 object spread 展開原 object，並使用 property shorthand 一次寫入多個 property。</p>
 <p>這一切看似美好，唯 ES6 為了效能考慮，<code>...</code> 為 shallow copy，在某些狀況可能不太適用。</p>
 <p><img src="/images/wink-fp/object/mix/mix000.png" alt="mix000"></p>
-<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><h3 id="assoc"><a href="#assoc" class="headerlink" title="assoc()"></a>assoc()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> assoc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><h3 id="assoc"><a href="#assoc" class="headerlink" title="assoc()"></a>assoc()</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; assoc &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">  <span class="attr">price</span>: <span class="number">100</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> result = <span class="title function_">assoc</span>(<span class="string">&#x27;title&#x27;</span>)(<span class="string">&#x27;Speaking JavaScript&#x27;</span>)(obj) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span>
-  price<span class="token punctuation">:</span> <span class="token number">100</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token function">assoc</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'Speaking JavaScript'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>assoc()</code> 雖為 immutable，但一次只能寫入一個 property 也不方便。</p>
 <p><img src="/images/wink-fp/object/mix/mix001.png" alt="mix001"></p>
-<h3 id="set"><a href="#set" class="headerlink" title="set()"></a>set()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> lensProp<span class="token punctuation">,</span> <span class="token keyword">set</span> <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h3 id="set"><a href="#set" class="headerlink" title="set()"></a>set()</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; lensProp, set &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> obj = &#123;&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> titleLens = <span class="title function_">lensProp</span>(<span class="string">&#x27;title&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> result = <span class="title function_">set</span>(titleLens)(<span class="string">&#x27;Speaking JavaScript&#x27;</span>)(obj) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> titleLens <span class="token operator">=</span> <span class="token function">lensProp</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token keyword">set</span><span class="token punctuation">(</span>titleLens<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'Speaking JavaScript'</span><span class="token punctuation">)</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>set()</code> 雖為 immutable，但一次只能寫入一個 property 也不方便。</p>
 <p><img src="/images/wink-fp/object/mix/mix002.png" alt="mix002"></p>
-<h2 id="mix"><a href="#mix" class="headerlink" title="mix()"></a>mix()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> clone<span class="token punctuation">,</span> mergeDeepRight <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="mix"><a href="#mix" class="headerlink" title="mix()"></a>mix()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, clone, mergeDeepRight &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> mix = <span class="title function_">pipe</span>(</span><br><span class="line">  clone,</span><br><span class="line">  mergeDeepRight</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">  <span class="attr">price</span>: <span class="number">100</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> title = <span class="string">&#x27;Speaking JavaScript&#x27;</span></span><br><span class="line"><span class="keyword">let</span> price = <span class="number">200</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> result = <span class="title function_">mix</span>(obj)(&#123; title, price &#125;) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> mix <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  clone<span class="token punctuation">,</span>
-  mergeDeepRight
-<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span>
-  price<span class="token punctuation">:</span> <span class="token number">100</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> title <span class="token operator">=</span> <span class="token string">'Speaking JavaScript'</span>
-<span class="token keyword">let</span> price <span class="token operator">=</span> <span class="token number">200</span>
-
-<span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token function">mix</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">{</span> title<span class="token punctuation">,</span> price <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 3 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> mix <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  clone<span class="token punctuation">,</span>
-  mergeDeepRight
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> mix = <span class="title function_">pipe</span>(</span><br><span class="line">  clone,</span><br><span class="line">  mergeDeepRight</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <p>第一個 argument 為原 object，使用 Ramda 的 <code>clone()</code> 做 deep copy，並將結果傳給 <code>mergeDeepRight()</code> 的第一個 argument。</p>
 <p>第二個 argument 則使用 property shorthand 剛組合的 object，透過 <code>mergeDeepRight()</code> 也做 deep merge，並以右側 object 為主。</p>
 <p><img src="/images/wink-fp/object/mix/mix003.png" alt="mix003"></p>
-<h2 id="Wink-fp"><a href="#Wink-fp" class="headerlink" title="Wink-fp"></a>Wink-fp</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> mix <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h2 id="Wink-fp"><a href="#Wink-fp" class="headerlink" title="Wink-fp"></a>Wink-fp</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; mix &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> obj = &#123;</span><br><span class="line">  <span class="attr">price</span>: <span class="number">100</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> title = <span class="string">&#x27;Speaking JavaScript&#x27;</span></span><br><span class="line"><span class="keyword">let</span> price = <span class="number">200</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> result = <span class="title function_">mix</span>(obj)(&#123; title, price &#125;) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> obj <span class="token operator">=</span> <span class="token punctuation">{</span>
-  price<span class="token punctuation">:</span> <span class="token number">100</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> title <span class="token operator">=</span> <span class="token string">'Speaking JavaScript'</span>
-<span class="token keyword">let</span> price <span class="token operator">=</span> <span class="token number">200</span>
-
-<span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token function">mix</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">{</span> title<span class="token punctuation">,</span> price <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Wink-fp 已經內建 <code>mix()</code> 可直接使用。</p>
 <blockquote>
-<p><strong>mix()</strong><br><code>{ a } -&gt; { b } -&gt; { c }</code><br>一次寫入多個 property 並建立全新 object</p>
+<p><strong>mix()</strong><br><code>&#123; a &#125; -&gt; &#123; b &#125; -&gt; &#123; c &#125;</code><br>一次寫入多個 property 並建立全新 object</p>
 </blockquote>
-<p><code>{ a }</code>：原 object</p>
-<p><code>{ b }</code>：想一次寫入多個 property 的 object</p>
-<p><code>{ c }</code>：合併後全新 object</p>
+<p><code>&#123; a &#125;</code>：原 object</p>
+<p><code>&#123; b &#125;</code>：想一次寫入多個 property 的 object</p>
+<p><code>&#123; c &#125;</code>：合併後全新 object</p>
 <p><img src="/images/wink-fp/object/mix/mix004.png" alt="mix004"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li><code>mix()</code> 看似很神奇，其實只是組合了 <code>clone()</code> 與 <code>mergeDeepRight()</code>，這就是 Function Composition 的魅力</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#assoc" target="_blank" rel="noopener">assoc()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#set" target="_blank" rel="noopener">set()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#assoc">assoc()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#set">set()</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

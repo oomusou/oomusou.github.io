@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,115 +438,20 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p><code>生物辨識登入</code> 已經成為手機登入的標配，<code>local_auth</code> 可 <code>啟動</code> 該裝置的生物辨識登入。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Flutter 3.24<br>local_auth 3.2</p>
-<h2 id="local-auth"><a href="#local-auth" class="headerlink" title="local_auth"></a>local_auth</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ flutter pub add local_auth
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="local-auth"><a href="#local-auth" class="headerlink" title="local_auth"></a>local_auth</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">flutter pub add local_auth</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>安裝 <code>local_auth</code> package</li>
 </ul>
 <h2 id="Flutter"><a href="#Flutter" class="headerlink" title="Flutter"></a>Flutter</h2><p><img src="/images/flutter/package/local_auth/authenticate/authenticate01.gif" alt="authenticate01"></p>
-<h2 id="local-auth-1"><a href="#local-auth-1" class="headerlink" title="local_auth"></a>local_auth</h2><pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">import</span> <span class="token string">'package:flutter/foundation.dart'</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token string">'package:flutter/material.dart'</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token string">'package:flutter/services.dart'</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token string">'package:local_auth/local_auth.dart'</span><span class="token punctuation">;</span>
+<h2 id="local-auth-1"><a href="#local-auth-1" class="headerlink" title="local_auth"></a>local_auth</h2><figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/foundation.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/services.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:local_auth/local_auth.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Home</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> Home(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;Home&gt; createState() &#123;</span><br><span class="line">    <span class="keyword">return</span> _Home();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_Home</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">Home</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> _auth = LocalAuthentication();</span><br><span class="line">  <span class="keyword">var</span> _isAuthenticated = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">  Future&lt;<span class="built_in">bool</span>&gt; _hasBiometrics() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">var</span> canCheckBiometrics = <span class="keyword">false</span>;</span><br><span class="line">    <span class="keyword">var</span> isDeviceSupported = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      canCheckBiometrics = <span class="keyword">await</span> _auth.canCheckBiometrics;</span><br><span class="line">      isDeviceSupported = <span class="keyword">await</span> _auth.isDeviceSupported();</span><br><span class="line">    &#125; <span class="keyword">on</span> PlatformException <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">      <span class="keyword">if</span> (kDebugMode) &#123;</span><br><span class="line">        <span class="built_in">print</span>(e);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> canCheckBiometrics &amp;&amp; isDeviceSupported;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  Future&lt;<span class="built_in">bool</span>&gt; _authenticate() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">await</span> _auth.authenticate(</span><br><span class="line">        localizedReason: <span class="string">&#x27;Authenticate by biometrics&#x27;</span>,</span><br><span class="line">      );</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">      <span class="keyword">if</span> (kDebugMode) &#123;</span><br><span class="line">        <span class="built_in">print</span>(e);</span><br><span class="line">      &#125;</span><br><span class="line">      <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">var</span> appBar = AppBar(title: <span class="keyword">const</span> Text(<span class="string">&#x27;local_auth&#x27;</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> elevatedButton = ElevatedButton(</span><br><span class="line">        onPressed: () <span class="keyword">async</span> &#123;</span><br><span class="line">          <span class="keyword">final</span> isAuthAvailable = <span class="keyword">await</span> _hasBiometrics();</span><br><span class="line"></span><br><span class="line">          <span class="keyword">if</span> (!isAuthAvailable) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">          <span class="keyword">final</span> isAuthenticated = <span class="keyword">await</span> _authenticate();</span><br><span class="line"></span><br><span class="line">          setState(() &#123;</span><br><span class="line">            _isAuthenticated = isAuthenticated;</span><br><span class="line">          &#125;);</span><br><span class="line">        &#125;,</span><br><span class="line">        child: <span class="keyword">const</span> Text(<span class="string">&#x27;auth.authenticate&#x27;</span>));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> body = Center(</span><br><span class="line">        child: Column(</span><br><span class="line">      mainAxisAlignment: MainAxisAlignment.center,</span><br><span class="line">      children: [</span><br><span class="line">        elevatedButton,</span><br><span class="line">        Text(<span class="string">&#x27;Biometrics Authenticate: <span class="subst">$_isAuthenticated</span>&#x27;</span>),</span><br><span class="line">      ],</span><br><span class="line">    ));</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: appBar,</span><br><span class="line">      body: body,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">class</span> <span class="token class-name">Home</span> <span class="token keyword">extends</span> <span class="token class-name">StatefulWidget</span> <span class="token punctuation">{</span>
-  <span class="token keyword">const</span> <span class="token function">Home</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token keyword">super</span><span class="token punctuation">.</span>key<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token metadata symbol">@override</span>
-  State<span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token function">createState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token function">_Home</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">class</span> <span class="token class-name">_Home</span> <span class="token keyword">extends</span> <span class="token class-name">State</span><span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">final</span> _auth <span class="token operator">=</span> <span class="token function">LocalAuthentication</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token keyword">var</span> _isAuthenticated <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-
-  Future<span class="token operator">&lt;</span>bool<span class="token operator">></span> <span class="token function">_hasBiometrics</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">async</span> <span class="token punctuation">{</span>
-    <span class="token keyword">var</span> canCheckBiometrics <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token keyword">var</span> isDeviceSupported <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-      canCheckBiometrics <span class="token operator">=</span> <span class="token keyword">await</span> _auth<span class="token punctuation">.</span>canCheckBiometrics<span class="token punctuation">;</span>
-      isDeviceSupported <span class="token operator">=</span> <span class="token keyword">await</span> _auth<span class="token punctuation">.</span><span class="token function">isDeviceSupported</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> on PlatformException <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token keyword">if</span> <span class="token punctuation">(</span>kDebugMode<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token function">print</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token punctuation">}</span>
-      <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-
-    <span class="token keyword">return</span> canCheckBiometrics <span class="token operator">&amp;&amp;</span> isDeviceSupported<span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-
-  Future<span class="token operator">&lt;</span>bool<span class="token operator">></span> <span class="token function">_authenticate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">async</span> <span class="token punctuation">{</span>
-    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-      <span class="token keyword">return</span> <span class="token keyword">await</span> _auth<span class="token punctuation">.</span><span class="token function">authenticate</span><span class="token punctuation">(</span>
-        localizedReason<span class="token punctuation">:</span> <span class="token string">'Authenticate by biometrics'</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token keyword">if</span> <span class="token punctuation">(</span>kDebugMode<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token function">print</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token punctuation">}</span>
-      <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span>
-
-  <span class="token metadata symbol">@override</span>
-  Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">var</span> appBar <span class="token operator">=</span> <span class="token function">AppBar</span><span class="token punctuation">(</span>title<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">'local_auth'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> elevatedButton <span class="token operator">=</span> <span class="token function">ElevatedButton</span><span class="token punctuation">(</span>
-        onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">async</span> <span class="token punctuation">{</span>
-          <span class="token keyword">final</span> isAuthAvailable <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">_hasBiometrics</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-          <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>isAuthAvailable<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
-
-          <span class="token keyword">final</span> isAuthenticated <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">_authenticate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-          <span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            _isAuthenticated <span class="token operator">=</span> isAuthenticated<span class="token punctuation">;</span>
-          <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        child<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">'auth.authenticate'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> body <span class="token operator">=</span> <span class="token function">Center</span><span class="token punctuation">(</span>
-        child<span class="token punctuation">:</span> <span class="token function">Column</span><span class="token punctuation">(</span>
-      mainAxisAlignment<span class="token punctuation">:</span> MainAxisAlignment<span class="token punctuation">.</span>center<span class="token punctuation">,</span>
-      children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-        elevatedButton<span class="token punctuation">,</span>
-        <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">'Biometrics Authenticate: $_isAuthenticated'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-      <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">return</span> <span class="token function">Scaffold</span><span class="token punctuation">(</span>
-      appBar<span class="token punctuation">:</span> appBar<span class="token punctuation">,</span>
-      body<span class="token punctuation">:</span> body<span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>Line 19</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart">Future<span class="token operator">&lt;</span>bool<span class="token operator">></span> <span class="token function">_hasBiometrics</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">async</span> <span class="token punctuation">{</span>
-  <span class="token keyword">var</span> canCheckBiometrics <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-  <span class="token keyword">var</span> isDeviceSupported <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line">Future&lt;<span class="built_in">bool</span>&gt; _hasBiometrics() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">var</span> canCheckBiometrics = <span class="keyword">false</span>;</span><br><span class="line">  <span class="keyword">var</span> isDeviceSupported = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    canCheckBiometrics = <span class="keyword">await</span> _auth.canCheckBiometrics;</span><br><span class="line">    isDeviceSupported = <span class="keyword">await</span> _auth.isDeviceSupported();</span><br><span class="line">  &#125; <span class="keyword">on</span> PlatformException <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    <span class="keyword">if</span> (kDebugMode) &#123;</span><br><span class="line">      <span class="built_in">print</span>(e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> canCheckBiometrics &amp;&amp; isDeviceSupported;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-  <span class="token keyword">try</span> <span class="token punctuation">{</span>
-    canCheckBiometrics <span class="token operator">=</span> <span class="token keyword">await</span> _auth<span class="token punctuation">.</span>canCheckBiometrics<span class="token punctuation">;</span>
-    isDeviceSupported <span class="token operator">=</span> <span class="token keyword">await</span> _auth<span class="token punctuation">.</span><span class="token function">isDeviceSupported</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span> on PlatformException <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>kDebugMode<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token function">print</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-
-  <span class="token keyword">return</span> canCheckBiometrics <span class="token operator">&amp;&amp;</span> isDeviceSupported<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>偵測是否有可用的生物辨識</li>
 <li><code>auth.canCheckBiometrics</code>：<code>硬體</code> 是否支援生物辨識</li>
@@ -554,19 +459,8 @@ a:hover {
 <li>當 <code>canCheckBiometrics</code> 與 <code>isDeviceSupported</code> 都為 <code>true</code> 時，才表示能啟動生物辨識登入</li>
 </ul>
 <p><strong>Line 36</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart">Future<span class="token operator">&lt;</span>bool<span class="token operator">></span> <span class="token function">_authenticate</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">async</span> <span class="token punctuation">{</span>
-  <span class="token keyword">try</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token keyword">await</span> _auth<span class="token punctuation">.</span><span class="token function">authenticate</span><span class="token punctuation">(</span>
-      localizedReason<span class="token punctuation">:</span> <span class="token string">'Authenticate by biometrics'</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>kDebugMode<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token function">print</span><span class="token punctuation">(</span>e<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-    <span class="token keyword">return</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line">Future&lt;<span class="built_in">bool</span>&gt; _authenticate() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">await</span> _auth.authenticate(</span><br><span class="line">      localizedReason: <span class="string">&#x27;Authenticate by biometrics&#x27;</span>,</span><br><span class="line">    );</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    <span class="keyword">if</span> (kDebugMode) &#123;</span><br><span class="line">      <span class="built_in">print</span>(e);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">false</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>_auth.authenticate</code>：啟動生物辨識登入<ul>
 <li><code>localizedReason</code>：iOS 必須傳入 <code>localizedReason</code></li>
@@ -574,18 +468,8 @@ a:hover {
 </li>
 </ul>
 <p><strong>Line 54</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart">onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">async</span> <span class="token punctuation">{</span>
-  <span class="token keyword">final</span> isAuthAvailable <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">_hasBiometrics</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line">onPressed: () <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">final</span> isAuthAvailable = <span class="keyword">await</span> _hasBiometrics();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">if</span> (!isAuthAvailable) <span class="keyword">return</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> isAuthenticated = <span class="keyword">await</span> _authenticate();</span><br><span class="line"></span><br><span class="line">  setState(() &#123;</span><br><span class="line">    _isAuthenticated = isAuthenticated ;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>isAuthAvailable<span class="token punctuation">)</span> <span class="token keyword">return</span><span class="token punctuation">;</span>
-
-  <span class="token keyword">final</span> isAuthenticated <span class="token operator">=</span> <span class="token keyword">await</span> <span class="token function">_authenticate</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    _isAuthenticated <span class="token operator">=</span> isAuthenticated <span class="token punctuation">;</span>
-  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>整合 <code>_hasBiometrics()</code> 與 <code>_authenticate()</code> 啟動生物辨識登入</li>
 <li>當 <code>isAuthAvailable</code> 為 <code>true</code> 時，才會真正啟動生物辨識登入</li>
@@ -593,7 +477,7 @@ a:hover {
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>要啟動生物辨識前，必須先判斷裝置是否支持生物辨識，且用戶也已設定好生物辨識</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://pub.dev/" target="_blank" rel="noopener">pub.dev</a>, <a href="https://pub.dev/packages/local_auth" target="_blank" rel="noopener">local_auth 2.3.0</a><br><a href="https://github.com/flutter/packages" target="_blank" rel="noopener">Flutter Packages</a>, <a href="https://github.com/flutter/packages/tree/main/packages/local_auth/local_auth" target="_blank" rel="noopener">local_auth</a><br><a href="https://medium.com/@vinayak_amirtharaj" target="_blank" rel="noopener">Vinayak</a>, <a href="https://medium.com/yavar/enabling-local-authentication-for-your-flutter-application-2b26a4451b9d" target="_blank" rel="noopener">Enabling Local Authentication for your Flutter Application</a><br><a href="https://www.youtube.com/@m_hussain_mustafa" target="_blank" rel="noopener">Hussain Mustafa</a>, <a href="https://www.youtube.com/watch?v=cYeQCGr6F7c" target="_blank" rel="noopener">Flutter Local Authentication Tutorial</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://pub.dev/">pub.dev</a>, <a target="_blank" rel="noopener" href="https://pub.dev/packages/local_auth">local_auth 2.3.0</a><br><a target="_blank" rel="noopener" href="https://github.com/flutter/packages">Flutter Packages</a>, <a target="_blank" rel="noopener" href="https://github.com/flutter/packages/tree/main/packages/local_auth/local_auth">local_auth</a><br><a target="_blank" rel="noopener" href="https://medium.com/@vinayak_amirtharaj">Vinayak</a>, <a target="_blank" rel="noopener" href="https://medium.com/yavar/enabling-local-authentication-for-your-flutter-application-2b26a4451b9d">Enabling Local Authentication for your Flutter Application</a><br><a target="_blank" rel="noopener" href="https://www.youtube.com/@m_hussain_mustafa">Hussain Mustafa</a>, <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=cYeQCGr6F7c">Flutter Local Authentication Tutorial</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

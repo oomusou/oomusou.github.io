@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,81 +438,26 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>由於 Canvas 是直接使用 JavaScript 繪製，若要實現 RWD，則必須從 Resize Event 下手。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.2</p>
 <h2 id="RWD-Canvas"><a href="#RWD-Canvas" class="headerlink" title="RWD Canvas"></a>RWD Canvas</h2><p><img src="/images/vue3/canvas/rwd-img/rwd000.png" alt="rwd000"></p>
 <p>在 Vue 完全以 Canvas 繪製圖片。</p>
 <p><img src="/images/vue3/canvas/rwd-img/rwd001.png" alt="rwd001"></p>
 <p>調整 browser 會自動 RWD 調整圖片。</p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> onMounted<span class="token punctuation">,</span> onBeforeUnmount <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; onMounted, onBeforeUnmount &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> canvas = $ref (<span class="literal">null</span>)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> <span class="title function_">onResize</span> = _ =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">let</span> ratio = canvas.<span class="property">width</span> / canvas.<span class="property">height</span></span></span><br><span class="line"><span class="language-javascript">  </span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">let</span> canvasHeight = innerHeight</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">let</span> canvasWidth = canvasHeight * ratio</span></span><br><span class="line"><span class="language-javascript">  </span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">if</span> (canvasWidth &gt; innerWidth) &#123;</span></span><br><span class="line"><span class="language-javascript">    canvasWidth = innerWidth</span></span><br><span class="line"><span class="language-javascript">    canvasHeight = canvasWidth / ratio</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript">  </span></span><br><span class="line"><span class="language-javascript">  canvas.<span class="property">style</span>.<span class="property">width</span> = canvasWidth + <span class="string">&#x27;px&#x27;</span></span></span><br><span class="line"><span class="language-javascript">  canvas.<span class="property">style</span>.<span class="property">height</span> = canvasHeight + <span class="string">&#x27;px&#x27;</span></span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">onMounted</span> (<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">let</span> context = canvas.<span class="title function_">getContext</span>(<span class="string">&#x27;2d&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">let</span> img = <span class="keyword">new</span> <span class="title class_">Image</span></span></span><br><span class="line"><span class="language-javascript">  img.<span class="property">src</span> = <span class="string">&#x27;https://picsum.photos/1920/1080/?random=10&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  img.<span class="property">onload</span> = <span class="function"><span class="params">_</span> =&gt;</span> &#123;</span></span><br><span class="line"><span class="language-javascript">    context.<span class="property">canvas</span>.<span class="property">width</span> = img.<span class="property">width</span></span></span><br><span class="line"><span class="language-javascript">    context.<span class="property">canvas</span>.<span class="property">height</span> = img.<span class="property">height</span></span></span><br><span class="line"><span class="language-javascript">    context.<span class="property">drawImage</span> (img, <span class="number">0</span>, <span class="number">0</span>)</span></span><br><span class="line"><span class="language-javascript">    <span class="title function_">onResize</span> ()</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript">  </span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">addEventListener</span> (<span class="string">&#x27;resize&#x27;</span>, onResize)</span></span><br><span class="line"><span class="language-javascript">&#125;)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">onBeforeUnmount</span> (<span class="function"><span class="params">_</span> =&gt;</span> <span class="title function_">removeEventListener</span> (<span class="string">&#x27;resize&#x27;</span>, onResize))</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">canvas</span> <span class="attr">ref</span>=<span class="string">&quot;canvas&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> canvas <span class="token operator">=</span> $ref <span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> onResize <span class="token operator">=</span> _ <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> ratio <span class="token operator">=</span> canvas<span class="token punctuation">.</span>width <span class="token operator">/</span> canvas<span class="token punctuation">.</span>height
-  
-  <span class="token keyword">let</span> canvasHeight <span class="token operator">=</span> innerHeight
-  <span class="token keyword">let</span> canvasWidth <span class="token operator">=</span> canvasHeight <span class="token operator">*</span> ratio
-  
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>canvasWidth <span class="token operator">></span> innerWidth<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    canvasWidth <span class="token operator">=</span> innerWidth
-    canvasHeight <span class="token operator">=</span> canvasWidth <span class="token operator">/</span> ratio
-  <span class="token punctuation">}</span>
-  
-  canvas<span class="token punctuation">.</span>style<span class="token punctuation">.</span>width <span class="token operator">=</span> canvasWidth <span class="token operator">+</span> <span class="token string">'px'</span>
-  canvas<span class="token punctuation">.</span>style<span class="token punctuation">.</span>height <span class="token operator">=</span> canvasHeight <span class="token operator">+</span> <span class="token string">'px'</span>
-<span class="token punctuation">}</span>
-
-onMounted <span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> context <span class="token operator">=</span> canvas<span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token string">'2d'</span><span class="token punctuation">)</span>
-
-  <span class="token keyword">let</span> img <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Image</span>
-  img<span class="token punctuation">.</span>src <span class="token operator">=</span> <span class="token string">'https://picsum.photos/1920/1080/?random=10'</span>
-
-  img<span class="token punctuation">.</span>onload <span class="token operator">=</span> _ <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-    context<span class="token punctuation">.</span>canvas<span class="token punctuation">.</span>width <span class="token operator">=</span> img<span class="token punctuation">.</span>width
-    context<span class="token punctuation">.</span>canvas<span class="token punctuation">.</span>height <span class="token operator">=</span> img<span class="token punctuation">.</span>height
-    context<span class="token punctuation">.</span>drawImage <span class="token punctuation">(</span>img<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
-    onResize <span class="token punctuation">(</span><span class="token punctuation">)</span>
-  <span class="token punctuation">}</span>
-  
-  addEventListener <span class="token punctuation">(</span><span class="token string">'resize'</span><span class="token punctuation">,</span> onResize<span class="token punctuation">)</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-onBeforeUnmount <span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> removeEventListener <span class="token punctuation">(</span><span class="token string">'resize'</span><span class="token punctuation">,</span> onResize<span class="token punctuation">)</span><span class="token punctuation">)</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>canvas</span> <span class="token attr-name">ref</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>canvas<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>41 行</p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>canvas</span> <span class="token attr-name">ref</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>canvas<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">canvas</span> <span class="attr">ref</span>=<span class="string">&quot;canvas&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+
 <p>在 HTML 內使用 <code>&lt;canvas&gt;</code> 繪製圖片，因為要由 Vue 控制，特別使用 <code>ref</code> 定義名稱。</p>
 <p>第 4 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> canvas <span class="token operator">=</span> $ref <span class="token punctuation">(</span><span class="token keyword">null</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> canvas = $ref (<span class="literal">null</span>)</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>$ref</code> 定義 <code>canvas</code> 初始值為 <code>null</code>。</p>
 <p>21 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">onMounted <span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> context <span class="token operator">=</span> canvas<span class="token punctuation">.</span><span class="token function">getContext</span><span class="token punctuation">(</span><span class="token string">'2d'</span><span class="token punctuation">)</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">onMounted</span> (<span class="function"><span class="params">_</span> =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">let</span> context = canvas.<span class="title function_">getContext</span>(<span class="string">&#x27;2d&#x27;</span>)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> img = <span class="keyword">new</span> <span class="title class_">Image</span></span><br><span class="line">  img.<span class="property">src</span> = <span class="string">&#x27;https://picsum.photos/1920/1080/?random=10&#x27;</span></span><br><span class="line"></span><br><span class="line">  img.<span class="property">onload</span> = <span class="function"><span class="params">_</span> =&gt;</span> &#123;</span><br><span class="line">    context.<span class="property">canvas</span>.<span class="property">width</span> = img.<span class="property">width</span></span><br><span class="line">    context.<span class="property">canvas</span>.<span class="property">height</span> = img.<span class="property">height</span></span><br><span class="line">    context.<span class="property">drawImage</span> (img, <span class="number">0</span>, <span class="number">0</span>)</span><br><span class="line">    <span class="title function_">onResize</span> ()</span><br><span class="line">  &#125;</span><br><span class="line">  </span><br><span class="line">  <span class="title function_">addEventListener</span> (<span class="string">&#x27;resize&#x27;</span>, onResize)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-  <span class="token keyword">let</span> img <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Image</span>
-  img<span class="token punctuation">.</span>src <span class="token operator">=</span> <span class="token string">'https://picsum.photos/1920/1080/?random=10'</span>
-
-  img<span class="token punctuation">.</span>onload <span class="token operator">=</span> _ <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-    context<span class="token punctuation">.</span>canvas<span class="token punctuation">.</span>width <span class="token operator">=</span> img<span class="token punctuation">.</span>width
-    context<span class="token punctuation">.</span>canvas<span class="token punctuation">.</span>height <span class="token operator">=</span> img<span class="token punctuation">.</span>height
-    context<span class="token punctuation">.</span>drawImage <span class="token punctuation">(</span>img<span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">0</span><span class="token punctuation">)</span>
-    onResize <span class="token punctuation">(</span><span class="token punctuation">)</span>
-  <span class="token punctuation">}</span>
-  
-  addEventListener <span class="token punctuation">(</span><span class="token string">'resize'</span><span class="token punctuation">,</span> onResize<span class="token punctuation">)</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>由 <code>canvas.getContext</code> 取得 2D 的 <code>context</code></li>
 <li>將圖片建立在 <code>Image</code> Object，當 Object 建立成功後會觸發 <code>onload</code> event，可在此取得圖片長寬，並使用 <code>context</code> 的 <code>drawImage</code> 在 <code>canvas</code> ref 繪圖</li>
@@ -522,22 +467,16 @@ onBeforeUnmount <span class="token punctuation">(</span>_ <span class="token ope
 <p>若要一開始就使用 Canvas 繪圖，則一定要寫在 <code>onMounted</code> 內，因為此時 DOM 才準備好，Canvas 才能夠繪圖</p>
 </blockquote>
 <p>14 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">addEventListener <span class="token punctuation">(</span><span class="token string">'resize'</span><span class="token punctuation">,</span> onResize<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">addEventListener</span> (<span class="string">&#x27;resize&#x27;</span>, onResize)</span><br></pre></td></tr></table></figure>
+
 <p>註冊 <code>resize</code> event 綁定到 <code>onResize</code>。</p>
 <p>第 7 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> ratio <span class="token operator">=</span> canvas<span class="token punctuation">.</span>width <span class="token operator">/</span> canvas<span class="token punctuation">.</span>height
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> ratio = canvas.<span class="property">width</span> / canvas.<span class="property">height</span></span><br></pre></td></tr></table></figure>
+
 <p>Browser 長寬改變後不能破壞原本圖片比例，因此先使用 <code>cavas.width</code> 除以 <code>canvas.height</code> 計算出原圖片比例。</p>
 <p>第 9 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> canvasHeight <span class="token operator">=</span> innerHeight
-<span class="token keyword">let</span> canvasWidth <span class="token operator">=</span> canvasHeight <span class="token operator">*</span> ratio
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> canvasHeight = innerHeight</span><br><span class="line"><span class="keyword">let</span> canvasWidth = canvasHeight * ratio</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (canvasWidth &gt; innerWidth) &#123;</span><br><span class="line">  canvasWidth = innerWidth</span><br><span class="line">  canvasHeight = canvasWidth / ratio</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">if</span> <span class="token punctuation">(</span>canvasWidth <span class="token operator">></span> innerWidth<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  canvasWidth <span class="token operator">=</span> innerWidth
-  canvasHeight <span class="token operator">=</span> canvasWidth <span class="token operator">/</span> ratio
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li><p>使用 <code>innerHeight</code> 取得目前 browser 高度，成為新圖片 height</p>
 </li>
@@ -547,13 +486,12 @@ onBeforeUnmount <span class="token punctuation">(</span>_ <span class="token ope
 </li>
 </ul>
 <p>17 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">canvas<span class="token punctuation">.</span>style<span class="token punctuation">.</span>width <span class="token operator">=</span> canvasWidth <span class="token operator">+</span> <span class="token string">'px'</span>
-canvas<span class="token punctuation">.</span>style<span class="token punctuation">.</span>height <span class="token operator">=</span> canvasHeight <span class="token operator">+</span> <span class="token string">'px'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">canvas.<span class="property">style</span>.<span class="property">width</span> = canvasWidth + <span class="string">&#x27;px&#x27;</span></span><br><span class="line">canvas.<span class="property">style</span>.<span class="property">height</span> = canvasHeight + <span class="string">&#x27;px&#x27;</span></span><br></pre></td></tr></table></figure>
+
 <p>將新圖片 width 與 height 指定給 style，透過 CSS 改變圖片長寬達成 RWD。</p>
 <p>37 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">onBeforeUnmount <span class="token punctuation">(</span>_ <span class="token operator">=</span><span class="token operator">></span> removeEventListener <span class="token punctuation">(</span><span class="token string">'resize'</span><span class="token punctuation">,</span> onResize<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">onBeforeUnmount</span> (<span class="function"><span class="params">_</span> =&gt;</span> <span class="title function_">removeEventListener</span> (<span class="string">&#x27;resize&#x27;</span>, onResize))</span><br></pre></td></tr></table></figure>
+
 <p>取消 <code>resize</code> event 註冊。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Canvas 繪製圖片亦可實現 RWD，唯必須透過 resize event 手動計算出長寬</li>

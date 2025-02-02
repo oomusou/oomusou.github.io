@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,25 +438,12 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>若要在 macOS 使用 PostgreSQL，最簡單的方式就是使用 Docker。只要在 <code>docker-compose.yml</code> 描述好 PostgreSQL 設定， <code>docker compose up -d</code> 即可快速啟動。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>PostgreSQL 14.0</p>
 <h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><p><strong>docker-compose.yml</strong></p>
-<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3"</span>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">postgres:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">postgres:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">postgres</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">$&#123;HOST_DIR&#125;:/var/lib/postgresql/data</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">$&#123;POSTGRES_PORT&#125;:5432</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">POSTGRES_DB=$&#123;POSTGRES_DB&#125;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">POSTGRES_USER=$&#123;POSTGRES_USER&#125;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">POSTGRES_PASSWORD=$&#123;POSTGRES_PASSWORD&#125;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token key atrule">services</span><span class="token punctuation">:</span>
-  <span class="token key atrule">postgres</span><span class="token punctuation">:</span>
-    <span class="token key atrule">image</span><span class="token punctuation">:</span> postgres<span class="token punctuation">:</span>latest
-    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> postgres
-    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>HOST_DIR<span class="token punctuation">}</span><span class="token punctuation">:</span>/var/lib/postgresql/data
-    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>POSTGRES_PORT<span class="token punctuation">}</span><span class="token punctuation">:</span><span class="token number">5432</span>
-    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> POSTGRES_DB=$<span class="token punctuation">{</span>POSTGRES_DB<span class="token punctuation">}</span>
-      <span class="token punctuation">-</span> POSTGRES_USER=$<span class="token punctuation">{</span>POSTGRES_USER<span class="token punctuation">}</span>
-      <span class="token punctuation">-</span> POSTGRES_PASSWORD=$<span class="token punctuation">{</span>POSTGRES_PASSWORD<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>設定 Postgres container：</p>
 <ul>
 <li><code>image: postgres:latest</code>：使用 PostgreSQL 官方所提供 image 並使用最新版本</li>
@@ -466,12 +453,8 @@ a:hover {
 <li><code>environment</code>：設定 database 名稱、id 與 password</li>
 </ul>
 <h2 id="Environment-Variable"><a href="#Environment-Variable" class="headerlink" title="Environment Variable"></a>Environment Variable</h2><p><strong>.env</strong></p>
-<pre class="line-numbers highlight language-yaml"><code class="language-yaml">HOST_DIR=.data
-POSTGRES_PORT=5432
-POSTGRES_DB=KnexLab
-POSTGRES_USER=admin
-POSTGRES_PASSWORD=12345
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="string">HOST_DIR=.data</span></span><br><span class="line"><span class="string">POSTGRES_PORT=5432</span></span><br><span class="line"><span class="string">POSTGRES_DB=KnexLab</span></span><br><span class="line"><span class="string">POSTGRES_USER=admin</span></span><br><span class="line"><span class="string">POSTGRES_PASSWORD=12345</span></span><br></pre></td></tr></table></figure>
+
 <p>此為 <code>docker-compose.yml</code> 所設定的環境變數，被獨立在 <code>.env</code> 中，可單獨設定，將來不用修改 <code>docker-compose.yml</code>。</p>
 <ul>
 <li><code>HOST_DIR</code>：設定 PostgreSQL data 要存到 host 位置</li>
@@ -480,8 +463,8 @@ POSTGRES_PASSWORD=12345
 <li><code>POSTGRES_USER</code>：設定 id</li>
 <li><code>POSTGRES_PASSWORD</code>：設定 password</li>
 </ul>
-<h2 id="Start-PostgreSQL"><a href="#Start-PostgreSQL" class="headerlink" title="Start PostgreSQL"></a>Start PostgreSQL</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ docker compose up -d
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Start-PostgreSQL"><a href="#Start-PostgreSQL" class="headerlink" title="Start PostgreSQL"></a>Start PostgreSQL</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker compose up -d</span></span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>docker compose up</code> 啟動 PostgreSQL。</p>
 <p><code>-d</code> : <code>d</code>etach，建立 container 後，就脫離目前 process</p>
 <p><img src="/images/docker/postgresql/post000.png" alt="post000"></p>
@@ -491,8 +474,8 @@ POSTGRES_PASSWORD=12345
 <p>由於 PostgreSQL 是以 Docker 執行，因此 host 填 <code>localhost</code>，port 透過 <code>5432</code> 即可連接。</p>
 <p><img src="/images/docker/postgresql/post003.png" alt="post003"></p>
 <p>DataGrip 順利連上 PostgreSQL。</p>
-<h2 id="Stop-PostgreSQL"><a href="#Stop-PostgreSQL" class="headerlink" title="Stop PostgreSQL"></a>Stop PostgreSQL</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ docker compose down
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Stop-PostgreSQL"><a href="#Stop-PostgreSQL" class="headerlink" title="Stop PostgreSQL"></a>Stop PostgreSQL</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker compose down</span></span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>docker compose down</code> 結束 PostgreSQL，並且刪除 container，但資料仍會留在 host。</p>
 <p><img src="/images/docker/postgresql/post004.png" alt="post004"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>

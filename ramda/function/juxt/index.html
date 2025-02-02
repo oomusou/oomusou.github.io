@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,15 +438,11 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>實務上常須對 Function 的 Argument 先經過處理後，在傳給主要 Function 運算，此時可使用 <code>juxt()</code> 先處理，再以 <code>pipe()</code> 組合其他 Function。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
-<h2 id="range"><a href="#range" class="headerlink" title="range()"></a>range()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> juxt <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="range"><a href="#range" class="headerlink" title="range()"></a>range()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; juxt &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> range = <span class="title function_">juxt</span>([<span class="title class_">Math</span>.<span class="property">min</span>, <span class="title class_">Math</span>.<span class="property">max</span>])</span><br><span class="line"></span><br><span class="line"><span class="title function_">range</span>(<span class="number">3</span>, <span class="number">4</span>, <span class="number">9</span>, -<span class="number">3</span>) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> range <span class="token operator">=</span> <span class="token function">juxt</span><span class="token punctuation">(</span><span class="token punctuation">[</span>Math<span class="token punctuation">.</span>min<span class="token punctuation">,</span> Math<span class="token punctuation">.</span>max<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-<span class="token function">range</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">,</span> <span class="token number">9</span><span class="token punctuation">,</span> <span class="token operator">-</span><span class="token number">3</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>range()</code> 為 variadic function，可從輸入 argument 中取得最大最小值，並以 Pair 回傳。</p>
 <p>使用 <code>juxt()</code> 將 argument 先經過 <code>Max.min()</code> 與 <code>Math.max()</code> 處理，因爲 <code>juxt()</code> 結果為 Array，因此 function 需包在 <code>[]</code> 內。</p>
 <blockquote>
@@ -456,17 +452,8 @@ a:hover {
 <p><code>(a, b, …, m)</code>：data 的 artity 沒有限制，但必須與 Function Array 中的 function signature 相同</p>
 <p><code>[n]</code>：回傳 Array</p>
 <p><img src="/images/ramda/function/juxt/juxt000.png" alt="juxt000"></p>
-<h2 id="avg"><a href="#avg" class="headerlink" title="avg()"></a>avg()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> juxt<span class="token punctuation">,</span> apply<span class="token punctuation">,</span> divide<span class="token punctuation">,</span> sum<span class="token punctuation">,</span> length <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="avg"><a href="#avg" class="headerlink" title="avg()"></a>avg()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, juxt, apply, divide, sum, length &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> avg = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">juxt</span>([sum, length]),</span><br><span class="line">  <span class="title function_">apply</span>(divide)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">avg</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> avg <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">juxt</span><span class="token punctuation">(</span><span class="token punctuation">[</span>sum<span class="token punctuation">,</span> length<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">apply</span><span class="token punctuation">(</span>divide<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">avg</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>使用 <code>juxt()</code> 將 Array 先將過 <code>sum()</code> 與 <code>length()</code> 處理</li>
 <li>因為 <code>juxt()</code> 回傳為 Array，所以使用 <code>apply()</code> 將 <code>divide()</code> 改變能接受 Array</li>
@@ -476,7 +463,7 @@ a:hover {
 <li><code>juxt()</code> 、 <code>converge()</code> 與 <code>lift()</code> 使用情境有些類似，有些可以相互取代</li>
 <li><code>juxt()</code> 回傳為 Array，常需搭配 <code>apply()</code> 讓一般 function 能接受 Array</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#juxt" target="_blank" rel="noopener">juxt()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#juxt">juxt()</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

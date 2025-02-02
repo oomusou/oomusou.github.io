@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,10 +438,10 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Whisper 可將語音直接輸出成文字，而 whisper.wasm 為其 Web 版本，可直接跑在 Browser 上，其編譯基於 Python、Emscripten 與 CMake，需裝好這三個才能 make 編譯。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>2020 13” MacBook Pro (Intel i5)<br>macOS Sonoma 14.1.2<br>Anaconda Navigator 2.5.1<br>Python 3.9<br>Emscripten 3.1.5<br>CMake 3.28.0</p>
-<h2 id="whisper-wasm"><a href="#whisper-wasm" class="headerlink" title="whisper.wasm"></a>whisper.wasm</h2><p><a href="https://github.com/ggerganov/whisper.cpp/tree/master/examples/whisper.wasm" target="_blank" rel="noopener">https://github.com/ggerganov/whisper.cpp/tree/master/examples/whisper.wasm</a></p>
+<h2 id="whisper-wasm"><a href="#whisper-wasm" class="headerlink" title="whisper.wasm"></a>whisper.wasm</h2><p><a target="_blank" rel="noopener" href="https://github.com/ggerganov/whisper.cpp/tree/master/examples/whisper.wasm">https://github.com/ggerganov/whisper.cpp/tree/master/examples/whisper.wasm</a></p>
 <p><img src="/images/whisper/make/whisper002.webp" alt="whisper001"></p>
 <ul>
 <li>Whisper 的 WebAssembly 版本</li>
@@ -451,7 +451,7 @@ a:hover {
 <li>提供 index-tmp.html 整合範例</li>
 </ul>
 <h2 id="Anaconda"><a href="#Anaconda" class="headerlink" title="Anaconda"></a>Anaconda</h2><p>Python 版本管理工具，由於 whisper.wasm 目前只能在 Python 3.9 編譯，需使用 Anaconda 準備 Python 3.9 環境。</p>
-<p><a href="https://www.anaconda.com/download" target="_blank" rel="noopener">https://www.anaconda.com/download</a></p>
+<p><a target="_blank" rel="noopener" href="https://www.anaconda.com/download">https://www.anaconda.com/download</a></p>
 <p><img src="/images/whisper/make/whisper003.webp" alt="whisper003"></p>
 <ul>
 <li>下載 Graphical Installer 版本安裝 Anaconda (為 pkg)</li>
@@ -466,38 +466,31 @@ a:hover {
 <ul>
 <li>選擇 <code>環境名稱</code>，右鍵 <code>Open Terminal</code> 開啟 Python 3.9.18 環境</li>
 </ul>
-<h2 id="Emscripten"><a href="#Emscripten" class="headerlink" title="Emscripten"></a>Emscripten</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ brew install emscripten
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Emscripten"><a href="#Emscripten" class="headerlink" title="Emscripten"></a>Emscripten</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">brew install emscripten</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>在 Python 3.9 下使用 Homebrew 安裝 Emscripten</li>
 </ul>
-<h2 id="CMake"><a href="#CMake" class="headerlink" title="CMake"></a>CMake</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ brew install cmake
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="CMake"><a href="#CMake" class="headerlink" title="CMake"></a>CMake</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">brew install cmake</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>在 Python 3.9 下使用 Homebrew 安裝 CMake</li>
 </ul>
-<h2 id="編譯-whisper-wasm"><a href="#編譯-whisper-wasm" class="headerlink" title="編譯 whisper.wasm"></a>編譯 whisper.wasm</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ git clone https://github.com/ggerganov/whisper.cpp
-$ cd whisper.cpp
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="編譯-whisper-wasm"><a href="#編譯-whisper-wasm" class="headerlink" title="編譯 whisper.wasm"></a>編譯 whisper.wasm</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">git <span class="built_in">clone</span> https://github.com/ggerganov/whisper.cpp</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">cd</span> whisper.cpp</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>使用 git 下載 <code>whisper.cpp</code></li>
 </ul>
 <h3 id="CMakeList-txt"><a href="#CMakeList-txt" class="headerlink" title="CMakeList.txt"></a>CMakeList.txt</h3><p><img src="/images/whisper/make/whisper006.webp" alt="whisper006"></p>
 <p><strong>Line 9</strong></p>
-<pre class="line-numbers highlight language-txt"><code class="language-txt">set(CMAKE_THREAD_LIBS_INIT "-Ipthread")
-set(CMAKE_HAVE_THREADS_LIBRARY 1)
-set(CMAKE_USE_WIN32_THREADS_INIT 0)
-set(CMAKE_USE_PTHREADS_INIT 1)
-set(THREADS_PREFER_PTHREAD_FLAG ON)
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight txt"><table><tr><td class="code"><pre><span class="line">set(CMAKE_THREAD_LIBS_INIT &quot;-Ipthread&quot;)</span><br><span class="line">set(CMAKE_HAVE_THREADS_LIBRARY 1)</span><br><span class="line">set(CMAKE_USE_WIN32_THREADS_INIT 0)</span><br><span class="line">set(CMAKE_USE_PTHREADS_INIT 1)</span><br><span class="line">set(THREADS_PREFER_PTHREAD_FLAG ON)</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>開啟在 <code>whisper.cpp</code> 下的 <code>CMakeList.txt</code></li>
 <li>在第 9 行加入以上 <code>set</code></li>
 </ul>
-<h3 id="make"><a href="#make" class="headerlink" title="make"></a>make</h3><pre class="line-numbers highlight language-shell"><code class="language-shell">$ mkdir build-em && cd build-em
-$ emcmake cmake ..
-$ make -j
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h3 id="make"><a href="#make" class="headerlink" title="make"></a>make</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash"><span class="built_in">mkdir</span> build-em &amp;&amp; <span class="built_in">cd</span> build-em</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">emcmake cmake ..</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">make -j</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>建立 <code>build-em</code> 目錄</li>
 <li>並在 <code>build-em</code> 目錄下執行 <code>emcmake cmake ..</code> 產生 makefile</li>

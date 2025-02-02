@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,52 +438,28 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>後端通常日期會以 ISO String  回傳給前端，要前端自行根據 Timezone 顯示該時區正確時間，且日期格式又會根據客戶需求調整，這常見需求該如何實現呢 ?</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.4<br>VS Code 1.43.2<br>Quokka 1.0.285<br>Date-fp 5.0.3<br>Date-fns 2.11.1</p>
-<h2 id="toLocaleString-NaN"><a href="#toLocaleString-NaN" class="headerlink" title="toLocaleString()"></a>toLocaleString()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> s <span class="token operator">=</span> <span class="token string">'2020-04-02T11:30:00Z'</span>
+<h2 id="toLocaleString-NaN"><a href="#toLocaleString-NaN" class="headerlink" title="toLocaleString()"></a>toLocaleString()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> s = <span class="string">&#x27;2020-04-02T11:30:00Z&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">new</span> <span class="title class_">Date</span>(s).<span class="title function_">toLocaleString</span>() <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">new</span> <span class="token class-name">Date</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toLocaleString</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>最簡單方法是使用內建的 <code>toLocaleString()</code>，它會自動根據目前 timezone 顯示正確時間，唯 format 可能不是我們想要的。</p>
 <p><img src="/images/date-fns/format/format000.png" alt="format000"></p>
-<h2 id="Date-fp"><a href="#Date-fp" class="headerlink" title="Date-fp"></a>Date-fp</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> format <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'date-fp'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> date <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span> 
+<h2 id="Date-fp"><a href="#Date-fp" class="headerlink" title="Date-fp"></a>Date-fp</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; format &#125; <span class="keyword">from</span> <span class="string">&#x27;date-fp&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; date &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span> </span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> s = <span class="string">&#x27;2020-04-02T11:30:00Z&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  date,</span><br><span class="line">  <span class="title function_">format</span>(<span class="string">&#x27;YYYY-MM-DD HH:mm:ss&#x27;</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(s) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> s <span class="token operator">=</span> <span class="token string">'2020-04-02T11:30:00Z'</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  date<span class="token punctuation">,</span>
-  <span class="token function">format</span><span class="token punctuation">(</span><span class="token string">'YYYY-MM-DD HH:mm:ss'</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Date-fp 有提供 <code>format()</code>，唯 Date-fp 將所有時間均視為 UTC 時間，因此其 <code>format()</code> 後格式是對了，但 timezone 不對。</p>
 <blockquote>
 <p>Wink-fp 的 <code>date()</code> 只是 <code>new Date</code> 的 function 化，適合 function pipeline</p>
 </blockquote>
 <p><img src="/images/date-fns/format/format001.png" alt="format001"></p>
-<h2 id="Date-fns"><a href="#Date-fns" class="headerlink" title="Date-fns"></a>Date-fns</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> format <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'date-fns/fp'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> date <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h2 id="Date-fns"><a href="#Date-fns" class="headerlink" title="Date-fns"></a>Date-fns</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; format &#125; <span class="keyword">from</span> <span class="string">&#x27;date-fns/fp&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; date &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> s = <span class="string">&#x27;2020-04-02T11:30:00Z&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  date,</span><br><span class="line">  <span class="title function_">format</span>(<span class="string">&#x27;yyyy-MM-dd HH:mm:ss&#x27;</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(s) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> s <span class="token operator">=</span> <span class="token string">'2020-04-02T11:30:00Z'</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  date<span class="token punctuation">,</span>
-  <span class="token function">format</span><span class="token punctuation">(</span><span class="token string">'yyyy-MM-dd HH:mm:ss'</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Date-fns 所提供的 <code>format()</code> 就很理想，除了能轉成指定格式，也會自動轉成正確 timezone。</p>
 <p><img src="/images/date-fns/format/format002.png" alt="format002"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>若想擁有 FP 的 curried function，且 data 放在最後一個 argument，過去 Date-fp 是首選，唯其 <code>format()</code> 只支援 UTC time 是遺憾之處，此時可改用 Date-fns 的 <code>format()</code>，依然可以繼續 function pipeline</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://cullophid.github.io/date-fp/index.html" target="_blank" rel="noopener">Date-fp</a>, <a href="https://cullophid.github.io/date-fp/docs/functions/format.html" target="_blank" rel="noopener">format()</a><br><a href="https://date-fns.org/" target="_blank" rel="noopener">Date-fns</a>, <a href="https://date-fns.org/v2.11.1/docs/format" target="_blank" rel="noopener">format()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://cullophid.github.io/date-fp/index.html">Date-fp</a>, <a target="_blank" rel="noopener" href="https://cullophid.github.io/date-fp/docs/functions/format.html">format()</a><br><a target="_blank" rel="noopener" href="https://date-fns.org/">Date-fns</a>, <a target="_blank" rel="noopener" href="https://date-fns.org/v2.11.1/docs/format">format()</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

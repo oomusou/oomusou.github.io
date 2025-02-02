@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,28 +438,16 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>當引入 Maybe 後，若使用 <code>map</code> 將 Array 與回傳 Maybe 的 Function 綁定，則會產生 Array Maybe，此時我們很難從 Maybe 取出內部 Value，可使用 <code>traverse</code> 將 Array Maybe 轉成 Maybe Array，如此就很容易從 Maybe 取出 Value。 </p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Sanctuary 3.1.0</p>
-<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> parseInt <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<h2 id="map"><a href="#map" class="headerlink" title="map"></a>map</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; map, <span class="built_in">parseInt</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;sanctuary&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="title function_">map</span> (<span class="built_in">parseInt</span> (<span class="number">16</span>)) (data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">]</span>
-
-map <span class="token punctuation">(</span>parseInt <span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>data</code> 為 Array，想將 Char 轉成 Integer。</p>
 <p>因為 <code>parseInt</code> 回傳 Maybe，透過 <code>map</code> 綁定後回傳 Array Maybe，我們很難從 Array Maybe 取出 Maybe 內部 value。</p>
 <p><img src="/images/sanctuary/fantasy/traverse/traverse000.png" alt="traverse000"></p>
-<h2 id="traverse"><a href="#traverse" class="headerlink" title="traverse"></a>traverse</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> Maybe<span class="token punctuation">,</span> parseInt<span class="token punctuation">,</span> traverse<span class="token punctuation">,</span> I<span class="token punctuation">,</span> maybe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<h2 id="traverse"><a href="#traverse" class="headerlink" title="traverse"></a>traverse</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, map, <span class="title class_">Maybe</span>, <span class="built_in">parseInt</span>, traverse, I, maybe &#125; <span class="keyword">from</span> <span class="string">&#x27;sanctuary&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="title function_">pipe</span> ([</span><br><span class="line">  <span class="title function_">map</span> (<span class="built_in">parseInt</span> (<span class="number">16</span>)),</span><br><span class="line">  <span class="title function_">traverse</span> (<span class="title class_">Maybe</span>) (I),</span><br><span class="line">  <span class="title function_">maybe</span> ([]) (I)</span><br><span class="line">]) (data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">]</span>
-
-pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
-  map <span class="token punctuation">(</span>parseInt <span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  traverse <span class="token punctuation">(</span>Maybe<span class="token punctuation">)</span> <span class="token punctuation">(</span>I<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  maybe <span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>I<span class="token punctuation">)</span>
-<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用 <code>pipe</code> 組合 IIFE：</p>
 <ul>
 <li><code>map (parseInt (16))</code>：每個 element 都套用 <code>parseInt (16)</code>，回傳 Array Maybe</li>
@@ -476,26 +464,12 @@ pipe <span class="token punctuation">(</span><span class="token punctuation">[</
 <li><code>f (t b)</code>：回傳 Applicative Traversable</li>
 </ul>
 <p><img src="/images/sanctuary/fantasy/traverse/traverse001.png" alt="traverse001"></p>
-<h2 id="Refactoring"><a href="#Refactoring" class="headerlink" title="Refactoring"></a>Refactoring</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> Maybe<span class="token punctuation">,</span> parseInt<span class="token punctuation">,</span> traverse<span class="token punctuation">,</span> I<span class="token punctuation">,</span> maybe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<h2 id="Refactoring"><a href="#Refactoring" class="headerlink" title="Refactoring"></a>Refactoring</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, <span class="title class_">Maybe</span>, <span class="built_in">parseInt</span>, traverse, I, maybe &#125; <span class="keyword">from</span> <span class="string">&#x27;sanctuary&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;c&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="title function_">pipe</span> ([</span><br><span class="line">  <span class="title function_">traverse</span> (<span class="title class_">Maybe</span>) (<span class="built_in">parseInt</span> (<span class="number">16</span>)),</span><br><span class="line">  <span class="title function_">maybe</span> ([]) (I)</span><br><span class="line">]) (data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token string">'c'</span><span class="token punctuation">]</span>
-
-pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
-  traverse <span class="token punctuation">(</span>Maybe<span class="token punctuation">)</span> <span class="token punctuation">(</span>parseInt <span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  maybe <span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>I<span class="token punctuation">)</span>
-<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>既然 <code>traverse</code> 可直接傳入 function，可將 <code>parseInt (16)</code> 直接傳入 <code>traverse</code> 即可。</p>
 <p><img src="/images/sanctuary/fantasy/traverse/traverse002.png" alt="traverse002"></p>
-<h2 id="Nothing"><a href="#Nothing" class="headerlink" title="Nothing"></a>Nothing</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> Maybe<span class="token punctuation">,</span> parseInt<span class="token punctuation">,</span> traverse<span class="token punctuation">,</span> I<span class="token punctuation">,</span> maybe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<h2 id="Nothing"><a href="#Nothing" class="headerlink" title="Nothing"></a>Nothing</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, <span class="title class_">Maybe</span>, <span class="built_in">parseInt</span>, traverse, I, maybe &#125; <span class="keyword">from</span> <span class="string">&#x27;sanctuary&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [<span class="string">&#x27;a&#x27;</span>, <span class="string">&#x27;b&#x27;</span>, <span class="string">&#x27;x&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="title function_">pipe</span> ([</span><br><span class="line">  <span class="title function_">traverse</span> (<span class="title class_">Maybe</span>) (<span class="built_in">parseInt</span> (<span class="number">16</span>)),</span><br><span class="line">  <span class="title function_">maybe</span> ([]) (I)</span><br><span class="line">]) (data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token string">'a'</span><span class="token punctuation">,</span> <span class="token string">'b'</span><span class="token punctuation">,</span> <span class="token string">'x'</span><span class="token punctuation">]</span>
-
-pipe <span class="token punctuation">(</span><span class="token punctuation">[</span>
-  traverse <span class="token punctuation">(</span>Maybe<span class="token punctuation">)</span> <span class="token punctuation">(</span>parseInt <span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  maybe <span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>I<span class="token punctuation">)</span>
-<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若傳入 <code>traverse</code> 的 function 會造成其中任一 element 為 Nothing，則會停止後續運算直接回傳 Nothing。</p>
 <p><code>parseInt (16) (&#39;x&#39;)</code> 會回傳 Nothing，因此最後結果為 Nothing，經過 <code>maybe</code> 處理後為 Empty Array。</p>
 <p><img src="/images/sanctuary/fantasy/traverse/traverse003.png" alt="traverse003"></p>
@@ -504,7 +478,7 @@ pipe <span class="token punctuation">(</span><span class="token punctuation">[</
 <li><code>traverse</code> 允許我們傳入回傳 Applicative 的 function，因此 Maybe 也是 Applicative，因此也可直接傳入 <code>traverse</code> 省略 <code>map</code></li>
 <li>可發現當同樣傳入回傳 Maybe 的 function 時，<code>map</code> 與 <code>traverse</code> 所回傳的 type signature 剛好相反</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://sanctuary.js.org/" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://sanctuary.js.org/#traverse" target="_blank" rel="noopener">traverse</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://sanctuary.js.org/">Sanctuary</a>, <a target="_blank" rel="noopener" href="https://sanctuary.js.org/#traverse">traverse</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

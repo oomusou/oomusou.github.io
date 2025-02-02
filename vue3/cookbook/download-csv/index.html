@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,72 +438,20 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>We can create a CSV file and download it automatically without any packages.</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.2</p>
 <h2 id="Download-CSV"><a href="#Download-CSV" class="headerlink" title="Download CSV"></a>Download CSV</h2><p><img src="/images/vue3/cookbook/download-csv/csv000.png" alt="cvs000"></p>
 <p>Click the button to download CSV automatically.</p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> join<span class="token punctuation">,</span> values<span class="token punctuation">,</span> head<span class="token punctuation">,</span> keys<span class="token punctuation">,</span> concat<span class="token punctuation">,</span> __<span class="token punctuation">,</span> converge <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; pipe, map, join, values, head, keys, concat, __, converge &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> data = [</span></span><br><span class="line"><span class="language-javascript">  &#123; <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">100</span> &#125;,</span></span><br><span class="line"><span class="language-javascript">  &#123; <span class="attr">title</span>: <span class="string">&#x27;Programming Haskell&#x27;</span>, <span class="attr">price</span>: <span class="number">200</span> &#125;,</span></span><br><span class="line"><span class="language-javascript">  &#123; <span class="attr">title</span>: <span class="string">&#x27;Speaking JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">300</span> &#125;</span></span><br><span class="line"><span class="language-javascript">]</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> header = <span class="title function_">pipe</span> (</span></span><br><span class="line"><span class="language-javascript">  head,</span></span><br><span class="line"><span class="language-javascript">  keys,</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">join</span> (<span class="string">&#x27;,&#x27;</span>),</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">concat</span>(__, <span class="string">&#x27;\n&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> objToStr = <span class="title function_">pipe</span> (</span></span><br><span class="line"><span class="language-javascript">  values,</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">join</span> (<span class="string">&#x27;,&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> body = <span class="title function_">pipe</span> (</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">map</span> (objToStr),</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">join</span> (<span class="string">&#x27;\n&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> arrToCSV = <span class="title function_">converge</span> (</span></span><br><span class="line"><span class="language-javascript">  concat, [header, body]</span></span><br><span class="line"><span class="language-javascript">)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> <span class="title function_">onClick</span> = (<span class="params"></span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">let</span> csv = <span class="title function_">arrToCSV</span> (data)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">let</span> anchor = <span class="variable language_">document</span>.<span class="property">createElement</span> (<span class="string">&#x27;a&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">  anchor.<span class="property">href</span> = <span class="string">`data:text/csv;charset=utf-8,<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span> (csv)&#125;</span>`</span></span></span><br><span class="line"><span class="language-javascript">  anchor.<span class="property">target</span> = <span class="string">&#x27;_blank&#x27;</span></span></span><br><span class="line"><span class="language-javascript">  anchor.<span class="property">download</span> = <span class="string">&#x27;data.csv&#x27;</span></span></span><br><span class="line"><span class="language-javascript">  anchor.<span class="property">click</span> ()</span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;onClick&quot;</span>&gt;</span>Download CSV<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Programming Haskell'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> header <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  head<span class="token punctuation">,</span>
-  keys<span class="token punctuation">,</span>
-  join <span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">concat</span><span class="token punctuation">(</span>__<span class="token punctuation">,</span> <span class="token string">'\n'</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> objToStr <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  values<span class="token punctuation">,</span>
-  join <span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> body <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  map <span class="token punctuation">(</span>objToStr<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  join <span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> arrToCSV <span class="token operator">=</span> converge <span class="token punctuation">(</span>
-  concat<span class="token punctuation">,</span> <span class="token punctuation">[</span>header<span class="token punctuation">,</span> body<span class="token punctuation">]</span>
-<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> csv <span class="token operator">=</span> arrToCSV <span class="token punctuation">(</span>data<span class="token punctuation">)</span>
-
-  <span class="token keyword">let</span> anchor <span class="token operator">=</span> document<span class="token punctuation">.</span>createElement <span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span>
-  anchor<span class="token punctuation">.</span>href <span class="token operator">=</span> <span class="token template-string"><span class="token string">`data:text/csv;charset=utf-8,</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>encodeURIComponent <span class="token punctuation">(</span>csv<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
-  anchor<span class="token punctuation">.</span>target <span class="token operator">=</span> <span class="token string">'_blank'</span>
-  anchor<span class="token punctuation">.</span>download <span class="token operator">=</span> <span class="token string">'data.csv'</span>
-  anchor<span class="token punctuation">.</span>click <span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>Download CSV<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>Line 4</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Programming Haskell'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">100</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;Programming Haskell&#x27;</span>, <span class="attr">price</span>: <span class="number">200</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;Speaking JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">300</span> &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
 <p>Data is Object Array, and we want to convert it to a CSV file first.</p>
 <p><strong>Line 10</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> header <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  head<span class="token punctuation">,</span>
-  keys<span class="token punctuation">,</span>
-  join <span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  concat <span class="token punctuation">(</span>__<span class="token punctuation">,</span> <span class="token string">'\n'</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> header = <span class="title function_">pipe</span> (</span><br><span class="line">  head,</span><br><span class="line">  keys,</span><br><span class="line">  <span class="title function_">join</span> (<span class="string">&#x27;,&#x27;</span>),</span><br><span class="line">  <span class="title function_">concat</span> (__, <span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <p>Use <code>pipe</code> to compose function for header of CSV :</p>
 <ul>
 <li><code>head</code> : get the first element of Array to create the header. It is an Object</li>
@@ -512,47 +460,31 @@ a:hover {
 <li><code>concat (__, &#39;\n&#39;)</code> : add Line Feed at the end of String</li>
 </ul>
 <p><strong>Line 22</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> body <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  map <span class="token punctuation">(</span>objToStr<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  join <span class="token punctuation">(</span><span class="token string">'\n'</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> body = <span class="title function_">pipe</span> (</span><br><span class="line">  <span class="title function_">map</span> (objToStr),</span><br><span class="line">  <span class="title function_">join</span> (<span class="string">&#x27;\n&#x27;</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <p>Use <code>pipe</code> to compose function for the body of CSV :</p>
 <ul>
 <li><code>map (objToStr)</code>：map each Object converted to String</li>
 <li><code>join (&#39;\n&#39;)</code>：convert Array to String separated by <code>\n</code></li>
 </ul>
 <p><strong>Line 17</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> objToStr <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  values<span class="token punctuation">,</span>
-  join <span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> objToStr = <span class="title function_">pipe</span> (</span><br><span class="line">  values,</span><br><span class="line">  <span class="title function_">join</span> (<span class="string">&#x27;,&#x27;</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <p>Use <code>pipe</code> to compose function to convert Object to String separated by <code>,</code>. This is the most critical point to solve this problem :</p>
 <ul>
 <li><code>values</code>：get all values from the Object as Array</li>
 <li><code>join (&#39;,&#39;)</code>：convert Array to String separated by <code>,</code></li>
 </ul>
 <p><strong>Line 27</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> arrToCSV <span class="token operator">=</span> converge <span class="token punctuation">(</span>
-  concat<span class="token punctuation">,</span> <span class="token punctuation">[</span>header<span class="token punctuation">,</span> body<span class="token punctuation">]</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> arrToCSV = <span class="title function_">converge</span> (</span><br><span class="line">  concat, [header, body]</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <p>Use <code>converge</code> to compose function to merge header and body to CSV :</p>
 <ul>
 <li><code>concat</code>：merge header and body</li>
 </ul>
 <p><strong>Line 31</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> csv <span class="token operator">=</span> arrToCSV <span class="token punctuation">(</span>data<span class="token punctuation">)</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">onClick</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> csv = <span class="title function_">arrToCSV</span> (data)</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> anchor = <span class="variable language_">document</span>.<span class="property">createElement</span> (<span class="string">&#x27;a&#x27;</span>)</span><br><span class="line">  anchor.<span class="property">href</span> = <span class="string">`data:text/csv;charset=utf-8,<span class="subst">$&#123;<span class="built_in">encodeURIComponent</span> (csv)&#125;</span>`</span></span><br><span class="line">  anchor.<span class="property">target</span> = <span class="string">&#x27;_blank&#x27;</span></span><br><span class="line">  anchor.<span class="property">download</span> = <span class="string">&#x27;data.csv&#x27;</span></span><br><span class="line">  anchor.<span class="property">click</span> ()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-  <span class="token keyword">let</span> anchor <span class="token operator">=</span> document<span class="token punctuation">.</span>createElement <span class="token punctuation">(</span><span class="token string">'a'</span><span class="token punctuation">)</span>
-  anchor<span class="token punctuation">.</span>href <span class="token operator">=</span> <span class="token template-string"><span class="token string">`data:text/csv;charset=utf-8,</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>encodeURIComponent <span class="token punctuation">(</span>csv<span class="token punctuation">)</span><span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span>
-  anchor<span class="token punctuation">.</span>target <span class="token operator">=</span> <span class="token string">'_blank'</span>
-  anchor<span class="token punctuation">.</span>download <span class="token operator">=</span> <span class="token string">'data.csv'</span>
-  anchor<span class="token punctuation">.</span>click <span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Create CSV file and download it automatically : </p>
 <ul>
 <li>Use <code>arrToCSV</code> to convert Object Array to CSV</li>

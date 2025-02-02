@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,177 +438,51 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>要實現 <code>ListView</code> 動態 filter，<code>ListView</code> 可綁定另外一個 filter 的 <code>List</code>，並在 <code>TextField</code> 的 <code>onChanged</code> event 及時改變要 filter 的 Keyword。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Flutter 3.24.5</p>
 <h2 id="Flutter"><a href="#Flutter" class="headerlink" title="Flutter"></a>Flutter</h2><p><img src="/images/flutter/display/listview/filter/filter01.gif" alt="filter01"></p>
 <ul>
 <li>Android 與 iOS 都成功使用 <code>ListView</code> 與 <code>Event</code> 實現動態 Filter</li>
 </ul>
-<h2 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h2><pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">import</span> <span class="token string">'package:flutter/material.dart'</span><span class="token punctuation">;</span>
+<h2 id="ListView"><a href="#ListView" class="headerlink" title="ListView"></a>ListView</h2><figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Home</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> Home(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;Home&gt; createState() =&gt; _Home();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_Home</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">Home</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; _allItems = [</span><br><span class="line">    <span class="string">&#x27;Apple&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Banana&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Cherry&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Date&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Elderberry&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Fig&#x27;</span>,</span><br><span class="line">    <span class="string">&#x27;Grapes&#x27;</span></span><br><span class="line">  ];</span><br><span class="line"></span><br><span class="line">  <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; _filteredItems = [];</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  <span class="keyword">void</span> initState() &#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line">    _filteredItems = _allItems;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> onChanged(<span class="built_in">String</span> value) &#123;</span><br><span class="line">    <span class="keyword">final</span> keyword = value.trim().toLowerCase();</span><br><span class="line"></span><br><span class="line">    <span class="keyword">final</span> filteredItems = _allItems</span><br><span class="line">        .where((item) =&gt; item.toLowerCase().contains(keyword))</span><br><span class="line">        .toList();</span><br><span class="line"></span><br><span class="line">    setState(() =&gt; _filteredItems = filteredItems);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">var</span> appBar = AppBar(</span><br><span class="line">      title: Text(</span><br><span class="line">        <span class="string">&#x27;Filter List&#x27;</span>,</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> textField = Padding(</span><br><span class="line">      padding: <span class="keyword">const</span> EdgeInsets.all(<span class="number">8.0</span>),</span><br><span class="line">      child: TextField(</span><br><span class="line">        decoration: InputDecoration(</span><br><span class="line">          hintText: <span class="string">&#x27;Enter Keyword to Filter&#x27;</span>,</span><br><span class="line">          border: OutlineInputBorder(</span><br><span class="line">            borderRadius: BorderRadius.circular(<span class="number">8.0</span>),</span><br><span class="line">          ),</span><br><span class="line">        ),</span><br><span class="line">        onChanged: onChanged,</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> listView = Expanded(</span><br><span class="line">      child: ListView.builder(</span><br><span class="line">        itemCount: _filteredItems.length,</span><br><span class="line">        itemBuilder: (context, index) &#123;</span><br><span class="line">          <span class="keyword">return</span> ListTile(</span><br><span class="line">            title: Text(</span><br><span class="line">              _filteredItems[index],</span><br><span class="line">            ),</span><br><span class="line">          );</span><br><span class="line">        &#125;,</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> body = Column(</span><br><span class="line">      children: [</span><br><span class="line">        textField,</span><br><span class="line">        listView,</span><br><span class="line">      ],</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: appBar,</span><br><span class="line">      body: body,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">class</span> <span class="token class-name">Home</span> <span class="token keyword">extends</span> <span class="token class-name">StatefulWidget</span> <span class="token punctuation">{</span>
-  <span class="token keyword">const</span> <span class="token function">Home</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token keyword">super</span><span class="token punctuation">.</span>key<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token metadata symbol">@override</span>
-  State<span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token function">createState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">_Home</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">class</span> <span class="token class-name">_Home</span> <span class="token keyword">extends</span> <span class="token class-name">State</span><span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">final</span> List<span class="token operator">&lt;</span>String<span class="token operator">></span> _allItems <span class="token operator">=</span> <span class="token punctuation">[</span>
-    <span class="token string">'Apple'</span><span class="token punctuation">,</span>
-    <span class="token string">'Banana'</span><span class="token punctuation">,</span>
-    <span class="token string">'Cherry'</span><span class="token punctuation">,</span>
-    <span class="token string">'Date'</span><span class="token punctuation">,</span>
-    <span class="token string">'Elderberry'</span><span class="token punctuation">,</span>
-    <span class="token string">'Fig'</span><span class="token punctuation">,</span>
-    <span class="token string">'Grapes'</span>
-  <span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-  List<span class="token operator">&lt;</span>String<span class="token operator">></span> _filteredItems <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-  <span class="token metadata symbol">@override</span>
-  <span class="token keyword">void</span> <span class="token function">initState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">initState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    _filteredItems <span class="token operator">=</span> _allItems<span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-
-  <span class="token keyword">void</span> <span class="token function">onChanged</span><span class="token punctuation">(</span>String value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">final</span> keyword <span class="token operator">=</span> value<span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">final</span> filteredItems <span class="token operator">=</span> _allItems
-        <span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> item<span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>keyword<span class="token punctuation">)</span><span class="token punctuation">)</span>
-        <span class="token punctuation">.</span><span class="token function">toList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> _filteredItems <span class="token operator">=</span> filteredItems<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-
-  <span class="token metadata symbol">@override</span>
-  Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">var</span> appBar <span class="token operator">=</span> <span class="token function">AppBar</span><span class="token punctuation">(</span>
-      title<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span>
-        <span class="token string">'Filter List'</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> textField <span class="token operator">=</span> <span class="token function">Padding</span><span class="token punctuation">(</span>
-      padding<span class="token punctuation">:</span> <span class="token keyword">const</span> EdgeInsets<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token number">8.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-      child<span class="token punctuation">:</span> <span class="token function">TextField</span><span class="token punctuation">(</span>
-        decoration<span class="token punctuation">:</span> <span class="token function">InputDecoration</span><span class="token punctuation">(</span>
-          hintText<span class="token punctuation">:</span> <span class="token string">'Enter Keyword to Filter'</span><span class="token punctuation">,</span>
-          border<span class="token punctuation">:</span> <span class="token function">OutlineInputBorder</span><span class="token punctuation">(</span>
-            borderRadius<span class="token punctuation">:</span> BorderRadius<span class="token punctuation">.</span><span class="token function">circular</span><span class="token punctuation">(</span><span class="token number">8.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-          <span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token punctuation">)</span><span class="token punctuation">,</span>
-        onChanged<span class="token punctuation">:</span> onChanged<span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> listView <span class="token operator">=</span> <span class="token function">Expanded</span><span class="token punctuation">(</span>
-      child<span class="token punctuation">:</span> ListView<span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span>
-        itemCount<span class="token punctuation">:</span> _filteredItems<span class="token punctuation">.</span>length<span class="token punctuation">,</span>
-        itemBuilder<span class="token punctuation">:</span> <span class="token punctuation">(</span>context<span class="token punctuation">,</span> index<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-          <span class="token keyword">return</span> <span class="token function">ListTile</span><span class="token punctuation">(</span>
-            title<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span>
-              _filteredItems<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">,</span>
-            <span class="token punctuation">)</span><span class="token punctuation">,</span>
-          <span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> body <span class="token operator">=</span> <span class="token function">Column</span><span class="token punctuation">(</span>
-      children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-        textField<span class="token punctuation">,</span>
-        listView<span class="token punctuation">,</span>
-      <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">return</span> <span class="token function">Scaffold</span><span class="token punctuation">(</span>
-      appBar<span class="token punctuation">:</span> appBar<span class="token punctuation">,</span>
-      body<span class="token punctuation">:</span> body<span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>Line 11</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">final</span> List<span class="token operator">&lt;</span>String<span class="token operator">></span> _allItems <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token string">'Apple'</span><span class="token punctuation">,</span>
-  <span class="token string">'Banana'</span><span class="token punctuation">,</span>
-  <span class="token string">'Cherry'</span><span class="token punctuation">,</span>
-  <span class="token string">'Date'</span><span class="token punctuation">,</span>
-  <span class="token string">'Elderberry'</span><span class="token punctuation">,</span>
-  <span class="token string">'Fig'</span><span class="token punctuation">,</span>
-  <span class="token string">'Grapes'</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">final</span> <span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; _allItems = [</span><br><span class="line">  <span class="string">&#x27;Apple&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Banana&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Cherry&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Date&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Elderberry&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Fig&#x27;</span>,</span><br><span class="line">  <span class="string">&#x27;Grapes&#x27;</span></span><br><span class="line">];</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>_allItems</code>：<code>ListView</code> 的原始資料，實務上會來自 API</li>
 </ul>
 <p><strong>Line 21</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart">List<span class="token operator">&lt;</span>String<span class="token operator">></span> _filteredItems <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="built_in">List</span>&lt;<span class="built_in">String</span>&gt; _filteredItems = [];</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>filteredItems</code>：動態 filter 過的資料，會綁定到 ListView</li>
 </ul>
 <p><strong>Line 23</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token metadata symbol">@override</span>
-<span class="token keyword">void</span> <span class="token function">initState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">super</span><span class="token punctuation">.</span><span class="token function">initState</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  _filteredItems <span class="token operator">=</span> _allItems<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line"><span class="keyword">void</span> initState() &#123;</span><br><span class="line">  <span class="keyword">super</span>.initState();</span><br><span class="line">  _filteredItems = _allItems;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>initState()</code>：一開始先將所有原始資料給 filter 過的資料</li>
 </ul>
 <p><strong>Line 60</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">var</span> listView <span class="token operator">=</span> <span class="token function">Expanded</span><span class="token punctuation">(</span>
-  child<span class="token punctuation">:</span> ListView<span class="token punctuation">.</span><span class="token function">builder</span><span class="token punctuation">(</span>
-    itemCount<span class="token punctuation">:</span> _filteredItems<span class="token punctuation">.</span>length<span class="token punctuation">,</span>
-    itemBuilder<span class="token punctuation">:</span> <span class="token punctuation">(</span>context<span class="token punctuation">,</span> index<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token keyword">return</span> <span class="token function">ListTile</span><span class="token punctuation">(</span>
-        title<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span>
-          _filteredItems<span class="token punctuation">[</span>index<span class="token punctuation">]</span><span class="token punctuation">,</span>
-        <span class="token punctuation">)</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> listView = Expanded(</span><br><span class="line">  child: ListView.builder(</span><br><span class="line">    itemCount: _filteredItems.length,</span><br><span class="line">    itemBuilder: (context, index) &#123;</span><br><span class="line">      <span class="keyword">return</span> ListTile(</span><br><span class="line">        title: Text(</span><br><span class="line">          _filteredItems[index],</span><br><span class="line">        ),</span><br><span class="line">      );</span><br><span class="line">    &#125;,</span><br><span class="line">  ),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>ListView</code>：顯示動態 filter 的資掉</li>
 <li><code>itemCount</code>：將 filter 過的資料綁定到 <code>ListView</code></li>
 <li><code>itemBuilder()</code>：由 filter 過的資料建立 <code>ListTile</code></li>
 </ul>
 <p><strong>Line 47</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">var</span> textField <span class="token operator">=</span> <span class="token function">Padding</span><span class="token punctuation">(</span>
-  padding<span class="token punctuation">:</span> <span class="token keyword">const</span> EdgeInsets<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token number">8.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  child<span class="token punctuation">:</span> <span class="token function">TextField</span><span class="token punctuation">(</span>
-    decoration<span class="token punctuation">:</span> <span class="token function">InputDecoration</span><span class="token punctuation">(</span>
-      hintText<span class="token punctuation">:</span> <span class="token string">'Enter Keyword to Filter'</span><span class="token punctuation">,</span>
-      border<span class="token punctuation">:</span> <span class="token function">OutlineInputBorder</span><span class="token punctuation">(</span>
-        borderRadius<span class="token punctuation">:</span> BorderRadius<span class="token punctuation">.</span><span class="token function">circular</span><span class="token punctuation">(</span><span class="token number">8.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    onChanged<span class="token punctuation">:</span> onChanged<span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> textField = Padding(</span><br><span class="line">  padding: <span class="keyword">const</span> EdgeInsets.all(<span class="number">8.0</span>),</span><br><span class="line">  child: TextField(</span><br><span class="line">    decoration: InputDecoration(</span><br><span class="line">      hintText: <span class="string">&#x27;Enter Keyword to Filter&#x27;</span>,</span><br><span class="line">      border: OutlineInputBorder(</span><br><span class="line">        borderRadius: BorderRadius.circular(<span class="number">8.0</span>),</span><br><span class="line">      ),</span><br><span class="line">    ),</span><br><span class="line">    onChanged: onChanged,</span><br><span class="line">  ),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>TextField</code>：輸入 keyword 供 filter</li>
 <li><code>onChanged()</code>：為了讓邊輸入邊 filter，所以寫在 <code>onChanged</code> event</li>
 </ul>
 <p><strong>Line 29</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">void</span> <span class="token function">onChanged</span><span class="token punctuation">(</span>String value<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">final</span> keyword <span class="token operator">=</span> value<span class="token punctuation">.</span><span class="token function">trim</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> onChanged(<span class="built_in">String</span> value) &#123;</span><br><span class="line">  <span class="keyword">final</span> keyword = value.trim().toLowerCase();</span><br><span class="line"></span><br><span class="line">  <span class="keyword">final</span> filteredItems = _allItems</span><br><span class="line">      .where((item) =&gt; item.toLowerCase().contains(keyword))</span><br><span class="line">      .toList();</span><br><span class="line"></span><br><span class="line">  setState(() =&gt; _filteredItems = filteredItems);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-  <span class="token keyword">final</span> filteredItems <span class="token operator">=</span> _allItems
-      <span class="token punctuation">.</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token punctuation">(</span>item<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> item<span class="token punctuation">.</span><span class="token function">toLowerCase</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">contains</span><span class="token punctuation">(</span>keyword<span class="token punctuation">)</span><span class="token punctuation">)</span>
-      <span class="token punctuation">.</span><span class="token function">toList</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> _filteredItems <span class="token operator">=</span> filteredItems<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li><code>where()</code>：Dart 版的 <code>filter()</code>，當 callback 回傳為 <code>true</code> 時為篩選條件</li>
 <li><code>contains()</code>：只要包含一部分 keyword 即可，相當於 SQL 的 <code>like</code></li>

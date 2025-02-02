@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,56 +438,29 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>某些 API 可能需要較長回應時間，實務上會加上 Spinner 視覺效果，這在 Tailwind CSS 該如何實現呢 ?</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Tailwind CSS 2.1.1</p>
 <h2 id="Composition-API"><a href="#Composition-API" class="headerlink" title="Composition API"></a>Composition API</h2><p><img src="/images/tailwind/cookbook/component/spinner/spinner000.png" alt="spinner000"></p>
 <p>按下 <code>Get Books</code> 後，會先顯示 spinner。</p>
 <p><img src="/images/tailwind/cookbook/component/spinner/spinner001.png" alt="spinner001"></p>
 <p>等 API 完全回傳後才顯示資料。</p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
-div(v-if='isShowSpinner').fixed.top-0.left-0.right-0.bottom-0.w-full.h-screen.z-50.overflow-hidden.bg-gray-700.opacity-75.flex.flex-col.items-center.justify-center
-  svg(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 16 16').w-16.h-16.animate-spin
-    path(fill='#ffffff',d='M12.9 3.1c1.3 1.2 2.1 3 2.1 4.9 0 3.9-3.1 7-7 7s-7-3.1-7-7c0-1.9 0.8-3.7 2.1-4.9l-0.8-0.8c-1.4 1.5-2.3 3.5-2.3 5.7 0 4.4 3.6 8 8 8s8-3.6 8-8c0-2.2-0.9-4.2-2.3-5.7l-0.8 0.8z')
-div
-  button(@click='onClick', type='button', class='px-2.5 py-1.5').border.border-gray-300.shadow-sm.text-xs.font-medium.text-gray-700.rounded.bg-white.hover_bg-gray-50.focus_outline-none.focus_ring-2.focus_ring-offset-2.focus_ring-indigo-500 Get Books
-div
-  ul
-    li(v-for='x in books') {{ x.title }} / {{ x.price }}
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
- 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> getBooks <span class="token keyword">from</span> <span class="token string">'/src/api/getBooks'</span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">lang</span>=<span class="string">&#x27;pug&#x27;</span>&gt;</span></span><br><span class="line">div(v-if=&#x27;isShowSpinner&#x27;).fixed.top-0.left-0.right-0.bottom-0.w-full.h-screen.z-50.overflow-hidden.bg-gray-700.opacity-75.flex.flex-col.items-center.justify-center</span><br><span class="line">  svg(xmlns=&#x27;http://www.w3.org/2000/svg&#x27;, viewBox=&#x27;0 0 16 16&#x27;).w-16.h-16.animate-spin</span><br><span class="line">    path(fill=&#x27;#ffffff&#x27;,d=&#x27;M12.9 3.1c1.3 1.2 2.1 3 2.1 4.9 0 3.9-3.1 7-7 7s-7-3.1-7-7c0-1.9 0.8-3.7 2.1-4.9l-0.8-0.8c-1.4 1.5-2.3 3.5-2.3 5.7 0 4.4 3.6 8 8 8s8-3.6 8-8c0-2.2-0.9-4.2-2.3-5.7l-0.8 0.8z&#x27;)</span><br><span class="line">div</span><br><span class="line">  button(@click=&#x27;onClick&#x27;, type=&#x27;button&#x27;, class=&#x27;px-2.5 py-1.5&#x27;).border.border-gray-300.shadow-sm.text-xs.font-medium.text-gray-700.rounded.bg-white.hover_bg-gray-50.focus_outline-none.focus_ring-2.focus_ring-offset-2.focus_ring-indigo-500 Get Books</span><br><span class="line">div</span><br><span class="line">  ul</span><br><span class="line">    li(v-for=&#x27;x in books&#x27;) &#123;&#123; x.title &#125;&#125; / &#123;&#123; x.price &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"> </span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> getBooks <span class="keyword">from</span> <span class="string">&#x27;/src/api/getBooks&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="attr">ref</span>: isShowSpinner = <span class="literal">false</span></span></span><br><span class="line"><span class="language-javascript"><span class="attr">ref</span>: books = []</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> <span class="title function_">onClick</span> = (<span class="params"></span>) =&gt; &#123;</span></span><br><span class="line"><span class="language-javascript">  isShowSpinner = <span class="literal">true</span></span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">getBooks</span>()</span></span><br><span class="line"><span class="language-javascript">    .<span class="title function_">then</span>(<span class="function"><span class="params">x</span> =&gt;</span> (isShowSpinner = <span class="literal">false</span>, x))</span></span><br><span class="line"><span class="language-javascript">    .<span class="title function_">then</span>(<span class="function"><span class="params">x</span> =&gt;</span> x.<span class="property">data</span>)</span></span><br><span class="line"><span class="language-javascript">    .<span class="title function_">then</span>(<span class="function"><span class="params">x</span> =&gt;</span> books = x)</span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-ref<span class="token punctuation">:</span> isShowSpinner <span class="token operator">=</span> <span class="token boolean">false</span>
-ref<span class="token punctuation">:</span> books <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  isShowSpinner <span class="token operator">=</span> <span class="token boolean">true</span>
-  <span class="token function">getBooks</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>isShowSpinner <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
-    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> books <span class="token operator">=</span> x<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 2 行</p>
-<pre class="line-numbers highlight language-jade"><code class="language-jade"><span class="token tag">div<span class="token attributes"><span class="token punctuation">(</span><span class="token attr-name">v-if</span><span class="token punctuation">=</span><span class="token attr-value"><span class="token string">'isShowSpinner'</span></span><span class="token punctuation">)</span></span></span><span class="token tag">.fixed.top-0.left-0.right-0.bottom-0.w-full.h-screen.z-50.overflow-hidden.bg-gray-700.opacity-75.flex.flex-col.items-center.justify-center</span>
-  <span class="token tag">svg<span class="token attributes"><span class="token punctuation">(</span><span class="token attr-name">xmlns</span><span class="token punctuation">=</span><span class="token attr-value"><span class="token string">'http://www.w3.org/2000/svg'</span></span><span class="token punctuation">,</span> <span class="token attr-name">viewBox</span><span class="token punctuation">=</span><span class="token attr-value"><span class="token string">'0 0 16 16'</span></span><span class="token punctuation">)</span></span></span><span class="token tag">.w-16.h-16.animate-spin</span>
-    <span class="token tag">path<span class="token attributes"><span class="token punctuation">(</span><span class="token attr-name">fill</span><span class="token punctuation">=</span><span class="token attr-value"><span class="token string">'#ffffff'</span></span><span class="token punctuation">,</span><span class="token attr-name">d</span><span class="token punctuation">=</span><span class="token attr-value"><span class="token string">'M12.9 3.1c1.3 1.2 2.1 3 2.1 4.9 0 3.9-3.1 7-7 7s-7-3.1-7-7c0-1.9 0.8-3.7 2.1-4.9l-0.8-0.8c-1.4 1.5-2.3 3.5-2.3 5.7 0 4.4 3.6 8 8 8s8-3.6 8-8c0-2.2-0.9-4.2-2.3-5.7l-0.8 0.8z'</span></span><span class="token punctuation">)</span></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">div(v-if=&#x27;isShowSpinner&#x27;).fixed.top-0.left-0.right-0.bottom-0.w-full.h-screen.z-50.overflow-hidden.bg-gray-700.opacity-75.flex.flex-col.items-center.justify-center</span><br><span class="line">  svg(xmlns=&#x27;http://www.w3.org/2000/svg&#x27;, viewBox=&#x27;0 0 16 16&#x27;).w-16.h-16.animate-spin</span><br><span class="line">    path(fill=&#x27;#ffffff&#x27;,d=&#x27;M12.9 3.1c1.3 1.2 2.1 3 2.1 4.9 0 3.9-3.1 7-7 7s-7-3.1-7-7c0-1.9 0.8-3.7 2.1-4.9l-0.8-0.8c-1.4 1.5-2.3 3.5-2.3 5.7 0 4.4 3.6 8 8 8s8-3.6 8-8c0-2.2-0.9-4.2-2.3-5.7l-0.8 0.8z&#x27;)</span><br></pre></td></tr></table></figure>
+
 <p>由 <code>div</code> 與 <code>svg</code> 構成 spinner。</p>
 <p>第 2 行</p>
-<pre class="line-numbers highlight language-jade"><code class="language-jade"><span class="token tag">div<span class="token attributes"><span class="token punctuation">(</span><span class="token attr-name">v-if</span><span class="token punctuation">=</span><span class="token attr-value"><span class="token string">'isShowSpinner'</span></span><span class="token punctuation">)</span></span></span><span class="token tag">.fixed.top-0.left-0.right-0.bottom-0.w-full.h-screen.z-50.overflow-hidden.bg-gray-700.opacity-75.flex.flex-col.items-center.justify-center</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">div(v-if=&#x27;isShowSpinner&#x27;).fixed.top-0.left-0.right-0.bottom-0.w-full.h-screen.z-50.overflow-hidden.bg-gray-700.opacity-75.flex.flex-col.items-center.justify-center</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>使用 <code>isShowSpinner</code> state 控制 spinner 是否顯示</li>
 <li><code>div</code> 主要負責 overlay 部分</li>
 </ul>
 <p>第 3 行</p>
-<pre class="line-numbers highlight language-jade"><code class="language-jade"><span class="token tag">svg<span class="token attributes"><span class="token punctuation">(</span><span class="token attr-name">xmlns</span><span class="token punctuation">=</span><span class="token attr-value"><span class="token string">'http://www.w3.org/2000/svg'</span></span><span class="token punctuation">,</span> <span class="token attr-name">viewBox</span><span class="token punctuation">=</span><span class="token attr-value"><span class="token string">'0 0 16 16'</span></span><span class="token punctuation">)</span></span></span><span class="token tag">.w-16.h-16.animate-spin</span>
-    <span class="token tag">path<span class="token attributes"><span class="token punctuation">(</span><span class="token attr-name">fill</span><span class="token punctuation">=</span><span class="token attr-value"><span class="token string">'#ffffff'</span></span><span class="token punctuation">,</span><span class="token attr-name">d</span><span class="token punctuation">=</span><span class="token attr-value"><span class="token string">'M12.9 3.1c1.3 1.2 2.1 3 2.1 4.9 0 3.9-3.1 7-7 7s-7-3.1-7-7c0-1.9 0.8-3.7 2.1-4.9l-0.8-0.8c-1.4 1.5-2.3 3.5-2.3 5.7 0 4.4 3.6 8 8 8s8-3.6 8-8c0-2.2-0.9-4.2-2.3-5.7l-0.8 0.8z'</span></span><span class="token punctuation">)</span></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">svg(xmlns=&#x27;http://www.w3.org/2000/svg&#x27;, viewBox=&#x27;0 0 16 16&#x27;).w-16.h-16.animate-spin</span><br><span class="line">    path(fill=&#x27;#ffffff&#x27;,d=&#x27;M12.9 3.1c1.3 1.2 2.1 3 2.1 4.9 0 3.9-3.1 7-7 7s-7-3.1-7-7c0-1.9 0.8-3.7 2.1-4.9l-0.8-0.8c-1.4 1.5-2.3 3.5-2.3 5.7 0 4.4 3.6 8 8 8s8-3.6 8-8c0-2.2-0.9-4.2-2.3-5.7l-0.8 0.8z&#x27;)</span><br></pre></td></tr></table></figure>
+
 <p>使用 svg 為 spinner：</p>
 <ul>
 <li><code>w-16</code>：設定 spinner 寬度</li>
@@ -495,68 +468,19 @@ ref<span class="token punctuation">:</span> books <span class="token operator">=
 <li><code>animate-spin</code>：使靜態 svg 能旋轉</li>
 </ul>
 <p>18 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  isShowSpinner <span class="token operator">=</span> <span class="token boolean">true</span>
-  <span class="token function">getBooks</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>isShowSpinner <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">)</span>
-    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>data<span class="token punctuation">)</span>
-    <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> books <span class="token operator">=</span> x<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">onClick</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  isShowSpinner = <span class="literal">true</span></span><br><span class="line">  <span class="title function_">getBooks</span>()</span><br><span class="line">    .<span class="title function_">then</span>(<span class="function"><span class="params">x</span> =&gt;</span> (isShowSpinner = <span class="literal">false</span>, x))</span><br><span class="line">    .<span class="title function_">then</span>(<span class="function"><span class="params">x</span> =&gt;</span> x.<span class="property">data</span>)</span><br><span class="line">    .<span class="title function_">then</span>(<span class="function"><span class="params">x</span> =&gt;</span> books = x)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>一開始先設定 <code>isShowSpinner</code> 為 <code>true</code> 顯示 spinner</li>
 <li>使用 <code>getBooks()</code> 呼叫 API，當 Promise 回傳成功立即設定 <code>isShowSpinner</code> 為 <code>false</code> 隱藏 spinner</li>
 </ul>
 <h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><p><img src="/images/tailwind/cookbook/component/spinner/spinner000.png" alt="spinner000"></p>
 <p>結果不變，但使用 Point-free 改寫。</p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span> <span class="token attr-name">lang</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">'</span>pug<span class="token punctuation">'</span></span><span class="token punctuation">></span></span>
-div(v-if='isShowSpinner').fixed.top-0.left-0.right-0.bottom-0.w-full.h-screen.z-50.overflow-hidden.bg-gray-700.opacity-75.flex.flex-col.items-center.justify-center
-  svg(xmlns='http://www.w3.org/2000/svg', viewBox='0 0 16 16').w-16.h-16.animate-spin
-    path(fill='#ffffff',d='M12.9 3.1c1.3 1.2 2.1 3 2.1 4.9 0 3.9-3.1 7-7 7s-7-3.1-7-7c0-1.9 0.8-3.7 2.1-4.9l-0.8-0.8c-1.4 1.5-2.3 3.5-2.3 5.7 0 4.4 3.6 8 8 8s8-3.6 8-8c0-2.2-0.9-4.2-2.3-5.7l-0.8 0.8z')
-div
-  button(@click='onClick', type='button', class='px-2.5 py-1.5').border.border-gray-300.shadow-sm.text-xs.font-medium.text-gray-700.rounded.bg-white.hover_bg-gray-50.focus_outline-none.focus_ring-2.focus_ring-offset-2.focus_ring-indigo-500 Get Books
-div
-  ul
-    li(v-for='x in books') {{ x.title }} / {{ x.price }}
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span> <span class="attr">lang</span>=<span class="string">&#x27;pug&#x27;</span>&gt;</span></span><br><span class="line">div(v-if=&#x27;isShowSpinner&#x27;).fixed.top-0.left-0.right-0.bottom-0.w-full.h-screen.z-50.overflow-hidden.bg-gray-700.opacity-75.flex.flex-col.items-center.justify-center</span><br><span class="line">  svg(xmlns=&#x27;http://www.w3.org/2000/svg&#x27;, viewBox=&#x27;0 0 16 16&#x27;).w-16.h-16.animate-spin</span><br><span class="line">    path(fill=&#x27;#ffffff&#x27;,d=&#x27;M12.9 3.1c1.3 1.2 2.1 3 2.1 4.9 0 3.9-3.1 7-7 7s-7-3.1-7-7c0-1.9 0.8-3.7 2.1-4.9l-0.8-0.8c-1.4 1.5-2.3 3.5-2.3 5.7 0 4.4 3.6 8 8 8s8-3.6 8-8c0-2.2-0.9-4.2-2.3-5.7l-0.8 0.8z&#x27;)</span><br><span class="line">div</span><br><span class="line">  button(@click=&#x27;onClick&#x27;, type=&#x27;button&#x27;, class=&#x27;px-2.5 py-1.5&#x27;).border.border-gray-300.shadow-sm.text-xs.font-medium.text-gray-700.rounded.bg-white.hover_bg-gray-50.focus_outline-none.focus_ring-2.focus_ring-offset-2.focus_ring-indigo-500 Get Books</span><br><span class="line">div</span><br><span class="line">  ul</span><br><span class="line">    li(v-for=&#x27;x in books&#x27;) &#123;&#123; x.title &#125;&#125; / &#123;&#123; x.price &#125;&#125;</span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; ref &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; write &#125; <span class="keyword">from</span> <span class="string">&#x27;vue3-fp&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; pipe, andThen <span class="keyword">as</span> then, prop, tap, T, F &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> getBooks <span class="keyword">from</span> <span class="string">&#x27;/src/api/getBooks&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> isShowSpinner = <span class="title function_">ref</span>(<span class="literal">false</span>)</span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> books = <span class="title function_">ref</span>([])</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> showSpinner = <span class="title function_">pipe</span>(</span></span><br><span class="line"><span class="language-javascript">  T,</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">write</span>(isShowSpinner)</span></span><br><span class="line"><span class="language-javascript">)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> hideSpinner = <span class="title function_">pipe</span>(</span></span><br><span class="line"><span class="language-javascript">  F, </span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">write</span>(isShowSpinner)</span></span><br><span class="line"><span class="language-javascript">)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> onClick = <span class="title function_">pipe</span>(</span></span><br><span class="line"><span class="language-javascript">  showSpinner,</span></span><br><span class="line"><span class="language-javascript">  getBooks,</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">tap</span>(<span class="title function_">then</span>(hideSpinner)),</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">then</span>(<span class="title function_">prop</span>(<span class="string">&#x27;data&#x27;</span>)),</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">then</span>(<span class="title function_">write</span>(books))</span></span><br><span class="line"><span class="language-javascript">)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> write <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> tap<span class="token punctuation">,</span> T<span class="token punctuation">,</span> F <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> getBooks <span class="token keyword">from</span> <span class="token string">'/src/api/getBooks'</span>
-
-<span class="token keyword">let</span> isShowSpinner <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token boolean">false</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> showSpinner <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  T<span class="token punctuation">,</span>
-  <span class="token function">write</span><span class="token punctuation">(</span>isShowSpinner<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> hideSpinner <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  F<span class="token punctuation">,</span> 
-  <span class="token function">write</span><span class="token punctuation">(</span>isShowSpinner<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  showSpinner<span class="token punctuation">,</span>
-  getBooks<span class="token punctuation">,</span>
-  <span class="token function">tap</span><span class="token punctuation">(</span><span class="token function">then</span><span class="token punctuation">(</span>hideSpinner<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>books<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>31 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  showSpinner<span class="token punctuation">,</span>
-  getBooks<span class="token punctuation">,</span>
-  <span class="token function">tap</span><span class="token punctuation">(</span><span class="token function">then</span><span class="token punctuation">(</span>hideSpinner<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'data'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">then</span><span class="token punctuation">(</span><span class="token function">write</span><span class="token punctuation">(</span>books<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> onClick = <span class="title function_">pipe</span>(</span><br><span class="line">  showSpinner,</span><br><span class="line">  getBooks,</span><br><span class="line">  <span class="title function_">tap</span>(<span class="title function_">then</span>(hideSpinner)),</span><br><span class="line">  <span class="title function_">then</span>(<span class="title function_">prop</span>(<span class="string">&#x27;data&#x27;</span>)),</span><br><span class="line">  <span class="title function_">then</span>(<span class="title function_">write</span>(books))</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>pipe()</code> 組合 <code>onClick()</code>：</p>
 <ul>
 <li><code>showSpinner</code>：顯示 spinner</li>
@@ -566,22 +490,16 @@ div
 <li><code>then(write(books))</code>：將結果寫入 <code>books</code> state</li>
 </ul>
 <p>21 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> showSpinner <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  T<span class="token punctuation">,</span>
-  <span class="token function">write</span><span class="token punctuation">(</span>isShowSpinner<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> showSpinner = <span class="title function_">pipe</span>(</span><br><span class="line">  T,</span><br><span class="line">  <span class="title function_">write</span>(isShowSpinner)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>pipe()</code> 組合 <code>showSpinner()</code>：</p>
 <ul>
 <li><code>T</code>：準備 <code>true</code></li>
 <li><code>write(isShowSpinner)</code>：寫入 <code>isShowSpinner</code> state</li>
 </ul>
 <p>26 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> hideSpinner <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  F<span class="token punctuation">,</span> 
-  <span class="token function">write</span><span class="token punctuation">(</span>isShowSpinner<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> hideSpinner = <span class="title function_">pipe</span>(</span><br><span class="line">  F, </span><br><span class="line">  <span class="title function_">write</span>(isShowSpinner)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>pipe()</code> 組合 <code>hideSpinner()</code>：</p>
 <ul>
 <li><code>F</code>：準備 <code>false</code></li>

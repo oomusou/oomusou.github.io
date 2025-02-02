@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,7 +438,7 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Monad 一直是學習 Functional Programming 的一大關卡，事實上天天在用的 Maybe、Either 與 Future 都是 Monad，而 Promise 則是很像 Monad 但又不是真正 Monad。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Fantasy Land 5.0.0</p>
 <h2 id="Overview"><a href="#Overview" class="headerlink" title="Overview"></a>Overview</h2><p>簡單來說，Monad 是一種特殊的 Object，能將 value 包進 Object 內，且該 Object 具備一些特殊 method，最後須從 Object 內取出 value。</p>
@@ -523,16 +523,8 @@ a:hover {
 <p>如此種種，Promise 的確很像 Monad。</p>
 <p>但很可惜 Promise 並沒有遵循 Fantasy Land 規範，這使得 Promise 搭配 Sanctuary 時隔隔不入，所有支援 Functor、Apply、Applicative 與 Chain 的 function 也無法套用在 Promise，因此並非真正 Monad。</p>
 <p>但 Future 則完全遵循 Fantasy Land 規範，也提供了 Sanctuary 的 type definition，所有支援 Functor、Apply、Applicative 與 Chain 的 function 也都能套用在 Future，因此是真正 Monad。</p>
-<h2 id="Monad-test"><a href="#Monad-test" class="headerlink" title="Monad.test"></a>Monad.test</h2><h3 id="Primitive"><a href="#Primitive" class="headerlink" title="Primitive"></a>Primitive</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Monad <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary-type-classes'</span>
+<h2 id="Monad-test"><a href="#Monad-test" class="headerlink" title="Monad.test"></a>Monad.test</h2><h3 id="Primitive"><a href="#Primitive" class="headerlink" title="Primitive"></a>Primitive</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Monad</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;sanctuary-type-classes&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Monad</span>.<span class="property">test</span> (<span class="number">1</span>) <span class="comment">// ?</span></span><br><span class="line"><span class="title class_">Monad</span>.<span class="property">test</span> (<span class="string">&#x27;&#x27;</span>) <span class="comment">// ?</span></span><br><span class="line"><span class="title class_">Monad</span>.<span class="property">test</span> (<span class="literal">true</span>) <span class="comment">// ?</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Monad</span>.<span class="property">test</span> (&#123;&#125;) <span class="comment">// ?</span></span><br><span class="line"><span class="title class_">Monad</span>.<span class="property">test</span> ([]) <span class="comment">// ?</span></span><br><span class="line"><span class="title class_">Monad</span>.<span class="property">test</span> (<span class="function">() =&gt;</span> &#123;&#125;) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-Monad<span class="token punctuation">.</span>test <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-Monad<span class="token punctuation">.</span>test <span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-Monad<span class="token punctuation">.</span>test <span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-
-Monad<span class="token punctuation">.</span>test <span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-Monad<span class="token punctuation">.</span>test <span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-Monad<span class="token punctuation">.</span>test <span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Sanctuary 提供了 <code>Monad.test</code> 可判斷 value 是否為 Monad。</p>
 <ul>
 <li>Number、String 與 Boolean 皆非 Monad</li>
@@ -540,16 +532,8 @@ Monad<span class="token punctuation">.</span>test <span class="token punctuation
 <li>Array 與 Function 皆為 Chain</li>
 </ul>
 <p><img src="/images/category/monad/overview/monad001.png" alt="monad001"></p>
-<h3 id="ADT"><a href="#ADT" class="headerlink" title="ADT"></a>ADT</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> Just<span class="token punctuation">,</span> Right<span class="token punctuation">,</span> Pair <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> resolve <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'fluture'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> Monad <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary-type-classes'</span>
+<h3 id="ADT"><a href="#ADT" class="headerlink" title="ADT"></a>ADT</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Just</span>, <span class="title class_">Right</span>, <span class="title class_">Pair</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;sanctuary&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; resolve &#125; <span class="keyword">from</span> <span class="string">&#x27;fluture&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Monad</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;sanctuary-type-classes&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Monad</span>.<span class="property">test</span> (<span class="title class_">Pair</span> (<span class="number">1</span>) (<span class="number">2</span>)) <span class="comment">// ?</span></span><br><span class="line"><span class="title class_">Monad</span>.<span class="property">test</span> (<span class="title class_">Just</span> (<span class="number">1</span>)) <span class="comment">// ?</span></span><br><span class="line"><span class="title class_">Monad</span>.<span class="property">test</span> (<span class="title class_">Right</span> (<span class="number">1</span>)) <span class="comment">// ?</span></span><br><span class="line"><span class="title class_">Monad</span>.<span class="property">test</span> (<span class="title function_">resolve</span> (<span class="number">1</span>)) <span class="comment">// ?</span></span><br><span class="line"><span class="title class_">Monad</span>.<span class="property">test</span> (<span class="title class_">Promise</span>.<span class="property">resolve</span> (<span class="number">1</span>)) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-Monad<span class="token punctuation">.</span>test <span class="token punctuation">(</span>Pair <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-Monad<span class="token punctuation">.</span>test <span class="token punctuation">(</span>Just <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-Monad<span class="token punctuation">.</span>test <span class="token punctuation">(</span>Right <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-Monad<span class="token punctuation">.</span>test <span class="token punctuation">(</span>resolve <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-Monad<span class="token punctuation">.</span>test <span class="token punctuation">(</span>Promise<span class="token punctuation">.</span>resolve <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>Pair 並非 Monad</li>
 <li>Maybe、Either 與 Future 皆為 Monad</li>
@@ -562,7 +546,7 @@ Monad<span class="token punctuation">.</span>test <span class="token punctuation
 <li>Promise 很像 Monad，但因為沒有遵循 Fantasy Land 規格，使得 Sanctuary 很難與 Promise 搭配，建議改用 Future 取代 Promise</li>
 <li>若不確定 value 是不是 Monad，可使用 <code>Monad.test</code> 判斷</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://twitter.com/_egonschiele" target="_blank" rel="noopener">Adit Bhargava</a>, <a href="https://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html" target="_blank" rel="noopener">Functors, Applicatives, And Monads in Pictures</a><br><a href="https://github.com/fantasyland/fantasy-land" target="_blank" rel="noopener">Fantasy Land</a>, <a href="https://github.com/fantasyland/fantasy-land#monad" target="_blank" rel="noopener">Monad</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://twitter.com/_egonschiele">Adit Bhargava</a>, <a target="_blank" rel="noopener" href="https://adit.io/posts/2013-04-17-functors,_applicatives,_and_monads_in_pictures.html">Functors, Applicatives, And Monads in Pictures</a><br><a target="_blank" rel="noopener" href="https://github.com/fantasyland/fantasy-land">Fantasy Land</a>, <a target="_blank" rel="noopener" href="https://github.com/fantasyland/fantasy-land#monad">Monad</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

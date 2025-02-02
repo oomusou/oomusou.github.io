@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,21 +438,11 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>實務上常遇到中間 String 符合預期，但後面 String 不符合規格，此時可用 <code>dropLast()</code> 加以刪除。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
-<h2 id="slice"><a href="#slice" class="headerlink" title="slice()"></a>slice()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> slice<span class="token punctuation">,</span> subtract<span class="token punctuation">,</span> __<span class="token punctuation">,</span> length <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="slice"><a href="#slice" class="headerlink" title="slice()"></a>slice()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, slice, subtract, __, length &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;FP in JavaScript&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">dropLast</span> = n =&gt; <span class="function"><span class="params">s</span> =&gt;</span> <span class="title function_">pipe</span>(</span><br><span class="line">  length,</span><br><span class="line">  <span class="title function_">subtract</span>(__, n),</span><br><span class="line">  <span class="title function_">slice</span>(<span class="number">0</span>, __, s)</span><br><span class="line">)(s)</span><br><span class="line"></span><br><span class="line"><span class="title function_">dropLast</span>(<span class="number">13</span>)(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'FP in JavaScript'</span>
-
-<span class="token keyword">let</span> dropLast <span class="token operator">=</span> n <span class="token operator">=</span><span class="token operator">></span> s <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  length<span class="token punctuation">,</span>
-  <span class="token function">subtract</span><span class="token punctuation">(</span>__<span class="token punctuation">,</span> n<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">slice</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> __<span class="token punctuation">,</span> s<span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>
-
-<span class="token function">dropLast</span><span class="token punctuation">(</span><span class="token number">13</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若我們不知道 Ramda 已經提供 <code>dropLast()</code> 也沒關係，可透過 <code>subtract()</code> 與 <code>slice()</code> 組合出 <code>dropLast()</code>。</p>
 <ul>
 <li>使用 <code>length()</code> 取得 string 的 length，相當於 <code>str.length</code></li>
@@ -461,19 +451,8 @@ a:hover {
 </ul>
 <p>最後使用 <code>pipe()</code> 組合所有 function，非常清楚。</p>
 <p><img src="/images/ramda/string/droplast/droplast000.png" alt="droplast001"></p>
-<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> slice<span class="token punctuation">,</span> subtract<span class="token punctuation">,</span> length<span class="token punctuation">,</span> converge<span class="token punctuation">,</span> identity<span class="token punctuation">,</span> flip <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, slice, subtract, length, converge, identity, flip &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;FP in JavaScript&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">dropLast</span> = n =&gt; <span class="title function_">converge</span>(</span><br><span class="line">  <span class="title function_">slice</span>(<span class="number">0</span>), [</span><br><span class="line">    <span class="title function_">pipe</span>(length, <span class="title function_">flip</span>(subtract)(n)),</span><br><span class="line">    identity,</span><br><span class="line">  ]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">dropLast</span>(<span class="number">13</span>)(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'FP in JavaScript'</span>
-
-<span class="token keyword">let</span> dropLast <span class="token operator">=</span> n <span class="token operator">=</span><span class="token operator">></span> <span class="token function">converge</span><span class="token punctuation">(</span>
-  <span class="token function">slice</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span>
-    <span class="token function">pipe</span><span class="token punctuation">(</span>length<span class="token punctuation">,</span> <span class="token function">flip</span><span class="token punctuation">(</span>subtract<span class="token punctuation">)</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    identity<span class="token punctuation">,</span>
-  <span class="token punctuation">]</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">dropLast</span><span class="token punctuation">(</span><span class="token number">13</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若想將最後一個 data argument <code>s</code> point-free，由 <code>pipe()</code> 寫法可發現：</p>
 <ul>
 <li><code>slice(0)</code> 為實質最後執行 function</li>
@@ -482,18 +461,8 @@ a:hover {
 </ul>
 <p>由於第一個 argument 與第二個 argument 都需要 <code>s</code>，明顯暗示需使用 <code>converge()</code> 才能 Point-free。</p>
 <p><img src="/images/ramda/string/droplast/droplast001.png" alt="droplast002"></p>
-<h2 id="drop"><a href="#drop" class="headerlink" title="drop()"></a>drop()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> drop<span class="token punctuation">,</span> reverse<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="drop"><a href="#drop" class="headerlink" title="drop()"></a>drop()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; drop, reverse, pipe &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;FP in JavaScript&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">dropLast</span> = n =&gt; <span class="function"><span class="params">s</span> =&gt;</span> <span class="title function_">pipe</span>(</span><br><span class="line">  reverse,</span><br><span class="line">  <span class="title function_">drop</span>(n),</span><br><span class="line">  reverse</span><br><span class="line">)(s)</span><br><span class="line"></span><br><span class="line"><span class="title function_">dropLast</span>(<span class="number">13</span>)(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'FP in JavaScript'</span>
-
-<span class="token keyword">let</span> dropLast <span class="token operator">=</span> n <span class="token operator">=</span><span class="token operator">></span> s <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  reverse<span class="token punctuation">,</span>
-  <span class="token function">drop</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  reverse
-<span class="token punctuation">)</span><span class="token punctuation">(</span>s<span class="token punctuation">)</span>
-
-<span class="token function">dropLast</span><span class="token punctuation">(</span><span class="token number">13</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可使用 <code>drop()</code> 與 <code>reverse()</code> 組合出 <code>dropLast()</code>。</p>
 <p><code>dropLast()</code> 與 <code>drop()</code> 相當類似，只是 <code>drop()</code> 刪除 string 前幾筆資料，而 <code>dropLast()</code> 刪除 string 最後幾筆資料。</p>
 <ul>
@@ -503,26 +472,12 @@ a:hover {
 </ul>
 <p>最後使用 <code>pipe()</code> 組合所有 function，非常清楚。</p>
 <p><img src="/images/ramda/string/droplast/droplast002.png" alt="droplast003"></p>
-<h2 id="Point-free-1"><a href="#Point-free-1" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> drop<span class="token punctuation">,</span> reverse<span class="token punctuation">,</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Point-free-1"><a href="#Point-free-1" class="headerlink" title="Point-free"></a>Point-free</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; drop, reverse, pipe &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;FP in JavaScript&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">dropLast</span> = n =&gt; <span class="title function_">pipe</span>(</span><br><span class="line">  reverse,</span><br><span class="line">  <span class="title function_">drop</span>(n),</span><br><span class="line">  reverse</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">dropLast</span>(<span class="number">13</span>)(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'FP in JavaScript'</span>
-
-<span class="token keyword">let</span> dropLast <span class="token operator">=</span> n <span class="token operator">=</span><span class="token operator">></span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  reverse<span class="token punctuation">,</span>
-  <span class="token function">drop</span><span class="token punctuation">(</span>n<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  reverse
-<span class="token punctuation">)</span>
-
-<span class="token function">dropLast</span><span class="token punctuation">(</span><span class="token number">13</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>dropLast()</code> 最後一個 data argument 也可省略成為 Point-free。</p>
 <p><img src="/images/ramda/string/droplast/droplast003.png" alt="droplast004"></p>
-<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> dropLast <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; dropLast &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;FP in JavaScript&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">dropLast</span>(<span class="number">13</span>, data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'FP in JavaScript'</span>
-
-<span class="token function">dropLast</span><span class="token punctuation">(</span><span class="token number">13</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>事實上 Ramda 已經內建 <code>dropLast()</code> 可直接使用。</p>
 <blockquote>
 <p><strong>dropLast()</strong><br><code>Number → String → String</code><br>刪除 string 最後幾個 char 並回傳</p>
@@ -533,7 +488,7 @@ a:hover {
 <li><code>dropLast()</code> 可使用 <code>slice()</code> 或 <code>drop()</code> 實現</li>
 <li><code>dropLast()</code> 不只用在 String，也能用於 Array</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#dropLast" target="_blank" rel="noopener">dropLast()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#dropLast">dropLast()</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

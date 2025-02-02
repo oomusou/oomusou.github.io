@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,7 +438,7 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>實務上一定會遇到在不同 server ( <code>development</code>、<code>lab</code>、<code>staging</code> 與 <code>production</code>) ，且各有各的 <code>環境變數</code>，該如何設定這些環境變數並且自動切換呢 ?</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 2.5.17<br>Vue CLI 3.0.3</p>
 <h2 id="Modes"><a href="#Modes" class="headerlink" title="Modes"></a>Modes</h2><p>Vue CLI 內建 3 種 mode：</p>
@@ -451,7 +451,7 @@ a:hover {
 <h2 id="env"><a href="#env" class="headerlink" title=".env"></a>.env</h2><ul>
 <li><strong>.env</strong>：所有 mode 都會載入</li>
 <li><strong>env.local</strong>：所有 mode 都會載入，但不會進 Git，適合每個人本機自行設定</li>
-<li>**env.[mode]**：特定 mode 會載入</li>
+<li><strong>env.[mode]</strong>：特定 mode 會載入</li>
 <li><strong>env.[mode].local</strong>：特定 mode 會載入，但不會進 Git，適合每個人本機自行設定</li>
 </ul>
 <blockquote>
@@ -461,15 +461,14 @@ a:hover {
 <p><code>env.[mode].local</code> &gt; <code>env.[mode]</code> &gt; <code>.env</code></p>
 </blockquote>
 <p><strong>.env.development.local</strong></p>
-<pre class="line-numbers highlight language-shell"><code class="language-shell">NODE_ENV=development
-VUE_APP_API="https://jsonplaceholder.typicode.com"
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">NODE_ENV=development</span><br><span class="line">VUE_APP_API=&quot;https://jsonplaceholder.typicode.com&quot;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><strong>NODE_ENV</strong>：指定使用 Vue CLI 內建的 3 個 mode 之一</li>
 <li><strong>VUE_APP_API</strong>：所有變數以 <code>VUE_APP_</code> 為開頭</li>
 </ul>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>VUE_APP_API<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(process.<span class="property">env</span>.<span class="property">VUE_APP_API</span>);</span><br></pre></td></tr></table></figure>
+
 <p>任何在 <code>.env</code> 所設定的變數，可以使用 <code>process.env.VUE_APP_xxx</code> 讀取。</p>
 <h2 id="Examples"><a href="#Examples" class="headerlink" title="Examples"></a>Examples</h2><blockquote>
 <ol>
@@ -482,102 +481,49 @@ VUE_APP_API="https://jsonplaceholder.typicode.com"
 <li>使用 Node.js 建立假 API</li>
 <li>使用 <code>.env</code> 切換 API</li>
 </ul>
-<h2 id="Node-js-for-Fake-API"><a href="#Node-js-for-Fake-API" class="headerlink" title="Node.js for Fake API"></a>Node.js for Fake API</h2><h3 id="Install-Packages"><a href="#Install-Packages" class="headerlink" title="Install Packages"></a>Install Packages</h3><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add express cors
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Node-js-for-Fake-API"><a href="#Node-js-for-Fake-API" class="headerlink" title="Node.js for Fake API"></a>Node.js for Fake API</h2><h3 id="Install-Packages"><a href="#Install-Packages" class="headerlink" title="Install Packages"></a>Install Packages</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yarn add express cors</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>安裝 express framework。</li>
 <li>安裝 express 的解 CORS 套件。</li>
 </ul>
 <h3 id="Fake-API"><a href="#Fake-API" class="headerlink" title="Fake API"></a>Fake API</h3><p><strong>node&#x2F;index.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> express <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'express'</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> cors <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'cors'</span><span class="token punctuation">)</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>)</span><br><span class="line"><span class="keyword">let</span> cors = <span class="built_in">require</span>(<span class="string">&#x27;cors&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="built_in">require</span>(<span class="string">&#x27;./todos.json&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> app = <span class="title function_">express</span>().<span class="title function_">use</span>(<span class="title function_">cors</span>())</span><br><span class="line"><span class="keyword">let</span> hostname = <span class="string">&#x27;127.0.0.1&#x27;</span></span><br><span class="line"><span class="keyword">let</span> port = <span class="number">3000</span></span><br><span class="line"></span><br><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/todos&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> res.<span class="title function_">send</span>(data))</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(port, <span class="function">() =&gt;</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Serving running at http://<span class="subst">$&#123;hostname&#125;</span>:<span class="subst">$&#123;port&#125;</span>/`</span>))</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./todos.json'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> app <span class="token operator">=</span> <span class="token function">express</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span><span class="token function">cors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> hostname <span class="token operator">=</span> <span class="token string">'127.0.0.1'</span>
-<span class="token keyword">let</span> port <span class="token operator">=</span> <span class="token number">3000</span>
-
-app<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'/todos'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> res<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span>port<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
-  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Serving running at http://</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>hostname<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>port<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>Line 1</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> express <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'express'</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> express = <span class="built_in">require</span>(<span class="string">&#x27;express&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
 <p>Import <code>express</code> module。</p>
 <p><strong>Line 2</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> cors <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'cors'</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> cors = <span class="built_in">require</span>(<span class="string">&#x27;cors&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
 <p>Import <code>cors</code> module。</p>
 <p><strong>Line 4</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">'./todos.json'</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="built_in">require</span>(<span class="string">&#x27;./todos.json&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
 <p>Import 假 API 回傳的 JSON。</p>
 <p><strong>Line 6</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> app <span class="token operator">=</span> <span class="token function">express</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span><span class="token function">cors</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> app = <span class="title function_">express</span>().<span class="title function_">use</span>(<span class="title function_">cors</span>())</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>express()</code> 建立 <code>app</code>，並且 use <code>cors()</code> 所建立的物件。</p>
 <p><strong>Line 7</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> hostname <span class="token operator">=</span> <span class="token string">'127.0.0.1'</span>
-<span class="token keyword">let</span> port <span class="token operator">=</span> <span class="token number">3000</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> hostname = <span class="string">&#x27;127.0.0.1&#x27;</span></span><br><span class="line"><span class="keyword">let</span> port = <span class="number">3000</span></span><br></pre></td></tr></table></figure>
+
 <p>定義 <code>hostname</code> 位置與 port。</p>
 <p><strong>Line 10</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">app<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token string">'/todos'</span><span class="token punctuation">,</span> <span class="token punctuation">(</span>req<span class="token punctuation">,</span> res<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> res<span class="token punctuation">.</span><span class="token function">send</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">app.<span class="title function_">get</span>(<span class="string">&#x27;/todos&#x27;</span>, <span class="function">(<span class="params">req, res</span>) =&gt;</span> res.<span class="title function_">send</span>(data))</span><br></pre></td></tr></table></figure>
+
 <p>將 <code>/todos</code> 設定為 GET，其回傳資料由 JSON 所提供。</p>
 <p><strong>Line 12</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span>port<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span>
-  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`Serving running at http://</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>hostname<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">:</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>port<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/`</span></span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">app.<span class="title function_">listen</span>(port, <span class="function">() =&gt;</span></span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`Serving running at http://<span class="subst">$&#123;hostname&#125;</span>:<span class="subst">$&#123;port&#125;</span>/`</span>));</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>app.listen()</code> 啟動 Node.js 服務。</p>
 <p><strong>node&#x2F;todos.json</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token punctuation">{</span>
-  <span class="token string">"todos"</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>
-    <span class="token punctuation">{</span>
-      <span class="token string">"userId"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-      <span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"delectus aut autem"</span><span class="token punctuation">,</span>
-      <span class="token string">"completed"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span>
-    <span class="token punctuation">{</span>
-      <span class="token string">"userId"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span>
-      <span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"quis ut nam facilis"</span><span class="token punctuation">,</span>
-      <span class="token string">"completed"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span>
-    <span class="token punctuation">{</span>
-      <span class="token string">"userId"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span>
-      <span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"fugiat veniam minus"</span><span class="token punctuation">,</span>
-      <span class="token string">"completed"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span>
-    <span class="token punctuation">{</span>
-      <span class="token string">"userId"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">4</span><span class="token punctuation">,</span>
-      <span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"et porro tempora"</span><span class="token punctuation">,</span>
-      <span class="token string">"completed"</span><span class="token punctuation">:</span> <span class="token boolean">true</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span>
-    <span class="token punctuation">{</span>
-      <span class="token string">"userId"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">5</span><span class="token punctuation">,</span>
-      <span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"laboriosam mollitia et enim quasi"</span><span class="token punctuation">,</span>
-      <span class="token string">"completed"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span>
-    <span class="token punctuation">{</span>
-      <span class="token string">"userId"</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span>
-      <span class="token string">"id"</span><span class="token punctuation">:</span> <span class="token number">6</span><span class="token punctuation">,</span>
-      <span class="token string">"title"</span><span class="token punctuation">:</span> <span class="token string">"qui ullam ratione quibusda"</span><span class="token punctuation">,</span>
-      <span class="token string">"completed"</span><span class="token punctuation">:</span> <span class="token boolean">false</span>
-    <span class="token punctuation">}</span>
-  <span class="token punctuation">]</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">&#123;</span><br><span class="line">  <span class="string">&quot;todos&quot;</span>: [</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;userId&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="string">&quot;title&quot;</span>: <span class="string">&quot;delectus aut autem&quot;</span>,</span><br><span class="line">      <span class="string">&quot;completed&quot;</span>: <span class="literal">false</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;userId&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">2</span>,</span><br><span class="line">      <span class="string">&quot;title&quot;</span>: <span class="string">&quot;quis ut nam facilis&quot;</span>,</span><br><span class="line">      <span class="string">&quot;completed&quot;</span>: <span class="literal">false</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;userId&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">3</span>,</span><br><span class="line">      <span class="string">&quot;title&quot;</span>: <span class="string">&quot;fugiat veniam minus&quot;</span>,</span><br><span class="line">      <span class="string">&quot;completed&quot;</span>: <span class="literal">false</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;userId&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">4</span>,</span><br><span class="line">      <span class="string">&quot;title&quot;</span>: <span class="string">&quot;et porro tempora&quot;</span>,</span><br><span class="line">      <span class="string">&quot;completed&quot;</span>: <span class="literal">true</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;userId&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">5</span>,</span><br><span class="line">      <span class="string">&quot;title&quot;</span>: <span class="string">&quot;laboriosam mollitia et enim quasi&quot;</span>,</span><br><span class="line">      <span class="string">&quot;completed&quot;</span>: <span class="literal">false</span></span><br><span class="line">    &#125;,</span><br><span class="line">    &#123;</span><br><span class="line">      <span class="string">&quot;userId&quot;</span>: <span class="number">1</span>,</span><br><span class="line">      <span class="string">&quot;id&quot;</span>: <span class="number">6</span>,</span><br><span class="line">      <span class="string">&quot;title&quot;</span>: <span class="string">&quot;qui ullam ratione quibusda&quot;</span>,</span><br><span class="line">      <span class="string">&quot;completed&quot;</span>: <span class="literal">false</span></span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <h2 id="Switch-API"><a href="#Switch-API" class="headerlink" title="Switch API"></a>Switch API</h2><h3 id="Environment-Variables"><a href="#Environment-Variables" class="headerlink" title="Environment Variables"></a>Environment Variables</h3><p><strong>.env</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">NODE_ENV<span class="token operator">=</span>production
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">NODE_ENV</span>=production</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><p>整個專案的 <code>.env</code>，會進 Git</p>
 </li>
@@ -585,9 +531,8 @@ app<span class="token punctuation">.</span><span class="token function">listen</
 </li>
 </ul>
 <p><strong>.env.development</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">NODE_ENV<span class="token operator">=</span>development
-VUE_APP_API<span class="token operator">=</span><span class="token string">"https://jsonplaceholder.typicode.com"</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">NODE_ENV</span>=development</span><br><span class="line"><span class="variable constant_">VUE_APP_API</span>=<span class="string">&quot;https://jsonplaceholder.typicode.com&quot;</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><p>設定 <code>development</code> mode 的 <code>.env</code>，會進 Git</p>
 </li>
@@ -597,9 +542,8 @@ VUE_APP_API<span class="token operator">=</span><span class="token string">"http
 </li>
 </ul>
 <p><strong>.env.development.local</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">NODE_ENV<span class="token operator">=</span>development
-VUE_APP_API<span class="token operator">=</span><span class="token string">"http://localhost:3000"</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">NODE_ENV</span>=development</span><br><span class="line"><span class="variable constant_">VUE_APP_API</span>=<span class="string">&quot;http://localhost:3000&quot;</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><p>設定 <code>development</code> mode 的 <code>env</code>，<code>不會</code> 進 Git</p>
 </li>
@@ -612,81 +556,52 @@ VUE_APP_API<span class="token operator">=</span><span class="token string">"http
 <p>因為 <code>.env.development.local</code> 不會進 Git，自己開發用的環境變數可以設定在此</p>
 </blockquote>
 <p><strong>.env.lab</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">NODE_ENV<span class="token operator">=</span>development
-VUE_APP_API<span class="token operator">=</span><span class="token string">"https://jsonplaceholder.typicode.com"</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">NODE_ENV</span>=development</span><br><span class="line"><span class="variable constant_">VUE_APP_API</span>=<span class="string">&quot;https://jsonplaceholder.typicode.com&quot;</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>設定 <code>lab</code> mode，此為自訂的新 mode，會進 Git</li>
 <li><code>NODE_ENV</code> 設定為 Vue CLI 的 <code>production</code> mode</li>
 <li><code>VUE_APP_API</code> 變數為 <code>真 API</code> 位址</li>
 </ul>
 <h3 id="Read-env"><a href="#Read-env" class="headerlink" title="Read .env"></a>Read .env</h3><p><strong>api&#x2F;todo.api.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&#x27;axios&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="variable constant_">API</span> = process.<span class="property">env</span>.<span class="property">VUE_APP_API</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">let</span> <span class="title function_">fetchTodos</span> = (<span class="params"></span>) =&gt; axios.<span class="title function_">get</span>(<span class="string">`<span class="subst">$&#123;API&#125;</span>/todos`</span>)</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> API <span class="token operator">=</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>VUE_APP_API
-
-<span class="token keyword">export</span> <span class="token keyword">let</span> fetchTodos <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> axios<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>API<span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">/todos`</span></span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>Line 3</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> API <span class="token operator">=</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>VUE_APP_API<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="variable constant_">API</span> = process.<span class="property">env</span>.<span class="property">VUE_APP_API</span>;</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>process.env.VUE_APP_API</code> 讀取 <code>.env</code> 的 <code>VUE_APP_API</code> 變數。</p>
 <h3 id="Use-Fake-API"><a href="#Use-Fake-API" class="headerlink" title="Use Fake API"></a>Use Fake API</h3><p><strong>package.json</strong></p>
-<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
-  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"vue-todo-lis-api"</span><span class="token punctuation">,</span>
-  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"0.1.0"</span><span class="token punctuation">,</span>
-  <span class="token property">"private"</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token property">"serve"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service serve"</span><span class="token punctuation">,</span>
-    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service build"</span><span class="token punctuation">,</span>
-    <span class="token property">"lint"</span><span class="token operator">:</span> <span class="token string">"vue-cli-service lint"</span><span class="token punctuation">,</span>
-    <span class="token property">"api"</span><span class="token operator">:</span> <span class="token string">"node ./node/index.js"</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token property">"axios"</span><span class="token operator">:</span> <span class="token string">"^0.18.0"</span><span class="token punctuation">,</span>
-    <span class="token property">"cors"</span><span class="token operator">:</span> <span class="token string">"^2.8.4"</span><span class="token punctuation">,</span>
-    <span class="token property">"express"</span><span class="token operator">:</span> <span class="token string">"^4.16.4"</span><span class="token punctuation">,</span>
-    <span class="token property">"vue"</span><span class="token operator">:</span> <span class="token string">"^2.5.17"</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token property">"@vue/cli-plugin-babel"</span><span class="token operator">:</span> <span class="token string">"^3.0.3"</span><span class="token punctuation">,</span>
-    <span class="token property">"@vue/cli-plugin-eslint"</span><span class="token operator">:</span> <span class="token string">"^3.0.3"</span><span class="token punctuation">,</span>
-    <span class="token property">"@vue/cli-service"</span><span class="token operator">:</span> <span class="token string">"^3.0.3"</span><span class="token punctuation">,</span>
-    <span class="token property">"@vue/eslint-config-airbnb"</span><span class="token operator">:</span> <span class="token string">"^3.0.5"</span><span class="token punctuation">,</span>
-    <span class="token property">"vue-template-compiler"</span><span class="token operator">:</span> <span class="token string">"^2.5.17"</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vue-todo-lis-api&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.1.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;private&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;serve&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vue-cli-service serve&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vue-cli-service build&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;lint&quot;</span><span class="punctuation">:</span> <span class="string">&quot;vue-cli-service lint&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;api&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node ./node/index.js&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;dependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;axios&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^0.18.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;cors&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.8.4&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;express&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^4.16.4&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;vue&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.5.17&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;devDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;@vue/cli-plugin-babel&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^3.0.3&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@vue/cli-plugin-eslint&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^3.0.3&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@vue/cli-service&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^3.0.3&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;@vue/eslint-config-airbnb&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^3.0.5&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;vue-template-compiler&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.5.17&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p><strong>Line 9</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token string">"api"</span><span class="token punctuation">:</span> <span class="token string">"node ./node/index.js"</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;api&quot;</span>: <span class="string">&quot;node ./node/index.js&quot;</span></span><br></pre></td></tr></table></figure>
+
 <p>輸入 <code>yarn api</code> 將執行 Node.js 的 <code>假 API</code>。</p>
-<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn api
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yarn api</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>執行 <code>假 API</code></li>
 </ul>
-<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn serve
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yarn serve</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>yarn serve</code> 會使用 <code>development</code> mode，因為有提供 <code>.env.development.local</code>，所以 <code>VUE_APP_API</code> 應為 <code>http://localhost:3000</code>，也就是 <code>假 API</code></li>
 </ul>
-<h3 id="Use-Real-API"><a href="#Use-Real-API" class="headerlink" title="Use Real API"></a>Use Real API</h3><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn serve --mode lab
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h3 id="Use-Real-API"><a href="#Use-Real-API" class="headerlink" title="Use Real API"></a>Use Real API</h3><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yarn serve --mode lab</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>yarn serve</code> 使用 <code>lab </code> mode，也就是 <code>真 API</code></li>
 </ul>
 <p><strong>.env.development.local.sample</strong></p>
-<pre class="line-numbers highlight language-shell"><code class="language-shell">NODE_ENV=development
-VUE_APP_API="http://localhost:3000"
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line">NODE_ENV=development</span><br><span class="line">VUE_APP_API=&quot;http://localhost:3000&quot;</span><br></pre></td></tr></table></figure>
+
 <p>由於 <code>env.local.sample</code> 沒有進 Git，其他人直接 <code>git clone</code> 下整個專案時，會因為不會設定 <code>.env.development.local</code>，導致無法執行 <code>假 API</code> 模式，可另外提供 <code>.env.development.local.sample</code>，此檔會進 Git，在自行由 <code>.env.development.local.sample</code> 命名為 <code>.env.development.local</code> 即可。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>透過 Node.js，就可解決 JSON Server 無法建立 POST 回傳資料的問題，因為 JSON Server 是純 RESTful</li>
 <li>靈活的運用 <code>.env.development.local</code> 與 <code> yarn serve --mode</code>，就可靈活的切換 <code>假 API</code> 與 <code>真 API</code></li>
 <li>可將 <code>.env.development.local.sample</code> 也存進 Git，如此其他人 <code>git clone</code> 下來，可根據此檔建立 <code>.env.development.local</code></li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://cli.vuejs.org/" target="_blank" rel="noopener">Vue CLI</a>, <a href="https://cli.vuejs.org/guide/mode-and-env.html#modes" target="_blank" rel="noopener">Environment Variables and Modes</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://cli.vuejs.org/">Vue CLI</a>, <a target="_blank" rel="noopener" href="https://cli.vuejs.org/guide/mode-and-env.html#modes">Environment Variables and Modes</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

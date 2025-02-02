@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,64 +438,31 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>實務上 <code>map()</code> 最常使用的就是從 Object 眾多 Property 中，僅擷取部分 Property，Ramda 提供了 <code>pick()</code> 達成此功能。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS 10.14.5<br>VS Code 1.36.1<br>Quokka 1.0.238<br>Ramda 0.26.1</p>
-<h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<h2 id="Imperative"><a href="#Imperative" class="headerlink" title="Imperative"></a>Imperative</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">100</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;RxJS in Action&#x27;</span>, <span class="attr">price</span>: <span class="number">200</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;Speaking JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">300</span> &#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">usrFn</span> = arr =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> result = [];</span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> x <span class="keyword">of</span> arr)</span><br><span class="line">    result.<span class="title function_">push</span>(&#123; <span class="attr">title</span>: x.<span class="property">title</span> &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">dir</span>(<span class="title function_">usrFn</span>(data));</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> usrFn <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-  <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> x <span class="token keyword">of</span> arr<span class="token punctuation">)</span>
-    result<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span><span class="token punctuation">{</span> title<span class="token punctuation">:</span> x<span class="token punctuation">.</span>title <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token keyword">return</span> result<span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">usrFn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Imperative 會使用 <code>for</code> loop，先建立新的 <code>result</code> array，只將 <code>title</code> push 進 <code>result</code> 回傳。</p>
 <p><img src="/images/ramda/object/pick/pick002.png" alt="pick002"></p>
-<h2 id="Array-prototype-map"><a href="#Array-prototype-map" class="headerlink" title="Array.prototype.map()"></a>Array.prototype.map()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
+<h2 id="Array-prototype-map"><a href="#Array-prototype-map" class="headerlink" title="Array.prototype.map()"></a>Array.prototype.map()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">100</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;RxJS in Action&#x27;</span>, <span class="attr">price</span>: <span class="number">200</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;Speaking JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">300</span> &#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">usrFn</span> = arr =&gt; arr.<span class="title function_">map</span>(<span class="function"><span class="params">x</span> =&gt;</span> (&#123; <span class="attr">title</span>: x.<span class="property">title</span> &#125;));</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">dir</span>(<span class="title function_">usrFn</span>(data));</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> usrFn <span class="token operator">=</span> arr <span class="token operator">=</span><span class="token operator">></span> arr<span class="token punctuation">.</span><span class="token function">map</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span> title<span class="token punctuation">:</span> x<span class="token punctuation">.</span>title <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">usrFn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>ECMAScript 的 <code>Array.prototype</code> 也內建 <code>map()</code>，可直接使用 arrow function 傳入 map function。</p>
 <p><img src="/images/ramda/object/pick/pick000.png" alt="pick000"></p>
-<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> map<span class="token punctuation">,</span> pick <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
+<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; map, pick &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">100</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;RxJS in Action&#x27;</span>, <span class="attr">price</span>: <span class="number">200</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;Speaking JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">300</span> &#125;</span><br><span class="line">];</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> usrFn = <span class="title function_">map</span>(<span class="title function_">pick</span>([<span class="string">&#x27;title&#x27;</span>]));</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">dir</span>(<span class="title function_">usrFn</span>(data));</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> usrFn <span class="token operator">=</span> <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">pick</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'title'</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-console<span class="token punctuation">.</span><span class="token function">dir</span><span class="token punctuation">(</span><span class="token function">usrFn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若想要 map function 也 point-free，可在搭配 <code>pick()</code>，將 property 以 array 傳入即可。</p>
 <blockquote>
-<p><strong>pick()</strong><br><code>[k] -&gt; {k: v} -&gt; {k: v}</code><br>從一個 object 中抽取部分 property 成為新 object</p>
+<p><strong>pick()</strong><br><code>[k] -&gt; &#123;k: v&#125; -&gt; &#123;k: v&#125;</code><br>從一個 object 中抽取部分 property 成為新 object</p>
 </blockquote>
 <p><code>[k]</code>：要抽取的 property</p>
-<p><code>{k: v}</code>：data 為 object</p>
-<p><code>{k: v}</code>	: 回傳新的 object</p>
+<p><code>&#123;k: v&#125;</code>：data 為 object</p>
+<p><code>&#123;k: v&#125;</code>	: 回傳新的 object</p>
 <p><img src="/images/ramda/object/pick/pick001.png" alt="pick001"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li><code>pick()</code> 使得 <code>map()</code> 的 callback 更為精簡，這就是 point-free 的魔力</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#map" target="_blank" rel="noopener">map()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#pick" target="_blank" rel="noopener">pick()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#map">map()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#pick">pick()</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

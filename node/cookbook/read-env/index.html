@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,26 +438,21 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Environment Variable is essential for Node. We can both read environment variables at the development phase or production phase.</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Node 16.13.0<br>Dotenv 10.0.0</p>
-<h2 id="Add-Library"><a href="#Add-Library" class="headerlink" title="Add Library"></a>Add Library</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add dotenv
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Add-Library"><a href="#Add-Library" class="headerlink" title="Add Library"></a>Add Library</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yarn add dotenv</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>dotenv</code> : read <code>.env</code> file to get environment variables</li>
 </ul>
 <h2 id="Environment-Variable"><a href="#Environment-Variable" class="headerlink" title="Environment Variable"></a>Environment Variable</h2><p><strong>.env</strong></p>
-<pre class="line-numbers highlight language-env"><code class="language-env">PORT=3000
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">PORT=3000</span><br></pre></td></tr></table></figure>
+
 <p>Set <code>port</code> to <code>3000</code> at the development phase.</p>
 <h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><p><strong>app.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> config <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'dotenv'</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; config &#125; <span class="keyword">from</span> <span class="string">&#x27;dotenv&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> (process.<span class="property">env</span>.<span class="property">NODE_ENV</span> !== <span class="string">&#x27;production&#x27;</span>)</span><br><span class="line">  <span class="title function_">config</span> ()</span><br><span class="line"></span><br><span class="line"><span class="variable language_">console</span>.<span class="property">log</span> (process.<span class="property">env</span>.<span class="property">PORT</span>)</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">if</span> <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>NODE_ENV <span class="token operator">!==</span> <span class="token string">'production'</span><span class="token punctuation">)</span>
-  config <span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-console<span class="token punctuation">.</span>log <span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>PORT<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li><p>If <code>NODE_ENV</code> environment variable is not <code>production</code>, call <code>config</code> to read environment variables in <code>.env</code> file</p>
 </li>
@@ -465,71 +460,40 @@ console<span class="token punctuation">.</span>log <span class="token punctuatio
 </li>
 </ul>
 <h2 id="NPM-Config"><a href="#NPM-Config" class="headerlink" title="NPM Config"></a>NPM Config</h2><p><strong>package.json</strong></p>
-<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
-  <span class="token property">"type"</span><span class="token operator">:</span> <span class="token string">"module"</span><span class="token punctuation">,</span>
-  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"node"</span><span class="token punctuation">,</span>
-  <span class="token property">"version"</span><span class="token operator">:</span> <span class="token string">"0.0.0"</span><span class="token punctuation">,</span>
-  <span class="token property">"main"</span><span class="token operator">:</span> <span class="token string">"app.js"</span><span class="token punctuation">,</span>
-  <span class="token property">"license"</span><span class="token operator">:</span> <span class="token string">"MIT"</span><span class="token punctuation">,</span>
-  <span class="token property">"dependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token property">"dotenv"</span><span class="token operator">:</span> <span class="token string">"^10.0.0"</span><span class="token punctuation">,</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token property">"devDependencies"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token property">"nodemon"</span><span class="token operator">:</span> <span class="token string">"^2.0.14"</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token property">"scripts"</span><span class="token operator">:</span> <span class="token punctuation">{</span>
-    <span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"nodemon app.js"</span><span class="token punctuation">,</span>
-    <span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"docker build -t node_lab:$npm_package_version ."</span><span class="token punctuation">,</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;module&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;node&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;version&quot;</span><span class="punctuation">:</span> <span class="string">&quot;0.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;main&quot;</span><span class="punctuation">:</span> <span class="string">&quot;app.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;license&quot;</span><span class="punctuation">:</span> <span class="string">&quot;MIT&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;dependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;dotenv&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^10.0.0&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;devDependencies&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;nodemon&quot;</span><span class="punctuation">:</span> <span class="string">&quot;^2.0.14&quot;</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;scripts&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;dev&quot;</span><span class="punctuation">:</span> <span class="string">&quot;nodemon app.js&quot;</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;docker build -t node_lab:$npm_package_version .&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p><strong>Line 14</strong></p>
-<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"dev"</span><span class="token operator">:</span> <span class="token string">"nodemon app.js"</span><span class="token punctuation">,</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="attr">&quot;dev&quot;</span><span class="punctuation">:</span> <span class="string">&quot;nodemon app.js&quot;</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
+
 <p>Run Node at the development phase.</p>
 <p><strong>Line 15</strong></p>
-<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token property">"build"</span><span class="token operator">:</span> <span class="token string">"docker build -t node_lab:$npm_package_version ."</span><span class="token punctuation">,</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="attr">&quot;build&quot;</span><span class="punctuation">:</span> <span class="string">&quot;docker build -t node_lab:$npm_package_version .&quot;</span><span class="punctuation">,</span></span><br></pre></td></tr></table></figure>
+
 <p>Build image at production phase.</p>
 <h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p><strong>dockerfile</strong></p>
-<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">FROM node:lts-alpine
-ENV NODE_ENV=production
-WORKDIR /usr/src/app
-COPY package.json ./
-COPY yarn.lock ./
-RUN yarn install
-COPY app.js .
-CMD [ "node", "app.js" ]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:lts-alpine</span><br><span class="line"><span class="keyword">ENV</span> NODE_ENV=production</span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /usr/src/app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> package.json ./</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> yarn.lock ./</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> yarn install</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> app.js .</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [ <span class="string">&quot;node&quot;</span>, <span class="string">&quot;app.js&quot;</span> ]</span></span><br></pre></td></tr></table></figure>
+
 <p><strong>Line 2</strong></p>
-<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">ENV NODE_ENV=production
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">ENV</span> NODE_ENV=production</span><br></pre></td></tr></table></figure>
+
 <p>Set <code>NODE_ENV</code> environment variable to <code>production</code> for the production phase.</p>
 <p><strong>Line 5</strong></p>
-<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">COPY yarn.lock ./
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">COPY</span><span class="language-bash"> yarn.lock ./</span></span><br></pre></td></tr></table></figure>
+
 <p>Copy <code>yarn.lock</code> to image for the correct version of the package.</p>
 <h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><p><strong>docker-compose.yml</strong></p>
-<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3"</span>
-<span class="token key atrule">services</span><span class="token punctuation">:</span>
-  <span class="token key atrule">node-lab</span><span class="token punctuation">:</span>
-    <span class="token key atrule">image</span><span class="token punctuation">:</span> node<span class="token punctuation">-</span>lab<span class="token punctuation">:</span>1.0.0
-    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> node<span class="token punctuation">-</span>lab
-    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> PORT=5000
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">node-lab:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">node-lab:1.0.0</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">node-lab</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">PORT=5000</span></span><br></pre></td></tr></table></figure>
+
 <p><strong>Line 6</strong></p>
-<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">environment</span><span class="token punctuation">:</span>
-  <span class="token punctuation">-</span> PORT=5000
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">environment:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">PORT=5000</span></span><br></pre></td></tr></table></figure>
+
 <p>Set <code>port</code> to <code>5000</code> at the production phase.</p>
-<h2 id="Development"><a href="#Development" class="headerlink" title="Development"></a>Development</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn dev
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Development"><a href="#Development" class="headerlink" title="Development"></a>Development</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yarn dev</span></span><br></pre></td></tr></table></figure>
+
 <p>Run <code>yarn dev</code> to run Node at the development phase.</p>
 <p><img src="/images/node/cookbook/read-env/env000.png" alt="env000"></p>
-<h2 id="Production"><a href="#Production" class="headerlink" title="Production"></a>Production</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn build
-$ docker-compose up
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="Production"><a href="#Production" class="headerlink" title="Production"></a>Production</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yarn build</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker-compose up</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>Run <code>yarn build</code> to build image first</li>
 <li>Run <code>docker-compose up</code> to run Node at the development phase</li>

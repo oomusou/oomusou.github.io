@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,23 +438,11 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>由於 <code>filter()</code> 這類 Function 需要傳進 Predicate，若 Data 為 Object Array，勢必先取出 Property 再進行比較，勢必使用 <code>pipe()</code> 產生 Predicate，此時可改用 <code>where()</code> 可讀性更高。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
-<h2 id="filter"><a href="#filter" class="headerlink" title="filter()"></a>filter()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> filter<span class="token punctuation">,</span> prop<span class="token punctuation">,</span> includes<span class="token punctuation">,</span> pluck<span class="token punctuation">,</span> sum <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="filter"><a href="#filter" class="headerlink" title="filter()"></a>filter()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, filter, prop, includes, pluck, sum &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">100</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;Programming Haskell&#x27;</span>, <span class="attr">price</span>: <span class="number">200</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;Speaking JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">300</span> &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">filter</span>(<span class="title function_">pipe</span>(<span class="title function_">prop</span>(<span class="string">&#x27;title&#x27;</span>), <span class="title function_">includes</span>(<span class="string">&#x27;JavaScript&#x27;</span>))),</span><br><span class="line">  <span class="title function_">pluck</span>(<span class="string">&#x27;price&#x27;</span>),</span><br><span class="line">  sum</span><br><span class="line">)(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Programming Haskell'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
-
-<span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">filter</span><span class="token punctuation">(</span><span class="token function">pipe</span><span class="token punctuation">(</span><span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'title'</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">includes</span><span class="token punctuation">(</span><span class="token string">'JavaScript'</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  sum
-<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若我們要取得 title 包含 <code>JavaScript</code> 的所有 price 總和，在 <code>filter()</code> 內須做兩件事情：</p>
 <ul>
 <li>使用 <code>prop()</code> 先取得 <code>title</code> 內容</li>
@@ -463,31 +451,19 @@ a:hover {
 </ul>
 <p>這樣雖然可行，但可讀性較差。</p>
 <p><img src="/images/ramda/object/where/where000.png" alt="where000"></p>
-<h2 id="where"><a href="#where" class="headerlink" title="where()"></a>where()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> filter<span class="token punctuation">,</span> where<span class="token punctuation">,</span> includes<span class="token punctuation">,</span> pluck<span class="token punctuation">,</span> sum <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="where"><a href="#where" class="headerlink" title="where()"></a>where()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, filter, where, includes, pluck, sum &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">100</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;Programming Haskell&#x27;</span>, <span class="attr">price</span>: <span class="number">200</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;Speaking JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">300</span> &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">filter</span>(<span class="title function_">where</span>(&#123; <span class="attr">title</span>: <span class="title function_">includes</span>(<span class="string">&#x27;JavaScript&#x27;</span>)&#125;)),</span><br><span class="line">  <span class="title function_">pluck</span>(<span class="string">&#x27;price&#x27;</span>),</span><br><span class="line">  sum</span><br><span class="line">)(data) <span class="comment">// ?</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Programming Haskell'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
-
-<span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">filter</span><span class="token punctuation">(</span><span class="token function">where</span><span class="token punctuation">(</span><span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token function">includes</span><span class="token punctuation">(</span><span class="token string">'JavaScript'</span><span class="token punctuation">)</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">pluck</span><span class="token punctuation">(</span><span class="token string">'price'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  sum
-<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Ramda 提供了 <code>where()</code> 特別適合 Object Array：</p>
 <blockquote>
-<p><strong>where()</strong><br><code>{String: (* → Boolean)} → {String: *} → Boolean</code><br>提供 Object Array 所需 predicate</p>
+<p><strong>where()</strong><br><code>&#123;String: (* → Boolean)&#125; → &#123;String: *&#125; → Boolean</code><br>提供 Object Array 所需 predicate</p>
 </blockquote>
-<p><code>{String: (* → Boolean)}</code>：<code>String</code> 為 Object 的 property，<code>(* → Boolean)</code> 則為判斷 function</p>
-<p><code>{String: *} -&gt; Boolean</code>：回傳 argument 為 Object 的 predicate</p>
+<p><code>&#123;String: (* → Boolean)&#125;</code>：<code>String</code> 為 Object 的 property，<code>(* → Boolean)</code> 則為判斷 function</p>
+<p><code>&#123;String: *&#125; -&gt; Boolean</code>：回傳 argument 為 Object 的 predicate</p>
 <p><img src="/images/ramda/object/where/where001.png" alt="where001"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>當 data 為 Object Array 時，建議都該使用 <code>where()</code> 產生 predicate，而非土法煉鋼使用 <code>pipe()</code> 組合</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#where" target="_blank" rel="noopener">where()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#where">where()</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

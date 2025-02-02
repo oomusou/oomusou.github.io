@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,32 +438,14 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>在開發階段有時會將 API 取消 SSL 檢查，在 Axios 有兩種方式設定。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.3<br>Node 12.4.0<br>Axios 0.19.2</p>
-<h2 id="Request-Level"><a href="#Request-Level" class="headerlink" title="Request Level"></a>Request Level</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> Agent <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'https'</span>
+<h2 id="Request-Level"><a href="#Request-Level" class="headerlink" title="Request Level"></a>Request Level</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&#x27;axios&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Agent</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;https&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> httpsAgent = <span class="keyword">new</span> <span class="title class_">Agent</span>(&#123;</span><br><span class="line">  <span class="attr">rejectUnauthorized</span>: <span class="literal">false</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">axios.<span class="title function_">get</span>(uri, &#123; httpsAgent &#125;)</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> httpsAgent <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Agent</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  rejectUnauthorized<span class="token punctuation">:</span> <span class="token boolean">false</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-axios<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span>uri<span class="token punctuation">,</span> <span class="token punctuation">{</span> httpsAgent <span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由 <code>https</code> 取出 <code>Agent</code> 建立 <code>httpsAgent</code> 的 <code>rejectUnauthorized</code> 為 <code>false</code>，並在 <code>axios.get()</code> 的第二個 argument 傳入。</p>
-<h2 id="Instance-Level"><a href="#Instance-Level" class="headerlink" title="Instance Level"></a>Instance Level</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> axios <span class="token keyword">from</span> <span class="token string">'axios'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> Agent <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'https'</span>
+<h2 id="Instance-Level"><a href="#Instance-Level" class="headerlink" title="Instance Level"></a>Instance Level</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> axios <span class="keyword">from</span> <span class="string">&#x27;axios&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">Agent</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;https&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> httpsAgent = <span class="keyword">new</span> <span class="title class_">Agent</span>(&#123;</span><br><span class="line">  <span class="attr">rejectUnauthorized</span>: <span class="literal">false</span></span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> myAxios = axios.<span class="title function_">create</span>(&#123;</span><br><span class="line">  httpsAgent</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">myAxios.<span class="title function_">get</span>(uri)</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> httpsAgent <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Agent</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  rejectUnauthorized<span class="token punctuation">:</span> <span class="token boolean">false</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> myAxios <span class="token operator">=</span> axios<span class="token punctuation">.</span><span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  httpsAgent
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-myAxios<span class="token punctuation">.</span><span class="token keyword">get</span><span class="token punctuation">(</span>uri<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可將 <code>httpsAgent</code> 傳入 <code>axios.create()</code> 建立 Axios instance，如此則不用每個 <code>get()</code> 都設定。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>若要整個 project 使用相同設定，則使用 instance level 較方便</li>

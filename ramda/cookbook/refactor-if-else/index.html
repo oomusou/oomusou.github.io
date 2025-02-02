@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,40 +438,19 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p><code>if else</code> 在每個程式語言都有，但這是 Imperative 使用方式，會使得 Function Pipeline 中斷，事實上可使用 Function 加以重構。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>Ramda 0.27.0<br>Wink-fp 1.20.85</p>
-<h2 id="if"><a href="#if" class="headerlink" title="if"></a>if</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'Sam'</span>
+<h2 id="if"><a href="#if" class="headerlink" title="if"></a>if</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;Sam&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">f</span> = x =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span> (x) <span class="keyword">return</span> <span class="string">&#x27;not empty&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>x<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token string">'not empty'</span>
-<span class="token punctuation">}</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>很典型 <code>if</code> ，若 <code>data</code> 有值才印出 <code>not empty</code>。</p>
 <p><img src="/images/ramda/cookbook/refactor-if-else/if000.png" alt="if000"></p>
-<h3 id="amp-amp"><a href="#amp-amp" class="headerlink" title="&amp;&amp;"></a>&amp;&amp;</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'Sam'</span>
+<h3 id=""><a href="#" class="headerlink" title="&amp;&amp;"></a>&amp;&amp;</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;Sam&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">f</span> = x =&gt; x &amp;&amp; <span class="string">&#x27;not empty&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">&amp;&amp;</span> <span class="token string">'not empty'</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>ECMAScript 的獨門武器，使用 <code>&amp;&amp;</code> 可使 code 更精簡。</p>
 <p><img src="/images/ramda/cookbook/refactor-if-else/if001.png" alt="if001"></p>
-<h3 id="when"><a href="#when" class="headerlink" title="when()"></a>when()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> when<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> bool <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h3 id="when"><a href="#when" class="headerlink" title="when()"></a>when()</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, when, always &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; bool &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;Sam&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> logNotEmpty = <span class="title function_">always</span>(<span class="string">&#x27;not empty&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">when</span>(bool, logNotEmpty)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'Sam'</span>
-
-<span class="token keyword">let</span> logNotEmpty <span class="token operator">=</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'not empty'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">when</span><span class="token punctuation">(</span>bool<span class="token punctuation">,</span> logNotEmpty<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li><p>將 <code>not empty</code> 部分抽出獨立的 <code>logNotEmpty()</code></p>
 </li>
@@ -482,48 +461,16 @@ a:hover {
 <p>使用 <code>when()</code> 最大優點是可以整合在 Function Pipeline 內，這是 <code>if</code> 所辦不到的</p>
 </blockquote>
 <p><img src="/images/ramda/cookbook/refactor-if-else/if002.png" alt="if002"></p>
-<h3 id="isNonEmpty"><a href="#isNonEmpty" class="headerlink" title="isNonEmpty()"></a>isNonEmpty()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> when<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> isNonEmpty <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h3 id="isNonEmpty"><a href="#isNonEmpty" class="headerlink" title="isNonEmpty()"></a>isNonEmpty()</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, when, always &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; isNonEmpty &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;Sam&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> logNotEmpty = <span class="title function_">always</span>(<span class="string">&#x27;not empty&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">when</span>(isNonEmpty, logNotEmpty)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'Sam'</span>
-
-<span class="token keyword">let</span> logNotEmpty <span class="token operator">=</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'not empty'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">when</span><span class="token punctuation">(</span>isNonEmpty<span class="token punctuation">,</span> logNotEmpty<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於 <code>when()</code> 第一個 argument 接受 function，因此對於 input 有加工的空間，除了使用 <code>bool()</code> 外，也能更明確使用 <code>isNonEmpty()</code> 使語意更為清楚。</p>
 <p><img src="/images/ramda/cookbook/refactor-if-else/if003.png" alt="if003"></p>
-<h3 id="identity"><a href="#identity" class="headerlink" title="identity()"></a>identity()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> when<span class="token punctuation">,</span> always<span class="token punctuation">,</span> identity <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h3 id="identity"><a href="#identity" class="headerlink" title="identity()"></a>identity()</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, when, always, identity &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> logTrue = <span class="title function_">always</span>(<span class="string">&#x27;true&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">when</span>(identity, logTrue)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token boolean">true</span>
-
-<span class="token keyword">let</span> logTrue <span class="token operator">=</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'true'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">when</span><span class="token punctuation">(</span>identity<span class="token punctuation">,</span> logTrue<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若 <code>data</code> 已經是 Boolean，就不必靠 <code>when()</code> 的第一個 function 作轉換，此時可使用 <code>identity()</code> 維持不變。</p>
 <p><img src="/images/ramda/cookbook/refactor-if-else/iif004.png" alt="iif004"></p>
-<h3 id="iif"><a href="#iif" class="headerlink" title="iif()"></a>iif()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> iif <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h3 id="iif"><a href="#iif" class="headerlink" title="iif()"></a>iif()</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, always &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; iif &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;Sam&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> logNotEmpty = <span class="title function_">always</span>(<span class="string">&#x27;not empty&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">iif</span>(logNotEmpty)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'Sam'</span>
-
-<span class="token keyword">let</span> logNotEmpty <span class="token operator">=</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'not empty'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">iif</span><span class="token punctuation">(</span>logNotEmpty<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可使用 Wink-fp 的 <code>iif()</code>，它與 Ramda 的 <code>when()</code> 有以下差別：</p>
 <ul>
 <li><code>iif()</code> 底層為 <code>&amp;&amp;</code>，可接受 falsy value，而 <code>when()</code> 不行</li>
@@ -533,37 +480,16 @@ a:hover {
 <p>若 data 需經過 function 處理則使用 <code>when()</code>，若可轉為 truthy value 或 falsy value 則使用 <code>iif()</code></p>
 </blockquote>
 <p><img src="/images/ramda/cookbook/refactor-if-else/iif005.png" alt="iif005"></p>
-<h2 id="if-not"><a href="#if-not" class="headerlink" title="if not"></a>if not</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">''</span>
+<h2 id="if-not"><a href="#if-not" class="headerlink" title="if not"></a>if not</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">f</span> = x =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span> (!x) <span class="keyword">return</span> <span class="string">&#x27;empty&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>x<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token string">'empty'</span>
-<span class="token punctuation">}</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>很典型 <code>if not</code> ，若 <code>data</code> 為 empty string 有值才印出 <code>empty</code>。</p>
 <p><img src="/images/ramda/cookbook/refactor-if-else/iif006.png" alt="iif006"></p>
-<h3 id=""><a href="#" class="headerlink" title="||"></a>||</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">''</span>
+<h3 id="-1"><a href="#-1" class="headerlink" title="||"></a>||</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">f</span> = x =&gt; x || <span class="string">&#x27;empty&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">||</span> <span class="token string">'empty'</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>ECMAScript 的獨門武器，使用 <code>||</code> 可使 code 更精簡。</p>
 <p><img src="/images/ramda/cookbook/refactor-if-else/iif007.png" alt="iif007"></p>
-<h3 id="unless"><a href="#unless" class="headerlink" title="unless()"></a>unless()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> unless<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> bool <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h3 id="unless"><a href="#unless" class="headerlink" title="unless()"></a>unless()</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, unless, always &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; bool &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> logEmpty = <span class="title function_">always</span>(<span class="string">&#x27;empty&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">unless</span>(bool, logEmpty)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">''</span>
-
-<span class="token keyword">let</span> logEmpty <span class="token operator">=</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'empty'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">unless</span><span class="token punctuation">(</span>bool<span class="token punctuation">,</span> logEmpty<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>將 <code>empty</code> 部分抽出獨立的 <code>logEmpty()</code></li>
 <li>使用 <code>unless()</code> 取代 <code>if not</code>，但 <code>unless()</code> 並沒有 falsy value 概念，因此需使用 <code>bool()</code> 明確將 String 轉成 Boolean</li>
@@ -572,63 +498,20 @@ a:hover {
 <p>使用 <code>unless()</code> 最大優點是可以整合在 Function Pipeline 內，這是 <code>if not</code> 所辦不到的</p>
 </blockquote>
 <p><img src="/images/ramda/cookbook/refactor-if-else/iif008.png" alt="iif008"></p>
-<h3 id="isNonEmpty-1"><a href="#isNonEmpty-1" class="headerlink" title="isNonEmpty()"></a>isNonEmpty()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> unless<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> isNonEmpty <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h3 id="isNonEmpty-1"><a href="#isNonEmpty-1" class="headerlink" title="isNonEmpty()"></a>isNonEmpty()</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, unless, always &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; isNonEmpty &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> logEmpty = <span class="title function_">always</span>(<span class="string">&#x27;empty&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">unless</span>(isNonEmpty, logEmpty)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">''</span>
-
-<span class="token keyword">let</span> logEmpty <span class="token operator">=</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'empty'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">unless</span><span class="token punctuation">(</span>isNonEmpty<span class="token punctuation">,</span> logEmpty<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於 <code>unless()</code> 第一個 argument 接受 function，因此對於 input 有加工的空間，除了使用 <code>bool()</code> 外，也能更明確使用 <code>isNonEmpty()</code>。</p>
 <p><img src="/images/ramda/cookbook/refactor-if-else/iif009.png" alt="iif009"></p>
-<h3 id="isEmpty"><a href="#isEmpty" class="headerlink" title="isEmpty()"></a>isEmpty()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> when<span class="token punctuation">,</span> isEmpty<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h3 id="isEmpty"><a href="#isEmpty" class="headerlink" title="isEmpty()"></a>isEmpty()</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, when, isEmpty, always &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> logEmpty = <span class="title function_">always</span>(<span class="string">&#x27;empty&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">when</span>(isEmpty, logEmpty)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">''</span>
-
-<span class="token keyword">let</span> logEmpty <span class="token operator">=</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'empty'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">when</span><span class="token punctuation">(</span>isEmpty<span class="token punctuation">,</span> logEmpty<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>unless(isNotEmpty)</code> 這種兩次反向邏輯很繞口，改用 <code>when(isEmpty)</code> 語意更好。</p>
 <p><img src="/images/ramda/cookbook/refactor-if-else/iif010.png" alt="iif010"></p>
-<h3 id="identity-1"><a href="#identity-1" class="headerlink" title="identity()"></a>identity()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> unless<span class="token punctuation">,</span> identity<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> bool <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h3 id="identity-1"><a href="#identity-1" class="headerlink" title="identity()"></a>identity()</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, unless, identity, always &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; bool &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="literal">false</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> logEmpty = <span class="title function_">always</span>(<span class="string">&#x27;empty&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">unless</span>(identity, logEmpty)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token boolean">false</span>
-
-<span class="token keyword">let</span> logEmpty <span class="token operator">=</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'empty'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">unless</span><span class="token punctuation">(</span>identity<span class="token punctuation">,</span> logEmpty<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若 <code>data</code> 已經是 Boolean，就不必靠 <code>unless()</code> 的第一個 function 作轉換，此時可使用 <code>identity()</code> 維持不變。</p>
 <p><img src="/images/ramda/cookbook/refactor-if-else/iif011.png" alt="iif011"></p>
-<h3 id="nif"><a href="#nif" class="headerlink" title="nif()"></a>nif()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> nif <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h3 id="nif"><a href="#nif" class="headerlink" title="nif()"></a>nif()</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, always &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; nif &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> logEmpty = <span class="title function_">always</span>(<span class="string">&#x27;empty&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">nif</span>(logEmpty)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">''</span>
-
-<span class="token keyword">let</span> logEmpty <span class="token operator">=</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'empty'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">nif</span><span class="token punctuation">(</span>logEmpty<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可使用 Wink-fp 的 <code>nif()</code>，他與 Ramda 的 <code>unless()</code> 有以下差別：</p>
 <ul>
 <li><code>iif()</code> 底層為 <code>||</code>，可接受 falsy value，而 <code>unless()</code> 不行</li>
@@ -638,40 +521,16 @@ a:hover {
 <p>若 data 需經過 function 處理則使用 <code>unless()</code>，若可轉為 truthy value 或 falsy value 則使用 <code>nif()</code></p>
 </blockquote>
 <p><img src="/images/ramda/cookbook/refactor-if-else/iif012.png" alt="iif012"></p>
-<h2 id="if-else"><a href="#if-else" class="headerlink" title="if else"></a>if else</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'Sam'</span>
+<h2 id="if-else"><a href="#if-else" class="headerlink" title="if else"></a>if else</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;Sam&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">f</span> = x =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span> (data) <span class="keyword">return</span> <span class="string">&#x27;non empty&#x27;</span></span><br><span class="line">  <span class="keyword">else</span> <span class="keyword">return</span> <span class="string">&#x27;empty&#x27;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token string">'non empty'</span>
-  <span class="token keyword">else</span> <span class="token keyword">return</span> <span class="token string">'empty'</span>
-<span class="token punctuation">}</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>很典型 <code>if else</code> ，若 <code>data</code> 有值回傳 <code>not empty</code>，否則回傳 <code>empty</code>。</p>
 <p><img src="/images/ramda/cookbook/refactor-if-else/iif013.png" alt="iif013"></p>
-<h3 id="-1"><a href="#-1" class="headerlink" title="?:"></a>?:</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'Sam'</span>
+<h3 id="-2"><a href="#-2" class="headerlink" title="?:"></a>?:</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;Sam&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">f</span> = x =&gt; x ? <span class="string">&#x27;non empty&#x27;</span> : <span class="string">&#x27;empty&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">?</span> <span class="token string">'non empty'</span> <span class="token punctuation">:</span> <span class="token string">'empty'</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可使用 <code>?:</code> ternary operator 使用 code 更精簡。</p>
 <p><img src="/images/ramda/cookbook/refactor-if-else/iif014.png" alt="iif014"></p>
-<h3 id="ifElse"><a href="#ifElse" class="headerlink" title="ifElse()"></a>ifElse()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> ifElse<span class="token punctuation">,</span> isEmpty<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> isNonEmpty <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h3 id="ifElse"><a href="#ifElse" class="headerlink" title="ifElse()"></a>ifElse()</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, ifElse, isEmpty, always &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; isNonEmpty &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;Sam&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> logEmpty = <span class="title function_">always</span>(<span class="string">&#x27;empty&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> logNotEmpty = <span class="title function_">always</span>(<span class="string">&#x27;not empty&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">ifElse</span>(isNonEmpty, logNotEmpty, logEmpty)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'Sam'</span>
-
-<span class="token keyword">let</span> logEmpty <span class="token operator">=</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'empty'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> logNotEmpty <span class="token operator">=</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'not empty'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">ifElse</span><span class="token punctuation">(</span>isNonEmpty<span class="token punctuation">,</span> logNotEmpty<span class="token punctuation">,</span> logEmpty<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>將 <code>empty</code> 與 <code>not empty</code> 部分抽出獨立的 <code>logEmpty()</code> 與 <code>logNotEmpty()</code></li>
 <li>使用 <code>ifElse()</code> 取代 <code>if else</code>，但 <code>ifElse()</code> 並沒有 falsy value 概念，因此需使用 <code>isNonEmpty()</code> 明確回傳 Boolean</li>
@@ -680,36 +539,12 @@ a:hover {
 <p>使用 <code>ifElse()</code> 最大優點是可以整合在 Function Pipeline 內，這是 <code>if not</code> 所辦不到的</p>
 </blockquote>
 <p><img src="/images/ramda/cookbook/refactor-if-else/iif015.png" alt="iif015"></p>
-<h3 id="identity-2"><a href="#identity-2" class="headerlink" title="identity()"></a>identity()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> ifElse<span class="token punctuation">,</span> identity<span class="token punctuation">,</span> always <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h3 id="identity-2"><a href="#identity-2" class="headerlink" title="identity()"></a>identity()</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, ifElse, identity, always &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="literal">true</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> logTrue = <span class="title function_">always</span>(<span class="string">&#x27;true&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> logFalse = <span class="title function_">always</span>(<span class="string">&#x27;false&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">ifElse</span>(identity, logTrue, logFalse)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token boolean">true</span>
-
-<span class="token keyword">let</span> logTrue <span class="token operator">=</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'true'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> logFalse <span class="token operator">=</span> <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'false'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">ifElse</span><span class="token punctuation">(</span>identity<span class="token punctuation">,</span> logTrue<span class="token punctuation">,</span> logFalse<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若 <code>data</code> 已經是 Boolean，就不必靠 <code>ifElse()</code> 的第一個 function 作轉換，此時可使用 <code>identity()</code> 維持不變。</p>
 <p><img src="/images/ramda/cookbook/refactor-if-else/iif016.png" alt="iif016"></p>
-<h3 id="either"><a href="#either" class="headerlink" title="either()"></a>either()</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> either <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h3 id="either"><a href="#either" class="headerlink" title="either()"></a>either()</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, either &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;Sam&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">logEmpty</span> = (<span class="params"></span>) =&gt; <span class="string">&#x27;empty&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">logNotEmpty</span> = (<span class="params"></span>) =&gt; <span class="string">&#x27;not empty&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">either</span>(logNotEmpty)(logEmpty)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">f</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'Sam'</span>
-
-<span class="token keyword">let</span> logEmpty <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'empty'</span>
-
-<span class="token keyword">let</span> logNotEmpty <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token string">'not empty'</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">either</span><span class="token punctuation">(</span>logNotEmpty<span class="token punctuation">)</span><span class="token punctuation">(</span>logEmpty<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">f</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可使用 <code>either()</code> ，它與 <code>ifElse()</code> 有以下差別：</p>
 <ul>
 <li><code>either()</code> 可接受 falsy value，而 <code>ifElse()</code> 不行</li>
@@ -725,7 +560,7 @@ a:hover {
 <li><p><code>if else</code> 與 operator 其實都非 FP 產物，應盡量避免，而改用相對應 function 取代</p>
 </li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#when" target="_blank" rel="noopener">when()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#unless" target="_blank" rel="noopener">unless()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#ifElse" target="_blank" rel="noopener">ifElse()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#either" target="_blank" rel="noopener">either()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#when">when()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#unless">unless()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#ifElse">ifElse()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#either">either()</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

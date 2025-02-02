@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,68 +438,29 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>實務上在寫 Vuex 時，由於 State 的修改都必須依賴 Mutation，因此 Mutation 寫出來的 Code 都相當類似，此時可以建立 <code>genMutation()</code> Higher Order Function，專門負責建立 Mutation。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.14.6<br>Vue 2.6.10<br>Vuex 3.0.1</p>
 <h2 id="Vuex"><a href="#Vuex" class="headerlink" title="Vuex"></a>Vuex</h2><p><strong>store.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'vue'</span>
-<span class="token keyword">import</span> Vuex <span class="token keyword">from</span> <span class="token string">'vuex'</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vuex</span> <span class="keyword">from</span> <span class="string">&#x27;vuex&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">Vuex</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> state = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">setName</span> = (<span class="params">state, payload</span>) =&gt; state.<span class="property">name</span> = payload</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> mutations = &#123;</span><br><span class="line">  setName,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>(&#123;</span><br><span class="line">  <span class="attr">strict</span>: <span class="literal">true</span>,</span><br><span class="line">  state,</span><br><span class="line">  mutations,</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-Vue<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>Vuex<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> state <span class="token operator">=</span> <span class="token punctuation">{</span>
-  name<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> setName <span class="token operator">=</span> <span class="token punctuation">(</span>state<span class="token punctuation">,</span> payload<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> state<span class="token punctuation">.</span>name <span class="token operator">=</span> payload
-
-<span class="token keyword">let</span> mutations <span class="token operator">=</span> <span class="token punctuation">{</span>
-  setName<span class="token punctuation">,</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">new</span> <span class="token class-name">Vuex<span class="token punctuation">.</span>Store</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  strict<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-  state<span class="token punctuation">,</span>
-  mutations<span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>一個很典型的 Store 寫法。</p>
 <p>12 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> setName <span class="token operator">=</span> <span class="token punctuation">(</span>state<span class="token punctuation">,</span> payload<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> state<span class="token punctuation">.</span>name <span class="token operator">=</span> payload
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">setName</span> = (<span class="params">state, payload</span>) =&gt; state.<span class="property">name</span> = payload</span><br></pre></td></tr></table></figure>
+
 <p>也是很典型的 mutation 寫法，由 <code>payload</code> 去寫入 <code>name</code> state。</p>
 <p>實務上這種 code 常重複出現，差異只有 state 的部分，因此可以建立自己的 <code>genMutation()</code> higher order function，專門建立這類 function。</p>
 <h2 id="genMutation"><a href="#genMutation" class="headerlink" title="genMutation()"></a>genMutation()</h2><p><strong>vuex.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">export</span> <span class="token keyword">let</span> genMutation <span class="token operator">=</span> stateName <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>state<span class="token punctuation">,</span> payload<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> state<span class="token punctuation">[</span>stateName<span class="token punctuation">]</span> <span class="token operator">=</span> payload
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">let</span> <span class="title function_">genMutation</span> = stateName =&gt; <span class="function">(<span class="params">state, payload</span>) =&gt;</span> state[stateName] = payload</span><br></pre></td></tr></table></figure>
+
 <p><code>genMutation()</code> 傳入 <code>stateName</code> 之後，將回傳 <code>(state, payload) =&gt; state[stateName] = payload</code> function。</p>
 <p>其中 <code>name</code> property 為變動的，可用 <code>[]</code> 以變數取代。</p>
 <p><strong>store.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'vue'</span>
-<span class="token keyword">import</span> Vuex <span class="token keyword">from</span> <span class="token string">'vuex'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> createMutation <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">"./helpers/vuex"</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vuex</span> <span class="keyword">from</span> <span class="string">&#x27;vuex&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; createMutation &#125; <span class="keyword">from</span> <span class="string">&quot;./helpers/vuex&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">Vuex</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> state = &#123;</span><br><span class="line">  <span class="attr">name</span>: <span class="string">&#x27;&#x27;</span>,</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> mutations = &#123;</span><br><span class="line">  <span class="attr">setName</span>: <span class="title function_">genMutation</span>(<span class="string">&#x27;name&#x27;</span>),</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>(&#123;</span><br><span class="line">  <span class="attr">strict</span>: <span class="literal">true</span>,</span><br><span class="line">  state,</span><br><span class="line">  mutations,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
 
-Vue<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>Vuex<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> state <span class="token operator">=</span> <span class="token punctuation">{</span>
-  name<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> mutations <span class="token operator">=</span> <span class="token punctuation">{</span>
-  setName<span class="token punctuation">:</span> <span class="token function">genMutation</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">new</span> <span class="token class-name">Vuex<span class="token punctuation">.</span>Store</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  strict<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-  state<span class="token punctuation">,</span>
-  mutations<span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>13 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> mutations <span class="token operator">=</span> <span class="token punctuation">{</span>
-  setName<span class="token punctuation">:</span> <span class="token function">genMutation</span><span class="token punctuation">(</span><span class="token string">'name'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> mutations = &#123;</span><br><span class="line">  <span class="attr">setName</span>: <span class="title function_">genMutation</span>(<span class="string">&#x27;name&#x27;</span>),</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+
 <p>改用 <code>genMutation()</code> 建立 mutation 後相當清爽，只需傳入 state 名稱即可。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>ECMAScript 的 higher order function 非常好用，只要看到某些很類似的 function 重複出現，找出規則後，就可以使用 <code>由 function 回傳 function</code> 的特性，建立這些一直出現的 function</li>

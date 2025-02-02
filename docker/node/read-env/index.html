@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,49 +438,32 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>實務上常在 <code>docker-compose.yml</code> 設定環境變數給 Container，Node 該如何讀取這些環境變數呢 ?</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Node 13.1.0</p>
 <h2 id="Docker-compose"><a href="#Docker-compose" class="headerlink" title="Docker-compose"></a>Docker-compose</h2><p><strong>docker-compose.yml</strong></p>
-<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3"</span>
-<span class="token key atrule">services</span><span class="token punctuation">:</span>
-  <span class="token key atrule">env</span><span class="token punctuation">:</span>
-    <span class="token key atrule">image</span><span class="token punctuation">:</span> env<span class="token punctuation">:</span>$<span class="token punctuation">{</span>ENV_TAG<span class="token punctuation">}</span>
-    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> MyEnv
-    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> IP=$<span class="token punctuation">{</span>IP<span class="token punctuation">}</span>
-      <span class="token punctuation">-</span> PORT=$<span class="token punctuation">{</span>PORT<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">env:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">env:$&#123;ENV_TAG&#125;</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">MyEnv</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">IP=$&#123;IP&#125;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">PORT=$&#123;PORT&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>在 <code>docker-compose.yml</code> 除了使用 <code>ENV_TAG</code> 設定 image 版本外，常常也使用 <code>environment</code> 設定環境變數給 Node，如 <code>IP</code> 與 <code>PORT</code> 常常會隨著 deployment 環境而決定。</p>
 <p><strong>.env</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">ENV_TAG<span class="token operator">=</span><span class="token number">1.0</span><span class="token punctuation">.</span><span class="token number">2</span>
-IP<span class="token operator">=</span><span class="token number">10.134</span><span class="token punctuation">.</span><span class="token number">228.193</span>
-PORT<span class="token operator">=</span><span class="token number">4000</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">ENV_TAG</span>=<span class="number">1.0</span><span class="number">.2</span></span><br><span class="line"><span class="variable constant_">IP</span>=<span class="number">10.134</span><span class="number">.228</span><span class="number">.193</span></span><br><span class="line"><span class="variable constant_">PORT</span>=<span class="number">4000</span></span><br></pre></td></tr></table></figure>
+
 <p>將環境變數寫在 <code>.env</code> 內。</p>
 <h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><p><strong>dockerfile</strong></p>
-<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">FROM node:lts-alpine
-WORKDIR /usr/app
-COPY package.json .
-RUN yarn install
-COPY dist/* ./
-CMD [ "node", "index.js" ]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:lts-alpine</span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /usr/app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> package.json .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> yarn install</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> dist/* ./</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [ <span class="string">&quot;node&quot;</span>, <span class="string">&quot;index.js&quot;</span> ]</span></span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>dockerfile</code> 將 Node 包成 image。</p>
 <h2 id="Node"><a href="#Node" class="headerlink" title="Node"></a>Node</h2><p><strong>src&#x2F;index.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">'Hello Docker'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>IP <span class="token operator">||</span> <span class="token string">'0:0:0:0'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span>process<span class="token punctuation">.</span>env<span class="token punctuation">.</span>PORT <span class="token operator">||</span> <span class="token string">'80'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">&#x27;Hello Docker&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(process.<span class="property">env</span>.<span class="property">IP</span> || <span class="string">&#x27;0:0:0:0&#x27;</span>);</span><br><span class="line"><span class="variable language_">console</span>.<span class="title function_">log</span>(process.<span class="property">env</span>.<span class="property">PORT</span> || <span class="string">&#x27;80&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
 <p>Node 可使用 <code>process.env</code> 讀取環境變數，若 user 沒設定環境變數為 <code>undefined</code>，可使用 <code>||</code> 提供預設值。</p>
-<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn docker:build
-$ yarn docker:up
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yarn docker:build</span></span><br><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yarn docker:up</span></span><br></pre></td></tr></table></figure>
+
 <p><img src="/images/docker/node/read-env/env000.png" alt="env000"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li><code>docker-compose.yml</code> 的 <code>environment</code> 事實上就是 shell 的環境變數，因此可使用 Node 的 <code>process.env</code> 讀取</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://medium.com/@felipedutratine" target="_blank" rel="noopener">Felipe Dutra Tine e Silva</a>, <a href="https://medium.com/@felipedutratine/pass-environment-variables-from-docker-to-my-nodejs-or-golang-app-a1f2ddec31f5" target="_blank" rel="noopener">Pass environment variables from docker to my Nodejs.</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://medium.com/@felipedutratine">Felipe Dutra Tine e Silva</a>, <a target="_blank" rel="noopener" href="https://medium.com/@felipedutratine/pass-environment-variables-from-docker-to-my-nodejs-or-golang-app-a1f2ddec31f5">Pass environment variables from docker to my Nodejs.</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

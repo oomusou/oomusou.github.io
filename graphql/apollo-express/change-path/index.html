@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,65 +438,23 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Apollo Server 預設 Path 為 <code>/</code> 以下任何目錄，而 Apollo Server Express 預設 Path 為 <code>/graphql</code>，若想讓 GraphQL API 為自訂 Path，如 <code>/api</code> 該如何設定呢 ?</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15<br>WebStorm 2019.2.4<br>Node 10.16.3<br>Apollo Server Express 2.9.7</p>
 <h2 id="Install-Package"><a href="#Install-Package" class="headerlink" title="Install Package"></a>Install Package</h2><p>Apollo Server 預設 path 為 <code>/</code>，但事實上 <code>/</code> 以下任何目錄皆可，且無法自行設定使用其他目錄。</p>
 <p>若要設定其他目錄，必須使用 Apollo Server Express。</p>
-<pre class="line-numbers highlight language-shell"><code class="language-shell">$ yarn add express apollo-server-express graphql
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">yarn add express apollo-server-express graphql</span></span><br></pre></td></tr></table></figure>
+
 <p>安裝 Express、Apollo Server Express 與 GraphQL。</p>
 <blockquote>
 <p>Apollo Server Express 只是 Express 的 middleware，因此必須安裝 Express</p>
 </blockquote>
 <h2 id="Apollo-Server-Express"><a href="#Apollo-Server-Express" class="headerlink" title="Apollo Server Express"></a>Apollo Server Express</h2><p><strong>src&#x2F;index.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'apollo-server-express'</span>
-<span class="token keyword">import</span> express <span class="token keyword">from</span> <span class="token string">'express'</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">ApolloServer</span>, gql &#125; <span class="keyword">from</span> <span class="string">&#x27;apollo-server-express&#x27;</span></span><br><span class="line"><span class="keyword">import</span> express <span class="keyword">from</span> <span class="string">&#x27;express&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>, <span class="attr">category</span>: <span class="string">&#x27;FP&#x27;</span>&#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;RxJS in Action&#x27;</span>, <span class="attr">category</span>: <span class="string">&#x27;FRP&#x27;</span>&#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;Speaking JavaScript&#x27;</span>, <span class="attr">category</span>: <span class="string">&#x27;JS&#x27;</span>&#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> typeDefs = gql`<span class="language-graphql"></span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">type</span> <span class="keyword">Query</span> <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    books<span class="punctuation">(</span><span class="symbol">category</span><span class="punctuation">:</span> BookCategory<span class="punctuation">!</span><span class="punctuation">)</span><span class="punctuation">:</span> <span class="punctuation">[</span>Book<span class="punctuation">]</span></span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql"></span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">type</span> Book <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">title</span><span class="punctuation">:</span> String</span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">category</span><span class="punctuation">:</span> BookCategory</span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql"></span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">enum</span> BookCategory <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    FP</span></span><br><span class="line"><span class="language-graphql">    FRP</span></span><br><span class="line"><span class="language-graphql">    JS</span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql">`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">books</span> = (<span class="params">_, &#123; category &#125;</span>) =&gt; data.<span class="title function_">filter</span>(<span class="function"><span class="params">x</span> =&gt;</span> x.<span class="property">category</span> === category)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> resolvers = &#123;</span><br><span class="line">  <span class="title class_">Query</span>: &#123;</span><br><span class="line">    books</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> app = <span class="title function_">express</span>()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> apolloServer = <span class="keyword">new</span> <span class="title class_">ApolloServer</span>(&#123; typeDefs, resolvers &#125;)</span><br><span class="line"></span><br><span class="line">apolloServer.<span class="title function_">applyMiddleware</span>(&#123; app, <span class="attr">path</span>: <span class="string">&#x27;/api&#x27;</span> &#125;)</span><br><span class="line"></span><br><span class="line">app.<span class="title function_">listen</span>(&#123; <span class="attr">port</span>: <span class="number">4000</span> &#125;,</span><br><span class="line">  <span class="function">() =&gt;</span> <span class="variable language_">console</span>.<span class="title function_">log</span>(<span class="string">`GraphQL Server ready at http://localhost:4000<span class="subst">$&#123; apollo.graphqlPath &#125;</span>`</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FP'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'FRP'</span><span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> category<span class="token punctuation">:</span> <span class="token string">'JS'</span><span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> typeDefs <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`
-  type Query {
-    books(category: BookCategory!): [Book]
-  }
-
-  type Book {
-    title: String
-    category: BookCategory
-  }
-
-  enum BookCategory {
-    FP
-    FRP
-    JS
-  }
-`</span></span>
-
-<span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> category <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>category <span class="token operator">===</span> category<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> resolvers <span class="token operator">=</span> <span class="token punctuation">{</span>
-  Query<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    books
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> app <span class="token operator">=</span> <span class="token function">express</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> apolloServer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-apolloServer<span class="token punctuation">.</span><span class="token function">applyMiddleware</span><span class="token punctuation">(</span><span class="token punctuation">{</span> app<span class="token punctuation">,</span> path<span class="token punctuation">:</span> <span class="token string">'/api'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-app<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">{</span> port<span class="token punctuation">:</span> <span class="token number">4000</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token string">`GraphQL Server ready at http://localhost:4000</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> apollo<span class="token punctuation">.</span>graphqlPath <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>39 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">apollo<span class="token punctuation">.</span><span class="token function">applyMiddleware</span><span class="token punctuation">(</span><span class="token punctuation">{</span> app<span class="token punctuation">,</span> path<span class="token punctuation">:</span> <span class="token string">'/api'</span> <span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">apollo.<span class="title function_">applyMiddleware</span>(&#123; app, <span class="attr">path</span>: <span class="string">&#x27;/api&#x27;</span> &#125;)</span><br></pre></td></tr></table></figure>
+
 <p>在提供 <code>applyMiddleware()</code> 的 object 上，另外加上 <code>path</code> property 設定自訂 path。</p>
 <h2 id="GraphQL-Playground"><a href="#GraphQL-Playground" class="headerlink" title="GraphQL Playground"></a>GraphQL Playground</h2><p><img src="/images/graphql/apollo-express/change-path/path000.png" alt="path000"></p>
 <p>無法以 <code>/</code> 訪問 GraphQL Playground。</p>
@@ -507,7 +465,7 @@ app<span class="token punctuation">.</span><span class="token function">listen</
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Apollo Server 適合一般使用情境，若要高度客製化則必須使用 Apollo Server Express</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/apollographql/apollo-server" target="_blank" rel="noopener">Apollo-server</a>, <a href="https://github.com/apollographql/apollo-server/issues/1485" target="_blank" rel="noopener">Is there a way to change the graphql endpoint name ?</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://github.com/apollographql/apollo-server">Apollo-server</a>, <a target="_blank" rel="noopener" href="https://github.com/apollographql/apollo-server/issues/1485">Is there a way to change the graphql endpoint name ?</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

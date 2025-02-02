@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,58 +438,36 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>ECMAScript 不需 Type Annotation 與 Type Coercion 是優點也是缺點，優點是 Codebase 很精簡，不用夾雜 Type 資訊；缺點是這些常是 Bug 來源。Sanctuary 支援 Runtime Type Checking，在 Type 上遠比 Ramda 嚴謹。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Sanctuary 3.1.0<br>Ramda 0.27.1</p>
-<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; add &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">add</span>(<span class="number">2</span>)(<span class="number">2</span>) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">add</span>(<span class="number">2</span>)(<span class="literal">true</span>) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">add</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">add</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>以 Ramda 的 <code>add()</code> 為例，其 type signature 明明為 <code>Number -&gt; Number -&gt; Number</code>，當你不小心傳進 <code>true</code> 依然可執行且有結果，因為 <code>true</code> 會 type corecion 成 <code>1</code>，因此結果為 <code>3</code>。</p>
 <p><img src="/images/sanctuary/feature/type-checking/type000.png" alt="type000"></p>
-<h2 id="Sanctuary"><a href="#Sanctuary" class="headerlink" title="Sanctuary"></a>Sanctuary</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<h2 id="Sanctuary"><a href="#Sanctuary" class="headerlink" title="Sanctuary"></a>Sanctuary</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; add &#125; <span class="keyword">from</span> <span class="string">&#x27;sanctuary&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">add</span>(<span class="number">2</span>)(<span class="number">2</span>) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">add</span>(<span class="number">2</span>)(<span class="literal">true</span>) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">add</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">add</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Sanctuary 預設會啟動 type checking，因此傳入 <code>true</code> 會直接 runtime error，而不會 type coercion。</p>
 <p><img src="/images/sanctuary/feature/type-checking/type001.png" alt="type001"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary'</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; create, env &#125; <span class="keyword">from</span> <span class="string">&#x27;sanctuary&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> &#123; add &#125; = <span class="title function_">create</span>(&#123; <span class="attr">checkTypes</span>: <span class="literal">false</span>, env &#125;)</span><br><span class="line"></span><br><span class="line"><span class="title function_">add</span>(<span class="number">2</span>)(<span class="number">2</span>) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">add</span>(<span class="number">2</span>)(<span class="literal">true</span>) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> <span class="token punctuation">{</span> add <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-<span class="token function">add</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">add</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若想取消 type checking，則需改用 <code>create()</code> 建立 <code>add()</code>，並將 <code>checkTypes</code> 設定為 <code>false</code>。</p>
 <p><img src="/images/sanctuary/feature/type-checking/type002.png" alt="type002"></p>
-<h2 id="Type-Checking"><a href="#Type-Checking" class="headerlink" title="Type Checking"></a>Type Checking</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env<span class="token punctuation">,</span> Number <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary-def'</span>
+<h2 id="Type-Checking"><a href="#Type-Checking" class="headerlink" title="Type Checking"></a>Type Checking</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; create, env, <span class="title class_">Number</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;sanctuary-def&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> def = <span class="title function_">create</span>(&#123; <span class="attr">checkTypes</span>: <span class="literal">true</span>, env &#125;)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> add = <span class="title function_">def</span>(<span class="string">&#x27;add&#x27;</span>)(&#123;&#125;)([<span class="title class_">Number</span>, <span class="title class_">Number</span>, <span class="title class_">Number</span>]) (</span><br><span class="line">  <span class="function"><span class="params">x</span> =&gt;</span> <span class="function"><span class="params">y</span> =&gt;</span> x + y</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">add</span>(<span class="number">2</span>)(<span class="number">2</span>) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">add</span>(<span class="number">2</span>)(<span class="literal">true</span>) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> def <span class="token operator">=</span> <span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> add <span class="token operator">=</span> <span class="token function">def</span><span class="token punctuation">(</span><span class="token string">'add'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">[</span>Number<span class="token punctuation">,</span> Number<span class="token punctuation">,</span> Number<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>
-  x <span class="token operator">=</span><span class="token operator">></span> y <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">+</span> y
-<span class="token punctuation">)</span>
-
-<span class="token function">add</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">add</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token boolean">true</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>事實上自己寫的 function，也能借用 Sanctuary 的 type checking 保護。</p>
 <p>第 1 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> create<span class="token punctuation">,</span> env<span class="token punctuation">,</span> Number <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'sanctuary-def'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; create, env, <span class="title class_">Number</span> &#125; <span class="keyword">from</span> <span class="string">&#x27;sanctuary-def&#x27;</span></span><br></pre></td></tr></table></figure>
+
 <p>由 <code>sanctuary-def</code> 引入 <code>create()</code> 與 <code>env</code>，將由 <code>create()</code> 定義建立 <code>def()</code> ，<code>env</code> 則包含 ECMAScript 原生 type 定義。</p>
 <p><code>Number</code> 則為 ECMAScript 型別，可根據使用到 type 自行引入。</p>
 <p>第 3 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> def <span class="token operator">=</span> <span class="token function">create</span><span class="token punctuation">(</span><span class="token punctuation">{</span> checkTypes<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span> env <span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> def = <span class="title function_">create</span>(&#123; <span class="attr">checkTypes</span>: <span class="literal">true</span>, env &#125;)</span><br></pre></td></tr></table></figure>
+
 <p>由 <code>create()</code> 建立 <code>def()</code>。</p>
 <p>第 5 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> add <span class="token operator">=</span> <span class="token function">def</span><span class="token punctuation">(</span><span class="token string">'add'</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">[</span>Number<span class="token punctuation">,</span> Number<span class="token punctuation">,</span> Number<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>
-  x <span class="token operator">=</span><span class="token operator">></span> y <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">+</span> y
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> add = <span class="title function_">def</span>(<span class="string">&#x27;add&#x27;</span>)(&#123;&#125;)([<span class="title class_">Number</span>, <span class="title class_">Number</span>, <span class="title class_">Number</span>]) (</span><br><span class="line">  <span class="function"><span class="params">x</span> =&gt;</span> <span class="function"><span class="params">y</span> =&gt;</span> x + y</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>def()</code> 定義 <code>add()</code>。</p>
 <ul>
 <li>第一個 argument 定義 function name</li>
@@ -502,7 +480,7 @@ a:hover {
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Sanctuary 的 type checking 解決了 TypeScript 很難使用 curry function 的老問題，天生就是為了 Hindley-Milner type system 設計，而且也支援 typeclass constraint，可以說是 ECMAScript 在 Functional Programming 下最好解決方案</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://sanctuary.js.org/" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://sanctuary.js.org/#section:type-checking" target="_blank" rel="noopener">Type Checking</a><br><a href="https://sanctuary.js.org/" target="_blank" rel="noopener">Sanctuary</a>, <a href="https://github.com/sanctuary-js/sanctuary-def" target="_blank" rel="noopener">sanctuary-def</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://sanctuary.js.org/">Sanctuary</a>, <a target="_blank" rel="noopener" href="https://sanctuary.js.org/#section:type-checking">Type Checking</a><br><a target="_blank" rel="noopener" href="https://sanctuary.js.org/">Sanctuary</a>, <a target="_blank" rel="noopener" href="https://github.com/sanctuary-js/sanctuary-def">sanctuary-def</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

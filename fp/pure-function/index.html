@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,7 +438,7 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Functional Programming 要求 Data 與 Function 分離，其中 Data 要求的是 Immutable，而 Function 則是 Pure Function。這是 FP 的兩大基石，所有其他的特性都是由這兩個基本原則展開。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.2<br>VS Code 1.40.2<br>Quokka 1.0.259<br>ECMAScript 2015</p>
 <h2 id="Pure-Function"><a href="#Pure-Function" class="headerlink" title="Pure Function"></a>Pure Function</h2><ul>
@@ -459,133 +459,34 @@ a:hover {
 <li>Throw exception</li>
 <li>I&#x2F;O operation</li>
 </ul>
-<h2 id="Global-State"><a href="#Global-State" class="headerlink" title="Global State"></a>Global State</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Counter</span> <span class="token punctuation">{</span>
-  #count <span class="token operator">=</span> <span class="token number">0</span>
+<h2 id="Global-State"><a href="#Global-State" class="headerlink" title="Global State"></a>Global State</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Counter</span> &#123;</span><br><span class="line">  #count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">count</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.#count = count</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">get</span> <span class="title function_">count</span>() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.#count</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="title function_">addOne</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.#count++</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> counter = <span class="keyword">new</span> <span class="title class_">Counter</span>(<span class="number">0</span>)</span><br><span class="line">counter.<span class="title function_">addOne</span>().<span class="title function_">addOne</span>().<span class="property">count</span> <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-  <span class="token function">constructor</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>#count <span class="token operator">=</span> count
-  <span class="token punctuation">}</span>
-
-  <span class="token keyword">get</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>#count
-  <span class="token punctuation">}</span>
-
-  <span class="token function">addOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>#count<span class="token operator">++</span>
-    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> counter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Counter</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-counter<span class="token punctuation">.</span><span class="token function">addOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">addOne</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span>count <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>凡在 function 以外的 scope，就算是 global state，如 OOP 的 field，也被視為 global state，修改 global state 被視 side effect。</p>
 <p>OOP 強調 data 與 function 合一，所以會將 <code>count</code> 視為 field，封裝在 <code>Counter</code> class 內。</p>
 <p><code>addOne()</code> 被視為有 side effect，因為其修改了 method 外部的 <code>count</code> field，屬於 global state。</p>
 <p><img src="/images/fp/pure-function/pure001.png" alt="pure001"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Counter</span> <span class="token punctuation">{</span>
-  #count <span class="token operator">=</span> <span class="token number">0</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Counter</span> &#123;</span><br><span class="line">  #count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">count</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.#count = count</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">get</span> <span class="title function_">count</span>() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.#count</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">addOne</span> = (<span class="params">&#123; count &#125;</span>) =&gt; <span class="keyword">new</span> <span class="title class_">Counter</span>(count + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> counter = <span class="keyword">new</span> <span class="title class_">Counter</span>(<span class="number">0</span>)</span><br><span class="line"><span class="keyword">let</span> counter_ = <span class="title function_">addOne</span>(counter)</span><br><span class="line"><span class="title function_">addOne</span>(counter_).<span class="property">count</span> <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-  <span class="token function">constructor</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>#count <span class="token operator">=</span> count
-  <span class="token punctuation">}</span>
-
-  <span class="token keyword">get</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>#count
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> addOne <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> count <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">new</span> <span class="token class-name">Counter</span><span class="token punctuation">(</span>count <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> counter <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Counter</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> counter_ <span class="token operator">=</span> <span class="token function">addOne</span><span class="token punctuation">(</span>counter<span class="token punctuation">)</span>
-<span class="token function">addOne</span><span class="token punctuation">(</span>counter_<span class="token punctuation">)</span><span class="token punctuation">.</span>count <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>FP 強調 data 與 function 分家，因此 data 屬於 <code>Counter</code> class，而 function 屬於 <code>addOne()</code>。</p>
 <p><code>addOne()</code> 沒有 side effect，因為根據 argument 得到目前的 object，計算後回傳新的 object，完全與 function 外部無關，所以是 pure function。</p>
 <blockquote>
 <p>這種寫法稱為 value object pattern，將 object 視為 immutable，是 FP + OOP 整合的 best practice</p>
 </blockquote>
 <p><img src="/images/fp/pure-function/pure002.png" alt="pure002"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">class</span> <span class="title class_">Counter</span></span><br><span class="line">&#123;</span><br><span class="line">  #count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  <span class="title function_">constructor</span>(<span class="params">count</span>) &#123;</span><br><span class="line">    <span class="variable language_">this</span>.#count = count</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">get</span> <span class="title function_">count</span>() &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.#count</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">addOne</span> = (<span class="params">&#123; count &#125;</span>) =&gt; <span class="keyword">new</span> <span class="title class_">Counter</span>(count + <span class="number">1</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> fn = <span class="title function_">pipe</span>(</span><br><span class="line">  addOne,</span><br><span class="line">  addOne</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">fn</span>(<span class="keyword">new</span> <span class="title class_">Counter</span>(<span class="number">0</span>)).<span class="property">count</span> <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">class</span> <span class="token class-name">Counter</span>
-<span class="token punctuation">{</span>
-  #count <span class="token operator">=</span> <span class="token number">0</span>
-
-  <span class="token function">constructor</span><span class="token punctuation">(</span>count<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">this</span><span class="token punctuation">.</span>#count <span class="token operator">=</span> count
-  <span class="token punctuation">}</span>
-
-  <span class="token keyword">get</span> <span class="token function">count</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>#count
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> addOne <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">{</span> count <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">new</span> <span class="token class-name">Counter</span><span class="token punctuation">(</span>count <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> fn <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  addOne<span class="token punctuation">,</span>
-  addOne
-<span class="token punctuation">)</span>
-
-<span class="token function">fn</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Counter</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>count <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>18 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> fn <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  addOne<span class="token punctuation">,</span>
-  addOne
-<span class="token punctuation">)</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> fn = <span class="title function_">pipe</span>(</span><br><span class="line">  addOne,</span><br><span class="line">  addOne</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">fn</span>(<span class="keyword">new</span> <span class="title class_">Counter</span>(<span class="number">0</span>)).<span class="property">count</span> <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">fn</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Counter</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span>count <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於 <code>addOne()</code> 是 pure function，因此也可將兩次 <code>addOne()</code> 組合成 <code>fn()</code> 後再一起執行。</p>
 <p><img src="/images/fp/pure-function/pure003.png" alt="pure003"></p>
-<h2 id="Input-Argument"><a href="#Input-Argument" class="headerlink" title="Input Argument"></a>Input Argument</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pair<span class="token punctuation">,</span> reduce<span class="token punctuation">,</span> filter<span class="token punctuation">,</span> converge <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Input-Argument"><a href="#Input-Argument" class="headerlink" title="Input Argument"></a>Input Argument</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pair, reduce, filter, converge &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">100</span> , <span class="attr">quantity</span>: <span class="number">10</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;RxJS in Action&#x27;</span>, <span class="attr">price</span>: <span class="number">200</span>, <span class="attr">quantity</span>: <span class="number">0</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;Speaking JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">300</span>, <span class="attr">quantity</span>: <span class="number">20</span> &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">computeTotal</span> = (<span class="params">arr, deleted</span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> result = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">for</span>(<span class="keyword">let</span> x <span class="keyword">of</span> arr) &#123;</span><br><span class="line">    <span class="keyword">if</span> (x.<span class="property">quantity</span> === <span class="number">0</span>)</span><br><span class="line">      deleted.<span class="title function_">push</span>(x)</span><br><span class="line">    <span class="keyword">else</span></span><br><span class="line">      result += x.<span class="property">price</span> * x.<span class="property">quantity</span></span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> result</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> deleted = []</span><br><span class="line"><span class="title function_">computeTotal</span>(data, deleted) <span class="comment">// ?</span></span><br><span class="line">deleted <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">,</span> quantity<span class="token punctuation">:</span> <span class="token number">10</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span> quantity<span class="token punctuation">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">,</span> quantity<span class="token punctuation">:</span> <span class="token number">20</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> computeTotal <span class="token operator">=</span> <span class="token punctuation">(</span>arr<span class="token punctuation">,</span> deleted<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token number">0</span>
-
-  <span class="token keyword">for</span><span class="token punctuation">(</span><span class="token keyword">let</span> x <span class="token keyword">of</span> arr<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>x<span class="token punctuation">.</span>quantity <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span>
-      deleted<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
-    <span class="token keyword">else</span>
-      result <span class="token operator">+</span><span class="token operator">=</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> x<span class="token punctuation">.</span>quantity
-  <span class="token punctuation">}</span>
-
-  <span class="token keyword">return</span> result
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> deleted <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-<span class="token function">computeTotal</span><span class="token punctuation">(</span>data<span class="token punctuation">,</span> deleted<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-deleted <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>修改 function 的 argument，而造成 function 外界的 data 被修改，也視為 side effect。</p>
 <p><code>computeTotal</code> 被視為有 side effect，因為直接修改了 <code>deleted</code> argument，造成 function 外部 data 改變。</p>
 <p><img src="/images/fp/pure-function/pure004.png" alt="pure004"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pair<span class="token punctuation">,</span> reduce<span class="token punctuation">,</span> filter<span class="token punctuation">,</span> converge <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pair, reduce, filter, converge &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">100</span> , <span class="attr">quantity</span>: <span class="number">10</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;RxJS in Action&#x27;</span>, <span class="attr">price</span>: <span class="number">200</span>, <span class="attr">quantity</span>: <span class="number">0</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;Speaking JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">300</span>, <span class="attr">quantity</span>: <span class="number">20</span> &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> computeTotal = <span class="title function_">converge</span>(</span><br><span class="line">  pair, [</span><br><span class="line">    <span class="title function_">reduce</span>(<span class="function">(<span class="params">a, x</span>) =&gt;</span> a + x.<span class="property">price</span> * x.<span class="property">quantity</span>)(<span class="number">0</span>),</span><br><span class="line">    <span class="title function_">filter</span>(<span class="function">(<span class="params">&#123; quantity&#125;</span>) =&gt;</span> quantity === <span class="number">0</span>)</span><br><span class="line">  ]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">computeTotal</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">,</span> quantity<span class="token punctuation">:</span> <span class="token number">10</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span><span class="token punctuation">,</span> quantity<span class="token punctuation">:</span> <span class="token number">0</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">,</span> quantity<span class="token punctuation">:</span> <span class="token number">20</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> computeTotal <span class="token operator">=</span> <span class="token function">converge</span><span class="token punctuation">(</span>
-  pair<span class="token punctuation">,</span> <span class="token punctuation">[</span>
-    <span class="token function">reduce</span><span class="token punctuation">(</span><span class="token punctuation">(</span>a<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> a <span class="token operator">+</span> x<span class="token punctuation">.</span>price <span class="token operator">*</span> x<span class="token punctuation">.</span>quantity<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token function">filter</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">{</span> quantity<span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> quantity <span class="token operator">===</span> <span class="token number">0</span><span class="token punctuation">)</span>
-  <span class="token punctuation">]</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">computeTotal</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於 <code>computedTotal()</code> 主要處理兩件任務：計算 <code>total()</code> 與回傳被刪除 data，因此改回傳 tuple，如此 function 外部 data 則不受影響，因此沒有 side effect。</p>
 <p><img src="/images/fp/pure-function/pure005.png" alt="pure005"></p>
 <h2 id="Throw-Exception"><a href="#Throw-Exception" class="headerlink" title="Throw Exception"></a>Throw Exception</h2><p>因為以下兩個原因，throw exception 也被視為 side effect：</p>
@@ -596,7 +497,7 @@ deleted <span class="token comment" spellcheck="true">// ?</span>
 <blockquote>
 <p>FP 可改用 Maybe 取代 exception</p>
 </blockquote>
-<h2 id="I-x2F-O-Operation"><a href="#I-x2F-O-Operation" class="headerlink" title="I&#x2F;O Operation"></a>I&#x2F;O Operation</h2><p>在現實世界中，不可能所有 function 都在計算或者 mapping，如</p>
+<h2 id="I-O-Operation"><a href="#I-O-Operation" class="headerlink" title="I&#x2F;O Operation"></a>I&#x2F;O Operation</h2><p>在現實世界中，不可能所有 function 都在計算或者 mapping，如</p>
 <ul>
 <li>呼叫 API</li>
 <li>寫入資料庫、寫到 console</li>
@@ -608,7 +509,7 @@ deleted <span class="token comment" spellcheck="true">// ?</span>
 <li>Pure function 與 side effect 為 FP 的起手式，看似基本但實務上並不容易實現，常一不小心就寫出 impure function</li>
 <li>I&#x2F;O 是無法避免的 side effect，但 FP 能將 side effect 集中在 pure function 前後，不要散佈到各處，降低其所造成傷害</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Enrico Buonanno, <a href="https://www.manning.com/books/functional-programming-in-c-sharp" target="_blank" rel="noopener">Functional Programming in C#</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p>Enrico Buonanno, <a target="_blank" rel="noopener" href="https://www.manning.com/books/functional-programming-in-c-sharp">Functional Programming in C#</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

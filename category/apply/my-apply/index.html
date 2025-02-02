@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,57 +438,33 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Monad 必須實現 Functor、Apply、Applicative 與 Chain，其中學習 Apply 是必經過程。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Fantasy Land 5.0.0</p>
 <h2 id="Fantasy-Land"><a href="#Fantasy-Land" class="headerlink" title="Fantasy Land"></a>Fantasy Land</h2><p><img src="/images/category/apply/my-apply/apply000.png" alt="apply000"></p>
 <p>Apply 基於 Functor，也就是 Functor 所有特性 Apply 皆具備。</p>
-<h2 id="Apply"><a href="#Apply" class="headerlink" title="Apply"></a>Apply</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> map<span class="token punctuation">,</span> ap<span class="token punctuation">,</span> inc <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Apply"><a href="#Apply" class="headerlink" title="Apply"></a>Apply</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; compose, map, ap, inc &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">Apply</span> = x =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> _x = x</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> <span class="title function_">map</span> = f =&gt; <span class="title class_">Apply</span> (<span class="title function_">f</span> (_x))</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> <span class="title function_">ap</span> = x =&gt; x.<span class="property">map</span> (<span class="function"><span class="params">f</span> =&gt;</span> <span class="title function_">f</span> (_x))</span><br><span class="line"></span><br><span class="line">  <span class="keyword">let</span> <span class="title function_">getValue</span> = _ =&gt; _x</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    map,</span><br><span class="line">    ap,</span><br><span class="line">    getValue</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">getValue</span> = x =&gt; x.<span class="property">getValue</span> ()</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="title class_">Apply</span> (<span class="number">1</span>)</span><br><span class="line"><span class="keyword">let</span> inc_ = <span class="title class_">Apply</span> (inc)</span><br><span class="line"></span><br><span class="line"><span class="title function_">compose</span> (getValue, <span class="title function_">map</span> (inc)) (data) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">compose</span> (getValue, <span class="title function_">ap</span> (data)) (inc_) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> Apply <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> _x <span class="token operator">=</span> x
-
-  <span class="token keyword">let</span> map <span class="token operator">=</span> f <span class="token operator">=</span><span class="token operator">></span> Apply <span class="token punctuation">(</span>f <span class="token punctuation">(</span>_x<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-  <span class="token keyword">let</span> ap <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>map <span class="token punctuation">(</span>f <span class="token operator">=</span><span class="token operator">></span> f <span class="token punctuation">(</span>_x<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-  <span class="token keyword">let</span> getValue <span class="token operator">=</span> _ <span class="token operator">=</span><span class="token operator">></span> _x
-
-  <span class="token keyword">return</span> <span class="token punctuation">{</span>
-    map<span class="token punctuation">,</span>
-    ap<span class="token punctuation">,</span>
-    getValue
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> getValue <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>getValue <span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> data <span class="token operator">=</span> Apply <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> inc_ <span class="token operator">=</span> Apply <span class="token punctuation">(</span>inc<span class="token punctuation">)</span>
-
-compose <span class="token punctuation">(</span>getValue<span class="token punctuation">,</span> map <span class="token punctuation">(</span>inc<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-compose <span class="token punctuation">(</span>getValue<span class="token punctuation">,</span> ap <span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>inc_<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>實現 Apply 需滿足 2 個 typeclass：</p>
 <ul>
 <li><strong>Functor</strong>：實現 <code>map</code> 將 Functor 與 function 綁定</li>
 <li><strong>Apply</strong>：實現 <code>ap</code> 將 Apply 與包進 Apply 的 function 綁定</li>
 </ul>
 <p>第 5 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> _x <span class="token operator">=</span> x
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> _x = x</span><br></pre></td></tr></table></figure>
+
 <p>相當於 constructor 將 <code>x</code> 值存進 <code>_x</code> 內。</p>
 <p>第 6 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> map <span class="token operator">=</span> f <span class="token operator">=</span><span class="token operator">></span> Apply <span class="token punctuation">(</span>f <span class="token punctuation">(</span>_x<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">map</span> = f =&gt; <span class="title class_">Apply</span> (<span class="title function_">f</span> (_x))</span><br></pre></td></tr></table></figure>
+
 <p>Apply 必須實現 Functor。</p>
 <p>根據 Fantasy Land 定義：</p>
 <p><code>fantasy-land/map :: Functor f =&gt; f a ~&gt; (a → b) → f a → f b</code></p>
 <p>Object 必須有 <code>map</code> 才是 Functor。</p>
 <p>將 Object 內部 <code>_x</code> 透過傳入 <code>f</code> 運算後，使用 <code>Apply</code> 包成新 Apply 回傳。</p>
 <p>第 8 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> ap <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>map <span class="token punctuation">(</span>f <span class="token operator">=</span><span class="token operator">></span> f <span class="token punctuation">(</span>_x<span class="token punctuation">)</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">ap</span> = x =&gt; x.<span class="property">map</span> (<span class="function"><span class="params">f</span> =&gt;</span> <span class="title function_">f</span> (_x))</span><br></pre></td></tr></table></figure>
+
 <p>根據 Fantasy Land 定義：</p>
 <p><code>fantasy-land/ap :: Apply f =&gt; f a ~&gt; f (a -&gt; b) -&gt; f b</code></p>
 <p>Object 必須有 <code>ap</code> 才是 Apply。</p>
@@ -497,31 +473,29 @@ compose <span class="token punctuation">(</span>getValue<span class="token punct
 <p>由於 <code>ap</code> 需呼叫 <code>map</code> 取得 <code>f</code>，因此 Apply 必須先實現 Functor 的 <code>map</code></p>
 </blockquote>
 <p>10 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> getValue <span class="token operator">=</span> _ <span class="token operator">=</span><span class="token operator">></span> _x
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">getValue</span> = _ =&gt; _x</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>getValue</code> 取出 Apply 內部 value。</p>
 <blockquote>
 <p><code>getValue</code> 並非 Fantasy Land 所要求，只是方便取出 Object 內部 value</p>
 </blockquote>
 <p>19 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> getValue <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>getValue <span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">getValue</span> = x =&gt; x.<span class="property">getValue</span> ()</span><br></pre></td></tr></table></figure>
+
 <p>提供 free function 方便使用：</p>
 <ul>
 <li><code>getValue</code>：呼叫 Apply 的 <code>getValue</code></li>
 </ul>
 <p>21 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> Apply <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> inc_ <span class="token operator">=</span> Apply <span class="token punctuation">(</span>inc<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="title class_">Apply</span> (<span class="number">1</span>)</span><br><span class="line"><span class="keyword">let</span> inc_ = <span class="title class_">Apply</span> (inc)</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>data</code> 為 Apply</li>
 <li><code>inc_</code>：將 <code>inc</code> 包進 Apply</li>
 </ul>
 <p>24 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">compose <span class="token punctuation">(</span>getValue<span class="token punctuation">)</span> <span class="token punctuation">(</span>map <span class="token punctuation">(</span>inc<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-compose <span class="token punctuation">(</span>getValue<span class="token punctuation">)</span> <span class="token punctuation">(</span>ap <span class="token punctuation">(</span>inc_<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">compose</span> (getValue) (<span class="title function_">map</span> (inc)) (data) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">compose</span> (getValue) (<span class="title function_">ap</span> (inc_)) (data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>使用 Ramda 的 <code>map</code> 將 Apply 與 <code>inc</code> 綁定，確認自行建立的 Apply 符合 Fantasy Land 規格</li>
 <li>使用 Ramda 的 <code>ap</code> 將 Apply 與包進 Apply 的 function 綁定，確認自行建立的 Apply 符合 Fantasy Land 規格</li>
@@ -530,7 +504,7 @@ compose <span class="token punctuation">(</span>getValue<span class="token punct
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Apply 的 <code>ap</code> 因為會用到 <code>map</code> 取得傳入 Apply 的 function，因此 Apply 也必須實現 Functor</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/fantasyland/fantasy-land" target="_blank" rel="noopener">Fantasy Land</a>, <a href="https://github.com/fantasyland/fantasy-land#apply" target="_blank" rel="noopener">Apply</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://github.com/fantasyland/fantasy-land">Fantasy Land</a>, <a target="_blank" rel="noopener" href="https://github.com/fantasyland/fantasy-land#apply">Apply</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

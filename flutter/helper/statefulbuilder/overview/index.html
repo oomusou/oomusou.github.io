@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,110 +438,24 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>當使用 <code>ModalBottomSheet</code> 時，通常 <code>State</code> 都在外部的 <code>StatefulWidget</code> 上，在 <code>ModalBottomSheet</code> 內必須使用 <code>StatefulBuilder</code> 才能與外部 <code>State</code> 連動。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Flutter 3.24.5</p>
 <h2 id="Flutter"><a href="#Flutter" class="headerlink" title="Flutter"></a>Flutter</h2><p><img src="/images/flutter/helper/statefulbuilder/overview/overview01.gif" alt="overview01"></p>
 <ul>
 <li>Android 與 iOS 都成功使用 <code>StatefulBuilder</code> 實現 ModalBottomSheet 與 State 連動</li>
 </ul>
-<h2 id="StatefulBuilder"><a href="#StatefulBuilder" class="headerlink" title="StatefulBuilder"></a>StatefulBuilder</h2><pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">import</span> <span class="token string">'package:flutter/material.dart'</span><span class="token punctuation">;</span>
+<h2 id="StatefulBuilder"><a href="#StatefulBuilder" class="headerlink" title="StatefulBuilder"></a>StatefulBuilder</h2><figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Home</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> Home(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;Home&gt; createState() =&gt; _Home();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_Home</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">Home</span>&gt; </span>&#123;</span><br><span class="line">  <span class="built_in">bool</span> _isVisible = <span class="keyword">true</span>;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">var</span> appBar = AppBar(</span><br><span class="line">      title: Text(<span class="string">&quot;StatefulBuilder + ModalBottomSheet&quot;</span>),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> outerButton = ElevatedButton(</span><br><span class="line">      onPressed: () &#123;</span><br><span class="line">        showModalBottomSheet(</span><br><span class="line">          context: context,</span><br><span class="line">          builder: (BuildContext context) &#123;</span><br><span class="line">            <span class="keyword">return</span> StatefulBuilder(</span><br><span class="line">              builder: (</span><br><span class="line">                BuildContext context,</span><br><span class="line">                StateSetter setState,</span><br><span class="line">              ) &#123;</span><br><span class="line">                <span class="keyword">var</span> message = Visibility(</span><br><span class="line">                  visible: _isVisible,</span><br><span class="line">                  child: Text(</span><br><span class="line">                    <span class="string">&quot;Hello World&quot;</span>,</span><br><span class="line">                  ),</span><br><span class="line">                );</span><br><span class="line"></span><br><span class="line">                <span class="keyword">var</span> innerButton = ElevatedButton(</span><br><span class="line">                  onPressed: () &#123;</span><br><span class="line">                    setState(() =&gt; _isVisible = !_isVisible);</span><br><span class="line">                  &#125;,</span><br><span class="line">                  child: Text(</span><br><span class="line">                    _isVisible ? <span class="string">&quot;Hide Message&quot;</span> : <span class="string">&quot;Show Message&quot;</span>,</span><br><span class="line">                  ),</span><br><span class="line">                );</span><br><span class="line"></span><br><span class="line">                <span class="keyword">return</span> Container(</span><br><span class="line">                  height: <span class="number">300</span>,</span><br><span class="line">                  width: <span class="built_in">double</span>.infinity,</span><br><span class="line">                  padding: EdgeInsets.all(<span class="number">16</span>),</span><br><span class="line">                  child: Column(</span><br><span class="line">                    children: [</span><br><span class="line">                      message,</span><br><span class="line">                      innerButton,</span><br><span class="line">                    ],</span><br><span class="line">                  ),</span><br><span class="line">                );</span><br><span class="line">              &#125;,</span><br><span class="line">            );</span><br><span class="line">          &#125;,</span><br><span class="line">        );</span><br><span class="line">      &#125;,</span><br><span class="line">      child: Text(</span><br><span class="line">        <span class="string">&quot;Show BottomSheet&quot;</span>,</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> body = Center(</span><br><span class="line">      child: outerButton,</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: appBar,</span><br><span class="line">      body: body,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">class</span> <span class="token class-name">Home</span> <span class="token keyword">extends</span> <span class="token class-name">StatefulWidget</span> <span class="token punctuation">{</span>
-  <span class="token keyword">const</span> <span class="token function">Home</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token keyword">super</span><span class="token punctuation">.</span>key<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token metadata symbol">@override</span>
-  State<span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token function">createState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">_Home</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">class</span> <span class="token class-name">_Home</span> <span class="token keyword">extends</span> <span class="token class-name">State</span><span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token punctuation">{</span>
-  bool _isVisible <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-
-  <span class="token metadata symbol">@override</span>
-  Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">var</span> appBar <span class="token operator">=</span> <span class="token function">AppBar</span><span class="token punctuation">(</span>
-      title<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">"StatefulBuilder + ModalBottomSheet"</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> outerButton <span class="token operator">=</span> <span class="token function">ElevatedButton</span><span class="token punctuation">(</span>
-      onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token function">showModalBottomSheet</span><span class="token punctuation">(</span>
-          context<span class="token punctuation">:</span> context<span class="token punctuation">,</span>
-          builder<span class="token punctuation">:</span> <span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-            <span class="token keyword">return</span> <span class="token function">StatefulBuilder</span><span class="token punctuation">(</span>
-              builder<span class="token punctuation">:</span> <span class="token punctuation">(</span>
-                BuildContext context<span class="token punctuation">,</span>
-                StateSetter setState<span class="token punctuation">,</span>
-              <span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                <span class="token keyword">var</span> message <span class="token operator">=</span> <span class="token function">Visibility</span><span class="token punctuation">(</span>
-                  visible<span class="token punctuation">:</span> _isVisible<span class="token punctuation">,</span>
-                  child<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span>
-                    <span class="token string">"Hello World"</span><span class="token punctuation">,</span>
-                  <span class="token punctuation">)</span><span class="token punctuation">,</span>
-                <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-                <span class="token keyword">var</span> innerButton <span class="token operator">=</span> <span class="token function">ElevatedButton</span><span class="token punctuation">(</span>
-                  onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                    <span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> _isVisible <span class="token operator">=</span> <span class="token operator">!</span>_isVisible<span class="token punctuation">)</span><span class="token punctuation">;</span>
-                  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-                  child<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span>
-                    _isVisible <span class="token operator">?</span> <span class="token string">"Hide Message"</span> <span class="token punctuation">:</span> <span class="token string">"Show Message"</span><span class="token punctuation">,</span>
-                  <span class="token punctuation">)</span><span class="token punctuation">,</span>
-                <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-                <span class="token keyword">return</span> <span class="token function">Container</span><span class="token punctuation">(</span>
-                  height<span class="token punctuation">:</span> <span class="token number">300</span><span class="token punctuation">,</span>
-                  width<span class="token punctuation">:</span> double<span class="token punctuation">.</span>infinity<span class="token punctuation">,</span>
-                  padding<span class="token punctuation">:</span> EdgeInsets<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-                  child<span class="token punctuation">:</span> <span class="token function">Column</span><span class="token punctuation">(</span>
-                    children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-                      message<span class="token punctuation">,</span>
-                      innerButton<span class="token punctuation">,</span>
-                    <span class="token punctuation">]</span><span class="token punctuation">,</span>
-                  <span class="token punctuation">)</span><span class="token punctuation">,</span>
-                <span class="token punctuation">)</span><span class="token punctuation">;</span>
-              <span class="token punctuation">}</span><span class="token punctuation">,</span>
-            <span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        <span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token punctuation">}</span><span class="token punctuation">,</span>
-      child<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span>
-        <span class="token string">"Show BottomSheet"</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> body <span class="token operator">=</span> <span class="token function">Center</span><span class="token punctuation">(</span>
-      child<span class="token punctuation">:</span> outerButton<span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">return</span> <span class="token function">Scaffold</span><span class="token punctuation">(</span>
-      appBar<span class="token punctuation">:</span> appBar<span class="token punctuation">,</span>
-      body<span class="token punctuation">:</span> body<span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>Line 11</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart">bool _isVisible <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="built_in">bool</span> _isVisible = <span class="keyword">true</span>;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>_isVisible</code>：在 MBS 之外的 StatefulWidget 定義 <code>_isVisible</code> state</li>
 </ul>
 <p><strong>Line 21</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token function">showModalBottomSheet</span><span class="token punctuation">(</span>
-  context<span class="token punctuation">:</span> context<span class="token punctuation">,</span>
-  builder<span class="token punctuation">:</span> <span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token function">StatefulBuilder</span><span class="token punctuation">(</span>
-      builder<span class="token punctuation">:</span> <span class="token punctuation">(</span>
-        BuildContext context<span class="token punctuation">,</span>
-        StateSetter setState<span class="token punctuation">,</span>
-      <span class="token punctuation">)</span> <span class="token punctuation">{</span>
-                
-      <span class="token punctuation">}</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line">showModalBottomSheet(</span><br><span class="line">  context: context,</span><br><span class="line">  builder: (BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> StatefulBuilder(</span><br><span class="line">      builder: (</span><br><span class="line">        BuildContext context,</span><br><span class="line">        StateSetter setState,</span><br><span class="line">      ) &#123;</span><br><span class="line">                </span><br><span class="line">      &#125;,</span><br><span class="line">    );</span><br><span class="line">  &#125;,</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>showModalBottomSheet()</code>：顯示 MBS<ul>
 <li><code>builder()</code>：提供在 MBS 所顯示的 UI<ul>
@@ -552,26 +466,14 @@ a:hover {
 </li>
 </ul>
 <p><strong>Line 29</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">var</span> message <span class="token operator">=</span> <span class="token function">Visibility</span><span class="token punctuation">(</span>
-  visible<span class="token punctuation">:</span> _isVisible<span class="token punctuation">,</span>
-  child<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span>
-    <span class="token string">"Hello World"</span><span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> message = Visibility(</span><br><span class="line">  visible: _isVisible,</span><br><span class="line">  child: Text(</span><br><span class="line">    <span class="string">&quot;Hello World&quot;</span>,</span><br><span class="line">  ),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>Visibility</code>：<code>isVisible</code> 雖然為 MBS 外部 state，但可正常與 <code>_isVisible</code> 連動</li>
 </ul>
 <p><strong>Line 36</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">var</span> innerButton <span class="token operator">=</span> <span class="token function">ElevatedButton</span><span class="token punctuation">(</span>
-  onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> _isVisible <span class="token operator">=</span> <span class="token operator">!</span>_isVisible<span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  child<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span>
-    _isVisible <span class="token operator">?</span> <span class="token string">"Hide Message"</span> <span class="token punctuation">:</span> <span class="token string">"Show Message"</span><span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> innerButton = ElevatedButton(</span><br><span class="line">  onPressed: () &#123;</span><br><span class="line">    setState(() =&gt; _isVisible = !_isVisible);</span><br><span class="line">  &#125;,</span><br><span class="line">  child: Text(</span><br><span class="line">    _isVisible ? <span class="string">&quot;Hide Message&quot;</span> : <span class="string">&quot;Show Message&quot;</span>,</span><br><span class="line">  ),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>setState()</code>：一樣在 MBS 使用 <code>setState()</code> 設定 state，但此為 <code>StatefulBuilder</code> 所提供的 <code>setState()</code>，因此才能與外部 state 連動</li>
 </ul>

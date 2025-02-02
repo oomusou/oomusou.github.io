@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,34 +438,20 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Knex 允許我們連 <code>SELECT</code> 也使用 Raw SQL，但回傳結果不太一樣。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>MySQL 8.0.18<br>Knex 0.20.0</p>
-<h2 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h2><pre class="line-numbers highlight language-sql"><code class="language-sql"><span class="token keyword">SELECT</span> <span class="token operator">*</span> 
-<span class="token keyword">FROM</span> books
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<h2 id="SQL"><a href="#SQL" class="headerlink" title="SQL"></a>SQL</h2><figure class="highlight sql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">SELECT</span> <span class="operator">*</span> </span><br><span class="line"><span class="keyword">FROM</span> books</span><br></pre></td></tr></table></figure>
+
 <p>連 <code>SELECT</code> 都採用 raw sql，沒使用 Knex 產生。</p>
-<h2 id="Knex"><a href="#Knex" class="headerlink" title="Knex"></a>Knex</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript">mySQL<span class="token punctuation">.</span><span class="token function">raw</span><span class="token punctuation">(</span>SQL<span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="Knex"><a href="#Knex" class="headerlink" title="Knex"></a>Knex</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">mySQL.<span class="title function_">raw</span>(<span class="variable constant_">SQL</span>)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function"><span class="params">x</span> =&gt;</span> x[<span class="number">0</span>])</span><br><span class="line">  .<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>)</span><br></pre></td></tr></table></figure>
+
 <p>若 <code>SELECT</code> 使用 raw SQL，則 Knex 會多包一層 array，因此要 <code>x[0]</code> 才是真正資料。</p>
-<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript">mySQL<span class="token punctuation">.</span>raw <span class="token punctuation">(</span>sql<span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>then <span class="token punctuation">(</span><span class="token function">nth</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>then <span class="token punctuation">(</span>log<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">mySQL.<span class="property">raw</span> (sql)</span><br><span class="line">  .<span class="property">then</span> (<span class="title function_">nth</span>(<span class="number">0</span>))</span><br><span class="line">  .<span class="property">then</span> (log)</span><br></pre></td></tr></table></figure>
+
 <p>若想讓 <code>then</code> 的 callback 也 Point-free，可以改用 Ramda 的 <code>nth</code> 與 Wink-fp 的 <code>log</code>。</p>
-<h2 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> nth <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> log<span class="token punctuation">,</span> pipeP <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h2 id="Pipeline"><a href="#Pipeline" class="headerlink" title="Pipeline"></a>Pipeline</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; nth &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"><span class="keyword">import</span> &#123; log, pipeP &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">raw</span> = s =&gt; mySQL.<span class="property">raw</span> (s)  </span><br><span class="line"></span><br><span class="line"><span class="title function_">pipeP</span> (</span><br><span class="line">  raw,</span><br><span class="line">  <span class="title function_">nth</span> (<span class="number">0</span>),</span><br><span class="line">  log</span><br><span class="line">) (sql)</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> raw <span class="token operator">=</span> s <span class="token operator">=</span><span class="token operator">></span> mySQL<span class="token punctuation">.</span>raw <span class="token punctuation">(</span>s<span class="token punctuation">)</span>  
-
-pipeP <span class="token punctuation">(</span>
-  raw<span class="token punctuation">,</span>
-  nth <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  log
-<span class="token punctuation">)</span> <span class="token punctuation">(</span>sql<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於 <code>mySQL.raw</code> 回傳 Promise，若要使用 Pipeline 寫法必須改用 Wink-fp 的 <code>pipeP</code>，且將 <code>mySQL.raw</code> 改成 function 版的 <code>raw</code>，如此則可直接對 <code>nth</code> 與 <code>log</code> 加以組合。</p>
 <p><img src="/images/knex/raw/select/select000.png" alt="select000"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>

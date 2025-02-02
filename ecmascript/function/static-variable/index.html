@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,58 +438,25 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>有時候我們希望 Function 執行完後，Variable 仍然有效，此稱為 Static Variable，ECMAScript 並沒有直接支援 Static Variable，但可使用 Function Property 或 Closure 實現。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>ECMAScript 2020</p>
-<h2 id="Function-Property"><a href="#Function-Property" class="headerlink" title="Function Property"></a>Function Property</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> inc <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>inc<span class="token punctuation">.</span>count <span class="token operator">===</span> undefined<span class="token punctuation">)</span>
-    inc<span class="token punctuation">.</span>count <span class="token operator">=</span> <span class="token number">0</span>
+<h2 id="Function-Property"><a href="#Function-Property" class="headerlink" title="Function Property"></a>Function Property</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">inc</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">if</span> (inc.<span class="property">count</span> === <span class="literal">undefined</span>)</span><br><span class="line">    inc.<span class="property">count</span> = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> inc.<span class="property">count</span>++</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">inc</span>() <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">inc</span>() <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">inc</span>() <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-  <span class="token keyword">return</span> inc<span class="token punctuation">.</span>count<span class="token operator">++</span>
-<span class="token punctuation">}</span>
-
-<span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Function 為 Object，由於 ECMAScript 的 dynamic 特性，可針對 Object 動態新增 property，可藉此模擬 static variable。</p>
 <p><img src="/images/ecmascript/function/static-variable/static000.png" alt="static000"></p>
-<h3 id="Nullish-Coalescing-Operator"><a href="#Nullish-Coalescing-Operator" class="headerlink" title="Nullish Coalescing Operator"></a>Nullish Coalescing Operator</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> inc <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  inc<span class="token punctuation">.</span>count <span class="token operator">=</span> inc<span class="token punctuation">.</span>count <span class="token operator">?</span><span class="token operator">?</span> <span class="token number">0</span>  
-  <span class="token keyword">return</span> inc<span class="token punctuation">.</span>count<span class="token operator">++</span>
-<span class="token punctuation">}</span>
+<h3 id="Nullish-Coalescing-Operator"><a href="#Nullish-Coalescing-Operator" class="headerlink" title="Nullish Coalescing Operator"></a>Nullish Coalescing Operator</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">inc</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  inc.<span class="property">count</span> = inc.<span class="property">count</span> ?? <span class="number">0</span>  </span><br><span class="line">  <span class="keyword">return</span> inc.<span class="property">count</span>++</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="title function_">inc</span>() <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">inc</span>() <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">inc</span>() <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>可進一步使用 <code>??</code> 化簡。</p>
-<h3 id="Comma-Operator"><a href="#Comma-Operator" class="headerlink" title="Comma Operator"></a>Comma Operator</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> inc <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span>inc<span class="token punctuation">.</span>count <span class="token operator">=</span> inc<span class="token punctuation">.</span>count <span class="token operator">?</span><span class="token operator">?</span> <span class="token number">0</span><span class="token punctuation">,</span> inc<span class="token punctuation">.</span>count<span class="token operator">++</span><span class="token punctuation">)</span>
-  
-<span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h3 id="Comma-Operator"><a href="#Comma-Operator" class="headerlink" title="Comma Operator"></a>Comma Operator</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">inc</span> = (<span class="params"></span>) =&gt; (inc.<span class="property">count</span> = inc.<span class="property">count</span> ?? <span class="number">0</span>, inc.<span class="property">count</span>++)</span><br><span class="line">  </span><br><span class="line"><span class="title function_">inc</span>() <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">inc</span>() <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">inc</span>() <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
+
 <p>由於只有兩個動作，可再由 <code>()</code> 化簡成一行。</p>
-<h2 id="Closure"><a href="#Closure" class="headerlink" title="Closure"></a>Closure</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> _inc <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token number">0</span>
-  <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token operator">++</span>
-<span class="token punctuation">}</span>
+<h2 id="Closure"><a href="#Closure" class="headerlink" title="Closure"></a>Closure</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">_inc</span> = (<span class="params"></span>) =&gt; &#123;</span><br><span class="line">  <span class="keyword">let</span> count = <span class="number">0</span></span><br><span class="line">  <span class="keyword">return</span> <span class="function">() =&gt;</span> count++</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> inc = <span class="title function_">_inc</span>()</span><br><span class="line"></span><br><span class="line"><span class="title function_">inc</span>() <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">inc</span>() <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">inc</span>() <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> inc <span class="token operator">=</span> <span class="token function">_inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-
-<span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Static variable 也可由 Closure 模擬，因此必須先建立 <code>_inc()</code> higher order function 建立 <code>inc()</code>。</p>
 <p><img src="/images/ecmascript/function/static-variable/static001.png" alt="static001"></p>
-<h3 id="IIFE"><a href="#IIFE" class="headerlink" title="IIFE"></a>IIFE</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> inc <span class="token operator">=</span> <span class="token punctuation">(</span>count <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> count<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
+<h3 id="IIFE"><a href="#IIFE" class="headerlink" title="IIFE"></a>IIFE</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> inc = (<span class="function"><span class="params">count</span> =&gt;</span> <span class="function">() =&gt;</span> count++)(<span class="number">0</span>)</span><br><span class="line"></span><br><span class="line"><span class="title function_">inc</span>() <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">inc</span>() <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">inc</span>() <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">inc</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>對於 <code>_inc()</code> 這種只用一次的 higher order function，最適合使用 IIFE，且 <code>count</code> variable 剛好以 IIFE 的 argument 化簡。</p>
 <p><img src="/images/ecmascript/function/static-variable/static002.png" alt="static002"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>

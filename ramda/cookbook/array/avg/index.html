@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,66 +438,39 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>計算 Array 的平均值為常見需求，但 Ramda 並沒有內建 <code>avg()</code>，但可自行組合。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
-<h2 id="converge"><a href="#converge" class="headerlink" title="converge()"></a>converge()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> converge<span class="token punctuation">,</span> divide<span class="token punctuation">,</span> sum<span class="token punctuation">,</span> length <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="converge"><a href="#converge" class="headerlink" title="converge()"></a>converge()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; converge, divide, sum, length &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> avg = <span class="title function_">converge</span>(</span><br><span class="line">  divide, [sum, length]</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">avg</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> avg <span class="token operator">=</span> <span class="token function">converge</span><span class="token punctuation">(</span>
-  divide<span class="token punctuation">,</span> <span class="token punctuation">[</span>sum<span class="token punctuation">,</span> length<span class="token punctuation">]</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">avg</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>使用 <code>sum()</code> 計算 Array 總和</li>
 <li>使用 <code>length()</code> 計算 Array 的 element 個數</li>
 <li>使用 <code>converge()</code> 分別將 <code>sum()</code> 與 <code>length()</code> 結果傳給 <code>divide()</code> 計算平均</li>
 </ul>
 <p><img src="/images/ramda/cookbook/array/avg/avg001.png" alt="avg001"></p>
-<h2 id="lift"><a href="#lift" class="headerlink" title="lift()"></a>lift()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> lift<span class="token punctuation">,</span> divide<span class="token punctuation">,</span> sum<span class="token punctuation">,</span> length <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="lift"><a href="#lift" class="headerlink" title="lift()"></a>lift()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; lift, divide, sum, length &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> avg = <span class="title function_">lift</span>(divide)(sum, length)</span><br><span class="line"></span><br><span class="line"><span class="title function_">avg</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> avg <span class="token operator">=</span> <span class="token function">lift</span><span class="token punctuation">(</span>divide<span class="token punctuation">)</span><span class="token punctuation">(</span>sum<span class="token punctuation">,</span> length<span class="token punctuation">)</span>
-
-<span class="token function">avg</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>使用 <code>lift()</code> 對 <code>divide()</code> 改變 signature</li>
 <li><code>converge()</code> 須以 Array 傳入 function，<code>lift()</code> 則以 variadic function 傳入 function</li>
 </ul>
 <p><img src="/images/ramda/cookbook/array/avg/avg002.png" alt="avg002"></p>
-<h2 id="juxt"><a href="#juxt" class="headerlink" title="juxt()"></a>juxt()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> juxt<span class="token punctuation">,</span> apply<span class="token punctuation">,</span> divide<span class="token punctuation">,</span> sum<span class="token punctuation">,</span> length <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="juxt"><a href="#juxt" class="headerlink" title="juxt()"></a>juxt()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, juxt, apply, divide, sum, length &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> avg = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">juxt</span>([sum, length]),</span><br><span class="line">  <span class="title function_">apply</span>(divide)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">avg</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> avg <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">juxt</span><span class="token punctuation">(</span><span class="token punctuation">[</span>sum<span class="token punctuation">,</span> length<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">apply</span><span class="token punctuation">(</span>divide<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">avg</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>使用 <code>juxt()</code> 將 Array 先將過 <code>sum()</code> 與 <code>length()</code> 處理</li>
 <li>因為 <code>juxt()</code> 回傳為 Array，所以使用 <code>apply()</code> 將 <code>divide()</code> 改變能接受 Array</li>
 </ul>
 <p><img src="/images/ramda/cookbook/array/avg/avg003.png" alt="avg003"></p>
-<h2 id="Wink-fp"><a href="#Wink-fp" class="headerlink" title="Wink-fp"></a>Wink-fp</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> avg <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'wink-fp'</span>
+<h2 id="Wink-fp"><a href="#Wink-fp" class="headerlink" title="Wink-fp"></a>Wink-fp</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; avg &#125; <span class="keyword">from</span> <span class="string">&#x27;wink-fp&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="title function_">avg</span>(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-
-<span class="token function">avg</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>Wink-fp 已經內建 <code>avg()</code> 可直接使用。</p>
 <p><img src="/images/ramda/cookbook/array/avg/avg000.png" alt="avg000"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li><code>avg()</code> 雖然是簡單應用，但可分別使用 <code>converge()</code>、<code>lift()</code> 與 <code>juxt()</code> 實現</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://stackoverflow.com/" target="_blank" rel="noopener">stackoverflow</a>, <a href="https://stackoverflow.com/questions/39535489/how-to-convert-simple-average-function-in-javascript-to-pointfree-form-using-ram" target="_blank" rel="noopener">How to convert simple average function in javascript to pointfree form using Ramda ?</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://stackoverflow.com/">stackoverflow</a>, <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/39535489/how-to-convert-simple-average-function-in-javascript-to-pointfree-form-using-ram">How to convert simple average function in javascript to pointfree form using Ramda ?</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

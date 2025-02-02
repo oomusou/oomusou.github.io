@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,19 +438,11 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Ramda 與 Crocks 都沒有提供 <code>isNonEmptyString()</code>，但我們可自行組合。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.3<br>VS Code 1.43.0<br>Quokka 1.0.282<br>Ramda 0.27.0<br>Crocks 0.12.3</p>
-<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> isEmpty<span class="token punctuation">,</span> complement<span class="token punctuation">,</span> allPass<span class="token punctuation">,</span> is <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Ramda"><a href="#Ramda" class="headerlink" title="Ramda"></a>Ramda</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; isEmpty, complement, allPass, is &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> isNonEmptyString = <span class="title function_">allPass</span>([</span><br><span class="line">  <span class="title function_">complement</span>(isEmpty), </span><br><span class="line">  <span class="title function_">is</span>(<span class="title class_">String</span>)</span><br><span class="line">])</span><br><span class="line"></span><br><span class="line"><span class="title function_">isNonEmptyString</span>(<span class="string">&#x27;&#x27;</span>) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">isNonEmptyString</span>(<span class="string">&#x27;abc&#x27;</span>) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> isNonEmptyString <span class="token operator">=</span> <span class="token function">allPass</span><span class="token punctuation">(</span><span class="token punctuation">[</span>
-  <span class="token function">complement</span><span class="token punctuation">(</span>isEmpty<span class="token punctuation">)</span><span class="token punctuation">,</span> 
-  <span class="token function">is</span><span class="token punctuation">(</span>String<span class="token punctuation">)</span>
-<span class="token punctuation">]</span><span class="token punctuation">)</span>
-
-<span class="token function">isNonEmptyString</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">isNonEmptyString</span><span class="token punctuation">(</span><span class="token string">'abc'</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若使用 Ramda，要判斷 non empty string，有兩個條件：</p>
 <ol>
 <li>必須是 string：<code>is(String)</code></li>
@@ -458,13 +450,8 @@ a:hover {
 </ol>
 <p>且兩者都必須成立：<code>allPass()</code>。</p>
 <p><img src="/images/ramda/cookbook/isnonemptystring/nonempty000.png" alt="nonempty000"></p>
-<h2 id="Crocks"><a href="#Crocks" class="headerlink" title="Crocks"></a>Crocks</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> isString<span class="token punctuation">,</span> and<span class="token punctuation">,</span> not<span class="token punctuation">,</span> isEmpty <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'crocks'</span>
+<h2 id="Crocks"><a href="#Crocks" class="headerlink" title="Crocks"></a>Crocks</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; isString, and, not, isEmpty &#125; <span class="keyword">from</span> <span class="string">&#x27;crocks&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> isNonEmptyString = <span class="title function_">and</span>(<span class="title function_">not</span>(isEmpty), isString)</span><br><span class="line"></span><br><span class="line"><span class="title function_">isNonEmptyString</span>(<span class="string">&#x27;&#x27;</span>) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">isNonEmptyString</span>(<span class="string">&#x27;abc&#x27;</span>) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> isNonEmptyString <span class="token operator">=</span> <span class="token function">and</span><span class="token punctuation">(</span><span class="token function">not</span><span class="token punctuation">(</span>isEmpty<span class="token punctuation">)</span><span class="token punctuation">,</span> isString<span class="token punctuation">)</span>
-
-<span class="token function">isNonEmptyString</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">isNonEmptyString</span><span class="token punctuation">(</span><span class="token string">'abc'</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若使用 Crocks，判斷條件與 Ramda 一樣，不過使用 function 不太一樣：</p>
 <ol>
 <li>必須是 string：Crocks 直接提供 <code>isString()</code>，不需用 <code>is()</code> 與 <code>String()</code> 組合</li>
@@ -476,7 +463,7 @@ a:hover {
 <li>Crocks 的 <code>not()</code> 與 Ramda 的 <code>complement()</code> 完全相同；而 Crocks 的 <code>and()</code> 也與 Ramda 的 <code>allPass()</code> 完全相同</li>
 <li>若以 API 角度，Crocks 的 <code>not()</code> 與 <code>and()</code> 語意較佳，因為既然是 Functional Programming，所有的 function 都應該是針對其他 function 而來，而 Ramda 的 <code>not()</code> 是針對 value，也就是 <code>!</code>；<code>and()</code> 也是針對 value，也就是 <code>&amp;&amp;</code>，實務上很少使用，還不如學 Crocks 將 <code>not()</code> 與 <code>and()</code> 直接針對 function</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#isEmpty" target="_blank" rel="noopener">isEmpty()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#complement" target="_blank" rel="noopener">complement()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#allPass" target="_blank" rel="noopener">allPass()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#is" target="_blank" rel="noopener">is()</a><br><a href="https://evilsoft.github.io/crocks/" target="_blank" rel="noopener">Crocks</a>, <a href="https://evilsoft.github.io/crocks/docs/functions/predicate-functions.html" target="_blank" rel="noopener">isString()</a><br><a href="https://evilsoft.github.io/crocks/" target="_blank" rel="noopener">Crocks</a>, <a href="https://evilsoft.github.io/crocks/docs/functions/logic-functions.html" target="_blank" rel="noopener">and()</a><br><a href="https://evilsoft.github.io/crocks/" target="_blank" rel="noopener">Crocks</a>, <a href="https://evilsoft.github.io/crocks/docs/functions/logic-functions.html" target="_blank" rel="noopener">not()</a><br><a href="https://evilsoft.github.io/crocks/" target="_blank" rel="noopener">Crocks</a>, <a href="https://evilsoft.github.io/crocks/docs/functions/predicate-functions.html" target="_blank" rel="noopener">isEmpty()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#isEmpty">isEmpty()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#complement">complement()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#allPass">allPass()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#is">is()</a><br><a target="_blank" rel="noopener" href="https://evilsoft.github.io/crocks/">Crocks</a>, <a target="_blank" rel="noopener" href="https://evilsoft.github.io/crocks/docs/functions/predicate-functions.html">isString()</a><br><a target="_blank" rel="noopener" href="https://evilsoft.github.io/crocks/">Crocks</a>, <a target="_blank" rel="noopener" href="https://evilsoft.github.io/crocks/docs/functions/logic-functions.html">and()</a><br><a target="_blank" rel="noopener" href="https://evilsoft.github.io/crocks/">Crocks</a>, <a target="_blank" rel="noopener" href="https://evilsoft.github.io/crocks/docs/functions/logic-functions.html">not()</a><br><a target="_blank" rel="noopener" href="https://evilsoft.github.io/crocks/">Crocks</a>, <a target="_blank" rel="noopener" href="https://evilsoft.github.io/crocks/docs/functions/predicate-functions.html">isEmpty()</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

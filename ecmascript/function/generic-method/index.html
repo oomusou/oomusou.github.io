@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,15 +438,11 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>ECMAScript 有個很有趣特性：Generic Method 可被其他型別透過 <code>call()</code> 使用，宛如自己的 Method 一般，這種 <code>借用 Method</code> 特性，使得該型別也擁有其他型別能力。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Mojave 10.14.5<br>VS Code 1.36.1<br>Quokka 1.0.238<br>ECMAScript 5<br>Ramda 0.26.1</p>
-<h2 id="Function-prototype-call"><a href="#Function-prototype-call" class="headerlink" title="Function.prototype.call()"></a>Function.prototype.call()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">;</span>
+<h2 id="Function-prototype-call"><a href="#Function-prototype-call" class="headerlink" title="Function.prototype.call()"></a>Function.prototype.call()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;FP in JavaScript&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">usrFn</span> = str =&gt; [].<span class="property">map</span>.<span class="title function_">call</span>(str, <span class="function"><span class="params">x</span> =&gt;</span> <span class="title class_">String</span>.<span class="title function_">fromCharCode</span>(x.<span class="title function_">charCodeAt</span>() + <span class="number">1</span>)).<span class="title function_">join</span>(<span class="string">&#x27;&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="title function_">usrFn</span>(data); <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> usrFn <span class="token operator">=</span> str <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">.</span>map<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span>str<span class="token punctuation">,</span> x <span class="token operator">=</span><span class="token operator">></span> String<span class="token punctuation">.</span><span class="token function">fromCharCode</span><span class="token punctuation">(</span>x<span class="token punctuation">.</span><span class="token function">charCodeAt</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">+</span> <span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token function">usrFn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>data</code> 為 string，我們希望將每個 char 的 ASCII code 加 <code>1</code> 後再轉為 string。</p>
 <p>若將 string 看成 array，這是很簡單的 <code>map()</code> 而已，但可惜 string 沒有 <code>map()</code> 可用。</p>
 <p>因為 <code>Array.prototype.map()</code> 為 generic method，可透過 <code>call()</code> 被 string 借用，宛如 <code>String.prototype.map()</code> 一般。</p>
@@ -505,49 +501,17 @@ a:hover {
 </ul>
 </li>
 </ul>
-<h2 id="Functional"><a href="#Functional" class="headerlink" title="Functional"></a>Functional</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> map<span class="token punctuation">,</span> join<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span><span class="token punctuation">;</span>
+<h2 id="Functional"><a href="#Functional" class="headerlink" title="Functional"></a>Functional</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, map, join, add &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;FP in JavaScript&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// toAscii :: String -&gt; Number</span></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">toAscii</span> = str =&gt; str.<span class="title function_">charCodeAt</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// fromAscii :: Number -&gt; String</span></span><br><span class="line"><span class="keyword">let</span> fromAscii = <span class="title class_">String</span>.<span class="property">fromCharCode</span>;</span><br><span class="line"></span><br><span class="line"><span class="comment">// mapFn :: String -&gt; String</span></span><br><span class="line"><span class="keyword">let</span> mapFn = <span class="title function_">pipe</span>(</span><br><span class="line">  toAscii,</span><br><span class="line">  <span class="title function_">add</span>(<span class="number">1</span>),</span><br><span class="line">  fromAscii</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="comment">// usrFn :: String -&gt; String</span></span><br><span class="line"><span class="keyword">let</span> usrFn = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">map</span>(mapFn),</span><br><span class="line">  <span class="title function_">join</span>(<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">);</span><br><span class="line"></span><br><span class="line"><span class="title function_">usrFn</span>(data); <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">// toAscii :: String -> Number</span>
-<span class="token keyword">let</span> toAscii <span class="token operator">=</span> str <span class="token operator">=</span><span class="token operator">></span> str<span class="token punctuation">.</span><span class="token function">charCodeAt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">// fromAscii :: Number -> String</span>
-<span class="token keyword">let</span> fromAscii <span class="token operator">=</span> String<span class="token punctuation">.</span>fromCharCode<span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">// mapFn :: String -> String</span>
-<span class="token keyword">let</span> mapFn <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  toAscii<span class="token punctuation">,</span>
-  <span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  fromAscii
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token comment" spellcheck="true">// usrFn :: String -> String</span>
-<span class="token keyword">let</span> usrFn <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">map</span><span class="token punctuation">(</span>mapFn<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">join</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-<span class="token function">usrFn</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span><span class="token punctuation">;</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>String 雖然如願以償得到了 <code>map()</code>，但會發現 <code>usrFn()</code> 可讀性並不高，code 風格呈橫向發展。</p>
 <p>原因在於 OOP 將 data 與 function 合一，function 必須掛在 data 下，而不能使用 pure function 與 pipeline 解決問題。</p>
 <p>18 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// usrFn :: String -> String</span>
-<span class="token keyword">let</span> usrFn <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">map</span><span class="token punctuation">(</span>mapFn<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">join</span><span class="token punctuation">(</span><span class="token string">''</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// usrFn :: String -&gt; String</span></span><br><span class="line"><span class="keyword">let</span> usrFn = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">map</span>(mapFn),</span><br><span class="line">  <span class="title function_">join</span>(<span class="string">&#x27;&#x27;</span>)</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
 <p>其實 <code>usrFn()</code> 的大架構就是先用 <code>map()</code> 處理，最後再使用 <code>join()</code> 轉回 array，至於  <code>map()</code> 細節則由 <code>mapFn()</code> 處理。</p>
 <p>11 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// mapFn :: String -> String</span>
-<span class="token keyword">let</span> mapFn <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  toAscii<span class="token punctuation">,</span>
-  <span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  fromAscii
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// mapFn :: String -&gt; String</span></span><br><span class="line"><span class="keyword">let</span> mapFn = <span class="title function_">pipe</span>(</span><br><span class="line">  toAscii,</span><br><span class="line">  <span class="title function_">add</span>(<span class="number">1</span>),</span><br><span class="line">  fromAscii</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
 <p><code>mapFn()</code> 流程為：</p>
 <ul>
 <li><code>toAscii()</code> 負責將 char 轉 ascii 值</li>
@@ -556,12 +520,8 @@ a:hover {
 </ul>
 <p>最後用 <code>pipe()</code> 整合所有 function，非常清楚。</p>
 <p>第 5 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token comment" spellcheck="true">// toAscii :: String -> Number</span>
-<span class="token keyword">let</span> toAscii <span class="token operator">=</span> str <span class="token operator">=</span><span class="token operator">></span> str<span class="token punctuation">.</span><span class="token function">charCodeAt</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="comment">// toAscii :: String -&gt; Number</span></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">toAscii</span> = str =&gt; str.<span class="title function_">charCodeAt</span>();</span><br><span class="line"></span><br><span class="line"><span class="comment">// fromAscii :: Number -&gt; String</span></span><br><span class="line"><span class="keyword">let</span> fromAscii = <span class="title class_">String</span>.<span class="property">fromCharCode</span>;</span><br></pre></td></tr></table></figure>
 
-<span class="token comment" spellcheck="true">// fromAscii :: Number -> String</span>
-<span class="token keyword">let</span> fromAscii <span class="token operator">=</span> String<span class="token punctuation">.</span>fromCharCode<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>將 <code>charCodeAt()</code> 與 <code>fromCharCode()</code> 重新以 pure function 形式改寫，適合 FP 使用 pipeline。</p>
 <blockquote>
 <p>可以發現 FP 會不斷建立自訂 function，但卻看不到自訂 variable，因為 FP 會以 pipeline 處理，中繼 variable 都不見了</p>
@@ -572,7 +532,7 @@ a:hover {
 <li>OOP 強調 data 與 function 合一，因此 function 會以 method 形式掛在 data 上，若該型別 data 想使用其他型別的 method，且該 method 已經被認定是 generic method，就可使用 <code>call()</code> 去 <code>借用 method</code>，如同自己的 method 一般</li>
 <li>FP 並不存在 <code>借用 method</code> 概念，因為 FP 是 data 與 function 分離，function 並不是掛在 data 上的 method，只要 function 接受該型別 data 就可使用，比 OOP 彈性且更容易理解</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://twitter.com/rauschma" target="_blank" rel="noopener">Dr. Axel Rauschdayer</a>, <a href="http://speakingjs.com/es5/ch17.html#array-like_objects" target="_blank" rel="noopener">Array-Like Objects and Generic Methods</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://twitter.com/rauschma">Dr. Axel Rauschdayer</a>, <a target="_blank" rel="noopener" href="http://speakingjs.com/es5/ch17.html#array-like_objects">Array-Like Objects and Generic Methods</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

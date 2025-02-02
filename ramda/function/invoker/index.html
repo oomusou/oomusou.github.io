@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,25 +438,16 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>ECMAScript 的 <code>Array.prototype</code>、<code>String.prototype</code>、<code>Object.prototype</code> … 都有很豐富 Instance Method 可用，唯這些 Method 都是以 OOP 形式提供，不方便 Function Pipeline，可使用 Ramda 的 <code>invoker()</code> 將其轉成 Free Function。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.6<br>VS Code 1.47.2<br>Quokka 1.0.309<br>Ramda 0.27.0</p>
-<h2 id="fill"><a href="#fill" class="headerlink" title="fill()"></a>fill()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<h2 id="fill"><a href="#fill" class="headerlink" title="fill()"></a>fill()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">data.<span class="title function_">fill</span>(<span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>) <span class="comment">// ?</span></span><br><span class="line">data.<span class="title function_">fill</span>(<span class="number">0</span>, <span class="number">1</span>) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-data<span class="token punctuation">.</span><span class="token function">fill</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-data<span class="token punctuation">.</span><span class="token function">fill</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">,</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>Array.prototype</code> 提供了 <code>fill()</code>，可在指定 index 填滿指定 value。</p>
 <p>若最後一個 argument 省略，則表示填滿到最後。</p>
 <p><img src="/images/ramda/function/invoker/invoker000.png" alt="invoker000"></p>
-<h2 id="invoker"><a href="#invoker" class="headerlink" title="invoker()"></a>invoker()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> invoker <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="invoker"><a href="#invoker" class="headerlink" title="invoker()"></a>invoker()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; invoker &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> fill = <span class="title function_">invoker</span>(<span class="number">3</span>)(<span class="string">&#x27;fill&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="title function_">fill</span>(<span class="number">0</span>)(<span class="number">1</span>)(<span class="number">2</span>)(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> fill <span class="token operator">=</span> <span class="token function">invoker</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'fill'</span><span class="token punctuation">)</span>
-
-<span class="token function">fill</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>Array.prototype.fill()</code> 雖然好用，可惜是以 OOP 形式提供，data 並不是在最後一個 argument，因此很難 Function Pipeline。</p>
 <p>可使用 Ramda 的 <code>invoker()</code> 將 instance method 轉成 free function，並將 data 改成最後一個 argument。</p>
 <blockquote>
@@ -466,16 +457,8 @@ data<span class="token punctuation">.</span><span class="token function">fill</s
 <p><code>String</code>：method 名稱</p>
 <p><code>(a → b → … → n → Object → *)</code>：回傳新 function，已經自動 curry</p>
 <p><img src="/images/ramda/function/invoker/invoker001.png" alt="invoker001"></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> invoker <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; invoker &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> fill = <span class="title function_">invoker</span>(<span class="number">3</span>)(<span class="string">&#x27;fill&#x27;</span>)</span><br><span class="line"><span class="keyword">let</span> fill_ = <span class="title function_">invoker</span>(<span class="number">2</span>)(<span class="string">&#x27;fill&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="title function_">fill</span>(<span class="number">0</span>)(<span class="number">1</span>)(<span class="title class_">Infinity</span>)(data) <span class="comment">// ?</span></span><br><span class="line"><span class="title function_">fill_</span>(<span class="number">0</span>)(<span class="number">1</span>)(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> fill <span class="token operator">=</span> <span class="token function">invoker</span><span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'fill'</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> fill_ <span class="token operator">=</span> <span class="token function">invoker</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">'fill'</span><span class="token punctuation">)</span>
-
-<span class="token function">fill</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">Infinity</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span class="token function">fill_</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>ECMAScript 有 optional argument 概念，但 Ramda 則無，若想將最後一個 <code>end</code> argument 省略，有兩種方式：</p>
 <ul>
 <li>一樣使用 <code>invoker(3)</code>，但必須明確提供 <code>Infinity</code></li>
@@ -487,7 +470,7 @@ data<span class="token punctuation">.</span><span class="token function">fill</s
 <li>隨著 ECMAScript 進步會有更多 instance method 出現，可自行使用 <code>invoker()</code> 轉成 free function，方便 Function Pipeline</li>
 <li>若要將 static method 轉成 free function，則可使用 <code>bind()</code></li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#invoker" target="_blank" rel="noopener">invoker()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#bind" target="_blank" rel="noopener">bind()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#invoker">invoker()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#bind">bind()</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

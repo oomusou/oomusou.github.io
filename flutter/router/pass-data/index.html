@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,7 +438,7 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>當使用 <code>Navigator.push()</code> 跳轉到其他頁面時，可順便傳遞資料。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Flutter 3.24.5</p>
 <h2 id="Flutter"><a href="#Flutter" class="headerlink" title="Flutter"></a>Flutter</h2><p><img src="/images/flutter/router/pass-data/data01.gif" alt="data01"></p>
@@ -446,166 +446,29 @@ a:hover {
 <li>Android 與 iOS 都成功使用 <code>Navigator.push()</code> 實現跳轉頁面並傳遞資料</li>
 </ul>
 <h2 id="Navigator"><a href="#Navigator" class="headerlink" title="Navigator"></a>Navigator</h2><p><strong>part_a.dart</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">import</span> <span class="token string">'package:flutter/material.dart'</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token string">'package:flutter_lab/page_b.dart'</span><span class="token punctuation">;</span>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter_lab/page_b.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PageA</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> PageA(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;PageA&gt; createState() =&gt; _PageA();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_PageA</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">PageA</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> _name = <span class="string">&#x27;Sam&#x27;</span>;</span><br><span class="line">  <span class="keyword">final</span> _id = <span class="number">123</span>;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">var</span> appBar = AppBar(</span><br><span class="line">      title: <span class="keyword">const</span> Text(</span><br><span class="line">        <span class="string">&#x27;Page A&#x27;</span>,</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> floatingActionButton = FloatingActionButton(</span><br><span class="line">      onPressed: () &#123;</span><br><span class="line">        Navigator.push(</span><br><span class="line">          context,</span><br><span class="line">          MaterialPageRoute(</span><br><span class="line">            builder: (context) =&gt; PageB(</span><br><span class="line">              name: _name,</span><br><span class="line">              id: _id,</span><br><span class="line">            ),</span><br><span class="line">          ),</span><br><span class="line">        );</span><br><span class="line">      &#125;,</span><br><span class="line">      child: <span class="keyword">const</span> Icon(</span><br><span class="line">        Icons.navigate_next,</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> body = Center(</span><br><span class="line">      child: Column(</span><br><span class="line">        mainAxisSize: MainAxisSize.min,</span><br><span class="line">        children: [</span><br><span class="line">          Text(</span><br><span class="line">            <span class="string">&quot;Name: <span class="subst">$_name</span>&quot;</span>,</span><br><span class="line">          ),</span><br><span class="line">          Text(</span><br><span class="line">            <span class="string">&quot;ID: <span class="subst">$_id</span>&quot;</span>,</span><br><span class="line">          ),</span><br><span class="line">        ],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: appBar,</span><br><span class="line">      floatingActionButton: floatingActionButton,</span><br><span class="line">      body: body,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">class</span> <span class="token class-name">PageA</span> <span class="token keyword">extends</span> <span class="token class-name">StatefulWidget</span> <span class="token punctuation">{</span>
-  <span class="token keyword">const</span> <span class="token function">PageA</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token keyword">super</span><span class="token punctuation">.</span>key<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token metadata symbol">@override</span>
-  State<span class="token operator">&lt;</span>PageA<span class="token operator">></span> <span class="token function">createState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">_PageA</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">class</span> <span class="token class-name">_PageA</span> <span class="token keyword">extends</span> <span class="token class-name">State</span><span class="token operator">&lt;</span>PageA<span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">final</span> _name <span class="token operator">=</span> <span class="token string">'Sam'</span><span class="token punctuation">;</span>
-  <span class="token keyword">final</span> _id <span class="token operator">=</span> <span class="token number">123</span><span class="token punctuation">;</span>
-
-  <span class="token metadata symbol">@override</span>
-  Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">var</span> appBar <span class="token operator">=</span> <span class="token function">AppBar</span><span class="token punctuation">(</span>
-      title<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span>
-        <span class="token string">'Page A'</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> floatingActionButton <span class="token operator">=</span> <span class="token function">FloatingActionButton</span><span class="token punctuation">(</span>
-      onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        Navigator<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>
-          context<span class="token punctuation">,</span>
-          <span class="token function">MaterialPageRoute</span><span class="token punctuation">(</span>
-            builder<span class="token punctuation">:</span> <span class="token punctuation">(</span>context<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">PageB</span><span class="token punctuation">(</span>
-              name<span class="token punctuation">:</span> _name<span class="token punctuation">,</span>
-              id<span class="token punctuation">:</span> _id<span class="token punctuation">,</span>
-            <span class="token punctuation">)</span><span class="token punctuation">,</span>
-          <span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token punctuation">}</span><span class="token punctuation">,</span>
-      child<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Icon</span><span class="token punctuation">(</span>
-        Icons<span class="token punctuation">.</span>navigate_next<span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> body <span class="token operator">=</span> <span class="token function">Center</span><span class="token punctuation">(</span>
-      child<span class="token punctuation">:</span> <span class="token function">Column</span><span class="token punctuation">(</span>
-        mainAxisSize<span class="token punctuation">:</span> MainAxisSize<span class="token punctuation">.</span>min<span class="token punctuation">,</span>
-        children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-          <span class="token function">Text</span><span class="token punctuation">(</span>
-            <span class="token string">"Name: $_name"</span><span class="token punctuation">,</span>
-          <span class="token punctuation">)</span><span class="token punctuation">,</span>
-          <span class="token function">Text</span><span class="token punctuation">(</span>
-            <span class="token string">"ID: $_id"</span><span class="token punctuation">,</span>
-          <span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token punctuation">]</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">return</span> <span class="token function">Scaffold</span><span class="token punctuation">(</span>
-      appBar<span class="token punctuation">:</span> appBar<span class="token punctuation">,</span>
-      floatingActionButton<span class="token punctuation">:</span> floatingActionButton<span class="token punctuation">,</span>
-      body<span class="token punctuation">:</span> body<span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>Line 24</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart">onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  Navigator<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>
-    context<span class="token punctuation">,</span>
-    <span class="token function">MaterialPageRoute</span><span class="token punctuation">(</span>
-      builder<span class="token punctuation">:</span> <span class="token punctuation">(</span>context<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">PageB</span><span class="token punctuation">(</span>
-        name<span class="token punctuation">:</span> _name<span class="token punctuation">,</span>
-        id<span class="token punctuation">:</span> _id<span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line">onPressed: () &#123;</span><br><span class="line">  Navigator.push(</span><br><span class="line">    context,</span><br><span class="line">    MaterialPageRoute(</span><br><span class="line">      builder: (context) =&gt; PageB(</span><br><span class="line">        name: _name,</span><br><span class="line">        id: _id,</span><br><span class="line">      ),</span><br><span class="line">    ),</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>Navigator.push()</code>：一樣使用 <code>Navigator.push()</code> 跳轉頁面，但在 View 傳入資料</li>
 <li><code>name</code>：可在 PageB 自行定義 <code>參數名稱</code></li>
 </ul>
 <p><strong>part_b.dart</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">import</span> <span class="token string">'package:flutter/material.dart'</span><span class="token punctuation">;</span>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PageB</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> name;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">int</span> id;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> PageB(&#123;</span><br><span class="line">    <span class="keyword">super</span>.key,</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">this</span>.name,</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">this</span>.id,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;PageB&gt; createState() =&gt; _PageB();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_PageB</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">PageB</span>&gt; </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">var</span> appBar = AppBar(</span><br><span class="line">      title: <span class="keyword">const</span> Text(</span><br><span class="line">        <span class="string">&#x27;Page B&#x27;</span>,</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> body = Center(</span><br><span class="line">      child: Column(</span><br><span class="line">        mainAxisSize: MainAxisSize.min,</span><br><span class="line">        children: [</span><br><span class="line">          Text(</span><br><span class="line">            <span class="string">&quot;Name: <span class="subst">$&#123;widget.name&#125;</span>&quot;</span>,</span><br><span class="line">          ),</span><br><span class="line">          Text(</span><br><span class="line">            <span class="string">&quot;ID: <span class="subst">$&#123;widget.id&#125;</span>&quot;</span>,</span><br><span class="line">          ),</span><br><span class="line">        ],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: appBar,</span><br><span class="line">      body: body,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">class</span> <span class="token class-name">PageB</span> <span class="token keyword">extends</span> <span class="token class-name">StatefulWidget</span> <span class="token punctuation">{</span>
-  <span class="token keyword">final</span> String name<span class="token punctuation">;</span>
-  <span class="token keyword">final</span> int id<span class="token punctuation">;</span>
-
-  <span class="token keyword">const</span> <span class="token function">PageB</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-    <span class="token keyword">super</span><span class="token punctuation">.</span>key<span class="token punctuation">,</span>
-    required <span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token punctuation">,</span>
-    required <span class="token keyword">this</span><span class="token punctuation">.</span>id<span class="token punctuation">,</span>
-  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token metadata symbol">@override</span>
-  State<span class="token operator">&lt;</span>PageB<span class="token operator">></span> <span class="token function">createState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">_PageB</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">class</span> <span class="token class-name">_PageB</span> <span class="token keyword">extends</span> <span class="token class-name">State</span><span class="token operator">&lt;</span>PageB<span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token metadata symbol">@override</span>
-  Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">var</span> appBar <span class="token operator">=</span> <span class="token function">AppBar</span><span class="token punctuation">(</span>
-      title<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span>
-        <span class="token string">'Page B'</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> body <span class="token operator">=</span> <span class="token function">Center</span><span class="token punctuation">(</span>
-      child<span class="token punctuation">:</span> <span class="token function">Column</span><span class="token punctuation">(</span>
-        mainAxisSize<span class="token punctuation">:</span> MainAxisSize<span class="token punctuation">.</span>min<span class="token punctuation">,</span>
-        children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-          <span class="token function">Text</span><span class="token punctuation">(</span>
-            <span class="token string">"Name: ${widget.name}"</span><span class="token punctuation">,</span>
-          <span class="token punctuation">)</span><span class="token punctuation">,</span>
-          <span class="token function">Text</span><span class="token punctuation">(</span>
-            <span class="token string">"ID: ${widget.id}"</span><span class="token punctuation">,</span>
-          <span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token punctuation">]</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">return</span> <span class="token function">Scaffold</span><span class="token punctuation">(</span>
-      appBar<span class="token punctuation">:</span> appBar<span class="token punctuation">,</span>
-      body<span class="token punctuation">:</span> body<span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>Line 3</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">class</span> <span class="token class-name">PageB</span> <span class="token keyword">extends</span> <span class="token class-name">StatefulWidget</span> <span class="token punctuation">{</span>
-  <span class="token keyword">final</span> String name<span class="token punctuation">;</span>
-  <span class="token keyword">final</span> int id<span class="token punctuation">;</span>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">PageB</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">String</span> name;</span><br><span class="line">  <span class="keyword">final</span> <span class="built_in">int</span> id;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> PageB(&#123;</span><br><span class="line">    <span class="keyword">super</span>.key,</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">this</span>.name,</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">this</span>.id,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;PageB&gt; createState() =&gt; _PageB();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-  <span class="token keyword">const</span> <span class="token function">PageB</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-    <span class="token keyword">super</span><span class="token punctuation">.</span>key<span class="token punctuation">,</span>
-    required <span class="token keyword">this</span><span class="token punctuation">.</span>name<span class="token punctuation">,</span>
-    required <span class="token keyword">this</span><span class="token punctuation">.</span>id<span class="token punctuation">,</span>
-  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token metadata symbol">@override</span>
-  State<span class="token operator">&lt;</span>PageB<span class="token operator">></span> <span class="token function">createState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">_PageB</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li><code>final String name</code>：以 <code>final</code> 定義 <code>參數名稱</code> 與 <code>型別</code></li>
 <li><code>PageB()</code>：在 PageB 的 constructor 以 <code>required this</code> 加上 <code>參數名稱</code>，會自動將 <code>傳遞資料</code> 寫入 <code>變數</code></li>
 <li>資料名稱 <code>不能</code> 如 state 一樣以 <code>底線</code> 命名</li>
 </ul>
 <p><strong>Line 26</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">var</span> body <span class="token operator">=</span> <span class="token function">Center</span><span class="token punctuation">(</span>
-  child<span class="token punctuation">:</span> <span class="token function">Column</span><span class="token punctuation">(</span>
-    mainAxisSize<span class="token punctuation">:</span> MainAxisSize<span class="token punctuation">.</span>min<span class="token punctuation">,</span>
-    children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-      <span class="token function">Text</span><span class="token punctuation">(</span>
-        <span class="token string">"Name: ${widget.name}"</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-      <span class="token function">Text</span><span class="token punctuation">(</span>
-        <span class="token string">"ID: ${widget.id}"</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> body = Center(</span><br><span class="line">  child: Column(</span><br><span class="line">    mainAxisSize: MainAxisSize.min,</span><br><span class="line">    children: [</span><br><span class="line">      Text(</span><br><span class="line">        <span class="string">&quot;Name: <span class="subst">$&#123;widget.name&#125;</span>&quot;</span>,</span><br><span class="line">      ),</span><br><span class="line">      Text(</span><br><span class="line">        <span class="string">&quot;ID: <span class="subst">$&#123;widget.id&#125;</span>&quot;</span>,</span><br><span class="line">      ),</span><br><span class="line">    ],</span><br><span class="line">  ),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>widget.name</code>：由於傳遞資料 <code>不是</code> state，必須以 <code>widget</code> 的形式取得</li>
 </ul>

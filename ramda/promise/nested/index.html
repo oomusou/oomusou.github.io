@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,55 +438,28 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>由於 Promise 的 <code>then()</code> 具有 <code>chain()</code> 特性，實務上使用 Nested Promise 機會不大，大都可使用 Promise Chain 解決，若萬一使用 Nested Promise 時，該如何裡 Rejected Promise 呢 ?</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
-<h2 id="Promise-Chain"><a href="#Promise-Chain" class="headerlink" title="Promise Chain"></a>Promise Chain</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> otherwise <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Promise-Chain"><a href="#Promise-Chain" class="headerlink" title="Promise Chain"></a>Promise Chain</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, andThen <span class="keyword">as</span> then, otherwise &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">f</span> = (<span class="params"></span>) =&gt; <span class="title class_">Promise</span>.<span class="title function_">resolve</span>(<span class="string">&#x27;hello world&#x27;</span>)</span><br><span class="line"><span class="keyword">let</span> <span class="title function_">g</span> = x =&gt; <span class="title class_">Promise</span>.<span class="title function_">reject</span>(x)</span><br><span class="line"></span><br><span class="line"><span class="title function_">pipe</span>(</span><br><span class="line">  f,</span><br><span class="line">  <span class="title function_">then</span>(g),</span><br><span class="line">  <span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>),</span><br><span class="line">  <span class="title function_">otherwise</span>(<span class="variable language_">console</span>.<span class="property">error</span>)</span><br><span class="line">)()</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Promise<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'hello world'</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> g <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> Promise<span class="token punctuation">.</span><span class="token function">reject</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
-
-<span class="token function">pipe</span><span class="token punctuation">(</span>
-  f<span class="token punctuation">,</span>
-  <span class="token function">then</span><span class="token punctuation">(</span>g<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">otherwise</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>error<span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>f()</code> 回傳為 Fulfilled Promise，<code>g()</code> 根據傳入值回傳 Rejected Promise。</p>
 <p>若要依序執行多個 asynchronous function，由於 Promise 的 <code>then()</code> 具有 <code>chain()</code> 特性，絕大部分應用都可使用單層 Promise Chain 完成，而不必使用 Nested Promise。</p>
 <p>此時只要使用一個 <code>otherwise()</code> 就可處理 Rejected Promise。</p>
 <p><img src="/images/ramda/promise/nested/nested000.png" alt="nested000"></p>
-<h2 id="Nested-Promise"><a href="#Nested-Promise" class="headerlink" title="Nested Promise"></a>Nested Promise</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> andThen <span class="token keyword">as</span> then<span class="token punctuation">,</span> otherwise <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Nested-Promise"><a href="#Nested-Promise" class="headerlink" title="Nested Promise"></a>Nested Promise</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, andThen <span class="keyword">as</span> then, otherwise &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">f</span> = (<span class="params"></span>) =&gt; <span class="title class_">Promise</span>.<span class="title function_">resolve</span>(<span class="string">&#x27;hello world&#x27;</span>)</span><br><span class="line"><span class="keyword">let</span> <span class="title function_">g</span> = x =&gt; <span class="title class_">Promise</span>.<span class="title function_">reject</span>(x)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> h = <span class="title function_">pipe</span>(</span><br><span class="line">  g,</span><br><span class="line">  <span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">pipe</span>(</span><br><span class="line">  f,</span><br><span class="line">  <span class="title function_">then</span>(h),</span><br><span class="line">  <span class="title function_">otherwise</span>(<span class="variable language_">console</span>.<span class="property">error</span>)</span><br><span class="line">)()</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> Promise<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">'hello world'</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> g <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> Promise<span class="token punctuation">.</span><span class="token function">reject</span><span class="token punctuation">(</span>x<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> h <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  g<span class="token punctuation">,</span>
-  <span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">pipe</span><span class="token punctuation">(</span>
-  f<span class="token punctuation">,</span>
-  <span class="token function">then</span><span class="token punctuation">(</span>h<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">otherwise</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>error<span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>由於 Promise Chain 的值是一個 <code>then()</code> 一個 <code>then()</code> 往下傳，有時候在很後面的 <code>then()</code> 才會用到某一層 <code>then()</code> 的回傳值，此時 Nested Promise 會比 Promise Chain 方便。</p>
 <p>第 6 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> h <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  g<span class="token punctuation">,</span>
-  <span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> h = <span class="title function_">pipe</span>(</span><br><span class="line">  g,</span><br><span class="line">  <span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <p>使用 Nested Promise 時會再獨立抽出新 function，這時候會有疑問，這個新 function 是否要單獨處理 Rejected Promise，或者再將 Rejected Promise 拋出呢 ?</p>
 <p><img src="/images/ramda/promise/nested/nested001.png" alt="nested001"></p>
 <p>實際執行可發現，這類 Nested Promise 並不需要獨立處理 Rejected Promise 或者重新拋出 Rejected Promise，由於其產生的 Rejected Promise 也會由 <code>then()</code> 傳出，因此在最外層使用 <code>otherwise()</code> 統一處理即可。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>由於 <code>then()</code> 具有 <code>chain()</code> 特性，因此 Nested Promise 內不必特別處理 Rejected Promise，只要統一在最外層使用 <code>otherwise()</code> 處理即可</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#andThen" target="_blank" rel="noopener">andThen()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#otherwise" target="_blank" rel="noopener">otherwise()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#andThen">andThen()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#otherwise">otherwise()</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

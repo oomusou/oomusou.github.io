@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,25 +438,12 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>若要在 macOS 使用 MySQL，不需使用 Homebrew 安裝 macOS 版 MySQL 或安裝 MAMP，直接使用 Docker 執行 MySQL 即可。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>MySQL 8.0.26</p>
 <h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><p><strong>docker-compose.yml</strong></p>
-<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3"</span>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">mysql:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mysql:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">mysql</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">$&#123;HOST_DIR&#125;:/var/lib/mysql</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">$&#123;MYSQL_PORT&#125;:3306</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MYSQL_DATABASE=$&#123;MYSQL_DB&#125;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MYSQL_ROOT_PASSWORD=$&#123;MYSQL_ROOT_PASSWORD&#125;</span></span><br><span class="line">    <span class="attr">command:</span> <span class="string">--default-authentication-plugin=mysql_native_password</span></span><br></pre></td></tr></table></figure>
 
-<span class="token key atrule">services</span><span class="token punctuation">:</span>
-  <span class="token key atrule">mysql</span><span class="token punctuation">:</span>
-    <span class="token key atrule">image</span><span class="token punctuation">:</span> mysql<span class="token punctuation">:</span>latest
-    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> mysql
-    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>HOST_DIR<span class="token punctuation">}</span><span class="token punctuation">:</span>/var/lib/mysql
-    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>MYSQL_PORT<span class="token punctuation">}</span><span class="token punctuation">:</span><span class="token number">3306</span>
-    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> MYSQL_DATABASE=$<span class="token punctuation">{</span>MYSQL_DB<span class="token punctuation">}</span>
-      <span class="token punctuation">-</span> MYSQL_ROOT_PASSWORD=$<span class="token punctuation">{</span>MYSQL_ROOT_PASSWORD<span class="token punctuation">}</span>
-    <span class="token key atrule">command</span><span class="token punctuation">:</span> <span class="token punctuation">-</span><span class="token punctuation">-</span>default<span class="token punctuation">-</span>authentication<span class="token punctuation">-</span>plugin=mysql_native_password
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>設定 MySQL container：</p>
 <ul>
 <li><code>image: mysql:latest</code>：使用 MySQL 官方所提供 image 並使用最新版本</li>
@@ -470,11 +457,8 @@ a:hover {
 <p>MySQL 8 的 authentication 從原本 <code>mysql_native_password</code> 改成 <code>caching_sha2_password</code>，這導致 Knex 無法連上 MySQL 8 以上，特別在 <code>command</code> 加上 <code>--default-authentication-plugin=mysql_native_password</code>，命令 MySQL 8 以 <code>mysql_native_password</code> 方式啟動</p>
 </blockquote>
 <h2 id="Environment-Variable"><a href="#Environment-Variable" class="headerlink" title="Environment Variable"></a>Environment Variable</h2><p><strong>.env</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">HOST_DIR<span class="token operator">=</span><span class="token punctuation">.</span>data
-MYSQL_DB<span class="token operator">=</span>KnexLab
-MYSQL_PORT<span class="token operator">=</span><span class="token number">3306</span>
-MYSQL_ROOT_PASSWORD<span class="token operator">=</span><span class="token number">111111</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="variable constant_">HOST_DIR</span>=.<span class="property">data</span></span><br><span class="line"><span class="variable constant_">MYSQL_DB</span>=<span class="title class_">KnexLab</span></span><br><span class="line"><span class="variable constant_">MYSQL_PORT</span>=<span class="number">3306</span></span><br><span class="line"><span class="variable constant_">MYSQL_ROOT_PASSWORD</span>=<span class="number">111111</span></span><br></pre></td></tr></table></figure>
+
 <p>此為 <code>docker-compose.yml</code> 所設定的環境變數，被獨立在 <code>.env</code> 中，可單獨設定，將來不用修改 <code>docker-compose.yml</code>。</p>
 <ul>
 <li><code>HOST_DIR</code>：設定 MySQL data 要存到 host 位置</li>
@@ -482,8 +466,8 @@ MYSQL_ROOT_PASSWORD<span class="token operator">=</span><span class="token numbe
 <li><code>MYSQL_PORT</code>：設定 MySQL 對應到 host 的 port</li>
 <li><code>MYSQL_ROOT_PASSWORD</code>：設定 <code>root</code> 的 password</li>
 </ul>
-<h2 id="Start-MySQL"><a href="#Start-MySQL" class="headerlink" title="Start MySQL"></a>Start MySQL</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ docker compose up -d
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Start-MySQL"><a href="#Start-MySQL" class="headerlink" title="Start MySQL"></a>Start MySQL</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker compose up -d</span></span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>docker compose up -d</code> 啟動 MySQL。</p>
 <p><img src="/images/docker/mysql/mysql000.png" alt="mysql000"></p>
 <h2 id="DataGrip"><a href="#DataGrip" class="headerlink" title="DataGrip"></a>DataGrip</h2><p><img src="/images/docker/mysql/mysql001.png" alt="mysql001"></p>
@@ -492,8 +476,8 @@ MYSQL_ROOT_PASSWORD<span class="token operator">=</span><span class="token numbe
 <p>由於 MySQL 是以 Docker 執行，因此 host 填 <code>localhost</code>，port 透過 <code>3306</code> 即可連接。</p>
 <p><img src="/images/docker/mysql/mysql003.png" alt="mysql003"></p>
 <p>連進去後能看到 <code>KnexLab</code> database，表示 MySQL 成功啟動。</p>
-<h2 id="Stop-MySQL"><a href="#Stop-MySQL" class="headerlink" title="Stop MySQL"></a>Stop MySQL</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ docker-compose down
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Stop-MySQL"><a href="#Stop-MySQL" class="headerlink" title="Stop MySQL"></a>Stop MySQL</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker-compose down</span></span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>docker-compose down</code> 結束 MySQL。</p>
 <p><img src="/images/docker/mysql/mysql004.png" alt="mysql004"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>

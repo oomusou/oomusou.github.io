@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,39 +438,28 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>實務上很多資訊都來自於 String，但 API 要求的 Body 卻是 Object，所以由 String 轉成 Object 需求常常遇到，這該如何實現呢 ?</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
-<h2 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token string">'831669-Jacky-07-14.jpg'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Data"><a href="#Data" class="headerlink" title="Data"></a>Data</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="string">&#x27;831669-Jacky-07-14.jpg&#x27;</span></span><br></pre></td></tr></table></figure>
+
 <p>String 包含 <code>id</code>、<code>name</code> 與 <code>birthday</code> 三項資訊。</p>
-<pre class="line-numbers highlight language-json"><code class="language-json"><span class="token punctuation">{</span>
-  <span class="token property">"id"</span><span class="token operator">:</span> <span class="token string">"831619"</span><span class="token punctuation">,</span>
-  <span class="token property">"name"</span><span class="token operator">:</span> <span class="token string">"Jacky"</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight json"><table><tr><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;id&quot;</span><span class="punctuation">:</span> <span class="string">&quot;831619&quot;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;name&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Jacky&quot;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>但 API 僅需 Object 有 <code>id</code> 與 <code>name</code>。</p>
-<h2 id="zipObj"><a href="#zipObj" class="headerlink" title="zipObj()"></a>zipObj()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> split<span class="token punctuation">,</span> take<span class="token punctuation">,</span> zipObj <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="zipObj"><a href="#zipObj" class="headerlink" title="zipObj()"></a>zipObj()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, split, take, zipObj &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = <span class="string">&#x27;831669-Jacky-07-14.jpg&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">split</span>(<span class="string">&#x27;-&#x27;</span>),</span><br><span class="line">  <span class="title function_">take</span>(<span class="number">2</span>),</span><br><span class="line">  <span class="title function_">zipObj</span>([<span class="string">&#x27;id&#x27;</span>, <span class="string">&#x27;name&#x27;</span>])</span><br><span class="line">)(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token string">'831669-Jacky-07-14.jpg'</span>
-
-<span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">split</span><span class="token punctuation">(</span><span class="token string">'-'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">take</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">zipObj</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token string">'id'</span><span class="token punctuation">,</span> <span class="token string">'name'</span><span class="token punctuation">]</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用 <code>pipe()</code> 組合 IIFE：</p>
 <ul>
-<li>**split()**：將 String 依 <code>-</code> 拆分成 Array</li>
-<li>**take()**：由於 Object 只需 <code>id</code> 與 <code>name</code>，因此只需取前兩筆即可</li>
-<li>**zipObj()**：將兩 Array 合併成 Object，第一個 argument 為 key Array</li>
+<li><strong>split()</strong>：將 String 依 <code>-</code> 拆分成 Array</li>
+<li><strong>take()</strong>：由於 Object 只需 <code>id</code> 與 <code>name</code>，因此只需取前兩筆即可</li>
+<li><strong>zipObj()</strong>：將兩 Array 合併成 Object，第一個 argument 為 key Array</li>
 </ul>
 <p><img src="/images/ramda/cookbook/string/to-object/zipobj000.png" alt="zipobj000"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>由 String 組合成 Object 看似很難，但只要能先組成 Array，可用的 function 就很多，最後再透過 <code>zipObj()</code> 將兩 Array 組合成 Object</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#pipe" target="_blank" rel="noopener">pipe()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#split" target="_blank" rel="noopener">split()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#take" target="_blank" rel="noopener">take()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#zipObj" target="_blank" rel="noopener">zipObj()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#pipe">pipe()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#split">split()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#take">take()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#zipObj">zipObj()</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,84 +438,37 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>GraphQL 的 Query 除了回傳資料外，也能如 Function 般傳入 Argument。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15<br>WebStorm 2019.2.3<br>Node 10.16.3<br>Apollo GraphQL 2.9.6</p>
 <h2 id="Apollo-GraphQL"><a href="#Apollo-GraphQL" class="headerlink" title="Apollo GraphQL"></a>Apollo GraphQL</h2><p><strong>src&#x2F;index.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'apollo-server'</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> &#123; <span class="title class_">ApolloServer</span>, gql &#125; <span class="keyword">from</span> <span class="string">&#x27;apollo-server&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">100</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">title</span>: <span class="string">&#x27;RxJS in Action&#x27;</span>, <span class="attr">price</span>: <span class="number">200</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">3</span>, <span class="attr">title</span>: <span class="string">&#x27;Speaking JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">300</span> &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> typeDefs = gql`<span class="language-graphql"></span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">type</span> <span class="keyword">Query</span> <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    bookById<span class="punctuation">(</span><span class="symbol">id</span><span class="punctuation">:</span> Int<span class="punctuation">!</span><span class="punctuation">)</span><span class="punctuation">:</span> Book</span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql"></span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">type</span> Book <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">id</span><span class="punctuation">:</span> Int</span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">title</span><span class="punctuation">:</span> String</span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">price</span><span class="punctuation">:</span> Int</span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql">`</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="attr">bookById</span>: <span class="function">(<span class="params">_, &#123; id &#125;</span>) =&gt;</span> data.<span class="title function_">find</span>(<span class="function"><span class="params">x</span> =&gt;</span> x.<span class="property">id</span> === id)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> resolvers = &#123;</span><br><span class="line">  <span class="title class_">Query</span>: &#123;</span><br><span class="line">    bookById</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> apolloServer = <span class="keyword">new</span> <span class="title class_">ApolloServer</span>(&#123; typeDefs, resolvers &#125;)</span><br><span class="line"></span><br><span class="line">apolloServer.<span class="title function_">listen</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">&#123; url &#125;</span>) =&gt;</span> <span class="string">`GraphQL Server ready at <span class="subst">$&#123; url &#125;</span>`</span>)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>)</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> typeDefs <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`
-  type Query {
-    bookById(id: Int!): Book
-  }
-
-  type Book {
-    id: Int
-    title: String
-    price: Int
-  }
-`</span></span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> bookById<span class="token punctuation">:</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> id <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>id <span class="token operator">===</span> id<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> resolvers <span class="token operator">=</span> <span class="token punctuation">{</span>
-  Query<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    bookById
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-
-<span class="token keyword">let</span> apolloServer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-apolloServer<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">{</span> url <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`GraphQL Server ready at </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> url <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 3 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">2</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> id<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">,</span> title<span class="token punctuation">:</span> <span class="token string">'Speaking JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">300</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">1</span>, <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">100</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">2</span>, <span class="attr">title</span>: <span class="string">&#x27;RxJS in Action&#x27;</span>, <span class="attr">price</span>: <span class="number">200</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">id</span>: <span class="number">3</span>, <span class="attr">title</span>: <span class="string">&#x27;Speaking JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">300</span> &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+
 <p><code>data</code> 為 array of object。</p>
 <p>10 行</p>
-<pre class="line-numbers highlight language-graphql"><code class="language-graphql">type Query <span class="token punctuation">{</span>
-  bookById<span class="token punctuation">(</span><span class="token attr-name">id</span><span class="token punctuation">:</span> Int<span class="token operator">!</span><span class="token punctuation">)</span><span class="token punctuation">:</span> Book
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="keyword">Query</span> <span class="punctuation">&#123;</span></span><br><span class="line">  bookById<span class="punctuation">(</span><span class="symbol">id</span><span class="punctuation">:</span> Int<span class="punctuation">!</span><span class="punctuation">)</span><span class="punctuation">:</span> Book</span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>在 schema 內定義了 <code>bookById</code> query，根據傳入 <code>id</code> 回傳特定 <code>Book</code> type object，<code>id</code> 為 <code>Int</code>，後面加上 <code>!</code> 表示 <code>id</code> 不可為 <code>null</code>。</p>
 <p>14 行</p>
-<pre class="line-numbers highlight language-graphql"><code class="language-graphql">type Book <span class="token punctuation">{</span>
-  <span class="token attr-name">id</span><span class="token punctuation">:</span> Int
-  <span class="token attr-name">title</span><span class="token punctuation">:</span> String
-  <span class="token attr-name">price</span><span class="token punctuation">:</span> Int
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Book <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="symbol">id</span><span class="punctuation">:</span> Int</span><br><span class="line">  <span class="symbol">title</span><span class="punctuation">:</span> String</span><br><span class="line">  <span class="symbol">price</span><span class="punctuation">:</span> Int</span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>定義 <code>Book</code> type，包含 object 內的 <code>id</code>、<code>title</code> 與 <code>price</code>。</p>
 <p>21 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> bookById<span class="token punctuation">:</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> id <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span><span class="token function">find</span><span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> x<span class="token punctuation">.</span>id <span class="token operator">===</span> id<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="attr">bookById</span>: <span class="function">(<span class="params">_, &#123; id &#125;</span>) =&gt;</span> data.<span class="title function_">find</span>(<span class="function"><span class="params">x</span> =&gt;</span> x.<span class="property">id</span> === id)</span><br></pre></td></tr></table></figure>
+
 <p>Apollo GraphQL 的 resolver 依序有 4 個 argument： <code>parent</code>、<code>args</code>、<code>context</code> 與 <code>info</code>，讀取 argument 只會用到第二個 <code>args</code>，而 <code>parent</code> 目前用不到可用 <code>_</code> 表示， <code>context</code> 與 <code>info</code> 目前可忽略。</p>
-<h2 id="GraphQL-Playground"><a href="#GraphQL-Playground" class="headerlink" title="GraphQL Playground"></a>GraphQL Playground</h2><pre class="line-numbers highlight language-graphql"><code class="language-graphql"><span class="token keyword">query</span> <span class="token punctuation">{</span>
-  bookById<span class="token punctuation">(</span><span class="token attr-name">id</span><span class="token punctuation">:</span> <span class="token number">1</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    id
-    title
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="GraphQL-Playground"><a href="#GraphQL-Playground" class="headerlink" title="GraphQL Playground"></a>GraphQL Playground</h2><figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">query</span> <span class="punctuation">&#123;</span></span><br><span class="line">  bookById<span class="punctuation">(</span><span class="symbol">id</span><span class="punctuation">:</span> <span class="number">1</span><span class="punctuation">)</span> <span class="punctuation">&#123;</span></span><br><span class="line">    id</span><br><span class="line">    title</span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>bookById</code> query，argument 傳入 <code>id: 1</code>，只回傳 <code>id</code> 與 <code>title</code> 兩個 field 即可。</p>
 <p><img src="/images/graphql/apollo/query/argument/argument000.png" alt="argument000"></p>
 <p>GraphQL 傳入 <code>id: 1</code> 查詢，且僅要求傳回 <code>id</code> 與 <code>title</code> 而已，並沒有回傳 <code>price</code>。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>可在 resolver 的第二個 argument 直接解構取得 query 的 argument</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.apollographql.com/docs/" target="_blank" rel="noopener">Apollo Docs</a>, <a href="https://www.apollographql.com/docs/apollo-server/data/data/" target="_blank" rel="noopener">Fetching data with resolvers</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.apollographql.com/docs/">Apollo Docs</a>, <a target="_blank" rel="noopener" href="https://www.apollographql.com/docs/apollo-server/data/data/">Fetching data with resolvers</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

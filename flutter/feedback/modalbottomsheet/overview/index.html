@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,174 +438,50 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p><code>ModalButtonSheet</code> 為手機風格的下拉選單，可自行設計所顯示的 UI。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Flutter 3.24</p>
 <h2 id="Flutter"><a href="#Flutter" class="headerlink" title="Flutter"></a>Flutter</h2><p><img src="/images/flutter/feedback/modalbottomsheet/overview/overview01.gif" alt="overview01"></p>
 <ul>
 <li>Android 與 iOS 都成功使用 <code>ModalBottomSheet</code> 顯示由下方彈出的 Modal</li>
 </ul>
-<h2 id="ModalBottomSheet"><a href="#ModalBottomSheet" class="headerlink" title="ModalBottomSheet"></a>ModalBottomSheet</h2><pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">import</span> <span class="token string">'package:flutter/material.dart'</span><span class="token punctuation">;</span>
+<h2 id="ModalBottomSheet"><a href="#ModalBottomSheet" class="headerlink" title="ModalBottomSheet"></a>ModalBottomSheet</h2><figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Home</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> Home(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;Home&gt; createState() =&gt; _Home();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_Home</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">Home</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">var</span> _selectedText = <span class="string">&#x27;&#x27;</span>;</span><br><span class="line"></span><br><span class="line">  ListTile buildListTile(</span><br><span class="line">    BuildContext context,</span><br><span class="line">    <span class="built_in">String</span> text,</span><br><span class="line">    IconData icon,</span><br><span class="line">  ) &#123;</span><br><span class="line">    <span class="keyword">return</span> ListTile(</span><br><span class="line">      leading: <span class="keyword">const</span> Icon(Icons.photo),</span><br><span class="line">      title: Text(text),</span><br><span class="line">      onTap: () &#123;</span><br><span class="line">        setState(() =&gt; _selectedText = text);</span><br><span class="line">        Navigator.pop(context);</span><br><span class="line">      &#125;,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">void</span> _showModalBottomSheet(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">var</span> modalBottomSheet = Container(</span><br><span class="line">      padding: <span class="keyword">const</span> EdgeInsets.all(<span class="number">16.0</span>),</span><br><span class="line">      child: Column(</span><br><span class="line">        mainAxisSize: MainAxisSize.min,</span><br><span class="line">        children: [</span><br><span class="line">          buildListTile(context, <span class="string">&#x27;Photo&#x27;</span>, Icons.photo),</span><br><span class="line">          buildListTile(context, <span class="string">&#x27;Music&#x27;</span>, Icons.music_note),</span><br><span class="line">          buildListTile(context, <span class="string">&#x27;Video&#x27;</span>, Icons.videocam),</span><br><span class="line">        ],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    showModalBottomSheet(</span><br><span class="line">      context: context,</span><br><span class="line">      shape: <span class="keyword">const</span> RoundedRectangleBorder(</span><br><span class="line">        borderRadius: BorderRadius.vertical(</span><br><span class="line">          top: Radius.circular(<span class="number">16</span>),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">      builder: (BuildContext context) =&gt; modalBottomSheet,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">var</span> appBar = AppBar(</span><br><span class="line">      title: <span class="keyword">const</span> Text(<span class="string">&#x27;ModalBottomSheet&#x27;</span>),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> elevatedButton = ElevatedButton(</span><br><span class="line">      onPressed: () =&gt; _showModalBottomSheet(context),</span><br><span class="line">      child: <span class="keyword">const</span> Text(<span class="string">&#x27;Show Bottom Sheet&#x27;</span>),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> body = Center(</span><br><span class="line">      child: Column(</span><br><span class="line">        mainAxisAlignment: MainAxisAlignment.center,</span><br><span class="line">        children: [elevatedButton, Text(_selectedText)],</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: appBar,</span><br><span class="line">      body: body,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">class</span> <span class="token class-name">Home</span> <span class="token keyword">extends</span> <span class="token class-name">StatefulWidget</span> <span class="token punctuation">{</span>
-  <span class="token keyword">const</span> <span class="token function">Home</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token keyword">super</span><span class="token punctuation">.</span>key<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token metadata symbol">@override</span>
-  State<span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token function">createState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">_Home</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">class</span> <span class="token class-name">_Home</span> <span class="token keyword">extends</span> <span class="token class-name">State</span><span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">var</span> _selectedText <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">;</span>
-
-  ListTile <span class="token function">buildListTile</span><span class="token punctuation">(</span>
-    BuildContext context<span class="token punctuation">,</span>
-    String text<span class="token punctuation">,</span>
-    IconData icon<span class="token punctuation">,</span>
-  <span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token function">ListTile</span><span class="token punctuation">(</span>
-      leading<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Icon</span><span class="token punctuation">(</span>Icons<span class="token punctuation">.</span>photo<span class="token punctuation">)</span><span class="token punctuation">,</span>
-      title<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">,</span>
-      onTap<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-        <span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> _selectedText <span class="token operator">=</span> text<span class="token punctuation">)</span><span class="token punctuation">;</span>
-        Navigator<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token punctuation">}</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-
-  <span class="token keyword">void</span> <span class="token function">_showModalBottomSheet</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">var</span> modalBottomSheet <span class="token operator">=</span> <span class="token function">Container</span><span class="token punctuation">(</span>
-      padding<span class="token punctuation">:</span> <span class="token keyword">const</span> EdgeInsets<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token number">16.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-      child<span class="token punctuation">:</span> <span class="token function">Column</span><span class="token punctuation">(</span>
-        mainAxisSize<span class="token punctuation">:</span> MainAxisSize<span class="token punctuation">.</span>min<span class="token punctuation">,</span>
-        children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-          <span class="token function">buildListTile</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> <span class="token string">'Photo'</span><span class="token punctuation">,</span> Icons<span class="token punctuation">.</span>photo<span class="token punctuation">)</span><span class="token punctuation">,</span>
-          <span class="token function">buildListTile</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> <span class="token string">'Music'</span><span class="token punctuation">,</span> Icons<span class="token punctuation">.</span>music_note<span class="token punctuation">)</span><span class="token punctuation">,</span>
-          <span class="token function">buildListTile</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> <span class="token string">'Video'</span><span class="token punctuation">,</span> Icons<span class="token punctuation">.</span>videocam<span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token punctuation">]</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token function">showModalBottomSheet</span><span class="token punctuation">(</span>
-      context<span class="token punctuation">:</span> context<span class="token punctuation">,</span>
-      shape<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">RoundedRectangleBorder</span><span class="token punctuation">(</span>
-        borderRadius<span class="token punctuation">:</span> BorderRadius<span class="token punctuation">.</span><span class="token function">vertical</span><span class="token punctuation">(</span>
-          top<span class="token punctuation">:</span> Radius<span class="token punctuation">.</span><span class="token function">circular</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token punctuation">)</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-      builder<span class="token punctuation">:</span> <span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> modalBottomSheet<span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-
-  <span class="token metadata symbol">@override</span>
-  Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">var</span> appBar <span class="token operator">=</span> <span class="token function">AppBar</span><span class="token punctuation">(</span>
-      title<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">'ModalBottomSheet'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> elevatedButton <span class="token operator">=</span> <span class="token function">ElevatedButton</span><span class="token punctuation">(</span>
-      onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">_showModalBottomSheet</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">,</span>
-      child<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">'Show Bottom Sheet'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> body <span class="token operator">=</span> <span class="token function">Center</span><span class="token punctuation">(</span>
-      child<span class="token punctuation">:</span> <span class="token function">Column</span><span class="token punctuation">(</span>
-        mainAxisAlignment<span class="token punctuation">:</span> MainAxisAlignment<span class="token punctuation">.</span>center<span class="token punctuation">,</span>
-        children<span class="token punctuation">:</span> <span class="token punctuation">[</span>elevatedButton<span class="token punctuation">,</span> <span class="token function">Text</span><span class="token punctuation">(</span>_selectedText<span class="token punctuation">)</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">return</span> <span class="token function">Scaffold</span><span class="token punctuation">(</span>
-      appBar<span class="token punctuation">:</span> appBar<span class="token punctuation">,</span>
-      body<span class="token punctuation">:</span> body<span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>Line 11</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">var</span> _selectedText <span class="token operator">=</span> <span class="token string">''</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> _selectedText = <span class="string">&#x27;&#x27;</span>;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>_selectedText</code>：儲存用戶所選擇的項目</li>
 </ul>
 <p><strong>Line 58</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">var</span> elevatedButton <span class="token operator">=</span> <span class="token function">ElevatedButton</span><span class="token punctuation">(</span>
-  onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">_showModalBottomSheet</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  child<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">'Show Bottom Sheet'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> elevatedButton = ElevatedButton(</span><br><span class="line">  onPressed: () =&gt; _showModalBottomSheet(context),</span><br><span class="line">  child: <span class="keyword">const</span> Text(<span class="string">&#x27;Show Bottom Sheet&#x27;</span>),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>onPress()</code>：當用戶按下 <code>ElevatedButton</code> 時，將 <code>context</code> 傳入自訂的 <code>showModalBottonSheet()</code></li>
 </ul>
 <p><strong>Line 28</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">void</span> <span class="token function">_showModalBottomSheet</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">var</span> modalBottomSheet <span class="token operator">=</span> <span class="token function">Container</span><span class="token punctuation">(</span>
-    padding<span class="token punctuation">:</span> <span class="token keyword">const</span> EdgeInsets<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token number">16.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    child<span class="token punctuation">:</span> <span class="token function">Column</span><span class="token punctuation">(</span>
-      mainAxisSize<span class="token punctuation">:</span> MainAxisSize<span class="token punctuation">.</span>min<span class="token punctuation">,</span>
-      children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-        <span class="token function">buildListTile</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> <span class="token string">'Photo'</span><span class="token punctuation">,</span> Icons<span class="token punctuation">.</span>photo<span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token function">buildListTile</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> <span class="token string">'Music'</span><span class="token punctuation">,</span> Icons<span class="token punctuation">.</span>music_note<span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token function">buildListTile</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> <span class="token string">'Video'</span><span class="token punctuation">,</span> Icons<span class="token punctuation">.</span>videocam<span class="token punctuation">)</span><span class="token punctuation">,</span>
-      <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">;</span>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">void</span> _showModalBottomSheet(BuildContext context) &#123;</span><br><span class="line">  <span class="keyword">var</span> modalBottomSheet = Container(</span><br><span class="line">    padding: <span class="keyword">const</span> EdgeInsets.all(<span class="number">16.0</span>),</span><br><span class="line">    child: Column(</span><br><span class="line">      mainAxisSize: MainAxisSize.min,</span><br><span class="line">      children: [</span><br><span class="line">        buildListTile(context, <span class="string">&#x27;Photo&#x27;</span>, Icons.photo),</span><br><span class="line">        buildListTile(context, <span class="string">&#x27;Music&#x27;</span>, Icons.music_note),</span><br><span class="line">        buildListTile(context, <span class="string">&#x27;Video&#x27;</span>, Icons.videocam),</span><br><span class="line">      ],</span><br><span class="line">    ),</span><br><span class="line">  );</span><br><span class="line"></span><br><span class="line">  showModalBottomSheet(</span><br><span class="line">    builder: (BuildContext context) =&gt; modalBottomSheet,</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-  <span class="token function">showModalBottomSheet</span><span class="token punctuation">(</span>
-    builder<span class="token punctuation">:</span> <span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> modalBottomSheet<span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li><code>modalBottomSheet</code>：定義 <code>ModalBottomSheet</code> 所顯示的 UI</li>
 <li><code>showModalBottomSheet()</code>：呼叫 Flutter 內建的  <code>showModalBottomSheet()</code> 顯示 <code>ModalBottomSheet</code></li>
 </ul>
 <p><strong>Line 49</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token function">showModalBottomSheet</span><span class="token punctuation">(</span>
-  context<span class="token punctuation">:</span> context<span class="token punctuation">,</span>
-  shape<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">RoundedRectangleBorder</span><span class="token punctuation">(</span>
-    borderRadius<span class="token punctuation">:</span> BorderRadius<span class="token punctuation">.</span><span class="token function">vertical</span><span class="token punctuation">(</span>
-      top<span class="token punctuation">:</span> Radius<span class="token punctuation">.</span><span class="token function">circular</span><span class="token punctuation">(</span><span class="token number">16</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">,</span>
-  builder<span class="token punctuation">:</span> <span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> modalBottomSheet<span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line">showModalBottomSheet(</span><br><span class="line">  context: context,</span><br><span class="line">  shape: <span class="keyword">const</span> RoundedRectangleBorder(</span><br><span class="line">    borderRadius: BorderRadius.vertical(</span><br><span class="line">      top: Radius.circular(<span class="number">16</span>),</span><br><span class="line">    ),</span><br><span class="line">  ),</span><br><span class="line">  builder: (BuildContext context) =&gt; modalBottomSheet,</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>呼叫 Flutter 內建的 <code>showModalBottomSheet()</code> 顯示 <code>ModalBottomSheet</code></li>
 <li><code>builder()</code>：定義 <code>ModelBottomSheet</code> 的 UI</li>
 </ul>
 <p><strong>Line 29</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">var</span> modalBottomSheet <span class="token operator">=</span> <span class="token function">Container</span><span class="token punctuation">(</span>
-  padding<span class="token punctuation">:</span> <span class="token keyword">const</span> EdgeInsets<span class="token punctuation">.</span><span class="token function">all</span><span class="token punctuation">(</span><span class="token number">16.0</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  child<span class="token punctuation">:</span> <span class="token function">Column</span><span class="token punctuation">(</span>
-    mainAxisSize<span class="token punctuation">:</span> MainAxisSize<span class="token punctuation">.</span>min<span class="token punctuation">,</span>
-    children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-      <span class="token function">buildListTile</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> <span class="token string">'Photo'</span><span class="token punctuation">,</span> Icons<span class="token punctuation">.</span>photo<span class="token punctuation">)</span><span class="token punctuation">,</span>
-      <span class="token function">buildListTile</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> <span class="token string">'Music'</span><span class="token punctuation">,</span> Icons<span class="token punctuation">.</span>music_note<span class="token punctuation">)</span><span class="token punctuation">,</span>
-      <span class="token function">buildListTile</span><span class="token punctuation">(</span>context<span class="token punctuation">,</span> <span class="token string">'Video'</span><span class="token punctuation">,</span> Icons<span class="token punctuation">.</span>videocam<span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> modalBottomSheet = Container(</span><br><span class="line">  padding: <span class="keyword">const</span> EdgeInsets.all(<span class="number">16.0</span>),</span><br><span class="line">  child: Column(</span><br><span class="line">    mainAxisSize: MainAxisSize.min,</span><br><span class="line">    children: [</span><br><span class="line">      buildListTile(context, <span class="string">&#x27;Photo&#x27;</span>, Icons.photo),</span><br><span class="line">      buildListTile(context, <span class="string">&#x27;Music&#x27;</span>, Icons.music_note),</span><br><span class="line">      buildListTile(context, <span class="string">&#x27;Video&#x27;</span>, Icons.videocam),</span><br><span class="line">    ],</span><br><span class="line">  ),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>定義 <code>ModalBottomSheet</code> 的 UI</li>
 </ul>
 <p><strong>Line 13</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart">ListTile <span class="token function">buildListTile</span><span class="token punctuation">(</span>
-  BuildContext context<span class="token punctuation">,</span>
-  String text<span class="token punctuation">,</span>
-  IconData icon<span class="token punctuation">,</span>
-<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token function">ListTile</span><span class="token punctuation">(</span>
-    leading<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Icon</span><span class="token punctuation">(</span>Icons<span class="token punctuation">.</span>photo<span class="token punctuation">)</span><span class="token punctuation">,</span>
-    title<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span>text<span class="token punctuation">)</span><span class="token punctuation">,</span>
-    onTap<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> _selectedText <span class="token operator">=</span> text<span class="token punctuation">)</span><span class="token punctuation">;</span>
-      Navigator<span class="token punctuation">.</span><span class="token function">pop</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line">ListTile buildListTile(</span><br><span class="line">  BuildContext context,</span><br><span class="line">  <span class="built_in">String</span> text,</span><br><span class="line">  IconData icon,</span><br><span class="line">) &#123;</span><br><span class="line">  <span class="keyword">return</span> ListTile(</span><br><span class="line">    leading: <span class="keyword">const</span> Icon(Icons.photo),</span><br><span class="line">    title: Text(text),</span><br><span class="line">    onTap: () &#123;</span><br><span class="line">      setState(() =&gt; _selectedText = text);</span><br><span class="line">      Navigator.pop(context);</span><br><span class="line">    &#125;,</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>ListTile</code>：<code>ListView</code> 的每個選項<ul>
 <li><code>leading</code>：顯示一開始的 icon</li>

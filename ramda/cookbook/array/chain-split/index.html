@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,30 +438,15 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p><code>chain()</code> 在實務上其實常常用到，只在於你有沒有發現而已，<code>map(split)</code> 典型會產生兩層 Array，此時可使用 <code>chain()</code> 加以重構。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
-<h2 id="Functional"><a href="#Functional" class="headerlink" title="Functional"></a>Functional</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> flatten<span class="token punctuation">,</span> map<span class="token punctuation">,</span> split <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Functional"><a href="#Functional" class="headerlink" title="Functional"></a>Functional</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, flatten, map, split &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  <span class="string">&#x27;FP in JavaScript, Programming Haskell, Speaking JavaScript&#x27;</span></span><br><span class="line">]</span><br><span class="line"> </span><br><span class="line"><span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">map</span>(<span class="title function_">split</span>(<span class="string">&#x27;,&#x27;</span>)),</span><br><span class="line">  flatten</span><br><span class="line">)(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token string">'FP in JavaScript, Programming Haskell, Speaking JavaScript'</span>
-<span class="token punctuation">]</span>
- 
-<span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  flatten
-<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>FP in JavaScript, Programming Haskell, Speaking JavaScript</code> 為 String，若要變成 Array，勢必要使用 <code>split(&#39;,&#39;)</code>，但 <code>split()</code> 結果亦為 Array，再使用 <code>map()</code> 會變成兩層 Array，因此最後要使用 <code>flatten()</code> 將兩層 Array 攤平。</p>
 <p><img src="/images/ramda/cookbook/array/chain-split/split000.png" alt="split000"></p>
-<h2 id="chain"><a href="#chain" class="headerlink" title="chain()"></a>chain()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> chain<span class="token punctuation">,</span> split <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="chain"><a href="#chain" class="headerlink" title="chain()"></a>chain()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; chain, split &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  <span class="string">&#x27;FP in JavaScript, Programming Haskell, Speaking JavaScript&#x27;</span></span><br><span class="line">]</span><br><span class="line"> </span><br><span class="line"><span class="title function_">chain</span>(<span class="title function_">split</span>(<span class="string">&#x27;,&#x27;</span>))(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token string">'FP in JavaScript, Programming Haskell, Speaking JavaScript'</span>
-<span class="token punctuation">]</span>
- 
-<span class="token function">chain</span><span class="token punctuation">(</span><span class="token function">split</span><span class="token punctuation">(</span><span class="token string">','</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>pipe(map, flatten)</code> 相當於 <code>chain()</code>，可使用 <code>chain()</code> 加以化簡。</p>
 <blockquote>
 <p><strong>chain()</strong><br><code>(a → b) → [a] → [b]</code><br>相當於 <code>flatten()</code> 與 <code>map()</code> 組合</p>
@@ -474,7 +459,7 @@ a:hover {
 <li>當結果為一層 Array，但過程中卻出現兩層 Array，最後必須靠 <code>flatten()</code> 攤平時，常常就是可用 <code>chain()</code> 的時機</li>
 <li>若一開始沒看出 <code>chain()</code> 也沒關係，先使用 <code>map()</code> 實作，當最後看到 <code>pipe(map, flatten)</code> 時，再用 <code>chain()</code> 重構</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.linkedin.com/in/barzik/" target="_blank" rel="noopener">Ran Bar-Zip</a>, <a href="http://www.discoversdk.com/blog/using-flatmap-in-es2019" target="_blank" rel="noopener">Using flatMap in ES2019</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#chain" target="_blank" rel="noopener">chain()</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.linkedin.com/in/barzik/">Ran Bar-Zip</a>, <a target="_blank" rel="noopener" href="http://www.discoversdk.com/blog/using-flatmap-in-es2019">Using flatMap in ES2019</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#chain">chain()</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

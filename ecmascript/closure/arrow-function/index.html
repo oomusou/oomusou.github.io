@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,67 +438,28 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>ECMAScript 5 無論是 Function Declaration 或 Anonymous Function，都可以使用 <code>this</code> 搭配 <code>call()</code>、<code>apply()</code> 與 <code>bind()</code> 動態改變 <code>this</code>，ECMAScript 2015 支援了 Arrow Function 後，這對原本的 <code>this</code> 、<code>call()</code> 、<code>apply()</code> 與 <code>bind()</code> 有任何影響嗎 ? </p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15<br>VS Code 1.38.1<br>Quokka 1.0.254<br>ECMAScript 5<br>ECMAScript 2015</p>
-<h2 id="ECMAScript-5"><a href="#ECMAScript-5" class="headerlink" title="ECMAScript 5"></a>ECMAScript 5</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> counter <span class="token operator">=</span> <span class="token punctuation">{</span>
-  count<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
-  <span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token operator">++</span><span class="token keyword">this</span><span class="token punctuation">.</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<h2 id="ECMAScript-5"><a href="#ECMAScript-5" class="headerlink" title="ECMAScript 5"></a>ECMAScript 5</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> counter = &#123;</span><br><span class="line">  <span class="attr">count</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="title function_">increment</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="built_in">setInterval</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(++<span class="variable language_">this</span>.<span class="property">count</span>);</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">counter.<span class="title function_">increment</span>();</span><br></pre></td></tr></table></figure>
 
-counter<span class="token punctuation">.</span><span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p> 一個常見的應用，在 <code>counter</code> object 定義 <code>increment()</code> method，在其內呼叫 <code>setInterval()</code>，由於被要求傳入 callback，因此以 anonymous function 傳入 <code>setInterval()</code>。</p>
 <p>由於 anonymous function 想對 <code>counter</code> property 做累加，很直覺的就寫出 <code>++this.count</code>。</p>
 <p><img src="/images/ecmascript/this/arrow-function/this000.png" alt="this000"></p>
-<h2 id="Why-Not"><a href="#Why-Not" class="headerlink" title="Why Not ?"></a>Why Not ?</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token operator">++</span><span class="token keyword">this</span><span class="token punctuation">.</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<h2 id="Why-Not"><a href="#Why-Not" class="headerlink" title="Why Not ?"></a>Why Not ?</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="built_in">setInterval</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">console</span>.<span class="title function_">log</span>(++<span class="variable language_">this</span>.<span class="property">count</span>);</span><br><span class="line">&#125;, <span class="number">1000</span>);</span><br></pre></td></tr></table></figure>
+
 <p>對每個 function 而言，它都有自己的 <code>this</code>，當 function 成為 object 的 method 時，<code>this</code> 指向 object，但 anonymous function 並非 object 的 method，因此 <code>this</code> 並不是指向 object。</p>
 <p>這與 class-based OOP 的 <code>this</code> 永遠指向 object 不同，因為 ECMAScript 是以 function 為主體，所以 <code>this</code> 也是以 function 為考量，而非以 object 考量。</p>
-<h2 id="Self"><a href="#Self" class="headerlink" title="Self"></a>Self</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> counter <span class="token operator">=</span> <span class="token punctuation">{</span>
-  count<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
-  <span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    self <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
-    <span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token operator">++</span>self<span class="token punctuation">.</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<h2 id="Self"><a href="#Self" class="headerlink" title="Self"></a>Self</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> counter = &#123;</span><br><span class="line">  <span class="attr">count</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="title function_">increment</span>(<span class="params"></span>) &#123;</span><br><span class="line">    self = <span class="variable language_">this</span>;</span><br><span class="line">    <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(++self.<span class="property">count</span>);</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">counter.<span class="title function_">increment</span>();</span><br></pre></td></tr></table></figure>
 
-counter<span class="token punctuation">.</span><span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>最傳統的解法，就是將用 <code>self = this</code>，然後再利用 lexical scope 特性，讓 callback 得到正確的 <code>this</code>。</p>
 <p><img src="/images/ecmascript/this/arrow-function/this002.png" alt="this002"></p>
-<h2 id="Function-prototype-bind"><a href="#Function-prototype-bind" class="headerlink" title="Function.prototype.bind()"></a>Function.prototype.bind()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> counter <span class="token operator">=</span> <span class="token punctuation">{</span>
-  count<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
-  <span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token operator">++</span><span class="token keyword">this</span><span class="token punctuation">.</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span><span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<h2 id="Function-prototype-bind"><a href="#Function-prototype-bind" class="headerlink" title="Function.prototype.bind()"></a>Function.prototype.bind()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> counter = &#123;</span><br><span class="line">  <span class="attr">count</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="title function_">increment</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="built_in">setInterval</span>(<span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(++<span class="variable language_">this</span>.<span class="property">count</span>);</span><br><span class="line">    &#125;.<span class="title function_">bind</span>(<span class="variable language_">this</span>), <span class="number">1000</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">counter.<span class="title function_">increment</span>();</span><br></pre></td></tr></table></figure>
 
-counter<span class="token punctuation">.</span><span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可透過 <code>bind()</code> 強迫將 <code>this</code> 綁定進 callback 的 <code>this</code>。</p>
 <p><img src="/images/ecmascript/this/arrow-function/this001.png" alt="this001"></p>
-<h2 id="Arrow-Function"><a href="#Arrow-Function" class="headerlink" title="Arrow Function"></a>Arrow Function</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> counter <span class="token operator">=</span> <span class="token punctuation">{</span>
-  count<span class="token punctuation">:</span> <span class="token number">0</span><span class="token punctuation">,</span>
-  <span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token function">setInterval</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-      console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token operator">++</span><span class="token keyword">this</span><span class="token punctuation">.</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span> <span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
+<h2 id="Arrow-Function"><a href="#Arrow-Function" class="headerlink" title="Arrow Function"></a>Arrow Function</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> counter = &#123;</span><br><span class="line">  <span class="attr">count</span>: <span class="number">0</span>,</span><br><span class="line">  <span class="title function_">increment</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="built_in">setInterval</span>(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">      <span class="variable language_">console</span>.<span class="title function_">log</span>(++<span class="variable language_">this</span>.<span class="property">count</span>);</span><br><span class="line">    &#125;, <span class="number">1000</span>);</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">counter.<span class="title function_">increment</span>();</span><br></pre></td></tr></table></figure>
 
-counter<span class="token punctuation">.</span><span class="token function">increment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>FP 適合以 callbck 傳入 function，因此 ECMAScript 2015 特別支援 arrow function，這比 anonymous function 可讀性更高。</p>
 <p>也由於 arrow function 在實務上常常要以 <code>this</code> 讀取 object 的 property，為了讓 arrow function 更好用，不必再使用 <code>bind(this)</code>，arrow function 對於 <code>this</code> 有 2 項特色：</p>
 <ol>
@@ -511,7 +472,7 @@ counter<span class="token punctuation">.</span><span class="token function">incr
 <li>若 <code>有</code> 使用 <code>call()</code>、<code>apply()</code> 與 <code>bind()</code> 改變 <code>this</code> 的需求，就要使用 function Declaration 或 anonymous Function</li>
 <li>若 <code>沒有</code> 使用 <code>call()</code>、<code>apply()</code> 與 <code>bind()</code> 改變 <code>this</code> 的需求，就可使用 arrow function</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://egghead.io/" target="_blank" rel="noopener">Egghead.io</a>, <a href="https://egghead.io/courses/understand-javascript-s-this-keyword-in-depth" target="_blank" rel="noopener">Understanding JavaScript’s this Keyword in Depth</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://egghead.io/">Egghead.io</a>, <a target="_blank" rel="noopener" href="https://egghead.io/courses/understand-javascript-s-this-keyword-in-depth">Understanding JavaScript’s this Keyword in Depth</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

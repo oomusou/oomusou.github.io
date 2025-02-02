@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,11 +438,11 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>We can login to Ubuntu without any password by storing the private key on the local machine and the public key on the remote server.</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ubuntu 21.10</p>
-<h2 id="ssh-keygen"><a href="#ssh-keygen" class="headerlink" title="ssh-keygen"></a>ssh-keygen</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ ssh-keygen -t rsa -b 4096 -C "oomusou"
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="ssh-keygen"><a href="#ssh-keygen" class="headerlink" title="ssh-keygen"></a>ssh-keygen</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ssh-keygen -t rsa -b 4096 -C <span class="string">&quot;oomusou&quot;</span></span></span><br></pre></td></tr></table></figure>
+
 <p>Generate SSH private key and public key.</p>
 <ul>
 <li><code>-t rsa</code> : specify RSA2 protocol to generate key</li>
@@ -454,8 +454,8 @@ a:hover {
 <li>if <code>id_rsa</code> exists, enter another name for the new ssh key</li>
 <li>Leave empty for passphrase</li>
 </ul>
-<h2 id="ssh-copy-id"><a href="#ssh-copy-id" class="headerlink" title="ssh-copy-id"></a>ssh-copy-id</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ ssh-copy-id -i ./id_rsa_ubuntu oomusou@ubuntu-test
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="ssh-copy-id"><a href="#ssh-copy-id" class="headerlink" title="ssh-copy-id"></a>ssh-copy-id</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ssh-copy-id -i ./id_rsa_ubuntu oomusou@ubuntu-test</span></span><br></pre></td></tr></table></figure>
+
 <p>Copy public key to Ubuntu.</p>
 <ul>
 <li><code>-i</code> : specify the location of the SSH key</li>
@@ -463,27 +463,13 @@ a:hover {
 </ul>
 <p><img src="/images/ubuntu/general/ssh-key/ssh001.png" alt="ssh001"></p>
 <p><code>Number of key(s) added: 1</code> means <code>ssh-copy-id</code> copies the public key to the server successfully.</p>
-<h2 id="SSH-Config"><a href="#SSH-Config" class="headerlink" title="SSH Config"></a>SSH Config</h2><pre class="line-numbers highlight language-config"><code class="language-config"># GitHub
-Host github.com
-HostName github.com
-User git
-IdentityFile ~/.ssh/id_rsa
+<h2 id="SSH-Config"><a href="#SSH-Config" class="headerlink" title="SSH Config"></a>SSH Config</h2><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># GitHub</span><br><span class="line">Host github.com</span><br><span class="line">HostName github.com</span><br><span class="line">User git</span><br><span class="line">IdentityFile ~/.ssh/id_rsa</span><br><span class="line"></span><br><span class="line"># Ubuntu</span><br><span class="line">Host ubuntu</span><br><span class="line">HostName ubuntu-test</span><br><span class="line">User oomusou</span><br><span class="line">IdentityFile ~/.ssh/id_rsa_ubuntu</span><br></pre></td></tr></table></figure>
 
-# Ubuntu
-Host ubuntu
-HostName ubuntu-test
-User oomusou
-IdentityFile ~/.ssh/id_rsa_ubuntu
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>We often have multiple SSH keys on the local machine; for example, we already have an SSH key for GitHub, but we want to add a different SSH key for Ubuntu.</p>
 <p>We have to edit the <code>config</code> file in the <code>.ssh</code> directory to manage multiple SSH keys.</p>
 <p><strong>Line 7</strong></p>
-<pre class="line-numbers highlight language-config"><code class="language-config"># Ubuntu
-Host ubuntu
-HostName ubuntu-test
-User oomusou
-IdentityFile ~/.ssh/id_rsa_ubuntu
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line"># Ubuntu</span><br><span class="line">Host ubuntu</span><br><span class="line">HostName ubuntu-test</span><br><span class="line">User oomusou</span><br><span class="line">IdentityFile ~/.ssh/id_rsa_ubuntu</span><br></pre></td></tr></table></figure>
+
 <p>Add new section for Ubuntu :</p>
 <ul>
 <li><code>Host</code> : nickname for server</li>
@@ -491,14 +477,14 @@ IdentityFile ~/.ssh/id_rsa_ubuntu
 <li><code>User</code> : login user name</li>
 <li><code>IdentityFile</code> : the location of SSH private key file</li>
 </ul>
-<h2 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ ssh oomusou@ubuntu
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="ssh"><a href="#ssh" class="headerlink" title="ssh"></a>ssh</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">ssh oomusou@ubuntu</span></span><br></pre></td></tr></table></figure>
+
 <p>Use <code>ssh</code> to login to Ubuntu without any password.</p>
 <p><img src="/images/ubuntu/general/ssh-key/ssh002.png" alt="ssh002"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>If we don’t have any other SSH key on the local machine, we don’t need to edit the <code>config</code> file in the <code>.ssh</code> directory</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://linuxize.com/" target="_blank" rel="noopener">Linuxize</a>, <a href="https://linuxize.com/post/how-to-set-up-ssh-keys-on-ubuntu-20-04/" target="_blank" rel="noopener">How to Set Up SSH Keys on Ubuntu 20.04</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://linuxize.com/">Linuxize</a>, <a target="_blank" rel="noopener" href="https://linuxize.com/post/how-to-set-up-ssh-keys-on-ubuntu-20-04/">How to Set Up SSH Keys on Ubuntu 20.04</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,38 +438,19 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p><code>Array.prototype.reduce</code> 只能接受傳入 Synchronous Function，若要傳入 Asynchronous Function，可依需求使用不同方式實現。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>ECMAScript 2017</p>
-<h2 id="Synchronous-reduce"><a href="#Synchronous-reduce" class="headerlink" title="Synchronous reduce"></a>Synchronous reduce</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<h2 id="Synchronous-reduce"><a href="#Synchronous-reduce" class="headerlink" title="Synchronous reduce"></a>Synchronous reduce</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line">data.<span class="property">reduce</span> (<span class="function">(<span class="params">ac, x</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">return</span> ac + x</span><br><span class="line">&#125;) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-data<span class="token punctuation">.</span>reduce <span class="token punctuation">(</span><span class="token punctuation">(</span>ac<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> ac <span class="token operator">+</span> x
-<span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>reduce</code> 會將 Array 計算成單一 value，可傳入 sync function，如預期回傳加總值。</p>
 <p><img src="/images/ecmascript/promise/async-reduce/reduce000.png" alt="reduce000"></p>
-<h2 id="Asynchronous-reduce"><a href="#Asynchronous-reduce" class="headerlink" title="Asynchronous reduce"></a>Asynchronous reduce</h2><h3 id="await-Last"><a href="#await-Last" class="headerlink" title="await Last"></a>await Last</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<h2 id="Asynchronous-reduce"><a href="#Asynchronous-reduce" class="headerlink" title="Asynchronous reduce"></a>Asynchronous reduce</h2><h3 id="await-Last"><a href="#await-Last" class="headerlink" title="await Last"></a>await Last</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">sleep</span> = ms =&gt; <span class="keyword">new</span> <span class="title class_">Promise</span> (<span class="function"><span class="params">resolve</span> =&gt;</span> <span class="built_in">setTimeout</span> (resolve, ms))</span><br><span class="line"></span><br><span class="line"><span class="keyword">await</span> data.<span class="property">reduce</span> (<span class="title function_">async</span> (ac, x) =&gt; &#123;</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">sleep</span> (<span class="number">1</span>)</span><br><span class="line">  <span class="keyword">return</span> (<span class="keyword">await</span> ac) + x</span><br><span class="line">&#125;) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> sleep <span class="token operator">=</span> ms <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">new</span> <span class="token class-name">Promise</span> <span class="token punctuation">(</span>resolve <span class="token operator">=</span><span class="token operator">></span> setTimeout <span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> ms<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-<span class="token keyword">await</span> data<span class="token punctuation">.</span>reduce <span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span>ac<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">await</span> sleep <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-  <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token keyword">await</span> ac<span class="token punctuation">)</span> <span class="token operator">+</span> x
-<span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若傳入 <code>reduce</code> 為 async function，此時 <code>ac</code> 亦成為 Promise，故也須搭配 <code>await</code> 解開 Promise。</p>
 <p><img src="/images/ecmascript/promise/async-reduce/reduce001.png" alt="reduce001"></p>
-<h3 id="await-First"><a href="#await-First" class="headerlink" title="await First"></a>await First</h3><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<h3 id="await-First"><a href="#await-First" class="headerlink" title="await First"></a>await First</h3><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">sleep</span> = ms =&gt; <span class="keyword">new</span> <span class="title class_">Promise</span> (<span class="function"><span class="params">resolve</span> =&gt;</span> <span class="built_in">setTimeout</span> (resolve, ms))</span><br><span class="line"></span><br><span class="line"><span class="keyword">await</span> data.<span class="property">reduce</span> (<span class="title function_">async</span> (ac, x) =&gt; &#123;</span><br><span class="line">  <span class="keyword">await</span> ac</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">sleep</span> (<span class="number">1</span>)</span><br><span class="line">  <span class="keyword">return</span> (<span class="keyword">await</span> ac) + x</span><br><span class="line">&#125;) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> sleep <span class="token operator">=</span> ms <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">new</span> <span class="token class-name">Promise</span> <span class="token punctuation">(</span>resolve <span class="token operator">=</span><span class="token operator">></span> setTimeout <span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> ms<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-<span class="token keyword">await</span> data<span class="token punctuation">.</span>reduce <span class="token punctuation">(</span><span class="token keyword">async</span> <span class="token punctuation">(</span>ac<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">await</span> ac
-  <span class="token keyword">await</span> sleep <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-  <span class="token keyword">return</span> <span class="token punctuation">(</span><span class="token keyword">await</span> ac<span class="token punctuation">)</span> <span class="token operator">+</span> x
-<span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>雖然都是 async function，但 await 寫法不同，在 timing 上會有些微差異：</p>
 <ul>
 <li><strong>await first</strong>：一開始加上 <code>await ac</code>，則 async function 將如同 sync function 依序執行，不受 <code>sleep</code> 時間影響</li>
@@ -477,26 +458,15 @@ data<span class="token punctuation">.</span>reduce <span class="token punctuatio
 </ul>
 <p>本例因為 Number 相加支援 associative law，因此 <code>sleep</code> 所造成的 timing 差異並不影響結果，若針對不支援 associative law 的 type 運算，就必須考慮 async function 本身的 timing 差異</p>
 <p><img src="/images/ecmascript/promise/async-reduce/reduce002.png" alt="reduce002"></p>
-<h2 id="for-Loop-await"><a href="#for-Loop-await" class="headerlink" title="for Loop + await"></a>for Loop + await</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<h2 id="for-Loop-await"><a href="#for-Loop-await" class="headerlink" title="for Loop + await"></a>for Loop + await</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">sleep</span> = ms =&gt; <span class="keyword">new</span> <span class="title class_">Promise</span> (<span class="function"><span class="params">resolve</span> =&gt;</span> <span class="built_in">setTimeout</span> (resolve, ms))</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> result = <span class="number">0</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> x <span class="keyword">of</span> data) &#123;</span><br><span class="line">  <span class="keyword">await</span> <span class="title function_">sleep</span> (<span class="number">1</span>)</span><br><span class="line">  result = result + x</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">result <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> sleep <span class="token operator">=</span> ms <span class="token operator">=</span><span class="token operator">></span> <span class="token keyword">new</span> <span class="token class-name">Promise</span> <span class="token punctuation">(</span>resolve <span class="token operator">=</span><span class="token operator">></span> setTimeout <span class="token punctuation">(</span>resolve<span class="token punctuation">,</span> ms<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token number">0</span>
-
-<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> x <span class="token keyword">of</span> data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">await</span> sleep <span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span>
-  result <span class="token operator">=</span> result <span class="token operator">+</span> x
-<span class="token punctuation">}</span>
-
-result <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若覺得 <code>reduce</code> 處理 async function 很麻煩，也可簡單使用 <code>for</code> loop + <code>await</code> 實現，此時相當於 <code>reduce</code> + <code>await</code> first 寫法，並不受 <code>sleep</code> 時間影響。</p>
 <p><img src="/images/ecmascript/promise/async-reduce/reduce003.png" alt="reduce003"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>在 <code>reduce</code> 內使用 async function 時，分 <code>await</code> last 與 <code>await</code> first 寫法，<code>await</code> last 會受 timing 影響，而 <code>await</code> first 則不受 timing 影響</li>
 <li><code>reduce</code> 本來就不是設計用來使用 async function，若覺得 <code>reduce</code> 處理 async function 很麻煩，可改用 <code>for</code> loop + <code>await</code> 較直覺，這也是少數 <code>for</code> loop 較適用場合，等效於 <code>await</code> first 寫法</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/sashee" target="_blank" rel="noopener">Tamas Sallai</a>, <a href="https://advancedweb.hu/how-to-use-async-functions-with-array-reduce-in-javascript/" target="_blank" rel="noopener">How to use async functions with Array.reduce in JavaScript</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://github.com/sashee">Tamas Sallai</a>, <a target="_blank" rel="noopener" href="https://advancedweb.hu/how-to-use-async-functions-with-array-reduce-in-javascript/">How to use async functions with Array.reduce in JavaScript</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

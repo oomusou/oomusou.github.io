@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,7 +438,7 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>雖然理論上 Material Design 要使用內建的顏色變數，如 <code>primary</code>、<code>secondary</code>…，但實務上 Designer 可能並不使用這些變數，我們也可以在 Material Design 使用 Figma 的變數。 </p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Flutter 3.24</p>
 <h2 id="Flutter"><a href="#Flutter" class="headerlink" title="Flutter"></a>Flutter</h2><p><img src="/images/flutter/md/color/custom-color/custom01.webp" alt="custom01"></p>
@@ -446,249 +446,88 @@ a:hover {
 <li>Android 與 iOS 都成功使用 Material Design 的自訂顏色變數</li>
 </ul>
 <h2 id="Custom-Colors"><a href="#Custom-Colors" class="headerlink" title="Custom Colors"></a>Custom Colors</h2><p><strong>utils&#x2F;custom_colors.dart</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">import</span> <span class="token string">'package:flutter/material.dart'</span><span class="token punctuation">;</span>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;../constants/dark_custom_colors.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;../constants/light_custom_colors.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line">ThemeData getThemeData(Brightness brightness) &#123;</span><br><span class="line">  <span class="keyword">return</span> ThemeData(</span><br><span class="line">    brightness: brightness,</span><br><span class="line">    useMaterial3: <span class="keyword">true</span>,</span><br><span class="line">    extensions: &lt;ThemeExtension&lt;<span class="built_in">dynamic</span>&gt;&gt;[</span><br><span class="line">      brightness == Brightness.light ? lightCustomColors : darkCustomColors,</span><br><span class="line">    ],</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">CustomColors</span> <span class="keyword">extends</span> <span class="title">ThemeExtension</span>&lt;<span class="title">CustomColors</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">final</span> Color grey100;</span><br><span class="line">  <span class="keyword">final</span> Color darkRed;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">const</span> CustomColors(&#123;</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">this</span>.grey100,</span><br><span class="line">    <span class="keyword">required</span> <span class="keyword">this</span>.darkRed,</span><br><span class="line">  &#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  CustomColors copyWith(&#123;Color? grey100, Color? darkRed&#125;) &#123;</span><br><span class="line">    <span class="keyword">return</span> CustomColors(</span><br><span class="line">      grey100: grey100 ?? <span class="keyword">this</span>.grey100,</span><br><span class="line">      darkRed: darkRed ?? <span class="keyword">this</span>.darkRed,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  CustomColors lerp(ThemeExtension&lt;CustomColors&gt;? other, <span class="built_in">double</span> t) &#123;</span><br><span class="line">    <span class="keyword">if</span> (other <span class="keyword">is</span>! CustomColors) <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> CustomColors(</span><br><span class="line">      grey100: Color.lerp(grey100, other.grey100, t)!,</span><br><span class="line">      darkRed: Color.lerp(darkRed, other.darkRed, t)!,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">import</span> <span class="token string">'../constants/dark_custom_colors.dart'</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token string">'../constants/light_custom_colors.dart'</span><span class="token punctuation">;</span>
-
-ThemeData <span class="token function">getThemeData</span><span class="token punctuation">(</span>Brightness brightness<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token function">ThemeData</span><span class="token punctuation">(</span>
-    brightness<span class="token punctuation">:</span> brightness<span class="token punctuation">,</span>
-    useMaterial3<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-    extensions<span class="token punctuation">:</span> <span class="token operator">&lt;</span>ThemeExtension<span class="token operator">&lt;</span><span class="token keyword">dynamic</span><span class="token operator">>></span><span class="token punctuation">[</span>
-      brightness <span class="token operator">==</span> Brightness<span class="token punctuation">.</span>light <span class="token operator">?</span> lightCustomColors <span class="token punctuation">:</span> darkCustomColors<span class="token punctuation">,</span>
-    <span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">class</span> <span class="token class-name">CustomColors</span> <span class="token keyword">extends</span> <span class="token class-name">ThemeExtension</span><span class="token operator">&lt;</span>CustomColors<span class="token operator">></span> <span class="token punctuation">{</span>
-  <span class="token keyword">final</span> Color grey100<span class="token punctuation">;</span>
-  <span class="token keyword">final</span> Color darkRed<span class="token punctuation">;</span>
-
-  <span class="token keyword">const</span> <span class="token function">CustomColors</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-    required <span class="token keyword">this</span><span class="token punctuation">.</span>grey100<span class="token punctuation">,</span>
-    required <span class="token keyword">this</span><span class="token punctuation">.</span>darkRed<span class="token punctuation">,</span>
-  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token metadata symbol">@override</span>
-  CustomColors <span class="token function">copyWith</span><span class="token punctuation">(</span><span class="token punctuation">{</span>Color<span class="token operator">?</span> grey100<span class="token punctuation">,</span> Color<span class="token operator">?</span> darkRed<span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token function">CustomColors</span><span class="token punctuation">(</span>
-      grey100<span class="token punctuation">:</span> grey100 <span class="token operator">?</span><span class="token operator">?</span> <span class="token keyword">this</span><span class="token punctuation">.</span>grey100<span class="token punctuation">,</span>
-      darkRed<span class="token punctuation">:</span> darkRed <span class="token operator">?</span><span class="token operator">?</span> <span class="token keyword">this</span><span class="token punctuation">.</span>darkRed<span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-
-  <span class="token metadata symbol">@override</span>
-  CustomColors <span class="token function">lerp</span><span class="token punctuation">(</span>ThemeExtension<span class="token operator">&lt;</span>CustomColors<span class="token operator">></span><span class="token operator">?</span> other<span class="token punctuation">,</span> double t<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">if</span> <span class="token punctuation">(</span>other <span class="token operator">is!</span> CustomColors<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">return</span> <span class="token function">CustomColors</span><span class="token punctuation">(</span>
-      grey100<span class="token punctuation">:</span> Color<span class="token punctuation">.</span><span class="token function">lerp</span><span class="token punctuation">(</span>grey100<span class="token punctuation">,</span> other<span class="token punctuation">.</span>grey100<span class="token punctuation">,</span> t<span class="token punctuation">)</span><span class="token operator">!</span><span class="token punctuation">,</span>
-      darkRed<span class="token punctuation">:</span> Color<span class="token punctuation">.</span><span class="token function">lerp</span><span class="token punctuation">(</span>darkRed<span class="token punctuation">,</span> other<span class="token punctuation">.</span>darkRed<span class="token punctuation">,</span> t<span class="token punctuation">)</span><span class="token operator">!</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>要使用自訂顏色變數，必須先遵循 Material Design 先建立 <code>CustomColors</code> class</li>
 </ul>
 <p><strong>Line 17</strong> </p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">final</span> Color grey100<span class="token punctuation">;</span>
-<span class="token keyword">final</span> Color darkRed<span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">final</span> Color grey100;</span><br><span class="line"><span class="keyword">final</span> Color darkRed;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>在 <code>CustomColors</code> class 將自訂顏色變數定義成 property，有幾個顏色就要定義幾個 property</li>
 </ul>
 <p><strong>Line 20</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">const</span> <span class="token function">CustomColors</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  required <span class="token keyword">this</span><span class="token punctuation">.</span>grey100<span class="token punctuation">,</span>
-  required <span class="token keyword">this</span><span class="token punctuation">.</span>darkRed<span class="token punctuation">,</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">const</span> CustomColors(&#123;</span><br><span class="line">  <span class="keyword">required</span> <span class="keyword">this</span>.grey100,</span><br><span class="line">  <span class="keyword">required</span> <span class="keyword">this</span>.darkRed,</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>在 <code>CustomColors</code> class 的 constructor 定義自訂顏色變數，有幾個顏色就要定義幾個</li>
 </ul>
 <p><strong>Line 25</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token metadata symbol">@override</span>
-CustomColors <span class="token function">copyWith</span><span class="token punctuation">(</span><span class="token punctuation">{</span>Color<span class="token operator">?</span> grey100<span class="token punctuation">,</span> Color<span class="token operator">?</span> darkRed<span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token function">CustomColors</span><span class="token punctuation">(</span>
-    grey100<span class="token punctuation">:</span> grey100 <span class="token operator">?</span><span class="token operator">?</span> <span class="token keyword">this</span><span class="token punctuation">.</span>grey100<span class="token punctuation">,</span>
-    darkRed<span class="token punctuation">:</span> darkRed <span class="token operator">?</span><span class="token operator">?</span> <span class="token keyword">this</span><span class="token punctuation">.</span>darkRed<span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line">CustomColors copyWith(&#123;Color? grey100, Color? darkRed&#125;) &#123;</span><br><span class="line">  <span class="keyword">return</span> CustomColors(</span><br><span class="line">    grey100: grey100 ?? <span class="keyword">this</span>.grey100,</span><br><span class="line">    darkRed: darkRed ?? <span class="keyword">this</span>.darkRed,</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>在 <code>CustomColors</code> class override <code>copyWith()</code>，有幾個顏色就要定義幾個</li>
 </ul>
 <p><strong>Line 33</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token metadata symbol">@override</span>
-CustomColors <span class="token function">lerp</span><span class="token punctuation">(</span>ThemeExtension<span class="token operator">&lt;</span>CustomColors<span class="token operator">></span><span class="token operator">?</span> other<span class="token punctuation">,</span> double t<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span>other <span class="token operator">is!</span> CustomColors<span class="token punctuation">)</span> <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">;</span>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line">CustomColors lerp(ThemeExtension&lt;CustomColors&gt;? other, <span class="built_in">double</span> t) &#123;</span><br><span class="line">  <span class="keyword">if</span> (other <span class="keyword">is</span>! CustomColors) <span class="keyword">return</span> <span class="keyword">this</span>;</span><br><span class="line"></span><br><span class="line">  <span class="keyword">return</span> CustomColors(</span><br><span class="line">    grey100: Color.lerp(grey100, other.grey100, t)!,</span><br><span class="line">    darkRed: Color.lerp(darkRed, other.darkRed, t)!,</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-  <span class="token keyword">return</span> <span class="token function">CustomColors</span><span class="token punctuation">(</span>
-    grey100<span class="token punctuation">:</span> Color<span class="token punctuation">.</span><span class="token function">lerp</span><span class="token punctuation">(</span>grey100<span class="token punctuation">,</span> other<span class="token punctuation">.</span>grey100<span class="token punctuation">,</span> t<span class="token punctuation">)</span><span class="token operator">!</span><span class="token punctuation">,</span>
-    darkRed<span class="token punctuation">:</span> Color<span class="token punctuation">.</span><span class="token function">lerp</span><span class="token punctuation">(</span>darkRed<span class="token punctuation">,</span> other<span class="token punctuation">.</span>darkRed<span class="token punctuation">,</span> t<span class="token punctuation">)</span><span class="token operator">!</span><span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>在 <code>CustomColors</code> class override <code>lerp()</code>，有幾個顏色就要定義幾個</li>
 </ul>
 <p><strong>Line 6</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart">ThemeData <span class="token function">getThemeData</span><span class="token punctuation">(</span>Brightness brightness<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token function">ThemeData</span><span class="token punctuation">(</span>
-    brightness<span class="token punctuation">:</span> brightness<span class="token punctuation">,</span>
-    useMaterial3<span class="token punctuation">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
-    extensions<span class="token punctuation">:</span> <span class="token operator">&lt;</span>ThemeExtension<span class="token operator">&lt;</span><span class="token keyword">dynamic</span><span class="token operator">>></span><span class="token punctuation">[</span>
-      brightness <span class="token operator">==</span> Brightness<span class="token punctuation">.</span>light <span class="token operator">?</span> lightCustomColors <span class="token punctuation">:</span> darkCustomColors<span class="token punctuation">,</span>
-    <span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line">ThemeData getThemeData(Brightness brightness) &#123;</span><br><span class="line">  <span class="keyword">return</span> ThemeData(</span><br><span class="line">    brightness: brightness,</span><br><span class="line">    useMaterial3: <span class="keyword">true</span>,</span><br><span class="line">    extensions: &lt;ThemeExtension&lt;<span class="built_in">dynamic</span>&gt;&gt;[</span><br><span class="line">      brightness == Brightness.light ? lightCustomColors : darkCustomColors,</span><br><span class="line">    ],</span><br><span class="line">  );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>使用 Extension Method 將自訂顏色變數加到 <code>ThemeData</code></li>
 </ul>
 <h2 id="Light-Custom-Colors"><a href="#Light-Custom-Colors" class="headerlink" title="Light Custom Colors"></a>Light Custom Colors</h2><p><strong>constants&#x2F;light_custom_colors.dart</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">import</span> <span class="token string">'package:flutter/material.dart'</span><span class="token punctuation">;</span>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;../utils/custom_colors.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> lightCustomColors = <span class="keyword">const</span> CustomColors(</span><br><span class="line">  grey100: Color(<span class="number">0xFFF8F8F8</span>),</span><br><span class="line">  darkRed: Color(<span class="number">0xFFFF0000</span>),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">import</span> <span class="token string">'../utils/custom_colors.dart'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">var</span> lightCustomColors <span class="token operator">=</span> <span class="token keyword">const</span> <span class="token function">CustomColors</span><span class="token punctuation">(</span>
-  grey100<span class="token punctuation">:</span> <span class="token function">Color</span><span class="token punctuation">(</span><span class="token number">0xFFF8F8F8</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  darkRed<span class="token punctuation">:</span> <span class="token function">Color</span><span class="token punctuation">(</span><span class="token number">0xFFFF0000</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>定義 Light Mode 的自訂顏色變數</li>
 </ul>
 <h2 id="Dark-Custom-Colors"><a href="#Dark-Custom-Colors" class="headerlink" title="Dark Custom Colors"></a>Dark Custom Colors</h2><p><strong>constants&#x2F;dark_custom_color.dart</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">import</span> <span class="token string">'package:flutter/material.dart'</span><span class="token punctuation">;</span>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;../utils/custom_colors.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> darkCustomColors = <span class="keyword">const</span> CustomColors(</span><br><span class="line">  grey100: Color(<span class="number">0xFF212529</span>),</span><br><span class="line">  darkRed: Color(<span class="number">0xFFFFFF00</span>),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">import</span> <span class="token string">'../utils/custom_colors.dart'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">var</span> darkCustomColors <span class="token operator">=</span> <span class="token keyword">const</span> <span class="token function">CustomColors</span><span class="token punctuation">(</span>
-  grey100<span class="token punctuation">:</span> <span class="token function">Color</span><span class="token punctuation">(</span><span class="token number">0xFF212529</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  darkRed<span class="token punctuation">:</span> <span class="token function">Color</span><span class="token punctuation">(</span><span class="token number">0xFFFFFF00</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>定義 Dark Mode 的自訂顏色變數</li>
 </ul>
 <h2 id="Main"><a href="#Main" class="headerlink" title="Main"></a>Main</h2><p><strong>main.dart</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">import</span> <span class="token string">'package:flutter/material.dart'</span><span class="token punctuation">;</span>
-<span class="token keyword">import</span> <span class="token string">'package:flutter_lab/utils/custom_colors.dart'</span><span class="token punctuation">;</span>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter_lab/utils/custom_colors.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;home.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">void</span> main() &#123;</span><br><span class="line">  runApp(<span class="keyword">const</span> App());</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">App</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> App(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">        theme: getThemeData(Brightness.light),</span><br><span class="line">        darkTheme: getThemeData(Brightness.dark),</span><br><span class="line">        themeMode: ThemeMode.system,</span><br><span class="line">        home: <span class="keyword">const</span> Home());</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">import</span> <span class="token string">'home.dart'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">void</span> <span class="token function">main</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token function">runApp</span><span class="token punctuation">(</span><span class="token keyword">const</span> <span class="token function">App</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">class</span> <span class="token class-name">App</span> <span class="token keyword">extends</span> <span class="token class-name">StatelessWidget</span> <span class="token punctuation">{</span>
-  <span class="token keyword">const</span> <span class="token function">App</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token keyword">super</span><span class="token punctuation">.</span>key<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token metadata symbol">@override</span>
-  Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token function">MaterialApp</span><span class="token punctuation">(</span>
-        theme<span class="token punctuation">:</span> <span class="token function">getThemeData</span><span class="token punctuation">(</span>Brightness<span class="token punctuation">.</span>light<span class="token punctuation">)</span><span class="token punctuation">,</span>
-        darkTheme<span class="token punctuation">:</span> <span class="token function">getThemeData</span><span class="token punctuation">(</span>Brightness<span class="token punctuation">.</span>dark<span class="token punctuation">)</span><span class="token punctuation">,</span>
-        themeMode<span class="token punctuation">:</span> ThemeMode<span class="token punctuation">.</span>system<span class="token punctuation">,</span>
-        home<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Home</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>在 <code>main.dart</code> 使用自訂 theme</li>
 </ul>
 <p><strong>Line 13</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token metadata symbol">@override</span>
-Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token function">MaterialApp</span><span class="token punctuation">(</span>
-    theme<span class="token punctuation">:</span> <span class="token function">getThemeData</span><span class="token punctuation">(</span>Brightness<span class="token punctuation">.</span>light<span class="token punctuation">)</span><span class="token punctuation">,</span>
-    darkTheme<span class="token punctuation">:</span> <span class="token function">getThemeData</span><span class="token punctuation">(</span>Brightness<span class="token punctuation">.</span>dark<span class="token punctuation">)</span><span class="token punctuation">,</span>
-    themeMode<span class="token punctuation">:</span> ThemeMode<span class="token punctuation">.</span>system<span class="token punctuation">,</span>
-    home<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Home</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="meta">@override</span></span><br><span class="line">Widget build(BuildContext context) &#123;</span><br><span class="line">  <span class="keyword">return</span> MaterialApp(</span><br><span class="line">    theme: getThemeData(Brightness.light),</span><br><span class="line">    darkTheme: getThemeData(Brightness.dark),</span><br><span class="line">    themeMode: ThemeMode.system,</span><br><span class="line">    home: <span class="keyword">const</span> Home());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>theme</code>：由 <code>getThemeData()</code> 定義 Light Mode 的 theme</li>
 <li><code>darkTheme</code>：由 <code>getThemeData()</code> 定義 Dark Mode 的 theme</li>
 <li><code>themeMode</code>：預設使用系統所定義的 theme</li>
 </ul>
 <h2 id="Home"><a href="#Home" class="headerlink" title="Home"></a>Home</h2><p><strong>home.dart</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">import</span> <span class="token string">'package:flutter/material.dart'</span><span class="token punctuation">;</span>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="string">&#x27;utils/custom_colors.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Home</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> Home(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;Home&gt; createState() =&gt; _Home();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_Home</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">Home</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">late</span> CustomColors _customColors;</span><br><span class="line">  <span class="keyword">var</span> _count = <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    _customColors = Theme.of(context).<span class="keyword">extension</span>&lt;CustomColors&gt;()!;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> appBar = AppBar(</span><br><span class="line">      title: <span class="keyword">const</span> Text(<span class="string">&#x27;Material Design Custom Color&#x27;</span>),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> floatingActionButton = FloatingActionButton(</span><br><span class="line">      onPressed: () =&gt; setState(() =&gt; _count++),</span><br><span class="line">      backgroundColor: _customColors.grey100,</span><br><span class="line">      foregroundColor: _customColors.darkRed,</span><br><span class="line">      child: <span class="keyword">const</span> Icon(</span><br><span class="line">        Icons.add,</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> body = Center(</span><br><span class="line">      child: Text(<span class="string">&#x27;<span class="subst">$_count</span>&#x27;</span>),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: appBar,</span><br><span class="line">      floatingActionButton: floatingActionButton,</span><br><span class="line">      body: body,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">import</span> <span class="token string">'utils/custom_colors.dart'</span><span class="token punctuation">;</span>
-
-<span class="token keyword">class</span> <span class="token class-name">Home</span> <span class="token keyword">extends</span> <span class="token class-name">StatefulWidget</span> <span class="token punctuation">{</span>
-  <span class="token keyword">const</span> <span class="token function">Home</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token keyword">super</span><span class="token punctuation">.</span>key<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token metadata symbol">@override</span>
-  State<span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token function">createState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">_Home</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">class</span> <span class="token class-name">_Home</span> <span class="token keyword">extends</span> <span class="token class-name">State</span><span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token punctuation">{</span>
-  late CustomColors _customColors<span class="token punctuation">;</span>
-  <span class="token keyword">var</span> _count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
-
-  <span class="token metadata symbol">@override</span>
-  Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    _customColors <span class="token operator">=</span> Theme<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">.</span>extension<span class="token operator">&lt;</span>CustomColors<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">!</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> appBar <span class="token operator">=</span> <span class="token function">AppBar</span><span class="token punctuation">(</span>
-      title<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">'Material Design Custom Color'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> floatingActionButton <span class="token operator">=</span> <span class="token function">FloatingActionButton</span><span class="token punctuation">(</span>
-      onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> _count<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-      backgroundColor<span class="token punctuation">:</span> _customColors<span class="token punctuation">.</span>grey100<span class="token punctuation">,</span>
-      foregroundColor<span class="token punctuation">:</span> _customColors<span class="token punctuation">.</span>darkRed<span class="token punctuation">,</span>
-      child<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Icon</span><span class="token punctuation">(</span>
-        Icons<span class="token punctuation">.</span>add<span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> body <span class="token operator">=</span> <span class="token function">Center</span><span class="token punctuation">(</span>
-      child<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">'$_count'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">return</span> <span class="token function">Scaffold</span><span class="token punctuation">(</span>
-      appBar<span class="token punctuation">:</span> appBar<span class="token punctuation">,</span>
-      floatingActionButton<span class="token punctuation">:</span> floatingActionButton<span class="token punctuation">,</span>
-      body<span class="token punctuation">:</span> body<span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>經典的 Counter</li>
 </ul>
 <p><strong>Line 12</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">class</span> <span class="token class-name">_Home</span> <span class="token keyword">extends</span> <span class="token class-name">State</span><span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token punctuation">{</span>
-  late CustomColors _customColors<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_Home</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">Home</span>&gt; </span>&#123;</span><br><span class="line">  <span class="keyword">late</span> CustomColors _customColors;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>_customColors</code>：定義 <code>_customColors</code> 為 field，且為 <code>late</code>，將在稍後建立</li>
 </ul>
 <p><strong>Line 17</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart">Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  _customColors <span class="token operator">=</span> Theme<span class="token punctuation">.</span><span class="token function">of</span><span class="token punctuation">(</span>context<span class="token punctuation">)</span><span class="token punctuation">.</span>extension<span class="token operator">&lt;</span>CustomColors<span class="token operator">></span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token operator">!</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line">Widget build(BuildContext context) &#123;</span><br><span class="line">  _customColors = Theme.of(context).<span class="keyword">extension</span>&lt;CustomColors&gt;()!;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>_customColors</code>：在 <code>build()</code> 內由 <code>context</code> 根據 dark mode 或 light mode 建立</li>
 </ul>
 <p><strong>Line 24</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">var</span> floatingActionButton <span class="token operator">=</span> <span class="token function">FloatingActionButton</span><span class="token punctuation">(</span>
-  onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> _count<span class="token operator">++</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  backgroundColor<span class="token punctuation">:</span> _customColors<span class="token punctuation">.</span>grey100<span class="token punctuation">,</span>
-  foregroundColor<span class="token punctuation">:</span> _customColors<span class="token punctuation">.</span>darkRed<span class="token punctuation">,</span>
-  child<span class="token punctuation">:</span> <span class="token keyword">const</span> <span class="token function">Icon</span><span class="token punctuation">(</span>
-    Icons<span class="token punctuation">.</span>add<span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> floatingActionButton = FloatingActionButton(</span><br><span class="line">  onPressed: () =&gt; setState(() =&gt; _count++),</span><br><span class="line">  backgroundColor: _customColors.grey100,</span><br><span class="line">  foregroundColor: _customColors.darkRed,</span><br><span class="line">  child: <span class="keyword">const</span> Icon(</span><br><span class="line">    Icons.add,</span><br><span class="line">  ),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>backgrondColor</code> 與 <code>foregroundColor</code> 使用自訂的 <code>gray100</code> 與 <code>darkRed</code> 變數</li>
 </ul>

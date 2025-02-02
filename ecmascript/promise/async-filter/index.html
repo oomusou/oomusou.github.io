@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,66 +438,35 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p><code>Array.prototype.filter</code> 只能接受傳入 Synchronous Function，若要傳入 Asynchronous Function，可依需求使用不同方式實現。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>ECMAScript 2017</p>
-<h2 id="Synchronous-filter"><a href="#Synchronous-filter" class="headerlink" title="Synchronous filter"></a>Synchronous filter</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<h2 id="Synchronous-filter"><a href="#Synchronous-filter" class="headerlink" title="Synchronous filter"></a>Synchronous filter</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">pred</span> = x =&gt; x === <span class="number">1</span></span><br><span class="line"></span><br><span class="line">data.<span class="property">filter</span> (pred) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> pred <span class="token operator">=</span> x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">===</span> <span class="token number">1</span>
-
-data<span class="token punctuation">.</span>filter <span class="token punctuation">(</span>pred<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>filter</code> 會根據傳入 predicate 過濾，可傳入 sync function，如預期回傳新 Array。</p>
 <p><img src="/images/ecmascript/promise/async-filter/filter000.png" alt="filter000"></p>
-<h2 id="Asynchronous-filter"><a href="#Asynchronous-filter" class="headerlink" title="Asynchronous filter"></a>Asynchronous filter</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<h2 id="Asynchronous-filter"><a href="#Asynchronous-filter" class="headerlink" title="Asynchronous filter"></a>Asynchronous filter</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">pred</span> = <span class="keyword">async</span> x =&gt; x === <span class="number">1</span></span><br><span class="line"></span><br><span class="line">data.<span class="property">filter</span> (pred) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> pred <span class="token operator">=</span> <span class="token keyword">async</span> x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">===</span> <span class="token number">1</span>
-
-data<span class="token punctuation">.</span>filter <span class="token punctuation">(</span>pred<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若對 <code>filter</code> 傳入 async function，雖然沒有錯誤，但結果完全不對，因為 <code>filter</code> 並不支援 async function。</p>
 <p><img src="/images/ecmascript/promise/async-filter/filter001.png" alt="filter001"></p>
-<h2 id="Promise-all-map"><a href="#Promise-all-map" class="headerlink" title="Promise.all + map"></a>Promise.all + map</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<h2 id="Promise-all-map"><a href="#Promise-all-map" class="headerlink" title="Promise.all + map"></a>Promise.all + map</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">pred</span> = <span class="keyword">async</span> x =&gt; x === <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> result = <span class="keyword">await</span> <span class="title class_">Promise</span>.<span class="property">all</span> (data.<span class="property">map</span> (pred))</span><br><span class="line"></span><br><span class="line">data.<span class="property">filter</span> (<span class="function">(<span class="params">x, i</span>) =&gt;</span> result [i]) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> pred <span class="token operator">=</span> <span class="token keyword">async</span> x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">===</span> <span class="token number">1</span>
-
-<span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token keyword">await</span> Promise<span class="token punctuation">.</span>all <span class="token punctuation">(</span>data<span class="token punctuation">.</span>map <span class="token punctuation">(</span>pred<span class="token punctuation">)</span><span class="token punctuation">)</span>
-
-data<span class="token punctuation">.</span>filter <span class="token punctuation">(</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> result <span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>使用 <code>Promise.all</code> + <code>Array.prototype.map</code> 實現 async <code>filter</code>。</p>
 <p><code>Array.prototype.map</code> 搭配 <code>Promise.all</code> 則可接受 async function，藉由此特性先將 async function 所有結果先求得，再搭配 <code>filter</code> 以 lookup table 方式回傳 value。</p>
 <p><img src="/images/ecmascript/promise/async-filter/filter003.png" alt="filter003"></p>
-<h2 id="Promise-Chain"><a href="#Promise-Chain" class="headerlink" title="Promise Chain"></a>Promise Chain</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<h2 id="Promise-Chain"><a href="#Promise-Chain" class="headerlink" title="Promise Chain"></a>Promise Chain</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">pred</span> = <span class="keyword">async</span> x =&gt; x === <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">await</span> <span class="title class_">Promise</span></span><br><span class="line">  .<span class="property">all</span> (data.<span class="property">map</span> (pred))</span><br><span class="line">  .<span class="property">then</span> (<span class="function"><span class="params">x</span> =&gt;</span> data.<span class="property">filter</span> (<span class="function">(<span class="params">_, i</span>) =&gt;</span> x [i])) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> pred <span class="token operator">=</span> <span class="token keyword">async</span> x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">===</span> <span class="token number">1</span>
-
-<span class="token keyword">await</span> Promise
-  <span class="token punctuation">.</span>all <span class="token punctuation">(</span>data<span class="token punctuation">.</span>map <span class="token punctuation">(</span>pred<span class="token punctuation">)</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span>then <span class="token punctuation">(</span>x <span class="token operator">=</span><span class="token operator">></span> data<span class="token punctuation">.</span>filter <span class="token punctuation">(</span><span class="token punctuation">(</span>_<span class="token punctuation">,</span> i<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> x <span class="token punctuation">[</span>i<span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>也可改用 Promise Chain 方式實現 async <code>filter</code>。</p>
 <p><img src="/images/ecmascript/promise/async-filter/filter004.png" alt="filter004"></p>
-<h2 id="for-Loop-await"><a href="#for-Loop-await" class="headerlink" title="for Loop + await"></a>for Loop + await</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
+<h2 id="for-Loop-await"><a href="#for-Loop-await" class="headerlink" title="for Loop + await"></a>for Loop + await</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">pred</span> = <span class="keyword">async</span> x =&gt; x === <span class="number">1</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> result = []</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> (<span class="keyword">let</span> x <span class="keyword">of</span> data) &#123;</span><br><span class="line">  <span class="keyword">if</span> (<span class="keyword">await</span> <span class="title function_">pred</span> (x)) </span><br><span class="line">    result.<span class="property">push</span> (x)</span><br><span class="line">&#125;</span><br><span class="line">    </span><br><span class="line">result <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> pred <span class="token operator">=</span> <span class="token keyword">async</span> x <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">===</span> <span class="token number">1</span>
-
-<span class="token keyword">let</span> result <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
-
-<span class="token keyword">for</span> <span class="token punctuation">(</span><span class="token keyword">let</span> x <span class="token keyword">of</span> data<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">await</span> pred <span class="token punctuation">(</span>x<span class="token punctuation">)</span><span class="token punctuation">)</span> 
-    result<span class="token punctuation">.</span>push <span class="token punctuation">(</span>x<span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-    
-result <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>若覺得 <code>Promise.all</code> + <code>map</code> 組合較麻煩，也可簡單使用 <code>for</code> loop + <code>await</code> 實現。</p>
 <p><img src="/images/ecmascript/promise/async-filter/filter002.png" alt="filter002"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>雖然 <code>filter</code> 無法接受 async function，但由於 <code>filter</code> 可透過 <code>map</code> 實現，因此可藉由 <code>Promise.all</code> + <code>map</code> 實現 async <code>filter</code></li>
 <li><code>filter</code> 本來就不是設計用來使用 async function，若覺得還要搭配 <code>Promise.all</code> 太麻煩，可改用 <code>for</code> loop + <code>await</code> 較直覺，這也是少數 <code>for</code> loop 較適用場合</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://github.com/sashee" target="_blank" rel="noopener">Tamas Sallai</a>, <a href="https://advancedweb.hu/how-to-use-async-functions-with-array-filter-in-javascript/" target="_blank" rel="noopener">How to Use Async Functions with Array.filter in JavaScript ?</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://github.com/sashee">Tamas Sallai</a>, <a target="_blank" rel="noopener" href="https://advancedweb.hu/how-to-use-async-functions-with-array-filter-in-javascript/">How to Use Async Functions with Array.filter in JavaScript ?</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

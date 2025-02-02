@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,128 +438,69 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Vue 3 要以 <code>props.name</code> 形式讀取 prop，但這種方式不方便 Point-free，Vue3-fp 提供了 Curry Function 版本的 <code>mark</code>。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 3.2<br>Vue3-fp 0.3.2</p>
 <h2 id="Composition-API"><a href="#Composition-API" class="headerlink" title="Composition API"></a>Composition API</h2><p><img src="/images/vue3-fp/mark/mark000.png" alt="mark000"></p>
 <p>將 prop 傳給 state，按下 <code>+</code> 將對 state 遞增。</p>
 <p><strong>App.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>MyCounter</span> <span class="token attr-name">:start</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>outerCount<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">MyCounter</span> <span class="attr">:start</span>=<span class="string">&quot;outerCount&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">MyCounter</span> <span class="keyword">from</span> <span class="string">&#x27;/src/components/MyCounter.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> outerCount = $ref (<span class="number">3</span>)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> MyCounter <span class="token keyword">from</span> <span class="token string">'/src/components/MyCounter.vue'</span>
-
-<span class="token keyword">let</span> outerCount <span class="token operator">=</span> $ref <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 6 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> MyCounter <span class="token keyword">from</span> <span class="token string">'/src/components/MyCounter.vue'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">MyCounter</span> <span class="keyword">from</span> <span class="string">&#x27;/src/components/MyCounter.vue&#x27;</span></span><br></pre></td></tr></table></figure>
+
 <p>引用 <code>MyCounter</code> component。</p>
 <p>第 8 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> outerCount <span class="token operator">=</span> $ref <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> outerCount = $ref (<span class="number">3</span>)</span><br></pre></td></tr></table></figure>
+
 <p>定義 <code>outerCount</code> state 的初始值為 <code>3</code>。</p>
 <p><strong>MyCounter.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span><span class="token punctuation">></span></span>{{ innerCount }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span>&gt;</span>&#123;&#123; innerCount &#125;&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;onClick&quot;</span>&gt;</span>+<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> innerCount = $ref (<span class="number">0</span>)</span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> props = <span class="title function_">defineProps</span> (&#123; <span class="attr">start</span>: <span class="title class_">Number</span> &#125;)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">innerCount = props.<span class="property">start</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> <span class="title function_">onClick</span> = _ =&gt; innerCount++</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">let</span> innerCount <span class="token operator">=</span> $ref <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> props <span class="token operator">=</span> defineProps <span class="token punctuation">(</span><span class="token punctuation">{</span> start<span class="token punctuation">:</span> Number <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-innerCount <span class="token operator">=</span> props<span class="token punctuation">.</span>start
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> _ <span class="token operator">=</span><span class="token operator">></span> innerCount<span class="token operator">++</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 8 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> props <span class="token operator">=</span> defineProps <span class="token punctuation">(</span><span class="token punctuation">{</span> start<span class="token punctuation">:</span> Number <span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> props = <span class="title function_">defineProps</span> (&#123; <span class="attr">start</span>: <span class="title class_">Number</span> &#125;)</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>defineProps</code> 定義 <code>start</code> prop。</p>
 <p>第 7 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> innerCount <span class="token operator">=</span> $ref <span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> innerCount = $ref (<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
 <p>定義 <code>innerCount</code> state 的初始值為 <code>0</code>。</p>
 <p>10 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">innerCount <span class="token operator">=</span> props<span class="token punctuation">.</span>start
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line">innerCount = props.<span class="property">start</span></span><br></pre></td></tr></table></figure>
+
 <p>將 <code>start</code> prop 值寫入 <code>innerCount</code> state。</p>
 <blockquote>
 <p>Vue 3 要求我們以 <code>props.name</code> 形式讀取 prop</p>
 </blockquote>
 <p>11 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> _ <span class="token operator">=</span><span class="token operator">></span> innerCount<span class="token operator">++</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">onClick</span> = _ =&gt; innerCount++</span><br></pre></td></tr></table></figure>
+
 <p>當按下 <code>+</code> button 將對 <code>innerCount</code> state 遞增。</p>
 <h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><p><img src="/images/vue3-fp/mark/mark000.png" alt="mark000"></p>
 <p>結果不變，但使用 Point-free 改寫。</p>
 <p><strong>App.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>MyCounter</span> <span class="token attr-name">:start</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>outerCount<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">MyCounter</span> <span class="attr">:start</span>=<span class="string">&quot;outerCount&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">MyCounter</span> <span class="keyword">from</span> <span class="string">&#x27;/src/components/MyCounter.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> outerCount = $ref (<span class="number">3</span>)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> MyCounter <span class="token keyword">from</span> <span class="token string">'/src/components/MyCounter.vue'</span>
-
-<span class="token keyword">let</span> outerCount <span class="token operator">=</span> $ref <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>App.vue</code> 沒有改變。</p>
 <p><strong>MyCounter.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span><span class="token punctuation">></span></span>{{ innerCount }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span>&gt;</span>&#123;&#123; innerCount &#125;&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;onClick&quot;</span>&gt;</span>+<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; ref &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; read, write &#125; <span class="keyword">from</span> <span class="string">&#x27;vue3-fp&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; pipe, inc, thunkify, prop &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> mark = <span class="title function_">thunkify</span> (prop)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> innerCount = <span class="title function_">ref</span>(<span class="number">0</span>)</span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> props = <span class="title function_">defineProps</span> (&#123; <span class="attr">start</span>: <span class="title class_">Number</span> &#125;)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> onClick = <span class="title function_">pipe</span> (</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">read</span> (innerCount),</span></span><br><span class="line"><span class="language-javascript">  inc,</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">write</span> (innerCount)</span></span><br><span class="line"><span class="language-javascript">)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">pipe</span> (</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">mark</span> (<span class="string">&#x27;start&#x27;</span>) (props),</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">write</span> (innerCount)</span></span><br><span class="line"><span class="language-javascript">) ()</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> read<span class="token punctuation">,</span> write <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> inc<span class="token punctuation">,</span> thunkify<span class="token punctuation">,</span> prop <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-
-<span class="token keyword">let</span> mark <span class="token operator">=</span> thunkify <span class="token punctuation">(</span>prop<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> innerCount <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> props <span class="token operator">=</span> defineProps <span class="token punctuation">(</span><span class="token punctuation">{</span> start<span class="token punctuation">:</span> Number <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  read <span class="token punctuation">(</span>innerCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  inc<span class="token punctuation">,</span>
-  write <span class="token punctuation">(</span>innerCount<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-pipe <span class="token punctuation">(</span>
-  mark <span class="token punctuation">(</span><span class="token string">'start'</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  write <span class="token punctuation">(</span>innerCount<span class="token punctuation">)</span>
-<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">)</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>22 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">pipe <span class="token punctuation">(</span>
-  mark <span class="token punctuation">(</span><span class="token string">'start'</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  write <span class="token punctuation">(</span>innerCount<span class="token punctuation">)</span>
-<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">pipe</span> (</span><br><span class="line">  <span class="title function_">mark</span> (<span class="string">&#x27;start&#x27;</span>) (props),</span><br><span class="line">  <span class="title function_">write</span> (innerCount)</span><br><span class="line">) ()</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>pipe</code> 組合 IIFE：</p>
 <ul>
 <li><code>mark (&#39;start&#39;) (props)</code>：讀取 <code>start</code> prop</li>
 <li><code>write (innerCount)</code>：寫入 <code>innerCount</code> state</li>
 </ul>
 <p>11 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> mark <span class="token operator">=</span> thunkify <span class="token punctuation">(</span>prop<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> mark = <span class="title function_">thunkify</span> (prop)</span><br></pre></td></tr></table></figure>
+
 <p>Vue 3 需以 <code>props.name</code> 形式讀取 prop，但這種方式並不適合 Point-free。</p>
 <p>其實 prop 讀取方式很類似 Ramda 的 <code>prop</code>，因此以 <code>prop()</code> 為基礎加以 <code>thunkify</code> 成 <code>mark</code> 就很適合 Function Pipeline。</p>
 <p>16 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  read <span class="token punctuation">(</span>innerCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  inc<span class="token punctuation">,</span>
-  write <span class="token punctuation">(</span>innerCount<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> onClick = <span class="title function_">pipe</span> (</span><br><span class="line">  <span class="title function_">read</span> (innerCount),</span><br><span class="line">  inc,</span><br><span class="line">  <span class="title function_">write</span> (innerCount)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>pipe</code> 組合 <code>onClick</code>：</p>
 <ul>
 <li><code>read (innerCount)</code>：讀取 <code>innerCount</code> state</li>
@@ -569,46 +510,15 @@ pipe <span class="token punctuation">(</span>
 <h2 id="Vue3-fp"><a href="#Vue3-fp" class="headerlink" title="Vue3-fp"></a>Vue3-fp</h2><p><img src="/images/vue3-fp/mark/mark000.png" alt="mark000"></p>
 <p>結果不變，但使用 Vue3-fp 改寫。</p>
 <p><strong>App.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>MyCounter</span> <span class="token attr-name">:start</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>outerCount<span class="token punctuation">"</span></span><span class="token punctuation">/></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">MyCounter</span> <span class="attr">:start</span>=<span class="string">&quot;outerCount&quot;</span>/&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> <span class="title class_">MyCounter</span> <span class="keyword">from</span> <span class="string">&#x27;/src/components/MyCounter.vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> outerCount = $ref (<span class="number">3</span>)</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> MyCounter <span class="token keyword">from</span> <span class="token string">'/src/components/MyCounter.vue'</span>
-
-<span class="token keyword">let</span> outerCount <span class="token operator">=</span> $ref <span class="token punctuation">(</span><span class="token number">3</span><span class="token punctuation">)</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>App.vue</code> 沒有改變。</p>
 <p><strong>MyCounter.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>span</span><span class="token punctuation">></span></span>{{ innerCount }}<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>span</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">span</span>&gt;</span>&#123;&#123; innerCount &#125;&#125;<span class="tag">&lt;/<span class="name">span</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;onClick&quot;</span>&gt;</span>+<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span> <span class="attr">setup</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; ref &#125; <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; read, write, mark &#125; <span class="keyword">from</span> <span class="string">&#x27;vue3-fp&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; pipe, inc  &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> innerCount = <span class="title function_">ref</span>(<span class="number">0</span>)</span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> props = <span class="title function_">defineProps</span> (&#123; <span class="attr">start</span>: <span class="title class_">Number</span> &#125;)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> onClick = <span class="title function_">pipe</span> (</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">read</span> (innerCount),</span></span><br><span class="line"><span class="language-javascript">  inc,</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">write</span> (innerCount)</span></span><br><span class="line"><span class="language-javascript">)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="title function_">pipe</span> (</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">mark</span> (<span class="string">&#x27;start&#x27;</span>) (props),</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">write</span> (innerCount)</span></span><br><span class="line"><span class="language-javascript">) ()</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span> <span class="token attr-name">setup</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> ref <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> read<span class="token punctuation">,</span> write<span class="token punctuation">,</span> mark <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> inc  <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-
-<span class="token keyword">let</span> innerCount <span class="token operator">=</span> <span class="token function">ref</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span>
-<span class="token keyword">let</span> props <span class="token operator">=</span> defineProps <span class="token punctuation">(</span><span class="token punctuation">{</span> start<span class="token punctuation">:</span> Number <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> pipe <span class="token punctuation">(</span>
-  read <span class="token punctuation">(</span>innerCount<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  inc<span class="token punctuation">,</span>
-  write <span class="token punctuation">(</span>innerCount<span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-pipe <span class="token punctuation">(</span>
-  mark <span class="token punctuation">(</span><span class="token string">'start'</span><span class="token punctuation">)</span> <span class="token punctuation">(</span>props<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  write <span class="token punctuation">(</span>innerCount<span class="token punctuation">)</span>
-<span class="token punctuation">)</span> <span class="token punctuation">(</span><span class="token punctuation">)</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 8 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> read<span class="token punctuation">,</span> write<span class="token punctuation">,</span> mark <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'vue3-fp'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; read, write, mark &#125; <span class="keyword">from</span> <span class="string">&#x27;vue3-fp&#x27;</span></span><br></pre></td></tr></table></figure>
+
 <p>Vue3-fp 已經提供 <code>mark</code> 可直接使用。</p>
 <blockquote>
 <p><code>mark :: String -&gt; Data -&gt; () -&gt; a</code><br>由 props 讀取指定 prop</p>

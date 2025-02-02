@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,63 +438,22 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>實務上有時我們會將 GraphQL Query 的 Argument 綁定到 Vue 的 <code>data</code>，讓 <code>data</code> 一改變就自動重新執行 GraphQL Query，此時必須使用 Vue Apollo 所提供的 Reactive Parameter Query。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15<br>WebStorm 2019.2.3<br>Node 10.16.3<br>Vue CLI 4.0.5<br>Vue 2.6.10<br>Vue Apollo 3.0.0-beta.11</p>
 <h2 id="Vue-Apollo"><a href="#Vue-Apollo" class="headerlink" title="Vue Apollo"></a>Vue Apollo</h2><p><strong>src&#x2F;App.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>input</span> <span class="token attr-name">type</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>text<span class="token punctuation">"</span></span> <span class="token attr-name">v-model</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>category<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>ul</span><span class="token punctuation">></span></span>
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>li</span> <span class="token attr-name">v-for</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>(item, index) in books<span class="token punctuation">"</span></span> <span class="token attr-name">:key</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>index<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>
-        {{ item.title }}
-      <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>li</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>ul</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">input</span> <span class="attr">type</span>=<span class="string">&quot;text&quot;</span> <span class="attr">v-model</span>=<span class="string">&quot;category&quot;</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">ul</span>&gt;</span></span><br><span class="line">      <span class="tag">&lt;<span class="name">li</span> <span class="attr">v-for</span>=<span class="string">&quot;(item, index) in books&quot;</span> <span class="attr">:key</span>=<span class="string">&quot;index&quot;</span>&gt;</span></span><br><span class="line">        &#123;&#123; item.title &#125;&#125;</span><br><span class="line">      <span class="tag">&lt;/<span class="name">li</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">ul</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> gql <span class="keyword">from</span> <span class="string">&#x27;graphql-tag&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> books = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">let</span> query = gql`<span class="language-graphql"></span></span></span><br><span class="line"><span class="language-graphql"><span class="language-javascript">    <span class="keyword">query</span> <span class="punctuation">(</span><span class="variable">$category</span>: String<span class="punctuation">)</span><span class="punctuation">&#123;</span></span></span></span><br><span class="line"><span class="language-graphql"><span class="language-javascript">      books<span class="punctuation">(</span><span class="symbol">category</span><span class="punctuation">:</span> <span class="variable">$category</span>) <span class="punctuation">&#123;</span></span></span></span><br><span class="line"><span class="language-graphql"><span class="language-javascript">        title</span></span></span><br><span class="line"><span class="language-graphql"><span class="language-javascript">      <span class="punctuation">&#125;</span></span></span></span><br><span class="line"><span class="language-graphql"><span class="language-javascript">    <span class="punctuation">&#125;</span>`</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">let</span> <span class="title function_">variables</span> = (<span class="params"></span>) =&gt; (&#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="attr">category</span>: <span class="variable language_">this</span>.<span class="property">category</span></span></span><br><span class="line"><span class="language-javascript">  &#125;)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">return</span> &#123; query, variables &#125;</span></span><br><span class="line"><span class="language-javascript">&#125;;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">name</span>: <span class="string">&#x27;app&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">data</span>: <span class="function">() =&gt;</span> (&#123;</span></span><br><span class="line"><span class="language-javascript">    <span class="attr">category</span>: <span class="string">&#x27;&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">    <span class="attr">books</span>: [],</span></span><br><span class="line"><span class="language-javascript">  &#125;),</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">apollo</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">    books</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> gql <span class="token keyword">from</span> <span class="token string">'graphql-tag'</span>
-
-<span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">let</span> query <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`
-    query ($category: String){
-      books(category: $category) {
-        title
-      }
-    }`</span></span>
-
-  <span class="token keyword">let</span> variables <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
-    category<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>category
-  <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-  <span class="token keyword">return</span> <span class="token punctuation">{</span> query<span class="token punctuation">,</span> variables <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">;</span>
-
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
-  name<span class="token punctuation">:</span> <span class="token string">'app'</span><span class="token punctuation">,</span>
-  data<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
-    category<span class="token punctuation">:</span> <span class="token string">''</span><span class="token punctuation">,</span>
-    books<span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span>
-  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  apollo<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    books
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>23 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> variables <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">(</span><span class="token punctuation">{</span>
-  category<span class="token punctuation">:</span> <span class="token keyword">this</span><span class="token punctuation">.</span>category
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">variables</span> = (<span class="params"></span>) =&gt; (&#123;</span><br><span class="line">  <span class="attr">category</span>: <span class="variable language_">this</span>.<span class="property">category</span></span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+
 <p>若 argument 要 reactive，則 <code>variables</code> 要由 object 改成 function 回傳 object。</p>
 <p><img src="/images/graphql/vue-apollo/query/reactive/reactive000.png" alt="reactive000"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>ECMAScript 常看到同一個 argument 有兩用，可以傳入 primitive &#x2F; object，也可傳入 callback，如此設計可盡量減少 API 個數，對 user 比較友善</li>
 <li>Query 的 <code>variables</code> 若為 object，可自動 data binding，但沒有 reactive；<code>variables</code> 若為 function，除了自動 data binding 外，還支援 reactive</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://vue-apollo.netlify.com/" target="_blank" rel="noopener">Vue Apollo</a>, <a href="https://vue-apollo.netlify.com/guide/apollo/queries.html#reactive-parameters" target="_blank" rel="noopener">Reactive parameters</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://vue-apollo.netlify.com/">Vue Apollo</a>, <a target="_blank" rel="noopener" href="https://vue-apollo.netlify.com/guide/apollo/queries.html#reactive-parameters">Reactive parameters</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

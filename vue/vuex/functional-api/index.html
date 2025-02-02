@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,173 +438,67 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>傳統 Vuex 都以 <code>this</code> 使用，這使得 Extract Function 時還必須將 Vue Instance 傳進 Function，事實上 Vuex 也能不使用 <code>this</code>，直接 Import Store 使用，甚至更近一步 Point-free。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Vue 2.6.11<br>Vuex 3.4.0</p>
 <h2 id="Options-API"><a href="#Options-API" class="headerlink" title="Options API"></a>Options API</h2><p><img src="/images/vue/vuex/functional-api/vuex000.png" alt="vuex000"></p>
 <p>使用 Vuex 實現 counter。</p>
 <p><strong>store&#x2F;index.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> Vue <span class="token keyword">from</span> <span class="token string">'vue'</span>
-<span class="token keyword">import</span> Vuex <span class="token keyword">from</span> <span class="token string">'vuex'</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="title class_">Vue</span> <span class="keyword">from</span> <span class="string">&#x27;vue&#x27;</span></span><br><span class="line"><span class="keyword">import</span> <span class="title class_">Vuex</span> <span class="keyword">from</span> <span class="string">&#x27;vuex&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title class_">Vue</span>.<span class="title function_">use</span>(<span class="title class_">Vuex</span>)</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">addCount</span> = state =&gt; state.<span class="property">count</span>++</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="keyword">new</span> <span class="title class_">Vuex</span>.<span class="title class_">Store</span>(&#123;</span><br><span class="line">  <span class="attr">state</span>: &#123;</span><br><span class="line">    <span class="attr">count</span>: <span class="number">0</span></span><br><span class="line">  &#125;,</span><br><span class="line">  <span class="attr">mutations</span>: &#123;</span><br><span class="line">    addCount</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
 
-Vue<span class="token punctuation">.</span><span class="token function">use</span><span class="token punctuation">(</span>Vuex<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> addCount <span class="token operator">=</span> state <span class="token operator">=</span><span class="token operator">></span> state<span class="token punctuation">.</span>count<span class="token operator">++</span>
-
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token keyword">new</span> <span class="token class-name">Vuex<span class="token punctuation">.</span>Store</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
-  state<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    count<span class="token punctuation">:</span> <span class="token number">0</span>
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  mutations<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    addCount
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 9 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript">state<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-  count<span class="token punctuation">:</span> <span class="token number">0</span>
-<span class="token punctuation">}</span><span class="token punctuation">,</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="attr">state</span>: &#123;</span><br><span class="line">  <span class="attr">count</span>: <span class="number">0</span></span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+
 <p>定義 <code>count</code> state 初始值為 <code>0</code>。</p>
 <p>第 6 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> addCount <span class="token operator">=</span> state <span class="token operator">=</span><span class="token operator">></span> state<span class="token punctuation">.</span>count<span class="token operator">++</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">addCount</span> = state =&gt; state.<span class="property">count</span>++</span><br></pre></td></tr></table></figure>
+
 <p>定義 <code>addCount</code> mutation，每次呼叫都對 <code>count</code> state 遞增。</p>
 <p><strong>App.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
-    {{ count }}
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;onClick&quot;</span>&gt;</span>+<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    &#123;&#123; count &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> count = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">$store</span>.<span class="property">state</span>.<span class="property">count</span></span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> onClick = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="variable language_">this</span>.<span class="property">$store</span>.<span class="title function_">commit</span>(<span class="string">&#x27;addCount&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">name</span>: <span class="string">&#x27;App&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">computed</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">    count</span></span><br><span class="line"><span class="language-javascript">  &#125;,</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">methods</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">    onClick</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$store<span class="token punctuation">.</span>state<span class="token punctuation">.</span>count
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>$store<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token string">'addCount'</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
-  name<span class="token punctuation">:</span> <span class="token string">'App'</span><span class="token punctuation">,</span>
-  computed<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    count
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    onClick
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 9 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>$store<span class="token punctuation">.</span>state<span class="token punctuation">.</span>count
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> count = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">$store</span>.<span class="property">state</span>.<span class="property">count</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>count</code> computed 處理 <code>count</code> state，當 <code>count</code> state 改變時，<code>count</code> computed 會隨之 reactive 改變。</p>
 <p>傳統會使用 <code>this.$store</code> 讀取 Vuex，由與使用了 <code>this</code>，必須使用 function expression 而不能使用 arrow function，也不方便 extract function。</p>
 <p>13 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token keyword">function</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-  <span class="token keyword">this</span><span class="token punctuation">.</span>$store<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token string">'addCount'</span><span class="token punctuation">)</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> onClick = <span class="keyword">function</span>(<span class="params"></span>) &#123;</span><br><span class="line">  <span class="variable language_">this</span>.<span class="property">$store</span>.<span class="title function_">commit</span>(<span class="string">&#x27;addCount&#x27;</span>)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>this.$store</code> 的 <code>commit()</code> 呼叫 <code>addCount</code> mutation，由於使用了 <code>this</code>，必須使用 function expression 而不能使用 arrow function，也不方便 extract function。</p>
 <h2 id="Functional-API"><a href="#Functional-API" class="headerlink" title="Functional API"></a>Functional API</h2><p><strong>App.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
-    {{ count }}
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;onClick&quot;</span>&gt;</span>+<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    &#123;&#123; count &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">&#x27;@/store&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> <span class="title function_">count</span> = (<span class="params"></span>) =&gt; store.<span class="property">state</span>.<span class="property">count</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> <span class="title function_">onClick</span> = (<span class="params"></span>) =&gt; store.<span class="title function_">commit</span>(<span class="string">&#x27;addCount&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">name</span>: <span class="string">&#x27;App&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">computed</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">    count</span></span><br><span class="line"><span class="language-javascript">  &#125;,</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">methods</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">    onClick</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> store <span class="token keyword">from</span> <span class="token string">'@/store'</span>
-
-<span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> store<span class="token punctuation">.</span>state<span class="token punctuation">.</span>count
-
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> store<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token string">'addCount'</span><span class="token punctuation">)</span>
-
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
-  name<span class="token punctuation">:</span> <span class="token string">'App'</span><span class="token punctuation">,</span>
-  computed<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    count
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    onClick
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 9 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> store <span class="token keyword">from</span> <span class="token string">'@/store'</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">&#x27;@/store&#x27;</span></span><br></pre></td></tr></table></figure>
+
 <p>將實際 store 引入。</p>
 <p>11 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> store<span class="token punctuation">.</span>state<span class="token punctuation">.</span>count
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">count</span> = (<span class="params"></span>) =&gt; store.<span class="property">state</span>.<span class="property">count</span></span><br></pre></td></tr></table></figure>
+
 <p>直接以 <code>store</code> 使用 Vuex，由其下的 <code>state</code> 讀取 <code>count</code> state。</p>
 <p>因為不再使用 <code>this</code>，因此可安心使用 arrow function。</p>
 <p>13 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> store<span class="token punctuation">.</span><span class="token function">commit</span><span class="token punctuation">(</span><span class="token string">'addCount'</span><span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">onClick</span> = (<span class="params"></span>) =&gt; store.<span class="title function_">commit</span>(<span class="string">&#x27;addCount&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
 <p>直接以 <code>store</code> 使用 Vuex，將 <code>addCount</code> mutation 傳入 <code>commit()</code> 執行之。</p>
 <p>因為不再使用 <code>this</code>，因此可安心使用 arrow function。</p>
 <h2 id="Point-free"><a href="#Point-free" class="headerlink" title="Point-free"></a>Point-free</h2><p><strong>App.vue</strong></p>
-<pre class="line-numbers highlight language-html"><code class="language-html"><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>template</span><span class="token punctuation">></span></span>
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span><span class="token punctuation">></span></span>
-    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>button</span> <span class="token attr-name">@click</span><span class="token attr-value"><span class="token punctuation">=</span><span class="token punctuation">"</span>onClick<span class="token punctuation">"</span></span><span class="token punctuation">></span></span>+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>button</span><span class="token punctuation">></span></span>
-    {{ count }}
-  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">></span></span>
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>template</span><span class="token punctuation">></span></span>
+<figure class="highlight html"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">template</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">div</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">button</span> @<span class="attr">click</span>=<span class="string">&quot;onClick&quot;</span>&gt;</span>+<span class="tag">&lt;/<span class="name">button</span>&gt;</span></span><br><span class="line">    &#123;&#123; count &#125;&#125;</span><br><span class="line">  <span class="tag">&lt;/<span class="name">div</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">template</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">script</span>&gt;</span><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> &#123; pipe, always, prop &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">import</span> store <span class="keyword">from</span> <span class="string">&#x27;@/store&#x27;</span></span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> &#123; state, commit &#125; = store</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> count = <span class="title function_">pipe</span>(</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">always</span>(state),</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">prop</span>(<span class="string">&#x27;count&#x27;</span>)</span></span><br><span class="line"><span class="language-javascript">)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">let</span> onClick = <span class="title function_">pipe</span>(</span></span><br><span class="line"><span class="language-javascript">  <span class="title function_">always</span>(<span class="string">&#x27;addCount&#x27;</span>),</span></span><br><span class="line"><span class="language-javascript">  commit</span></span><br><span class="line"><span class="language-javascript">)</span></span><br><span class="line"><span class="language-javascript"></span></span><br><span class="line"><span class="language-javascript"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">name</span>: <span class="string">&#x27;App&#x27;</span>,</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">computed</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">    count</span></span><br><span class="line"><span class="language-javascript">  &#125;,</span></span><br><span class="line"><span class="language-javascript">  <span class="attr">methods</span>: &#123;</span></span><br><span class="line"><span class="language-javascript">    onClick</span></span><br><span class="line"><span class="language-javascript">  &#125;</span></span><br><span class="line"><span class="language-javascript">&#125;</span></span><br><span class="line"><span class="language-javascript"></span><span class="tag">&lt;/<span class="name">script</span>&gt;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>script</span><span class="token punctuation">></span></span><span class="token script language-javascript">
-<span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> always<span class="token punctuation">,</span> prop <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
-<span class="token keyword">import</span> store <span class="token keyword">from</span> <span class="token string">'@/store'</span>
-
-<span class="token keyword">let</span> <span class="token punctuation">{</span> state<span class="token punctuation">,</span> commit <span class="token punctuation">}</span> <span class="token operator">=</span> store
-
-<span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">always</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'count'</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'addCount'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  commit
-<span class="token punctuation">)</span>
-
-<span class="token keyword">export</span> <span class="token keyword">default</span> <span class="token punctuation">{</span>
-  name<span class="token punctuation">:</span> <span class="token string">'App'</span><span class="token punctuation">,</span>
-  computed<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    count
-  <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  methods<span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    onClick
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-</span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>script</span><span class="token punctuation">></span></span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>12 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> <span class="token punctuation">{</span> state<span class="token punctuation">,</span> commit <span class="token punctuation">}</span> <span class="token operator">=</span> store
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> &#123; state, commit &#125; = store</span><br></pre></td></tr></table></figure>
+
 <p>從 <code>store</code> 直接 destructure 出 <code>state</code> 與 <code>commit()</code>。</p>
 <p>14 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">always</span><span class="token punctuation">(</span>state<span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">prop</span><span class="token punctuation">(</span><span class="token string">'count'</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> count = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">always</span>(state),</span><br><span class="line">  <span class="title function_">prop</span>(<span class="string">&#x27;count&#x27;</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>使用 <code>prop()</code> 讀取 <code>state.count</code>，先透過 <code>always()</code> 準備 <code>state</code></li>
 </ul>
 <p>19 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> onClick <span class="token operator">=</span> <span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">always</span><span class="token punctuation">(</span><span class="token string">'addCount'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  commit
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> onClick = <span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">always</span>(<span class="string">&#x27;addCount&#x27;</span>),</span><br><span class="line">  commit</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>使用 <code>commit()</code> 執行 mutation，先透過 <code>always()</code> 準備 <code>addCount</code></li>
 </ul>

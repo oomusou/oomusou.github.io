@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,130 +438,56 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>GraphQL 除了使用 Query 查詢資料外，若要異動資料，包含新增、修改、刪除，都要使用 Mutation。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15<br>WebStorm 2019.2.3<br>Node 10.16.3<br>Apollo GraphQL 2.9.6</p>
 <h2 id="Apollo-GraphQL"><a href="#Apollo-GraphQL" class="headerlink" title="Apollo GraphQL"></a>Apollo GraphQL</h2><p><strong>src&#x2F;index.js</strong></p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> ApolloServer<span class="token punctuation">,</span> gql <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'apollo-server'</span>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; <span class="title class_">ApolloServer</span>, gql &#125; <span class="keyword">from</span> <span class="string">&#x27;apollo-server&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;FP in JavaScript&#x27;</span>, <span class="attr">price</span>: <span class="number">100</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">title</span>: <span class="string">&#x27;RxJS in Action&#x27;</span>, <span class="attr">price</span>: <span class="number">200</span> &#125;</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> typeDefs = gql`<span class="language-graphql"></span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">type</span> <span class="keyword">Query</span> <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">books</span><span class="punctuation">:</span> <span class="punctuation">[</span>Book<span class="punctuation">]</span></span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql"></span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">type</span> <span class="keyword">Mutation</span> <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    addBook<span class="punctuation">(</span><span class="symbol">book</span><span class="punctuation">:</span> BookInput<span class="punctuation">!</span><span class="punctuation">)</span><span class="punctuation">:</span> Book</span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql"></span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">type</span> Book <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">title</span><span class="punctuation">:</span> String</span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">price</span><span class="punctuation">:</span> Int</span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql"></span></span><br><span class="line"><span class="language-graphql">  <span class="keyword">input</span> BookInput <span class="punctuation">&#123;</span></span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">title</span><span class="punctuation">:</span> String</span></span><br><span class="line"><span class="language-graphql">    <span class="symbol">price</span><span class="punctuation">:</span> Int</span></span><br><span class="line"><span class="language-graphql">  <span class="punctuation">&#125;</span></span></span><br><span class="line"><span class="language-graphql">`</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">books</span> = (<span class="params"></span>) =&gt; data</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">addBook</span> = (<span class="params">_, &#123; book &#125;</span>) =&gt; &#123;</span><br><span class="line">  data = [...data, book]</span><br><span class="line">  <span class="keyword">return</span> book;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> resolvers = &#123;</span><br><span class="line">  <span class="title class_">Query</span>: &#123; books &#125;,</span><br><span class="line">  <span class="title class_">Mutation</span>: &#123; addBook &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> apolloServer = <span class="keyword">new</span> <span class="title class_">ApolloServer</span>(&#123; typeDefs, resolvers &#125;)</span><br><span class="line"></span><br><span class="line">apolloServer.<span class="title function_">listen</span>()</span><br><span class="line">  .<span class="title function_">then</span>(<span class="function">(<span class="params">&#123; url &#125;</span>) =&gt;</span> <span class="string">`GraphQL Server ready at <span class="subst">$&#123; url &#125;</span>`</span>)</span><br><span class="line">  .<span class="title function_">then</span>(<span class="variable language_">console</span>.<span class="property">log</span>)</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'FP in JavaScript'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">100</span> <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  <span class="token punctuation">{</span> title<span class="token punctuation">:</span> <span class="token string">'RxJS in Action'</span><span class="token punctuation">,</span> price<span class="token punctuation">:</span> <span class="token number">200</span> <span class="token punctuation">}</span>
-<span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> typeDefs <span class="token operator">=</span> gql<span class="token template-string"><span class="token string">`
-  type Query {
-    books: [Book]
-  }
-
-  type Mutation {
-    addBook(book: BookInput!): Book
-  }
-
-  type Book {
-    title: String
-    price: Int
-  }
-
-  input BookInput {
-    title: String
-    price: Int
-  }
-`</span></span>
-
-<span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data
-
-<span class="token keyword">let</span> addBook <span class="token operator">=</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> book <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token operator">...</span>data<span class="token punctuation">,</span> book<span class="token punctuation">]</span>
-  <span class="token keyword">return</span> book<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> resolvers <span class="token operator">=</span> <span class="token punctuation">{</span>
-  Query<span class="token punctuation">:</span> <span class="token punctuation">{</span> books <span class="token punctuation">}</span><span class="token punctuation">,</span>
-  Mutation<span class="token punctuation">:</span> <span class="token punctuation">{</span> addBook <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">let</span> apolloServer <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">ApolloServer</span><span class="token punctuation">(</span><span class="token punctuation">{</span> typeDefs<span class="token punctuation">,</span> resolvers <span class="token punctuation">}</span><span class="token punctuation">)</span>
-
-apolloServer<span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">{</span> url <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token template-string"><span class="token string">`GraphQL Server ready at </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span> url <span class="token interpolation-punctuation punctuation">}</span></span><span class="token string">`</span></span><span class="token punctuation">)</span>
-  <span class="token punctuation">.</span><span class="token function">then</span><span class="token punctuation">(</span>console<span class="token punctuation">.</span>log<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 9 行</p>
-<pre class="line-numbers highlight language-graphql"><code class="language-graphql">type Query <span class="token punctuation">{</span>
-  <span class="token attr-name">books</span><span class="token punctuation">:</span> <span class="token punctuation">[</span>Book<span class="token punctuation">]</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="keyword">Query</span> <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="symbol">books</span><span class="punctuation">:</span> <span class="punctuation">[</span>Book<span class="punctuation">]</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>在 <code>Query</code> 下宣告 <code>books</code> query 回傳所有 <code>Book</code> type 資料。</p>
 <p>17 行</p>
-<pre class="line-numbers highlight language-graphql"><code class="language-graphql">type Book <span class="token punctuation">{</span>
-  <span class="token attr-name">title</span><span class="token punctuation">:</span> String
-  <span class="token attr-name">price</span><span class="token punctuation">:</span> Int
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> Book <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="symbol">title</span><span class="punctuation">:</span> String</span><br><span class="line">  <span class="symbol">price</span><span class="punctuation">:</span> Int</span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>宣告 <code>Book</code> type。</p>
 <p>13 行</p>
-<pre class="line-numbers highlight language-graphql"><code class="language-graphql">type Mutation <span class="token punctuation">{</span>
-  addBook<span class="token punctuation">(</span><span class="token attr-name">book</span><span class="token punctuation">:</span> BookInput<span class="token operator">!</span><span class="token punctuation">)</span><span class="token punctuation">:</span> Book
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> <span class="keyword">Mutation</span> <span class="punctuation">&#123;</span></span><br><span class="line">  addBook<span class="punctuation">(</span><span class="symbol">book</span><span class="punctuation">:</span> BookInput<span class="punctuation">!</span><span class="punctuation">)</span><span class="punctuation">:</span> Book</span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>在 <code>Mutation</code> 下宣告 <code>addBook</code> mutation 新增 book。</p>
 <p>Mutation 雖然也能直接使用內建的 scalar type，如 String、Int，但因為 mutation 通常會新增大量資料，為避免 argument 太長，通常會搭配 <code>Input</code> 自訂 type。</p>
 <p>22 行</p>
-<pre class="line-numbers highlight language-graphql"><code class="language-graphql">input BookInput <span class="token punctuation">{</span>
-  <span class="token attr-name">title</span><span class="token punctuation">:</span> String
-  <span class="token attr-name">price</span><span class="token punctuation">:</span> Int
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">input</span> BookInput <span class="punctuation">&#123;</span></span><br><span class="line">  <span class="symbol">title</span><span class="punctuation">:</span> String</span><br><span class="line">  <span class="symbol">price</span><span class="punctuation">:</span> Int</span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>input</code> 宣告 <code>BookInput</code> input type，GraphQL 規定 input 命名須以 <code>Input</code> 為 postfix。</p>
 <p>28 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> books <span class="token operator">=</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> data
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">books</span> = (<span class="params"></span>) =&gt; data</span><br></pre></td></tr></table></figure>
+
 <p><code>books</code> query 直接回傳所有資料。</p>
 <p>30 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> addBook <span class="token operator">=</span> <span class="token punctuation">(</span>_<span class="token punctuation">,</span> <span class="token punctuation">{</span> book <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token punctuation">{</span>
-  data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token operator">...</span>data<span class="token punctuation">,</span> book<span class="token punctuation">]</span>
-  <span class="token keyword">return</span> book<span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> <span class="title function_">addBook</span> = (<span class="params">_, &#123; book &#125;</span>) =&gt; &#123;</span><br><span class="line">  data = [...data, book]</span><br><span class="line">  <span class="keyword">return</span> book;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <p>Apollo GraphQL 的 resolver 依序有 4 個 argument： <code>parent</code>、<code>args</code>、<code>context</code> 與 <code>info</code>，讀取 argument 只會用到第二個 <code>args</code>，而 <code>parent</code> 目前用不到可用 <code>_</code> 表示， <code>context</code> 與 <code>info</code> 目前可忽略。</p>
 <p>從 <code>args</code> 直接 destructure <code>book</code>，產生新的 id 直接新增至 <code>id</code> property。</p>
 <p>將 <code>book</code> object 新增至 data 並回傳。</p>
-<h2 id="GraphQL-Playground"><a href="#GraphQL-Playground" class="headerlink" title="GraphQL Playground"></a>GraphQL Playground</h2><pre class="line-numbers highlight language-graphql"><code class="language-graphql"><span class="token keyword">query</span> <span class="token punctuation">{</span>
-  books <span class="token punctuation">{</span>
-    title
-    price
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="GraphQL-Playground"><a href="#GraphQL-Playground" class="headerlink" title="GraphQL Playground"></a>GraphQL Playground</h2><figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">query</span> <span class="punctuation">&#123;</span></span><br><span class="line">  books <span class="punctuation">&#123;</span></span><br><span class="line">    title</span><br><span class="line">    price</span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>books</code> query，回傳其 <code>title</code> 與 <code>price</code> 兩個 property，共 2 筆資料。</p>
 <p><img src="/images/graphql/apollo/mutation/mutation002.png" alt="mutation002"></p>
-<pre class="line-numbers highlight language-graphql"><code class="language-graphql"><span class="token keyword">mutation</span> <span class="token punctuation">{</span>
-  addBook<span class="token punctuation">(</span><span class="token attr-name">book</span><span class="token punctuation">:</span> <span class="token punctuation">{</span>
-    <span class="token attr-name">title</span><span class="token punctuation">:</span> <span class="token string">"Speaking JavaScript"</span>
-    <span class="token attr-name">price</span><span class="token punctuation">:</span> <span class="token number">300</span>
-  <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    title
-    price
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">mutation</span> <span class="punctuation">&#123;</span></span><br><span class="line">  addBook<span class="punctuation">(</span><span class="symbol">book</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="symbol">title</span><span class="punctuation">:</span> <span class="string">&quot;Speaking JavaScript&quot;</span></span><br><span class="line">    <span class="symbol">price</span><span class="punctuation">:</span> <span class="number">300</span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">)</span> <span class="punctuation">&#123;</span></span><br><span class="line">    title</span><br><span class="line">    price</span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>adeBook()</code> mutation，傳入 <code>book</code> variable 為 argument。</p>
 <p><img src="/images/graphql/apollo/mutation/mutation003.png" alt="mutation003"></p>
 <p>回傳 <code>book</code> object，重點是包含了剛新增的 <code>id</code> property。</p>
-<pre class="line-numbers highlight language-graphql"><code class="language-graphql"><span class="token keyword">query</span> <span class="token punctuation">{</span>
-  books <span class="token punctuation">{</span>
-    title
-    price
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight graphql"><table><tr><td class="code"><pre><span class="line"><span class="keyword">query</span> <span class="punctuation">&#123;</span></span><br><span class="line">  books <span class="punctuation">&#123;</span></span><br><span class="line">    title</span><br><span class="line">    price</span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>再次執行 query，會發現資料已經新增成功。</p>
 <p><img src="/images/graphql/apollo/mutation/mutation004.png" alt="mutation004"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Apollo GraphQL 的 query 與 mutation 寫法類似，唯 query 可直接使用 scalar type 與自訂 type；而 mutation 需使用自訂 input type</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://egghead.io/instructors/eve-porcello" target="_blank" rel="noopener">Eve Porcello</a>, <a href="https://egghead.io/lessons/graphql-use-an-input-type-to-create-an-account-with-a-graphql-mutation" target="_blank" rel="noopener">Use an Input Type to Create an Account with a GraphQL Mutation</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://egghead.io/instructors/eve-porcello">Eve Porcello</a>, <a target="_blank" rel="noopener" href="https://egghead.io/lessons/graphql-use-an-input-type-to-create-an-account-with-a-graphql-mutation">Use an Input Type to Create an Account with a GraphQL Mutation</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

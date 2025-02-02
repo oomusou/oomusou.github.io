@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,18 +438,11 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>FP 常被人詬病效率問題，若使用 <code>pipe()</code> 組合了 3 個 Function，由於 Pure Function 每次都回傳全新 Array，因此要執行三次 Loop，在 Array 筆數大時有明顯劣勢，透過 <code>transduce()</code> 只要執行一次 Loop 即可。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
-<h2 id="Function-Pipeline"><a href="#Function-Pipeline" class="headerlink" title="Function Pipeline"></a>Function Pipeline</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> pipe<span class="token punctuation">,</span> take<span class="token punctuation">,</span> map<span class="token punctuation">,</span> add <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Function-Pipeline"><a href="#Function-Pipeline" class="headerlink" title="Function Pipeline"></a>Function Pipeline</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; pipe, take, map, add &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="title function_">pipe</span>(</span><br><span class="line">  <span class="title function_">map</span>(<span class="title function_">add</span>(<span class="number">1</span>)),</span><br><span class="line">  <span class="title function_">take</span>(<span class="number">2</span>)</span><br><span class="line">)(data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-
-<span class="token function">pipe</span><span class="token punctuation">(</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">take</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span><span class="token punctuation">(</span>data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <ul>
 <li>使用 <code>add()</code> 對 Array 每個 element 加 <code>1</code></li>
 <li>使用 <code>take()</code> 只取得前兩個 element</li>
@@ -458,27 +451,15 @@ a:hover {
 <p><code>pipe()</code> 組合了 <code>map()</code> 與 <code>take()</code> 兩個 function，會執行兩次 loop，若 Array 資料量大會明顯發現執行效率不佳</p>
 </blockquote>
 <p><img src="/images/ramda/function/transduce/overview/transduce000.png" alt="transduce000"></p>
-<h2 id="Transducer"><a href="#Transducer" class="headerlink" title="Transducer"></a>Transducer</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> take<span class="token punctuation">,</span> map<span class="token punctuation">,</span> add<span class="token punctuation">,</span> transduce<span class="token punctuation">,</span> append <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="Transducer"><a href="#Transducer" class="headerlink" title="Transducer"></a>Transducer</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; compose, take, map, add, transduce, append &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">compose</span>(</span><br><span class="line">  <span class="title function_">map</span>(<span class="title function_">add</span>(<span class="number">1</span>)),</span><br><span class="line">  <span class="title function_">take</span>(<span class="number">2</span>)</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">transduce</span>(f, <span class="function">(<span class="params">ac, x</span>) =&gt;</span> <span class="title function_">append</span>(x, ac), [], data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">compose</span><span class="token punctuation">(</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">take</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">transduce</span><span class="token punctuation">(</span>f<span class="token punctuation">,</span> <span class="token punctuation">(</span>ac<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">append</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> ac<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 5 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">compose</span><span class="token punctuation">(</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">take</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span>
-<span class="token punctuation">)</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">let</span> f = <span class="title function_">compose</span>(</span><br><span class="line">  <span class="title function_">map</span>(<span class="title function_">add</span>(<span class="number">1</span>)),</span><br><span class="line">  <span class="title function_">take</span>(<span class="number">2</span>)</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
 <p>要使用 <code>transduce()</code> 時，首先將原本 function 從 <code>pipe()</code> 改成 <code>compose()</code>。</p>
 <p>10 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">transduce</span><span class="token punctuation">(</span>f<span class="token punctuation">,</span> <span class="token punctuation">(</span>ac<span class="token punctuation">,</span> x<span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">append</span><span class="token punctuation">(</span>x<span class="token punctuation">,</span> ac<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">transduce</span>(f, <span class="function">(<span class="params">ac, x</span>) =&gt;</span> <span class="title function_">append</span>(x, ac), [], data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
+
 <p><code>transduce()</code> 的 signature 與 <code>reduce()</code> 類似，唯第一個 argument 改傳入 function，其餘 argument 都相同。</p>
 <blockquote>
 <p><strong>transduce()</strong><br><code>(c → c) → ((a, b) → a) → a → [b] → a</code><br>回傳只執行一次 loop 的 function</p>
@@ -489,20 +470,11 @@ a:hover {
 <p><code>[b]</code>：data 為 array</p>
 <p><code>a</code>：回傳為新 array</p>
 <p><img src="/images/ramda/function/transduce/overview/transduce001.png" alt="transduce001"></p>
-<h2 id="flip"><a href="#flip" class="headerlink" title="flip()"></a>flip()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> compose<span class="token punctuation">,</span> take<span class="token punctuation">,</span> map<span class="token punctuation">,</span> add<span class="token punctuation">,</span> transduce<span class="token punctuation">,</span> flip<span class="token punctuation">,</span> append <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="flip"><a href="#flip" class="headerlink" title="flip()"></a>flip()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; compose, take, map, add, transduce, flip, append &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> data = [<span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>]</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> f = <span class="title function_">compose</span>(</span><br><span class="line">  <span class="title function_">map</span>(<span class="title function_">add</span>(<span class="number">1</span>)),</span><br><span class="line">  <span class="title function_">take</span>(<span class="number">2</span>),</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="title function_">transduce</span>(f, <span class="title function_">flip</span>(append), [], data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> data <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span> <span class="token number">2</span><span class="token punctuation">,</span> <span class="token number">3</span><span class="token punctuation">]</span>
-
-<span class="token keyword">let</span> f <span class="token operator">=</span> <span class="token function">compose</span><span class="token punctuation">(</span>
-  <span class="token function">map</span><span class="token punctuation">(</span><span class="token function">add</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token function">take</span><span class="token punctuation">(</span><span class="token number">2</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span>
-
-<span class="token function">transduce</span><span class="token punctuation">(</span>f<span class="token punctuation">,</span> <span class="token function">flip</span><span class="token punctuation">(</span>append<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>10 行</p>
-<pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token function">transduce</span><span class="token punctuation">(</span>f<span class="token punctuation">,</span> <span class="token function">flip</span><span class="token punctuation">(</span>append<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">,</span> data<span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="title function_">transduce</span>(f, <span class="title function_">flip</span>(append), [], data) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
+
 <p>Iterator function 的 signature 剛好跟 <code>append()</code> 相反，可使用 <code>flip(append)</code> 使其 Point-free。</p>
 <p><img src="/images/ramda/function/transduce/overview/transduce002.png" alt="transduce002"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
@@ -510,7 +482,7 @@ a:hover {
 <li>原使用 <code>pipe()</code> 所組合 function 須改用 <code>compose()</code></li>
 <li>Iterator function 可由 <code>flip(append)</code> 使其 Point-free</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://www.jeremydaly.com/" target="_blank" rel="noopener">Jeremy Daly</a>, <a href="https://www.jeremydaly.com/transducers-supercharge-functional-javascript/" target="_blank" rel="noopener">Transducers: Supercharge your functional JavaScript</a><br><a href="https://archive.jlongster.com/" target="_blank" rel="noopener">James Long</a>, <a href="https://archive.jlongster.com/Transducers.js--A-JavaScript-Library-for-Transformation-of-Data" target="_blank" rel="noopener">Transducer.js: A JavaScript Library for Transformation of Data</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://www.jeremydaly.com/">Jeremy Daly</a>, <a target="_blank" rel="noopener" href="https://www.jeremydaly.com/transducers-supercharge-functional-javascript/">Transducers: Supercharge your functional JavaScript</a><br><a target="_blank" rel="noopener" href="https://archive.jlongster.com/">James Long</a>, <a target="_blank" rel="noopener" href="https://archive.jlongster.com/Transducers.js--A-JavaScript-Library-for-Transformation-of-Data">Transducer.js: A JavaScript Library for Transformation of Data</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

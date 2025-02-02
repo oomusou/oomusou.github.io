@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,69 +438,29 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>ECMAScript 雖然也有 Class、Object 與 Method 與 <code>this</code> 概念，但其 Method 本質仍是 Free Function，只是 <code>this</code> 指向 Object，也因為如此，所以能夠使用 Objet Destructure 從 Method 抽成 Free Function。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>ECMAScript 2015</p>
-<h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
-  name <span class="token operator">=</span> <span class="token string">'Sam'</span>
-  <span class="token function">bar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>name
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<h2 id="Method"><a href="#Method" class="headerlink" title="Method"></a>Method</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span> &#123;</span><br><span class="line">  name = <span class="string">&#x27;Sam&#x27;</span></span><br><span class="line">  <span class="title function_">bar</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">name</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> foo = <span class="keyword">new</span> <span class="title class_">Foo</span></span><br><span class="line">foo.<span class="title function_">bar</span>() <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> foo <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Foo</span>
-foo<span class="token punctuation">.</span><span class="token function">bar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>bar()</code> 在 <code>Foo</code> class 內使用 <code>this</code> 讀取 <code>name</code> property。</p>
 <p>使用 <code>new</code> 建立 <code>foo</code> Object 後，<code>foo.bar()</code> 以 method 形式執行，此時 <code>this</code> 指向 <code>foo</code> Object，因此順利執行。</p>
 <p><img src="/images/ecmascript/this/free-function/free000.png" alt="free000"></p>
-<h2 id="Free-Function"><a href="#Free-Function" class="headerlink" title="Free Function"></a>Free Function</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
-  name <span class="token operator">=</span> <span class="token string">'Sam'</span>
-  <span class="token function">bar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>name
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<h2 id="Free-Function"><a href="#Free-Function" class="headerlink" title="Free Function"></a>Free Function</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span> &#123;</span><br><span class="line">  name = <span class="string">&#x27;Sam&#x27;</span></span><br><span class="line">  <span class="title function_">bar</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">name</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> &#123; bar &#125; = <span class="keyword">new</span> <span class="title class_">Foo</span></span><br><span class="line"><span class="title function_">bar</span>() <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> <span class="token punctuation">{</span> bar <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Foo</span>
-<span class="token function">bar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
-<p>若以 <code>{ bar }</code> 從 Object 中抽出 <code>bar()</code> 之後，<code>bar()</code> 此時為 free function 而非 method，此時 <code>this</code> 指向 <code>undefined</code>，因此無法執行。</p>
+<p>若以 <code>&#123; bar &#125;</code> 從 Object 中抽出 <code>bar()</code> 之後，<code>bar()</code> 此時為 free function 而非 method，此時 <code>this</code> 指向 <code>undefined</code>，因此無法執行。</p>
 <p><img src="/images/ecmascript/this/free-function/free001.png" alt="free001"></p>
-<h2 id="call"><a href="#call" class="headerlink" title="call()"></a>call()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
-  name <span class="token operator">=</span> <span class="token string">'Sam'</span>
-  <span class="token function">bar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>name
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<h2 id="call"><a href="#call" class="headerlink" title="call()"></a>call()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span> &#123;</span><br><span class="line">  name = <span class="string">&#x27;Sam&#x27;</span></span><br><span class="line">  <span class="title function_">bar</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">name</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> &#123; bar &#125; = <span class="keyword">new</span> <span class="title class_">Foo</span></span><br><span class="line">bar.<span class="title function_">call</span>(<span class="keyword">new</span> <span class="title class_">Foo</span>) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> <span class="token punctuation">{</span> bar <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Foo</span>
-bar<span class="token punctuation">.</span><span class="token function">call</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Foo</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>bar()</code> 既然已經為 free function，若還要繼續以 <code>bar()</code> 執行呢 ?</p>
 <p>可透過 <code>bar()</code> 自帶的 <code>call()</code> 再次傳入 Object，讓 <code>this</code> 指向 Object。</p>
 <p><img src="/images/ecmascript/this/free-function/free002.png" alt="free002"></p>
-<h2 id="apply"><a href="#apply" class="headerlink" title="apply()"></a>apply()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
-  name <span class="token operator">=</span> <span class="token string">'Sam'</span>
-  <span class="token function">bar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>name
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<h2 id="apply"><a href="#apply" class="headerlink" title="apply()"></a>apply()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span> &#123;</span><br><span class="line">  name = <span class="string">&#x27;Sam&#x27;</span></span><br><span class="line">  <span class="title function_">bar</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">name</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> &#123; bar &#125; = <span class="keyword">new</span> <span class="title class_">Foo</span></span><br><span class="line">bar.<span class="title function_">apply</span>(<span class="keyword">new</span> <span class="title class_">Foo</span>) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> <span class="token punctuation">{</span> bar <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Foo</span>
-bar<span class="token punctuation">.</span><span class="token function">apply</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Foo</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>因為 <code>bar()</code> 沒有任何 argument，此時亦可使用 <code>apply()</code>。</p>
 <p><img src="/images/ecmascript/this/free-function/free003.png" alt="free003"></p>
-<h2 id="bind"><a href="#bind" class="headerlink" title="bind()"></a>bind()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">class</span> <span class="token class-name">Foo</span> <span class="token punctuation">{</span>
-  name <span class="token operator">=</span> <span class="token string">'Sam'</span>
-  <span class="token function">bar</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">return</span> <span class="token keyword">this</span><span class="token punctuation">.</span>name
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
+<h2 id="bind"><a href="#bind" class="headerlink" title="bind()"></a>bind()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Foo</span> &#123;</span><br><span class="line">  name = <span class="string">&#x27;Sam&#x27;</span></span><br><span class="line">  <span class="title function_">bar</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="variable language_">this</span>.<span class="property">name</span></span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> &#123; bar &#125; = <span class="keyword">new</span> <span class="title class_">Foo</span></span><br><span class="line">bar.<span class="title function_">bind</span>(<span class="keyword">new</span> <span class="title class_">Foo</span>)() <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> <span class="token punctuation">{</span> bar <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Foo</span>
-bar<span class="token punctuation">.</span><span class="token function">bind</span><span class="token punctuation">(</span><span class="token keyword">new</span> <span class="token class-name">Foo</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>亦可將 Object 傳入 <code>bind()</code> 回傳新 function 重新執行。</p>
 <p><img src="/images/ecmascript/this/free-function/free004.png" alt="free004"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>

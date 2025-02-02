@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,104 +438,57 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>若要在 macOS 使用 MongoDB，最簡單的方式就是使用 Docker。只要在 <code>docker-compose.yml</code> 描述好 MongoDB 設定， <code>docker compose up -d</code> 即可快速啟動。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>MongoDB 5.0.3</p>
 <h2 id="Docker-Compose"><a href="#Docker-Compose" class="headerlink" title="Docker Compose"></a>Docker Compose</h2><p><strong>docker-compose.yml</strong></p>
-<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3"</span>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">mongo:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mongo:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">mongo</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">$&#123;DATA_DIR&#125;:/data/db</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">$&#123;INITDB_DIR&#125;:/docker-entrypoint-initdb.d</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">$&#123;CONFIG_DIR&#125;:/data/configdb</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">$&#123;MONGO_PORT&#125;:27017</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MONGO_INITDB_ROOT_USERNAME=$&#123;MONGO_USER&#125;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">MONGO_INITDB_ROOT_PASSWORD=$&#123;MONGO_PASSWORD&#125;</span></span><br><span class="line">  <span class="attr">mongo-express:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">mongo-express:latest</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">mongo-express</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">$&#123;MONGO_EXPRESS_PORT&#125;:8081</span></span><br><span class="line">    <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">ME_CONFIG_MONGODB_URL=&quot;mongodb://$&#123;MONGO_USER&#125;:$&#123;MONGO_PASSWORD&#125;@mongo:27017&quot;</span></span><br></pre></td></tr></table></figure>
 
-<span class="token key atrule">services</span><span class="token punctuation">:</span>
-  <span class="token key atrule">mongo</span><span class="token punctuation">:</span>
-    <span class="token key atrule">image</span><span class="token punctuation">:</span> mongo<span class="token punctuation">:</span>latest
-    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> mongo
-    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>DATA_DIR<span class="token punctuation">}</span><span class="token punctuation">:</span>/data/db
-      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>INITDB_DIR<span class="token punctuation">}</span><span class="token punctuation">:</span>/docker<span class="token punctuation">-</span>entrypoint<span class="token punctuation">-</span>initdb.d
-      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>CONFIG_DIR<span class="token punctuation">}</span><span class="token punctuation">:</span>/data/configdb
-    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>MONGO_PORT<span class="token punctuation">}</span><span class="token punctuation">:</span><span class="token number">27017</span>
-    <span class="token key atrule">restart</span><span class="token punctuation">:</span> always
-    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> MONGO_INITDB_ROOT_USERNAME=$<span class="token punctuation">{</span>MONGO_USER<span class="token punctuation">}</span>
-      <span class="token punctuation">-</span> MONGO_INITDB_ROOT_PASSWORD=$<span class="token punctuation">{</span>MONGO_PASSWORD<span class="token punctuation">}</span>
-  <span class="token key atrule">mongo-express</span><span class="token punctuation">:</span>
-    <span class="token key atrule">image</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>express<span class="token punctuation">:</span>latest
-    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>express
-    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>MONGO_EXPRESS_PORT<span class="token punctuation">}</span><span class="token punctuation">:</span><span class="token number">8081</span>
-    <span class="token key atrule">restart</span><span class="token punctuation">:</span> always
-    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> ME_CONFIG_MONGODB_URL="mongodb<span class="token punctuation">:</span>//$<span class="token punctuation">{</span>MONGO_USER<span class="token punctuation">}</span><span class="token punctuation">:</span>$<span class="token punctuation">{</span>MONGO_PASSWORD<span class="token punctuation">}</span>@mongo<span class="token punctuation">:</span>27017"
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>第 4 行</p>
-<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">mongo</span><span class="token punctuation">:</span>
-  <span class="token key atrule">image</span><span class="token punctuation">:</span> mongo<span class="token punctuation">:</span>latest
-  <span class="token key atrule">container_name</span><span class="token punctuation">:</span> mongo
-  <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> $<span class="token punctuation">{</span>DATA_DIR<span class="token punctuation">}</span><span class="token punctuation">:</span>/data/db
-    <span class="token punctuation">-</span> $<span class="token punctuation">{</span>INITDB_DIR<span class="token punctuation">}</span><span class="token punctuation">:</span>/docker<span class="token punctuation">-</span>entrypoint<span class="token punctuation">-</span>initdb.d
-    <span class="token punctuation">-</span> $<span class="token punctuation">{</span>CONFIG_DIR<span class="token punctuation">}</span><span class="token punctuation">:</span>/data/configdb
-  <span class="token key atrule">ports</span><span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> $<span class="token punctuation">{</span>MONGO_PORT<span class="token punctuation">}</span><span class="token punctuation">:</span><span class="token number">27017</span>
-  <span class="token key atrule">restart</span><span class="token punctuation">:</span> always
-  <span class="token key atrule">environment</span><span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> MONGO_INITDB_ROOT_USERNAME=$<span class="token punctuation">{</span>MONGO_USER<span class="token punctuation">}</span>
-    <span class="token punctuation">-</span> MONGO_INITDB_ROOT_PASSWORD=$<span class="token punctuation">{</span>MONGO_PASSWORD<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">mongo:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">mongo:latest</span></span><br><span class="line">  <span class="attr">container_name:</span> <span class="string">mongo</span></span><br><span class="line">  <span class="attr">volumes:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">$&#123;DATA_DIR&#125;:/data/db</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">$&#123;INITDB_DIR&#125;:/docker-entrypoint-initdb.d</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">$&#123;CONFIG_DIR&#125;:/data/configdb</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">$&#123;MONGO_PORT&#125;:27017</span></span><br><span class="line">  <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">MONGO_INITDB_ROOT_USERNAME=$&#123;MONGO_USER&#125;</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">MONGO_INITDB_ROOT_PASSWORD=$&#123;MONGO_PASSWORD&#125;</span></span><br></pre></td></tr></table></figure>
+
 <p>設定 mongo service：</p>
 <ul>
 <li><code>image: mongo:latest</code>：使用 Mongo 官方所提供 image 並使用最新版本</li>
 <li><code>container_name: mongo</code>：設定 container 名稱</li>
 <li><code>volumns</code>：<ul>
-<li><code>${DATA_DIR}:/data/db</code>：設定 host 目錄對應到 MongoDB 內部 data 目錄</li>
-<li><code>${INITDB_DIR}:/docker-entrypoint-initdb.d</code>：設定 host 目錄對應到 MongoDB 內部初始化檔案目錄</li>
-<li><code>${CONFIG_DIR}:/data/configdb</code>：設定 host 目錄對應到 MongoDB 內部設定檔目錄</li>
+<li><code>$&#123;DATA_DIR&#125;:/data/db</code>：設定 host 目錄對應到 MongoDB 內部 data 目錄</li>
+<li><code>$&#123;INITDB_DIR&#125;:/docker-entrypoint-initdb.d</code>：設定 host 目錄對應到 MongoDB 內部初始化檔案目錄</li>
+<li><code>$&#123;CONFIG_DIR&#125;:/data/configdb</code>：設定 host 目錄對應到 MongoDB 內部設定檔目錄</li>
 </ul>
 </li>
 <li><code>ports</code>：<ul>
-<li><code>${MONGO_PORT}:27017</code>：設定 container 對外 port 與 MongoDB 的 port 對應</li>
+<li><code>$&#123;MONGO_PORT&#125;:27017</code>：設定 container 對外 port 與 MongoDB 的 port 對應</li>
 </ul>
 </li>
 <li><code>restart: always</code>：若執行失敗則重新啟動</li>
 <li><code>environment</code>：<ul>
-<li><code>MONGO_INITDB_ROOT_USERNAME=${MONGO_USER}</code>：設定 id</li>
-<li><code>MONGO_INITDB_ROOT_PASSWORD=${MONGO_PASSWORD}</code>：設定 password</li>
+<li><code>MONGO_INITDB_ROOT_USERNAME=$&#123;MONGO_USER&#125;</code>：設定 id</li>
+<li><code>MONGO_INITDB_ROOT_PASSWORD=$&#123;MONGO_PASSWORD&#125;</code>：設定 password</li>
 </ul>
 </li>
 </ul>
 <p>17 行</p>
-<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">mongo-express</span><span class="token punctuation">:</span>
-  <span class="token key atrule">image</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>express<span class="token punctuation">:</span>latest
-  <span class="token key atrule">container_name</span><span class="token punctuation">:</span> mongo<span class="token punctuation">-</span>express
-  <span class="token key atrule">ports</span><span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> $<span class="token punctuation">{</span>MONGO_EXPRESS_PORT<span class="token punctuation">}</span><span class="token punctuation">:</span><span class="token number">8081</span>
-  <span class="token key atrule">restart</span><span class="token punctuation">:</span> always
-  <span class="token key atrule">environment</span><span class="token punctuation">:</span>
-    <span class="token punctuation">-</span> ME_CONFIG_MONGODB_URL="mongodb<span class="token punctuation">:</span>//$<span class="token punctuation">{</span>MONGO_USER<span class="token punctuation">}</span><span class="token punctuation">:</span>$<span class="token punctuation">{</span>MONGO_PASSWORD<span class="token punctuation">}</span>@mongo<span class="token punctuation">:</span>27017"
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">mongo-express:</span></span><br><span class="line">  <span class="attr">image:</span> <span class="string">mongo-express:latest</span></span><br><span class="line">  <span class="attr">container_name:</span> <span class="string">mongo-express</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">$&#123;MONGO_EXPRESS_PORT&#125;:8081</span></span><br><span class="line">  <span class="attr">restart:</span> <span class="string">always</span></span><br><span class="line">  <span class="attr">environment:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="string">ME_CONFIG_MONGODB_URL=&quot;mongodb://$&#123;MONGO_USER&#125;:$&#123;MONGO_PASSWORD&#125;@mongo:27017&quot;</span></span><br></pre></td></tr></table></figure>
+
 <p>設定 mongo-experss service：</p>
 <ul>
 <li>MongoDB 的 web 管理介面</li>
 <li><code>image: mongo-express:latest</code>：使用 MongoDB 官方所提供 image 並使用最新版本</li>
 <li><code>container_name: mongo-express</code>：設定 container 名稱</li>
 <li><code>ports</code>：<ul>
-<li><code>${MONGO_EXPRESS_PORT}:8081</code>：設定 container 對外 port 與 Mongo Express 的 port 對應</li>
+<li><code>$&#123;MONGO_EXPRESS_PORT&#125;:8081</code>：設定 container 對外 port 與 Mongo Express 的 port 對應</li>
 </ul>
 </li>
 <li><code>restart: always</code>：若執行失敗則重新啟動</li>
 <li><code>environment</code>：<ul>
-<li><code>ME_CONFIG_MONGODB_URL=&quot;mongodb://${MONGO_USER}:${MONGO_PASSWORD}@mongo:27017&quot;</code>：設定連接 MongoDB 的 id 與 password</li>
+<li><code>ME_CONFIG_MONGODB_URL=&quot;mongodb://$&#123;MONGO_USER&#125;:$&#123;MONGO_PASSWORD&#125;@mongo:27017&quot;</code>：設定連接 MongoDB 的 id 與 password</li>
 </ul>
 </li>
 </ul>
 <h2 id="Environment-Variable"><a href="#Environment-Variable" class="headerlink" title="Environment Variable"></a>Environment Variable</h2><p><strong>.env</strong></p>
-<pre class="line-numbers highlight language-env"><code class="language-env">DATA_DIR=.data
-INITDB_DIR=.initdb
-CONFIG_DIR=.configdb
-MONGO_PORT=27017
-MONGO_USER=admin
-MONGO_PASSWORD=12345
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">DATA_DIR=.data</span><br><span class="line">INITDB_DIR=.initdb</span><br><span class="line">CONFIG_DIR=.configdb</span><br><span class="line">MONGO_PORT=27017</span><br><span class="line">MONGO_USER=admin</span><br><span class="line">MONGO_PASSWORD=12345</span><br></pre></td></tr></table></figure>
+
 <p>此為 <code>docker-compose.yml</code> 所設定的環境變數，被獨立在 <code>.env</code> 中，可單獨設定，將來不用修改 <code>docker-compose.yml</code>。</p>
 <ul>
 <li><code>DATA_DIR</code>：設定 host 儲存 data 目錄</li>
@@ -545,8 +498,8 @@ MONGO_PASSWORD=12345
 <li><code>MONGO_USER</code>：設定 id</li>
 <li><code>MONGO_PASSWORD</code>：設定 password</li>
 </ul>
-<h2 id="Start-MongoDB"><a href="#Start-MongoDB" class="headerlink" title="Start MongoDB"></a>Start MongoDB</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ docker compose up -d
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Start-MongoDB"><a href="#Start-MongoDB" class="headerlink" title="Start MongoDB"></a>Start MongoDB</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker compose up -d</span></span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>docker compose up</code> 啟動 MongoDB。</p>
 <p><code>-d</code> : <code>d</code>etach，建立 container 後，就脫離目前 process</p>
 <p><img src="/images/docker/mongodb/mongo000.png" alt="mongo000"></p>
@@ -558,14 +511,14 @@ MONGO_PASSWORD=12345
 <p>由於 MongoDB 是以 Docker 執行，因此 host 填 <code>localhost</code>，port 透過 <code>27017</code> 即可連接。</p>
 <p><img src="/images/docker/mongodb/mongo004.png" alt="mongo004"></p>
 <p>DataGrip 順利連上 MongoDB。</p>
-<h2 id="Stop-MongoDB"><a href="#Stop-MongoDB" class="headerlink" title="Stop MongoDB"></a>Stop MongoDB</h2><pre class="line-numbers highlight language-shell"><code class="language-shell">$ docker compose down
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<h2 id="Stop-MongoDB"><a href="#Stop-MongoDB" class="headerlink" title="Stop MongoDB"></a>Stop MongoDB</h2><figure class="highlight shell"><table><tr><td class="code"><pre><span class="line"><span class="meta prompt_">$ </span><span class="language-bash">docker compose down</span></span><br></pre></td></tr></table></figure>
+
 <p>使用 <code>docker compose down</code> 結束 MongoDB，並且刪除 container，但資料仍會留在 host。</p>
 <p><img src="/images/docker/mongodb/mongo005.png" alt="mongo005"></p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>Mongo Express 必須設定 <code>ME_CONFIG_MONGODB_URL</code> 才能正常啟動，不能只設定 <code>ME_CONFIG_MONGODB_ADMINUSERNAME</code> 與 <code>ME_CONFIG_MONGODB_ADMINPASSWORD</code></li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://hub.docker.com/" target="_blank" rel="noopener">Docker Hub</a>, <a href="https://hub.docker.com/_/mongo" target="_blank" rel="noopener">mongo</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://hub.docker.com/">Docker Hub</a>, <a target="_blank" rel="noopener" href="https://hub.docker.com/_/mongo">mongo</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">

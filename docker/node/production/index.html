@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,19 +438,14 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Node 的一大特色就是需依賴大量的 Package，但有些 Package 只是開發或編譯使用，如 Babel、Nodemon 只會安裝在 <code>devDependencies</code>，像這類 Package 就不須安裝在發布的 Docker Image 內，可大幅降低 Image Size。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>macOS Catalina 10.15.3<br>Docker Desktop 2.2.0.3 (42716)<br>WebStorm 2019.3.3<br>Node 12.4.0</p>
-<h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">FROM node:lts-alpine
-WORKDIR /usr/app
-COPY package.json .
-RUN yarn install --production
-COPY dist/* ./
-CMD [ "node", "index.js" ]
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<h2 id="Dockerfile"><a href="#Dockerfile" class="headerlink" title="Dockerfile"></a>Dockerfile</h2><figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:lts-alpine</span><br><span class="line"><span class="keyword">WORKDIR</span><span class="language-bash"> /usr/app</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> package.json .</span></span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> yarn install --production</span></span><br><span class="line"><span class="keyword">COPY</span><span class="language-bash"> dist/* ./</span></span><br><span class="line"><span class="keyword">CMD</span><span class="language-bash"> [ <span class="string">&quot;node&quot;</span>, <span class="string">&quot;index.js&quot;</span> ]</span></span><br></pre></td></tr></table></figure>
+
 <p>第 4 行</p>
-<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">RUN yarn install --production
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">RUN</span><span class="language-bash"> yarn install --production</span></span><br></pre></td></tr></table></figure>
+
 <p>在 docker 內下 <code>yarn install</code> 安裝所有 package 時，別忘了加上 <code>--production</code>，如此只會安裝 <code>dependencies</code> 下的 package，而不會安裝 <code>devDependencies</code> 下的 package，可大幅降低 image 的 size。</p>
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>實務上常常忘記加上 <code>--production</code>，導致 image 過於肥大，這樣喪失了 NPM 當初設計 <code>dependencies</code> 與 <code>devDependencies</code> 的意義</li>

@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,7 +438,7 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>Dockerfile 與 Docker Compose 是 Docker 兩個最重要的概念，也是初學者最容易卡關的地方，本文以 <code>使用需求</code> 為觀點解釋這兩者的差異。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Image-與-Container"><a href="#Image-與-Container" class="headerlink" title="Image 與 Container"></a>Image 與 Container</h2><p>在解釋 Dockerfile 與 Docker Compose 之前，先複習兩個更基礎的概念：</p>
 <h3 id="Image"><a href="#Image" class="headerlink" title="Image"></a>Image</h3><p>將 service 打包成 image，通常會從 Docker Hub 下載官方的 image 使用，也可以根據官方的 image 再包成自己的 image，或者完全自行製作自己的 image。</p>
@@ -452,9 +452,8 @@ a:hover {
 </ul>
 <p>Docker 以 <code>Infrastructure as Code</code> 概念，將  infrastructure 以 code 形式描述：</p>
 <p><strong>dockerfile</strong></p>
-<pre class="line-numbers highlight language-dockerfile"><code class="language-dockerfile">FROM node:latest
-RUN yarn global add @vue/cli
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span></span></code></pre>
+<figure class="highlight dockerfile"><table><tr><td class="code"><pre><span class="line"><span class="keyword">FROM</span> node:latest</span><br><span class="line"><span class="keyword">RUN</span><span class="language-bash"> yarn global add @vue/cli</span></span><br></pre></td></tr></table></figure>
+
 <p>以上為典型的 <code>dockerfile</code>，只需一個文字檔，就清楚描述一個 Docker image。</p>
 <p>以前若要在 Linux 安裝其他 dependency，只能透過 Bash 安裝一堆 package，最後再 export 成 image，但 image 可能很龐大，且安裝步驟也無法 git 版控。</p>
 <p>但透過 dockerfile 之後，整個新的 Linux 都是以 code 形式描述，你只要將 dockerfile 給其他人，對方只要使用 <code>docker build</code> 就能自行根據 <code>dockerfile</code> 建立 Docker image，最後再以 <code>docker run</code> 執行客製化過的 Ubuntu container。</p>
@@ -478,39 +477,8 @@ RUN yarn global add @vue/cli
 <p>… 等問題。</p>
 <p>Docker 為此提出 Docker Compose 概念，在 <code>docker-compose.yml</code> 檔描述各 service 間的參數與關係：</p>
 <p><strong>docker-compose.yml</strong></p>
-<pre class="line-numbers highlight language-yaml"><code class="language-yaml"><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">"3"</span>
+<figure class="highlight yaml"><table><tr><td class="code"><pre><span class="line"><span class="attr">version:</span> <span class="string">&quot;3&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="attr">services:</span></span><br><span class="line">  <span class="attr">netcore:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">microsoft/dotnet</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">MyNETCore</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">$&#123;NETCORE_HOST_DIR&#125;:/code/</span></span><br><span class="line">    <span class="attr">tty:</span> <span class="literal">true</span></span><br><span class="line">    <span class="attr">networks:</span> </span><br><span class="line">      <span class="bullet">-</span> <span class="string">netcore-dev</span></span><br><span class="line">    <span class="attr">depends_on:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">postgres</span></span><br><span class="line"></span><br><span class="line">  <span class="attr">postgres:</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">postgres</span></span><br><span class="line">    <span class="attr">container_name:</span> <span class="string">MyPostgres</span></span><br><span class="line">    <span class="attr">volumes:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">$&#123;POSTGRES_HOST_DIR&#125;/data:/var/lib/postgresql/data</span></span><br><span class="line">    <span class="attr">expose:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;5432&quot;</span></span><br><span class="line">    <span class="attr">ports:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">&quot;$&#123;POSTGRES_PORT&#125;:5432&quot;</span></span><br><span class="line">    <span class="attr">environment:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">POSTGRES_DB=$&#123;POSTGRES_DB&#125;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">POSTGRES_USER=$&#123;POSTGRES_USER&#125;</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">POSTGRES_PASSWORD=$&#123;POSTGRES_PASSWORD&#125;</span></span><br><span class="line">    <span class="attr">networks:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="string">netcore-dev</span></span><br><span class="line"></span><br><span class="line"><span class="attr">networks:</span></span><br><span class="line">  <span class="attr">netcore-dev:</span></span><br></pre></td></tr></table></figure>
 
-<span class="token key atrule">services</span><span class="token punctuation">:</span>
-  <span class="token key atrule">netcore</span><span class="token punctuation">:</span>
-    <span class="token key atrule">image</span><span class="token punctuation">:</span> microsoft/dotnet
-    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> MyNETCore
-    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>NETCORE_HOST_DIR<span class="token punctuation">}</span><span class="token punctuation">:</span>/code/
-    <span class="token key atrule">tty</span><span class="token punctuation">:</span> <span class="token boolean important">true</span>
-    <span class="token key atrule">networks</span><span class="token punctuation">:</span> 
-      <span class="token punctuation">-</span> netcore<span class="token punctuation">-</span>dev
-    <span class="token key atrule">depends_on</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> postgres
-
-  <span class="token key atrule">postgres</span><span class="token punctuation">:</span>
-    <span class="token key atrule">image</span><span class="token punctuation">:</span> postgres
-    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> MyPostgres
-    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> $<span class="token punctuation">{</span>POSTGRES_HOST_DIR<span class="token punctuation">}</span>/data<span class="token punctuation">:</span>/var/lib/postgresql/data
-    <span class="token key atrule">expose</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> <span class="token string">"5432"</span>
-    <span class="token key atrule">ports</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> <span class="token string">"${POSTGRES_PORT}:5432"</span>
-    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> POSTGRES_DB=$<span class="token punctuation">{</span>POSTGRES_DB<span class="token punctuation">}</span>
-      <span class="token punctuation">-</span> POSTGRES_USER=$<span class="token punctuation">{</span>POSTGRES_USER<span class="token punctuation">}</span>
-      <span class="token punctuation">-</span> POSTGRES_PASSWORD=$<span class="token punctuation">{</span>POSTGRES_PASSWORD<span class="token punctuation">}</span>
-    <span class="token key atrule">networks</span><span class="token punctuation">:</span>
-      <span class="token punctuation">-</span> netcore<span class="token punctuation">-</span>dev
-
-<span class="token key atrule">networks</span><span class="token punctuation">:</span>
-  <span class="token key atrule">netcore-dev</span><span class="token punctuation">:</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p>以上為典型的 <code>docker-compose.yml</code>，只需一個文字檔，就清楚描述 .NET Core Runtime 與 PostgreSQL 兩個 service，將 <code>docker-compose.yml</code> 拿到任何裝有 Docker 的電腦，都能重現 .NET Core + PostreSQL 的環境，也就是 <code>Infrastructure as Code</code>。</p>
 <ul>
 <li><code>docker-compose.yml</code> 檔案很小，只是文字檔而已</li>

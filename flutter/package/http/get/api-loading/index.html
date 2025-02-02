@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,139 +438,44 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p>對於回應時間較長的 API，可使用 <code>CircularProgressIndicator</code> 顯示 API Loading 動畫。 </p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Flutter 3.24.5</p>
 <h2 id="Flutter"><a href="#Flutter" class="headerlink" title="Flutter"></a>Flutter</h2><p><img src="/images/flutter/package/http/get/api-loading/loading01.gif" alt="loading01"></p>
 <ul>
 <li>Android 與 iOS 都成功使用 <code>CircularProgressIndicator</code> 實現 API Loading 動畫</li>
 </ul>
-<h2 id="CircularProgressIndicator"><a href="#CircularProgressIndicator" class="headerlink" title="CircularProgressIndicator"></a>CircularProgressIndicator</h2><pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">import</span> <span class="token string">'package:flutter/material.dart'</span><span class="token punctuation">;</span>
+<h2 id="CircularProgressIndicator"><a href="#CircularProgressIndicator" class="headerlink" title="CircularProgressIndicator"></a>CircularProgressIndicator</h2><figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">&#x27;package:flutter/material.dart&#x27;</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Home</span> <span class="keyword">extends</span> <span class="title">StatefulWidget</span> </span>&#123;</span><br><span class="line">  <span class="keyword">const</span> Home(&#123;<span class="keyword">super</span>.key&#125;);</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  State&lt;Home&gt; createState() =&gt; _Home();</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_Home</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">Home</span>&gt; </span>&#123;</span><br><span class="line">  <span class="built_in">bool</span> _isLoading = <span class="keyword">false</span>;</span><br><span class="line"></span><br><span class="line">  Future&lt;<span class="keyword">void</span>&gt; fetchAPI() <span class="keyword">async</span> &#123;</span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      <span class="keyword">await</span> Future.delayed(</span><br><span class="line">        <span class="built_in">Duration</span>(seconds: <span class="number">3</span>),</span><br><span class="line">      );</span><br><span class="line">    &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">      debugPrint(<span class="string">&#x27;Error: <span class="subst">$e</span>&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">var</span> appBar = AppBar(</span><br><span class="line">      title: Text(<span class="string">&#x27;API Loading&#x27;</span>),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> loading = Visibility(</span><br><span class="line">      visible: _isLoading,</span><br><span class="line">      child: Container(</span><br><span class="line">        color: Colors.transparent,</span><br><span class="line">        child: Center(</span><br><span class="line">          child: CircularProgressIndicator(),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> elevatedButton = Center(</span><br><span class="line">      child: ElevatedButton(</span><br><span class="line">        onPressed: () <span class="keyword">async</span> &#123;</span><br><span class="line">          setState(() =&gt; _isLoading = <span class="keyword">true</span>);</span><br><span class="line">          <span class="keyword">await</span> fetchAPI();</span><br><span class="line">          setState(() =&gt; _isLoading = <span class="keyword">false</span>);</span><br><span class="line">        &#125;,</span><br><span class="line">        child: Text(</span><br><span class="line">          <span class="string">&#x27;Fetch API&#x27;</span>,</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">var</span> body = Stack(</span><br><span class="line">      children: [</span><br><span class="line">        elevatedButton,</span><br><span class="line">        loading,</span><br><span class="line">      ],</span><br><span class="line">    );</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: appBar,</span><br><span class="line">      body: body,</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">class</span> <span class="token class-name">Home</span> <span class="token keyword">extends</span> <span class="token class-name">StatefulWidget</span> <span class="token punctuation">{</span>
-  <span class="token keyword">const</span> <span class="token function">Home</span><span class="token punctuation">(</span><span class="token punctuation">{</span><span class="token keyword">super</span><span class="token punctuation">.</span>key<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-  <span class="token metadata symbol">@override</span>
-  State<span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token function">createState</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> <span class="token function">_Home</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span class="token punctuation">}</span>
-
-<span class="token keyword">class</span> <span class="token class-name">_Home</span> <span class="token keyword">extends</span> <span class="token class-name">State</span><span class="token operator">&lt;</span>Home<span class="token operator">></span> <span class="token punctuation">{</span>
-  bool _isLoading <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-
-  Future<span class="token operator">&lt;</span><span class="token keyword">void</span><span class="token operator">></span> <span class="token function">fetchAPI</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">async</span> <span class="token punctuation">{</span>
-    <span class="token keyword">try</span> <span class="token punctuation">{</span>
-      <span class="token keyword">await</span> Future<span class="token punctuation">.</span><span class="token function">delayed</span><span class="token punctuation">(</span>
-        <span class="token function">Duration</span><span class="token punctuation">(</span>seconds<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-      <span class="token function">debugPrint</span><span class="token punctuation">(</span><span class="token string">'Error: $e'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span>
-  <span class="token punctuation">}</span>
-
-  <span class="token metadata symbol">@override</span>
-  Widget <span class="token function">build</span><span class="token punctuation">(</span>BuildContext context<span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token keyword">var</span> appBar <span class="token operator">=</span> <span class="token function">AppBar</span><span class="token punctuation">(</span>
-      title<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span><span class="token string">'API Loading'</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> loading <span class="token operator">=</span> <span class="token function">Visibility</span><span class="token punctuation">(</span>
-      visible<span class="token punctuation">:</span> _isLoading<span class="token punctuation">,</span>
-      child<span class="token punctuation">:</span> <span class="token function">Container</span><span class="token punctuation">(</span>
-        color<span class="token punctuation">:</span> Colors<span class="token punctuation">.</span>transparent<span class="token punctuation">,</span>
-        child<span class="token punctuation">:</span> <span class="token function">Center</span><span class="token punctuation">(</span>
-          child<span class="token punctuation">:</span> <span class="token function">CircularProgressIndicator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-        <span class="token punctuation">)</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> elevatedButton <span class="token operator">=</span> <span class="token function">Center</span><span class="token punctuation">(</span>
-      child<span class="token punctuation">:</span> <span class="token function">ElevatedButton</span><span class="token punctuation">(</span>
-        onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">async</span> <span class="token punctuation">{</span>
-          <span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> _isLoading <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token keyword">await</span> <span class="token function">fetchAPI</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-          <span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> _isLoading <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-        <span class="token punctuation">}</span><span class="token punctuation">,</span>
-        child<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span>
-          <span class="token string">'Fetch API'</span><span class="token punctuation">,</span>
-        <span class="token punctuation">)</span><span class="token punctuation">,</span>
-      <span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">var</span> body <span class="token operator">=</span> <span class="token function">Stack</span><span class="token punctuation">(</span>
-      children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-        elevatedButton<span class="token punctuation">,</span>
-        loading<span class="token punctuation">,</span>
-      <span class="token punctuation">]</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-
-    <span class="token keyword">return</span> <span class="token function">Scaffold</span><span class="token punctuation">(</span>
-      appBar<span class="token punctuation">:</span> appBar<span class="token punctuation">,</span>
-      body<span class="token punctuation">:</span> body<span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><strong>Line 11</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart">bool _isLoading <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="built_in">bool</span> _isLoading = <span class="keyword">false</span>;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>_isLoading</code>：定義是否正在 API loading 的 state</li>
 </ul>
 <p><strong>Line 13</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart">Future<span class="token operator">&lt;</span><span class="token keyword">void</span><span class="token operator">></span> <span class="token function">fetchAPI</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">async</span> <span class="token punctuation">{</span>
-  <span class="token keyword">try</span> <span class="token punctuation">{</span>
-    <span class="token keyword">await</span> Future<span class="token punctuation">.</span><span class="token function">delayed</span><span class="token punctuation">(</span>
-      <span class="token function">Duration</span><span class="token punctuation">(</span>seconds<span class="token punctuation">:</span> <span class="token number">3</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span><span class="token class-name">e</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
-    <span class="token function">debugPrint</span><span class="token punctuation">(</span><span class="token string">'Error: $e'</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-  <span class="token punctuation">}</span>
-<span class="token punctuation">}</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line">Future&lt;<span class="keyword">void</span>&gt; fetchAPI() <span class="keyword">async</span> &#123;</span><br><span class="line">  <span class="keyword">try</span> &#123;</span><br><span class="line">    <span class="keyword">await</span> Future.delayed(</span><br><span class="line">      <span class="built_in">Duration</span>(seconds: <span class="number">3</span>),</span><br><span class="line">    );</span><br><span class="line">  &#125; <span class="keyword">catch</span> (e) &#123;</span><br><span class="line">    debugPrint(<span class="string">&#x27;Error: <span class="subst">$e</span>&#x27;</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li>模擬呼叫 API 需要花 3 秒鐘</li>
 </ul>
 <p><strong>Line 52</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">var</span> body <span class="token operator">=</span> <span class="token function">Stack</span><span class="token punctuation">(</span>
-  children<span class="token punctuation">:</span> <span class="token punctuation">[</span>
-    elevatedButton<span class="token punctuation">,</span>
-    loading<span class="token punctuation">,</span>
-  <span class="token punctuation">]</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> body = Stack(</span><br><span class="line">  children: [</span><br><span class="line">    elevatedButton,</span><br><span class="line">    loading,</span><br><span class="line">  ],</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>Stack</code>：將一般 widget 與 <code>loading</code> 一起放在 <code>Stack</code> 內</li>
 </ul>
 <p><strong>Line 39</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">var</span> elevatedButton <span class="token operator">=</span> <span class="token function">Center</span><span class="token punctuation">(</span>
-  child<span class="token punctuation">:</span> <span class="token function">ElevatedButton</span><span class="token punctuation">(</span>
-    onPressed<span class="token punctuation">:</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token keyword">async</span> <span class="token punctuation">{</span>
-      <span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> _isLoading <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token keyword">await</span> <span class="token function">fetchAPI</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-      <span class="token function">setState</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=</span><span class="token operator">></span> _isLoading <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
-    <span class="token punctuation">}</span><span class="token punctuation">,</span>
-    child<span class="token punctuation">:</span> <span class="token function">Text</span><span class="token punctuation">(</span>
-      <span class="token string">'Fetch API'</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> elevatedButton = Center(</span><br><span class="line">  child: ElevatedButton(</span><br><span class="line">    onPressed: () <span class="keyword">async</span> &#123;</span><br><span class="line">      setState(() =&gt; _isLoading = <span class="keyword">true</span>);</span><br><span class="line">      <span class="keyword">await</span> fetchAPI();</span><br><span class="line">      setState(() =&gt; _isLoading = <span class="keyword">false</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">    child: Text(</span><br><span class="line">      <span class="string">&#x27;Fetch API&#x27;</span>,</span><br><span class="line">    ),</span><br><span class="line">  ),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>elevatedButton</code>：一般 button，負責呼叫 API</li>
 <li>在呼叫 API 前將 <code>isLoading</code> 設定為 <code>true</code>，開始顯示 API loading 動畫</li>
 <li>在 API 回應後將 <code>isLoading</code> 設定為 <code>false</code>，結束顯示 API loading 動畫</li>
 </ul>
 <p><strong>Line 29</strong></p>
-<pre class="line-numbers highlight language-dart"><code class="language-dart"><span class="token keyword">var</span> loading <span class="token operator">=</span> <span class="token function">Visibility</span><span class="token punctuation">(</span>
-  visible<span class="token punctuation">:</span> _isLoading<span class="token punctuation">,</span>
-  child<span class="token punctuation">:</span> <span class="token function">Container</span><span class="token punctuation">(</span>
-    color<span class="token punctuation">:</span> Colors<span class="token punctuation">.</span>transparent<span class="token punctuation">,</span>
-    child<span class="token punctuation">:</span> <span class="token function">Center</span><span class="token punctuation">(</span>
-      child<span class="token punctuation">:</span> <span class="token function">CircularProgressIndicator</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
-    <span class="token punctuation">)</span><span class="token punctuation">,</span>
-  <span class="token punctuation">)</span><span class="token punctuation">,</span>
-<span class="token punctuation">)</span><span class="token punctuation">;</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></span></code></pre>
+<figure class="highlight dart"><table><tr><td class="code"><pre><span class="line"><span class="keyword">var</span> loading = Visibility(</span><br><span class="line">  visible: _isLoading,</span><br><span class="line">  child: Container(</span><br><span class="line">    color: Colors.transparent,</span><br><span class="line">    child: Center(</span><br><span class="line">      child: CircularProgressIndicator(),</span><br><span class="line">    ),</span><br><span class="line">  ),</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+
 <ul>
 <li><code>CircularProgressIndicator</code>：API loading 時顯示轉圈圈動畫</li>
 <li><code>Visibility</code>：由 <code>_isLoading</code> state 控制是否顯示</li>

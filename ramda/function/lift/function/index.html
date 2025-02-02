@@ -243,7 +243,7 @@ a:hover {
 
   <!-- ### Custom Head ### -->
   
-<meta name="generator" content="Hexo 4.2.1"></head>
+<meta name="generator" content="Hexo 7.3.0"></head>
   <body>
   <header>
   <h1 class="header-title text-center">
@@ -438,13 +438,11 @@ a:hover {
         <div class="card-body">
           <article id="post-content">
             <p><code>lift()</code> 除了能將一般 Function 提升成能處理 Apply 的 function 外，還能將多個 Array 中的值做排列組合運算。</p>
-<a id="more"></a>
+<span id="more"></span>
 
 <h2 id="Version"><a href="#Version" class="headerlink" title="Version"></a>Version</h2><p>Ramda 0.27.1</p>
-<h2 id="lift"><a href="#lift" class="headerlink" title="lift()"></a>lift()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> add<span class="token punctuation">,</span> lift <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="lift"><a href="#lift" class="headerlink" title="lift()"></a>lift()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; add, lift &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="title function_">lift</span>(add)([<span class="number">1</span>,<span class="number">2</span>], [<span class="number">3</span>, <span class="number">4</span>]) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token function">lift</span><span class="token punctuation">(</span>add<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span></span></code></pre>
 <p>使用 <code>lift()</code> 對 <code>lift()</code> 加以提升後，發現新 function 能對兩個 Array 中所有 element 做排列組合運算：</p>
 <ul>
 <li>1 + 3 &#x3D; 4</li>
@@ -453,12 +451,8 @@ a:hover {
 <li>2 + 5 &#x3D; 6</li>
 </ul>
 <p><img src="/images/ramda/function/lift/function/function000.png" alt="function000"></p>
-<h2 id="ap"><a href="#ap" class="headerlink" title="ap()"></a>ap()</h2><pre class="line-numbers highlight language-javascript"><code class="language-javascript"><span class="token keyword">import</span> <span class="token punctuation">{</span> add<span class="token punctuation">,</span> ap <span class="token punctuation">}</span> <span class="token keyword">from</span> <span class="token string">'ramda'</span>
+<h2 id="ap"><a href="#ap" class="headerlink" title="ap()"></a>ap()</h2><figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">import</span> &#123; add, ap &#125; <span class="keyword">from</span> <span class="string">&#x27;ramda&#x27;</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">let</span> <span class="title function_">lift</span> = f =&gt; <span class="function"><span class="params">x</span> =&gt;</span> <span class="function"><span class="params">y</span> =&gt;</span> <span class="title function_">ap</span>(<span class="title function_">ap</span>([f], x), y)</span><br><span class="line"></span><br><span class="line"><span class="title function_">lift</span>(add)([<span class="number">1</span>,<span class="number">2</span>])([<span class="number">3</span>, <span class="number">4</span>]) <span class="comment">// ?</span></span><br></pre></td></tr></table></figure>
 
-<span class="token keyword">let</span> lift <span class="token operator">=</span> f <span class="token operator">=</span><span class="token operator">></span> x <span class="token operator">=</span><span class="token operator">></span> y <span class="token operator">=</span><span class="token operator">></span> <span class="token function">ap</span><span class="token punctuation">(</span><span class="token function">ap</span><span class="token punctuation">(</span><span class="token punctuation">[</span>f<span class="token punctuation">]</span><span class="token punctuation">,</span> x<span class="token punctuation">)</span><span class="token punctuation">,</span> y<span class="token punctuation">)</span>
-
-<span class="token function">lift</span><span class="token punctuation">(</span>add<span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">,</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token punctuation">[</span><span class="token number">3</span><span class="token punctuation">,</span> <span class="token number">4</span><span class="token punctuation">]</span><span class="token punctuation">)</span> <span class="token comment" spellcheck="true">// ?</span>
-<span aria-hidden="true" class="line-numbers-rows"><span></span><span></span><span></span><span></span><span></span></span></code></pre>
 <p><code>lift()</code> 底層其實是呼叫 <code>ap()</code>，當原 function 的 arity 為 <code>1</code> 則呼叫一次 <code>ap()</code>，<code>2</code> 則呼叫兩次，以此類推。</p>
 <p>因為 <code>f()</code> 為 curried function，因此第一次 <code>ap()</code> 執行完時，只是 iterate 完第一個 Array 中所有 element，此時還沒有結果，Array 中只是執行一半的 partial function。</p>
 <p>執行第二次 <code>ap()</code> 時將以前次 partial function array 繼續 iterate 第二個 Array 中所有 element，此時 Array 中才有最後結果。</p>
@@ -467,7 +461,7 @@ a:hover {
 <h2 id="Conclusion"><a href="#Conclusion" class="headerlink" title="Conclusion"></a>Conclusion</h2><ul>
 <li>當需要對多個 Array 中所有排列組合經過相同 function 運算時，不必再使用兩層 <code>for</code> loop，只要將一般 function 透過 <code>lift()</code> 提升後即可</li>
 </ul>
-<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#lift" target="_blank" rel="noopener">lift()</a><br><a href="https://ramdajs.com/" target="_blank" rel="noopener">Ramda</a>, <a href="https://ramdajs.com/docs/#ap" target="_blank" rel="noopener">ap()</a><br><a href="https://stackoverflow.com/questions/36558598/cant-wrap-my-head-around-lift-in-ramda-js" target="_blank" rel="noopener">stackoverflow</a>, <a href="https://stackoverflow.com/questions/36558598/cant-wrap-my-head-around-lift-in-ramda-js" target="_blank" rel="noopener">Can’t wrap my head around “lift” in Ramda.js</a></p>
+<h2 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h2><p><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#lift">lift()</a><br><a target="_blank" rel="noopener" href="https://ramdajs.com/">Ramda</a>, <a target="_blank" rel="noopener" href="https://ramdajs.com/docs/#ap">ap()</a><br><a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/36558598/cant-wrap-my-head-around-lift-in-ramda-js">stackoverflow</a>, <a target="_blank" rel="noopener" href="https://stackoverflow.com/questions/36558598/cant-wrap-my-head-around-lift-in-ramda-js">Can’t wrap my head around “lift” in Ramda.js</a></p>
 
           </article>
           <p class="post-footer-info mb-0 pt-2">
